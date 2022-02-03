@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/dom/git/wordle'
+make: `bin/solve' is up to date.
+make: Leaving directory `/Users/dom/git/wordle'
+ 
