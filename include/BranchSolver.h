@@ -9,7 +9,7 @@
 
 
 using WordProbPair = std::pair<double, std::string>;
-using WordSet = std::bitset<350>;
+using WordSet = std::bitset<450>;
 
 struct BranchSolver {
     BranchSolver(const std::vector<std::string> &allWords)
@@ -20,6 +20,7 @@ struct BranchSolver {
     std::string startingWord = "";
     std::unordered_map<std::string, int> reverseIndex = {};
     std::array<std::unordered_map<WordSet, WordProbPair>, 7> getBestWordCache;
+    long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
 
     void precompute() {
         DEBUG("getting starting word...");
@@ -34,8 +35,6 @@ struct BranchSolver {
     int solveWord(const std::string &answer) {
         auto getter = PatternGetter(answer);
         auto state = AttemptState(getter, allWords);
-
-        prepareHashTable(allWords);
 
         auto guess = startingWord;
         for (int i = 1; i <= 6; ++i) {
@@ -57,7 +56,9 @@ struct BranchSolver {
         // we can't use the information of the last guess...
         if (tries == 5) return {1.00 / words.size(), words[0]};
 
-        auto cacheVal = getFromCache(words, tries);
+        auto ws = buildWordSet(words);
+
+        auto cacheVal = getFromCache(ws, tries);
         if (cacheVal.first != -1) return cacheVal;
 
         WordProbPair res = {-1.00, ""};
@@ -77,7 +78,7 @@ struct BranchSolver {
             }
         }
 
-        return setCacheVal(words, tries, res);
+        return setCacheVal(ws, tries, res);
     }
 
     #pragma region hash table
@@ -91,15 +92,30 @@ struct BranchSolver {
     }
 
     inline WordProbPair getFromCache(const std::vector<std::string> &words, int tries) {
-        auto it = getBestWordCache[tries].find(buildWordSet(words));
+        return getFromCache(buildWordSet(words), tries);
+    }
+
+    inline WordProbPair getFromCache(const WordSet &ws, int tries) {
+        auto it = getBestWordCache[tries].find(ws);
         if (it == getBestWordCache[tries].end()) {
+            cacheMiss++;
             return {-1, ""};
         }
+        cacheHit++;
         return it->second;
     }
 
     inline WordProbPair setCacheVal(const std::vector<std::string> &words, int tries, const WordProbPair &res) {
-        return getBestWordCache[tries][buildWordSet(words)] = res;
+        auto ws = buildWordSet(words);
+        return setCacheVal(ws, tries, res);
+    }
+
+    inline WordProbPair setCacheVal(const WordSet &ws, int tries, const WordProbPair &res) {
+        if (getBestWordCache[tries].count(ws) == 0) {
+            cacheSize++;
+            getBestWordCache[tries][ws] = res;
+        }
+        return getBestWordCache[tries][ws];
     }
 
     WordSet buildWordSet(const std::vector<std::string> &words) {

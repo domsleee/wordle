@@ -21,6 +21,7 @@ struct AttemptState {
     PatternGetter patternGetter;
     int tries;
     std::vector<std::string> words;
+    //std::vector<std::string> deletedWords;
 
     AttemptState guessWord(const std::string &guess) const {
         int letterMinLimit[26] = {};
@@ -57,9 +58,10 @@ struct AttemptState {
                 if (letterMinLimit[letterInd] == 0) {
                     excludedLetters[letterInd] = true;
                 } else if (letterMaxLimit[letterInd] == 0) {
-                    for (std::size_t j = 0; j < guess.size(); ++j) {
+                    /*for (std::size_t j = 0; j < guess.size(); ++j) {
                         letterMaxLimit[letterInd] += (guess[j] == guess[i] && pattern[i] != '_');
-                    }
+                    }*/
+                    letterMaxLimit[letterInd] = letterMinLimit[letterInd];
                 }
             }
         }
@@ -90,6 +92,8 @@ struct AttemptState {
 
             if (allowed) {
                 result.push_back(word);
+            } else {
+                //deletedWords.push_back(word);
             }
         }
 
@@ -103,6 +107,7 @@ struct AttemptState {
         }
         
 
-        return AttemptState(patternGetter, tries+1, result);
+        auto res = AttemptState(patternGetter, tries+1, result);
+        return res;
     }
 };

@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     int failed = 0;
     auto words = readFromFile(std::string(argv[1]));
     words = getWordsOfLength(words, 5);
-    words = getFirstNWords(words, 450);
+    words = getFirstNWords(words, 350);
     //DEBUG(words[0] << '\n'); exit(1);
     //DEBUG(words.size()); exit(1);
     
@@ -31,6 +31,8 @@ int main(int argc, char *argv[]) {
     }
 
     DEBUG("faileD: " << failed << " of " << words.size());
+    DEBUG("cache size: " << solver.cacheSize << ", cache hit: " << solver.cacheHit << ", cache miss: " << solver.cacheMiss);
+    DEBUG("cache hit % " << 100.00 * solver.cacheHit / (solver.cacheMiss + solver.cacheHit) << "%");
     END_TIMER(total);
 
 

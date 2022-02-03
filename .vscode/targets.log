@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
  
 
-# Make data base, printed on Thu Feb  3 23:43:19 2022
+# Make data base, printed on Fri Feb  4 00:02:05 2022
 
 # Variables
 
@@ -20,7 +20,6 @@ make: *** No rule to make target `all'.  Stop.
 ?F = $(notdir $?)
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
- 
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -34,6 +33,7 @@ CURDIR := /Users/dom/git/wordle
 # makefile
 SHELL = /bin/sh
 # environment
+ 
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # makefile (from `Makefile', line 5)
 CONDITIONAL_CXX = -O2 -DNDEBUG
@@ -79,6 +79,7 @@ VSCODE_PIPE_LOGGING = true
 PWD = /Users/dom/git/wordle
 # environment
 HOMEBREW_CELLAR = /opt/homebrew/Cellar
+ 
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
@@ -125,7 +126,6 @@ TERM_SESSION_ID = w0t0p0:63366328-61E2-487F-85CD-CDCB96539552
 UNAME := Darwin
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
- 
 # default
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
 # environment
@@ -186,10 +186,10 @@ LIBS :=
 SECURITYSESSIONID = 186e7
 # automatic
 ^F = $(notdir $^)
- 
 # makefile (from `Makefile', line 20)
 SRC_FILES := src/PatternGetter.cpp src/Tests.cpp src/main.cpp
 # default
+ 
 SUFFIXES := 
 # default
 .INCLUDE_DIRS = /usr/local/include
@@ -210,15 +210,16 @@ VSCODE_PID = 18352
 
 # Directories
 
-# . (device 16777234, inode 4411203): 9 files, no impossibilities.
+# . (device 16777234, inode 4411203): 11 files, no impossibilities.
 # src (device 16777234, inode 4411572): 5 files, no impossibilities.
 
-# 14 files, no impossibilities in 2 directories.
+# 16 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
 obj/%.o: src/%.cpp
-#  commands to execute (from `Makefile', line 28):
+#  commands to execute (from `Makefile', line 29):
+	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(ENV_CXXFLAGS) -c -o $@ $< $(LIBS)
 	
 
@@ -250,7 +251,7 @@ obj/main.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-02-03 23:34:30
+#  Last modified 2022-02-03 23:52:41
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -278,7 +279,7 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 31):
+#  commands to execute (from `Makefile', line 33):
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*
 	
 
@@ -287,6 +288,7 @@ bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 25):
+	@mkdir -p $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 	
 
@@ -303,6 +305,6 @@ bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Thu Feb  3 23:43:19 2022
+# Finished Make data base on Fri Feb  4 00:02:05 2022
 
  
