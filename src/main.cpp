@@ -3,6 +3,8 @@
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
 #include "../include/BranchSolver.h"
+#include "../include/GuessesAndWordsSolver.h"
+
 #include <algorithm>
 #include <numeric>
 #include <execution>
@@ -37,7 +39,7 @@ int main(int argc, char *argv[]) {
     //DEBUG(words[0] << '\n'); exit(1);
     //DEBUG(words.size()); exit(1);
     
-    auto solver = SimpleSolver(guesses);
+    auto solver = GuessesAndWordsSolver(answers, guesses);
     solver.precompute();
 
     START_TIMER(total);

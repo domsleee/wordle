@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
  
 
-# Make data base, printed on Fri Feb  4 11:02:52 2022
+# Make data base, printed on Fri Feb  4 21:53:40 2022
 
 # Variables
 
@@ -56,7 +56,7 @@ VSCODE_IPC_HOOK_EXTHOST = /var/folders/pq/bd75fj8j4sl6mfyjl35st5qc0000gn/T/vscod
 # environment
 VSCODE_CWD = /Users/dom/git/wordle
 # makefile (from `Makefile', line 21)
-OBJ_FILES := obj/PatternGetter.o obj/Tests.o obj/main.o
+OBJ_FILES := obj/AttemptState.o obj/PatternGetter.o obj/Tests.o obj/main.o
 # environment
 PATH = /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/dom/git/emsdk:/Users/dom/git/emsdk/node/14.15.5_64bit/bin:/Users/dom/git/emsdk/upstream/emscriptenec:/Users/dom/git/emsdk/upstream/emscripten:/usr/local/go/bin
 # environment
@@ -66,7 +66,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # makefile (from `Makefile', line 22)
-LDFLAGS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib
+LDFLAGS := -ltbb -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
@@ -132,7 +132,6 @@ TERM_PROGRAM = iTerm.app
 # default
 .VARIABLES := 
 # environment
- 
 TMPDIR = /var/folders/pq/bd75fj8j4sl6mfyjl35st5qc0000gn/T/
 # automatic
 *F = $(notdir $*)
@@ -181,13 +180,14 @@ BIN_DIR := bin
 # environment
 LC_ALL = C
 # makefile (from `Makefile', line 14)
-LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib
+LIBS := -ltbb -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 # environment
 SECURITYSESSIONID = 186e7
 # automatic
 ^F = $(notdir $^)
+ 
 # makefile (from `Makefile', line 20)
-SRC_FILES := src/PatternGetter.cpp src/Tests.cpp src/main.cpp
+SRC_FILES := src/AttemptState.cpp src/PatternGetter.cpp src/Tests.cpp src/main.cpp
 # default
 SUFFIXES := 
 # default
@@ -209,10 +209,10 @@ VSCODE_PID = 18352
 
 # Directories
 
-# . (device 16777234, inode 4411203): 12 files, no impossibilities.
-# src (device 16777234, inode 4411572): 5 files, no impossibilities.
+# . (device 16777234, inode 4411203): 13 files, no impossibilities.
+# src (device 16777234, inode 4411572): 6 files, no impossibilities.
 
-# 17 files, no impossibilities in 2 directories.
+# 19 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -249,9 +249,8 @@ obj/main.o:
 
 # Not a target:
 Makefile:
- 
 #  Implicit rule search has been done.
-#  Last modified 2022-02-04 11:02:14
+#  Last modified 2022-02-04 19:50:09
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -270,6 +269,12 @@ obj/PatternGetter.o:
 #  File has not been updated.
 
 # Not a target:
+obj/AttemptState.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -283,7 +288,7 @@ clean:
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*
 	
 
-bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
+bin/solve: obj/AttemptState.o obj/PatternGetter.o obj/Tests.o obj/main.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -293,7 +298,7 @@ bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
 	
 
 # files hash-table stats:
-# Load=9/1024=1%, Rehash=0, Collisions=0/24=0%
+# Load=10/1024=1%, Rehash=0, Collisions=0/26=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -305,6 +310,6 @@ bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Feb  4 11:02:52 2022
+# Finished Make data base on Fri Feb  4 21:53:40 2022
 
  
