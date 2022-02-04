@@ -11,7 +11,7 @@ CXX = g++-11
 CXXFLAGS = -std=c++17 -Wall $(CONDITIONAL_CXX)
 LIBS := -ltbb
 ifeq ($(UNAME), Darwin)
-LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib
+LIBS := -ltbb -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 endif
 
 SRC_DIR := src

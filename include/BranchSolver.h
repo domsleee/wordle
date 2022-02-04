@@ -10,8 +10,6 @@
 #include <set>
 #include <stack>
 
-using WordProbPair = std::pair<double, std::string>;
-
 struct BranchSolver {
     BranchSolver(const std::vector<std::string> &allWords)
         : allWords(allWords)

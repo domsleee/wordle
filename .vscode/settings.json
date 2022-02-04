@@ -38,6 +38,8 @@
         "tuple": "cpp",
         "map": "cpp",
         "chrono": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "ctime": "cpp",
+        "ratio": "cpp"
     }
 }

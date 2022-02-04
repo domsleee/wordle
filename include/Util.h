@@ -24,6 +24,9 @@
 static const int MAX_TRIES = 6;
 static const int NUM_WORDS = 50000;
 
+using WordProbPair = std::pair<double, std::string>;
+
+
 inline std::string toLower(const std::string &s) {
     std::string ret = "";
     for (auto c: s) {
@@ -59,3 +62,22 @@ inline std::vector<std::string> getWordsOfLength(const std::vector<std::string> 
     }
     return wordsOfLength;
 }
+
+#include <set>
+
+inline std::vector<std::string> mergeAndSort(const std::vector<std::string> &a, const std::vector<std::string> &b) {
+    std::set<std::string> res;
+    for (auto w: a) res.insert(w);
+    for (auto w: b) res.insert(w);
+    return {res.begin(), res.end()};
+}
+
+#include <sstream>
+#include <iomanip>
+
+inline std::string getPerc(long long a, long long b) {
+    std::stringstream ss;
+    ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*a/b << "%)";
+    return ss.str();
+}
+
