@@ -5,13 +5,13 @@
 #include <algorithm>
 
 struct SimpleSolver {
-    int run(const std::string &answer, const std::vector<std::string> &words) {
-        auto wordsOfSameLength = getWordsOfLength(words, answer.size());
-        auto res = solveWord(answer, wordsOfSameLength);
-        return res;
-    }
+    SimpleSolver(const std::vector<std::string> &words): words(words) {}
 
-    int solveWord(const std::string &answer, const std::vector<std::string> &words) {
+    const std::vector<std::string> words;
+
+    void precompute(){}
+
+    int solveWord(const std::string &answer) {
         auto getter = PatternGetter(answer);
         auto state = AttemptState(getter, words);
 
@@ -19,9 +19,9 @@ struct SimpleSolver {
         if (std::find(words.begin(), words.end(), "opera") != words.end()) {
             guess = "opera";
         }
-        for (int i = 1; i <= 6; ++i) {
+        for (int i = 1; MAX_TRIES; ++i) {
             if (guess == answer) { return i; }
-            if (i == 6) break;
+            if (i == MAX_TRIES) break;
             auto newState = state.guessWord(guess);
             guess = newState.words[0];
             state = newState;

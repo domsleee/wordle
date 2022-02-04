@@ -21,6 +21,8 @@
     }
 
 
+static const int MAX_TRIES = 6;
+static const int NUM_WORDS = 50000;
 
 inline std::string toLower(const std::string &s) {
     std::string ret = "";
@@ -42,9 +44,10 @@ inline std::vector<std::string> readFromFile(const std::string &filename) {
     return res;
 }
 
-inline std::vector<std::string> getFirstNWords(const std::vector<std::string> &words, int n) {
+inline std::vector<std::string> getFirstNWords(const std::vector<std::string> &words, std::size_t n) {
     std::vector<std::string> res = {};
-    for (auto i = 0; i < n; ++i) res.push_back(words[i]);
+    n = std::min(n, words.size());
+    for (std::size_t i = 0; i < n; ++i) res.push_back(words[i]);
     return res;
 }
 

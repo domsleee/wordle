@@ -36,6 +36,8 @@
         "unordered_map": "cpp",
         "functional": "cpp",
         "tuple": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "chrono": "cpp",
+        "bitset": "cpp"
     }
 }

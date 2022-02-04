@@ -10,11 +10,12 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
  
 
-# Make data base, printed on Fri Feb  4 00:02:05 2022
+# Make data base, printed on Fri Feb  4 11:02:52 2022
 
 # Variables
 
 # automatic
+ 
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
@@ -33,10 +34,9 @@ CURDIR := /Users/dom/git/wordle
 # makefile
 SHELL = /bin/sh
 # environment
- 
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # makefile (from `Makefile', line 5)
-CONDITIONAL_CXX = -O2 -DNDEBUG
+CONDITIONAL_CXX = -O3 -DNDEBUG -g
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 1)
@@ -66,7 +66,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # makefile (from `Makefile', line 22)
-LDFLAGS := 
+LDFLAGS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
@@ -79,7 +79,6 @@ VSCODE_PIPE_LOGGING = true
 PWD = /Users/dom/git/wordle
 # environment
 HOMEBREW_CELLAR = /opt/homebrew/Cellar
- 
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # environment
@@ -133,6 +132,7 @@ TERM_PROGRAM = iTerm.app
 # default
 .VARIABLES := 
 # environment
+ 
 TMPDIR = /var/folders/pq/bd75fj8j4sl6mfyjl35st5qc0000gn/T/
 # automatic
 *F = $(notdir $*)
@@ -181,7 +181,7 @@ BIN_DIR := bin
 # environment
 LC_ALL = C
 # makefile (from `Makefile', line 14)
-LIBS := 
+LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib
 # environment
 SECURITYSESSIONID = 186e7
 # automatic
@@ -189,7 +189,6 @@ SECURITYSESSIONID = 186e7
 # makefile (from `Makefile', line 20)
 SRC_FILES := src/PatternGetter.cpp src/Tests.cpp src/main.cpp
 # default
- 
 SUFFIXES := 
 # default
 .INCLUDE_DIRS = /usr/local/include
@@ -210,10 +209,10 @@ VSCODE_PID = 18352
 
 # Directories
 
-# . (device 16777234, inode 4411203): 11 files, no impossibilities.
+# . (device 16777234, inode 4411203): 12 files, no impossibilities.
 # src (device 16777234, inode 4411572): 5 files, no impossibilities.
 
-# 16 files, no impossibilities in 2 directories.
+# 17 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -250,8 +249,9 @@ obj/main.o:
 
 # Not a target:
 Makefile:
+ 
 #  Implicit rule search has been done.
-#  Last modified 2022-02-03 23:52:41
+#  Last modified 2022-02-04 11:02:14
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -305,6 +305,6 @@ bin/solve: obj/PatternGetter.o obj/Tests.o obj/main.o
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Feb  4 00:02:05 2022
+# Finished Make data base on Fri Feb  4 11:02:52 2022
 
  

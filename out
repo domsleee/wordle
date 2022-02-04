@@ -1,0 +1,834 @@
+getting starting word...
+Time elapsed: 0.004939
+
+working out cache size...
+aaron: solving 1 / 500 (0.2%)
+RES: 1
+about: solving 2 / 500 (0.4%)
+about, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+about, 2: words size: 2
+NEXT GUESS: about, PROB: 1
+RES: 3
+above: solving 3 / 500 (0.6%)
+above, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+above, 2: words size: 3
+NEXT GUESS: above, PROB: 1
+RES: 3
+abuse: solving 4 / 500 (0.8%)
+abuse, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+abuse, 2: words size: 1
+NEXT GUESS: abuse, PROB: 1
+RES: 3
+acids: solving 5 / 500 (1%)
+acids, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+acids, 2: words size: 1
+NEXT GUESS: acids, PROB: 1
+RES: 3
+acres: solving 6 / 500 (1.2%)
+acres, 1: words size: 3
+NEXT GUESS: acres, PROB: 1
+RES: 2
+actor: solving 7 / 500 (1.4%)
+actor, 1: words size: 5
+NEXT GUESS: actor, PROB: 1
+RES: 2
+acute: solving 8 / 500 (1.6%)
+acute, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+acute, 2: words size: 2
+NEXT GUESS: abuse, PROB: 1
+acute, 3: words size: 1
+NEXT GUESS: acute, PROB: 1
+RES: 4
+adams: solving 9 / 500 (1.8%)
+adams, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+adams, 2: words size: 1
+NEXT GUESS: adams, PROB: 1
+RES: 3
+added: solving 10 / 500 (2%)
+added, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+added, 2: words size: 3
+NEXT GUESS: added, PROB: 1
+RES: 3
+admin: solving 11 / 500 (2.2%)
+admin, 1: words size: 4
+NEXT GUESS: admin, PROB: 1
+RES: 2
+admit: solving 12 / 500 (2.4%)
+admit, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+admit, 2: words size: 2
+NEXT GUESS: admit, PROB: 1
+RES: 3
+adobe: solving 13 / 500 (2.6%)
+adobe, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+adobe, 2: words size: 3
+NEXT GUESS: above, PROB: 1
+adobe, 3: words size: 1
+NEXT GUESS: adobe, PROB: 1
+RES: 4
+adopt: solving 14 / 500 (2.8%)
+adopt, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+adopt, 2: words size: 2
+NEXT GUESS: about, PROB: 1
+adopt, 3: words size: 1
+NEXT GUESS: adopt, PROB: 1
+RES: 4
+adult: solving 15 / 500 (3%)
+adult, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+adult, 2: words size: 3
+NEXT GUESS: adult, PROB: 1
+RES: 3
+after: solving 16 / 500 (3.2%)
+after, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+after, 2: words size: 4
+NEXT GUESS: after, PROB: 0.875
+RES: 3
+again: solving 17 / 500 (3.4%)
+again, 1: words size: 7
+NEXT GUESS: admin, PROB: 1
+again, 2: words size: 1
+NEXT GUESS: again, PROB: 1
+RES: 3
+agent: solving 18 / 500 (3.6%)
+agent, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+agent, 2: words size: 6
+NEXT GUESS: asked, PROB: 1
+agent, 3: words size: 1
+NEXT GUESS: agent, PROB: 1
+RES: 4
+aging: solving 19 / 500 (3.8%)
+aging, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+aging, 2: words size: 1
+NEXT GUESS: aging, PROB: 1
+RES: 3
+agree: solving 20 / 500 (4%)
+agree, 1: words size: 3
+NEXT GUESS: acres, PROB: 1
+agree, 2: words size: 1
+NEXT GUESS: agree, PROB: 1
+RES: 3
+ahead: solving 21 / 500 (4.2%)
+ahead, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+ahead, 2: words size: 4
+NEXT GUESS: adams, PROB: 1
+ahead, 3: words size: 1
+NEXT GUESS: ahead, PROB: 1
+RES: 4
+aimed: solving 22 / 500 (4.4%)
+aimed, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+aimed, 2: words size: 6
+NEXT GUESS: admit, PROB: 1
+aimed, 3: words size: 1
+NEXT GUESS: aimed, PROB: 1
+RES: 4
+alarm: solving 23 / 500 (4.6%)
+alarm, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+alarm, 2: words size: 4
+NEXT GUESS: alarm, PROB: 0.75
+RES: 3
+album: solving 24 / 500 (4.8%)
+album, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+album, 2: words size: 1
+NEXT GUESS: album, PROB: 1
+RES: 3
+alert: solving 25 / 500 (5%)
+alert, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+alert, 2: words size: 2
+NEXT GUESS: alert, PROB: 1
+RES: 3
+alias: solving 26 / 500 (5.2%)
+alias, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+alias, 2: words size: 1
+NEXT GUESS: alias, PROB: 1
+RES: 3
+alice: solving 27 / 500 (5.4%)
+alice, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+RES: 2
+alien: solving 28 / 500 (5.6%)
+alien, 1: words size: 4
+NEXT GUESS: admin, PROB: 1
+alien, 2: words size: 3
+NEXT GUESS: alien, PROB: 1
+RES: 3
+align: solving 29 / 500 (5.8%)
+align, 1: words size: 4
+NEXT GUESS: admin, PROB: 1
+align, 2: words size: 3
+NEXT GUESS: alien, PROB: 1
+align, 3: words size: 1
+NEXT GUESS: align, PROB: 1
+RES: 4
+alike: solving 30 / 500 (6%)
+alike, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+alike, 2: words size: 2
+NEXT GUESS: alike, PROB: 1
+RES: 3
+alive: solving 31 / 500 (6.2%)
+alive, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+alive, 2: words size: 2
+NEXT GUESS: alike, PROB: 1
+alive, 3: words size: 1
+NEXT GUESS: alive, PROB: 1
+RES: 4
+allah: solving 32 / 500 (6.4%)
+allah, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+allah, 2: words size: 3
+NEXT GUESS: allah, PROB: 0.833333
+RES: 3
+allan: solving 33 / 500 (6.6%)
+allan, 1: words size: 7
+NEXT GUESS: admin, PROB: 1
+allan, 2: words size: 2
+NEXT GUESS: allan, PROB: 1
+RES: 3
+allen: solving 34 / 500 (6.8%)
+allen, 1: words size: 4
+NEXT GUESS: admin, PROB: 1
+allen, 2: words size: 1
+NEXT GUESS: allen, PROB: 1
+RES: 3
+allow: solving 35 / 500 (7%)
+allow, 1: words size: 3
+NEXT GUESS: allow, PROB: 1
+RES: 2
+alloy: solving 36 / 500 (7.2%)
+alloy, 1: words size: 3
+NEXT GUESS: allow, PROB: 1
+alloy, 2: words size: 1
+NEXT GUESS: alloy, PROB: 1
+RES: 3
+alone: solving 37 / 500 (7.4%)
+alone, 1: words size: 38
+NEXT GUESS: alice, PROB: 0.920008
+alone, 2: words size: 1
+NEXT GUESS: alone, PROB: 1
+RES: 3
+along: solving 38 / 500 (7.6%)
+along, 1: words size: 38
+NEXT GUESS: alice, PROB: 0.920008
+along, 2: words size: 2
+NEXT GUESS: album, PROB: 1
+along, 3: words size: 1
+NEXT GUESS: along, PROB: 1
+RES: 4
+alpha: solving 39 / 500 (7.8%)
+alpha, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+alpha, 2: words size: 3
+NEXT GUESS: allah, PROB: 0.833333
+alpha, 3: words size: 2
+NEXT GUESS: album, PROB: 0.5
+RES: -1
+alter: solving 40 / 500 (8%)
+alter, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+alter, 2: words size: 8
+NEXT GUESS: alice, PROB: 0.75
+alter, 3: words size: 1
+NEXT GUESS: alter, PROB: 1
+RES: 4
+amber: solving 41 / 500 (8.2%)
+amber, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+amber, 2: words size: 3
+NEXT GUESS: arise, PROB: 1
+amber, 3: words size: 1
+NEXT GUESS: amber, PROB: 1
+RES: 4
+amend: solving 42 / 500 (8.4%)
+amend, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+amend, 2: words size: 6
+NEXT GUESS: asked, PROB: 1
+amend, 3: words size: 1
+NEXT GUESS: amend, PROB: 1
+RES: 4
+amino: solving 43 / 500 (8.6%)
+amino, 1: words size: 38
+NEXT GUESS: alice, PROB: 0.920008
+amino, 2: words size: 2
+NEXT GUESS: aging, PROB: 1
+amino, 3: words size: 1
+NEXT GUESS: amino, PROB: 1
+RES: 4
+among: solving 44 / 500 (8.8%)
+among, 1: words size: 38
+NEXT GUESS: alice, PROB: 0.920008
+among, 2: words size: 3
+NEXT GUESS: about, PROB: 1
+among, 3: words size: 1
+NEXT GUESS: among, PROB: 1
+RES: 4
+angel: solving 45 / 500 (9%)
+angel, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+angel, 2: words size: 10
+NEXT GUESS: asked, PROB: 0.666667
+angel, 3: words size: 2
+NEXT GUESS: angel, PROB: 0.5
+RES: 4
+anger: solving 46 / 500 (9.2%)
+anger, 1: words size: 37
+NEXT GUESS: angle, PROB: 0.901002
+anger, 2: words size: 2
+NEXT GUESS: anger, PROB: 1
+RES: 3
+angle: solving 47 / 500 (9.4%)
+angle, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+angle, 2: words size: 3
+NEXT GUESS: angle, PROB: 1
+RES: 3
+angry: solving 48 / 500 (9.6%)
+angry, 1: words size: 37
+NEXT GUESS: angle, PROB: 0.901002
+angry, 2: words size: 1
+NEXT GUESS: angry, PROB: 1
+RES: 3
+anime: solving 49 / 500 (9.8%)
+anime, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+anime, 2: words size: 2
+NEXT GUESS: anime, PROB: 1
+RES: 3
+annex: solving 50 / 500 (10%)
+annex, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+annex, 2: words size: 6
+NEXT GUESS: asked, PROB: 1
+annex, 3: words size: 1
+NEXT GUESS: annex, PROB: 1
+RES: 4
+annie: solving 51 / 500 (10.2%)
+annie, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+annie, 2: words size: 2
+NEXT GUESS: abuse, PROB: 1
+annie, 3: words size: 1
+NEXT GUESS: annie, PROB: 1
+RES: 4
+apart: solving 52 / 500 (10.4%)
+apart, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+apart, 2: words size: 4
+NEXT GUESS: apart, PROB: 1
+RES: 3
+apnic: solving 53 / 500 (10.6%)
+apnic, 1: words size: 28
+NEXT GUESS: alice, PROB: 0.962302
+apnic, 2: words size: 4
+NEXT GUESS: admit, PROB: 0.75
+apnic, 3: words size: 2
+NEXT GUESS: apnic, PROB: 0.5
+RES: 4
+apple: solving 54 / 500 (10.8%)
+apple, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+apple, 2: words size: 2
+NEXT GUESS: abuse, PROB: 1
+apple, 3: words size: 1
+NEXT GUESS: apple, PROB: 1
+RES: 4
+apply: solving 55 / 500 (11%)
+apply, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+apply, 2: words size: 3
+NEXT GUESS: adult, PROB: 1
+apply, 3: words size: 1
+NEXT GUESS: apply, PROB: 1
+RES: 4
+april: solving 56 / 500 (11.2%)
+april, 1: words size: 3
+NEXT GUESS: acres, PROB: 1
+april, 2: words size: 1
+NEXT GUESS: april, PROB: 1
+RES: 3
+areas: solving 57 / 500 (11.4%)
+areas, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+areas, 2: words size: 11
+NEXT GUESS: armed, PROB: 0.848485
+areas, 3: words size: 2
+NEXT GUESS: areas, PROB: 0.5
+RES: 4
+arena: solving 58 / 500 (11.6%)
+arena, 1: words size: 50
+NEXT GUESS: alert, PROB: 0.840796
+arena, 2: words size: 4
+NEXT GUESS: ahead, PROB: 1
+arena, 3: words size: 1
+NEXT GUESS: arena, PROB: 1
+RES: 4
+argue: solving 59 / 500 (11.8%)
+argue, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+argue, 2: words size: 4
+NEXT GUESS: arise, PROB: 1
+argue, 3: words size: 1
+NEXT GUESS: argue, PROB: 1
+RES: 4
+arise: solving 60 / 500 (12%)
+arise, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+arise, 2: words size: 3
+NEXT GUESS: arise, PROB: 1
+RES: 3
+armed: solving 61 / 500 (12.2%)
+armed, 1: words size: 26
+NEXT GUESS: adult, PROB: 0.957799
+armed, 2: words size: 8
+NEXT GUESS: arise, PROB: 1
+armed, 3: words size: 1
+NEXT GUESS: armed, PROB: 1
+RES: 4
+armor: solving 62 / 500 (12.4%)
+armor, 1: words size: 5
+NEXT GUESS: actor, PROB: 1
+armor, 2: words size: 1
+NEXT GUESS: armor, PROB: 1
+RES: 3
+array: solving 63 / 500 (12.6%)
+array, 1: words size: 4
+NEXT GUESS: acres, PROB: 1
+array, 2: words size: 2
+NEXT GUESS: april, PROB: 1
+array, 3: words size: 1
+NEXT GUESS: array, PROB: 1
+RES: 4
+arrow: solving 64 / 500 (12.8%)
+arrow, 1: words size: 1
+NEXT GUESS: arrow, PROB: 1
+RES: 2
+aruba: solving 65 / 500 (13%)
+aruba, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+aruba, 2: words size: 4
+NEXT GUESS: apart, PROB: 1
+aruba, 3: words size: 1
+NEXT GUESS: aruba, PROB: 1
+RES: 4
+ascii: solving 66 / 500 (13.2%)
+ascii, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+ascii, 2: words size: 3
+NEXT GUESS: admit, PROB: 1
+ascii, 3: words size: 1
+NEXT GUESS: ascii, PROB: 1
+RES: 4
+asian: solving 67 / 500 (13.4%)
+asian, 1: words size: 7
+NEXT GUESS: admin, PROB: 1
+asian, 2: words size: 5
+NEXT GUESS: alien, PROB: 1
+asian, 3: words size: 1
+NEXT GUESS: asian, PROB: 1
+RES: 4
+aside: solving 68 / 500 (13.6%)
+aside, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+aside, 2: words size: 1
+NEXT GUESS: aside, PROB: 1
+RES: 3
+asked: solving 69 / 500 (13.8%)
+asked, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+asked, 2: words size: 3
+NEXT GUESS: added, PROB: 1
+asked, 3: words size: 1
+NEXT GUESS: asked, PROB: 1
+RES: 4
+asset: solving 70 / 500 (14%)
+asset, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+asset, 2: words size: 3
+NEXT GUESS: added, PROB: 1
+asset, 3: words size: 1
+NEXT GUESS: asset, PROB: 1
+RES: 4
+atlas: solving 71 / 500 (14.2%)
+atlas, 1: words size: 25
+NEXT GUESS: alike, PROB: 0.9775
+atlas, 2: words size: 5
+NEXT GUESS: adult, PROB: 1
+atlas, 3: words size: 1
+NEXT GUESS: atlas, PROB: 1
+RES: 4
+audio: solving 72 / 500 (14.4%)
+audio, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+audio, 2: words size: 6
+NEXT GUESS: adopt, PROB: 1
+audio, 3: words size: 1
+NEXT GUESS: audio, PROB: 1
+RES: 4
+audit: solving 73 / 500 (14.6%)
+audit, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+audit, 2: words size: 2
+NEXT GUESS: admit, PROB: 1
+audit, 3: words size: 1
+NEXT GUESS: audit, PROB: 1
+RES: 4
+autos: solving 74 / 500 (14.8%)
+autos, 1: words size: 3
+NEXT GUESS: allow, PROB: 1
+autos, 2: words size: 1
+NEXT GUESS: autos, PROB: 1
+RES: 3
+avoid: solving 75 / 500 (15%)
+avoid, 1: words size: 25
+NEXT GUESS: alice, PROB: 0.991143
+avoid, 2: words size: 6
+NEXT GUESS: adopt, PROB: 1
+avoid, 3: words size: 1
+NEXT GUESS: avoid, PROB: 1
+RES: 4
+award: solving 76 / 500 (15.2%)
+award, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+award, 2: words size: 4
+NEXT GUESS: apart, PROB: 1
+award, 3: words size: 1
+NEXT GUESS: award, PROB: 1
+RES: 4
+aware: solving 77 / 500 (15.4%)
+aware, 1: words size: 38
+NEXT GUESS: alike, PROB: 0.897737
+aware, 2: words size: 4
+NEXT GUESS: abuse, PROB: 0.875
+aware, 3: words size: 1
+NEXT GUESS: aware, PROB: 1
+RES: 4
+awful: solving 78 / 500 (15.6%)
+awful, 1: words size: 19
+NEXT GUESS: alice, PROB: 1
+awful, 2: words size: 3
+NEXT GUESS: adult, PROB: 1
+awful, 3: words size: 1
+NEXT GUESS: awful, PROB: 1
+RES: 4
+babes: solving 79 / 500 (15.8%)
+babes, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+babes, 2: words size: 4
+NEXT GUESS: gates, PROB: 1
+babes, 3: words size: 1
+NEXT GUESS: babes, PROB: 1
+RES: 4
+bacon: solving 80 / 500 (16%)
+bacon, 1: words size: 2
+NEXT GUESS: bacon, PROB: 1
+RES: 2
+badge: solving 81 / 500 (16.2%)
+badge, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+badge, 2: words size: 10
+NEXT GUESS: daily, PROB: 0.85
+badge, 3: words size: 2
+NEXT GUESS: badge, PROB: 0.5
+RES: 4
+badly: solving 82 / 500 (16.4%)
+badly, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+badly, 2: words size: 7
+NEXT GUESS: daily, PROB: 1
+badly, 3: words size: 1
+NEXT GUESS: badly, PROB: 1
+RES: 4
+baker: solving 83 / 500 (16.6%)
+baker, 1: words size: 44
+NEXT GUESS: cases, PROB: 0.965395
+baker, 2: words size: 2
+NEXT GUESS: baker, PROB: 1
+RES: 3
+balls: solving 84 / 500 (16.8%)
+balls, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+balls, 2: words size: 5
+NEXT GUESS: balls, PROB: 1
+RES: 3
+bands: solving 85 / 500 (17%)
+bands, 1: words size: 48
+NEXT GUESS: casey, PROB: 0.899992
+bands, 2: words size: 11
+NEXT GUESS: fails, PROB: 0.75
+bands, 3: words size: 3
+NEXT GUESS: bands, PROB: 0.333333
+RES: 4
+banks: solving 86 / 500 (17.2%)
+banks, 1: words size: 48
+NEXT GUESS: casey, PROB: 0.899992
+banks, 2: words size: 11
+NEXT GUESS: fails, PROB: 0.75
+banks, 3: words size: 3
+NEXT GUESS: bands, PROB: 0.333333
+RES: -1
+barry: solving 87 / 500 (17.4%)
+barry, 1: words size: 8
+NEXT GUESS: barry, PROB: 1
+RES: 2
+based: solving 88 / 500 (17.6%)
+based, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+based, 2: words size: 1
+NEXT GUESS: based, PROB: 1
+RES: 3
+bases: solving 89 / 500 (17.8%)
+bases, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+bases, 2: words size: 1
+NEXT GUESS: bases, PROB: 1
+RES: 3
+basic: solving 90 / 500 (18%)
+basic, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+basic, 2: words size: 1
+NEXT GUESS: basic, PROB: 1
+RES: 3
+basin: solving 91 / 500 (18.2%)
+basin, 1: words size: 2
+NEXT GUESS: basin, PROB: 1
+RES: 2
+basis: solving 92 / 500 (18.4%)
+basis, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+basis, 2: words size: 1
+NEXT GUESS: basis, PROB: 1
+RES: 3
+batch: solving 93 / 500 (18.6%)
+batch, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+batch, 2: words size: 8
+NEXT GUESS: daily, PROB: 1
+batch, 3: words size: 1
+NEXT GUESS: batch, PROB: 1
+RES: 4
+baths: solving 94 / 500 (18.8%)
+baths, 1: words size: 41
+NEXT GUESS: cases, PROB: 0.964634
+baths, 2: words size: 5
+NEXT GUESS: balls, PROB: 1
+baths, 3: words size: 1
+NEXT GUESS: baths, PROB: 1
+RES: 4
+beach: solving 95 / 500 (19%)
+beach, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+beach, 2: words size: 4
+NEXT GUESS: chick, PROB: 1
+beach, 3: words size: 1
+NEXT GUESS: beach, PROB: 1
+RES: 4
+beads: solving 96 / 500 (19.2%)
+beads, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+beads, 2: words size: 11
+NEXT GUESS: buses, PROB: 0.954545
+beads, 3: words size: 1
+NEXT GUESS: beads, PROB: 1
+RES: 4
+beans: solving 97 / 500 (19.4%)
+beans, 1: words size: 143
+NEXT GUESS: files, PROB: 0.83607
+beans, 2: words size: 10
+NEXT GUESS: cents, PROB: 0.833333
+beans, 3: words size: 2
+NEXT GUESS: beads, PROB: 0.5
+RES: -1
+bears: solving 98 / 500 (19.6%)
+bears, 1: words size: 173
+NEXT GUESS: beast, PROB: 0.809698
+bears, 2: words size: 3
+NEXT GUESS: beads, PROB: 1
+bears, 3: words size: 1
+NEXT GUESS: bears, PROB: 1
+RES: 4
+beast: solving 99 / 500 (19.8%)
+beast, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+beast, 2: words size: 4
+NEXT GUESS: debut, PROB: 1
+beast, 3: words size: 1
+NEXT GUESS: beast, PROB: 1
+RES: 4
+beats: solving 100 / 500 (20%)
+beats, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+beats, 2: words size: 21
+NEXT GUESS: beats, PROB: 0.746032
+RES: 3
+began: solving 101 / 500 (20.2%)
+began, 1: words size: 8
+NEXT GUESS: began, PROB: 1
+RES: 2
+begin: solving 102 / 500 (20.4%)
+begin, 1: words size: 4
+NEXT GUESS: begin, PROB: 1
+RES: 2
+begun: solving 103 / 500 (20.6%)
+begun, 1: words size: 4
+NEXT GUESS: begin, PROB: 1
+begun, 2: words size: 1
+NEXT GUESS: begun, PROB: 1
+RES: 3
+being: solving 104 / 500 (20.8%)
+being, 1: words size: 107
+NEXT GUESS: cents, PROB: 0.895626
+being, 2: words size: 7
+NEXT GUESS: belle, PROB: 0.928571
+being, 3: words size: 1
+NEXT GUESS: being, PROB: 1
+RES: 4
+belle: solving 105 / 500 (21%)
+belle, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+belle, 2: words size: 2
+NEXT GUESS: belle, PROB: 1
+RES: 3
+belly: solving 106 / 500 (21.2%)
+belly, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+belly, 2: words size: 2
+NEXT GUESS: belle, PROB: 1
+belly, 3: words size: 1
+NEXT GUESS: belly, PROB: 1
+RES: 4
+below: solving 107 / 500 (21.4%)
+below, 1: words size: 7
+NEXT GUESS: below, PROB: 1
+RES: 2
+belts: solving 108 / 500 (21.6%)
+belts, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+belts, 2: words size: 2
+NEXT GUESS: belts, PROB: 1
+RES: 3
+bench: solving 109 / 500 (21.8%)
+bench, 1: words size: 107
+NEXT GUESS: cents, PROB: 0.895626
+bench, 2: words size: 2
+NEXT GUESS: bench, PROB: 1
+RES: 3
+berry: solving 110 / 500 (22%)
+berry, 1: words size: 16
+NEXT GUESS: berry, PROB: 1
+RES: 2
+betty: solving 111 / 500 (22.2%)
+betty, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+betty, 2: words size: 12
+NEXT GUESS: depth, PROB: 0.847222
+betty, 3: words size: 1
+NEXT GUESS: betty, PROB: 1
+RES: 4
+bible: solving 112 / 500 (22.4%)
+bible, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+bible, 2: words size: 7
+NEXT GUESS: digit, PROB: 0.785714
+bible, 3: words size: 1
+NEXT GUESS: bible, PROB: 1
+RES: 4
+bikes: solving 113 / 500 (22.6%)
+bikes, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+bikes, 2: words size: 1
+NEXT GUESS: bikes, PROB: 1
+RES: 3
+bills: solving 114 / 500 (22.8%)
+bills, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+bills, 2: words size: 1
+NEXT GUESS: bills, PROB: 1
+RES: 3
+billy: solving 115 / 500 (23%)
+billy, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+billy, 2: words size: 1
+NEXT GUESS: billy, PROB: 1
+RES: 3
+bingo: solving 116 / 500 (23.2%)
+bingo, 1: words size: 159
+NEXT GUESS: cents, PROB: 0.837943
+bingo, 2: words size: 4
+NEXT GUESS: bunny, PROB: 1
+bingo, 3: words size: 1
+NEXT GUESS: bingo, PROB: 1
+RES: 4
+birds: solving 117 / 500 (23.4%)
+birds, 1: words size: 16
+NEXT GUESS: berry, PROB: 1
+birds, 2: words size: 3
+NEXT GUESS: birds, PROB: 1
+RES: 3
+birth: solving 118 / 500 (23.6%)
+birth, 1: words size: 16
+NEXT GUESS: berry, PROB: 1
+birth, 2: words size: 3
+NEXT GUESS: birds, PROB: 1
+birth, 3: words size: 1
+NEXT GUESS: birth, PROB: 1
+RES: 4
+bitch: solving 119 / 500 (23.8%)
+bitch, 1: words size: 86
+NEXT GUESS: files, PROB: 0.938993
+bitch, 2: words size: 3
+NEXT GUESS: bitch, PROB: 1
+RES: 3
+black: solving 120 / 500 (24%)
+black, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+black, 2: words size: 2
+NEXT GUESS: black, PROB: 1
+RES: 3
+blade: solving 121 / 500 (24.2%)
+blade, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+blade, 2: words size: 9
+NEXT GUESS: blade, PROB: 0.722222
+RES: 3
+blair: solving 122 / 500 (24.4%)
+blair, 1: words size: 173
+NEXT GUESS: beast, PROB: 0.809698
+blair, 2: words size: 2
+NEXT GUESS: black, PROB: 1
+blair, 3: words size: 1
+NEXT GUESS: blair, PROB: 1
+RES: 4
+blake: solving 123 / 500 (24.6%)
+blake, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+blake, 2: words size: 9
+NEXT GUESS: blade, PROB: 0.722222
+blake, 3: words size: 2
+NEXT GUESS: blake, PROB: 0.5
+RES: 4
+blame: solving 124 / 500 (24.8%)
+blame, 1: words size: 115
+NEXT GUESS: elect, PROB: 0.899019
+blame, 2: words size: 9
+NEXT GUESS: blade, PROB: 0.722222
+blame, 3: words size
