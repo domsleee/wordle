@@ -8,8 +8,6 @@
 
 #include <unordered_map>
 
-static const char NULL_LETTER = '-';
-
 struct AttemptState {
     using CacheType = std::vector<std::vector<std::unordered_map<WordSet, AttemptState>>>;
 
@@ -27,15 +25,22 @@ struct AttemptState {
         words(words) {
             for (int i = 0; i < 26; ++i) globLetterMinLimit[i] = 0;
         }
+    
+    AttemptState(const PatternGetter &getter, int tries, const std::vector<std::string> &words, const MinLetterType &minLetterLimit)
+      : patternGetter(getter),
+        tries(tries),
+        words(words),
+        globLetterMinLimit(minLetterLimit) {
+        }
 
     PatternGetter patternGetter;
     int tries;
     std::vector<std::string> words;
-    mutable int globLetterMinLimit[26] = {};
+    mutable MinLetterType globLetterMinLimit;
     //std::vector<std::string> deletedWords;
 
     AttemptState guessWord(const std::string &guess) {
-        int letterMinLimit[26] = {};
+        MinLetterType letterMinLimit;
         bool excludedLetters[26] = {};
         int letterMaxLimit[26] = {};
         std::string wrongSpotPattern = std::string(guess.size(), NULL_LETTER);
@@ -130,6 +135,7 @@ struct AttemptState {
     }
 
     AttemptState guessWordCached(const std::string &word, int actualIndex, int guessIndex, const WordSet &ws, int tries) {
+        exit(1); // disabled due to globLetterMinLimit
         auto &myCache = cache[actualIndex][guessIndex];
         
         auto it = myCache.find(ws);

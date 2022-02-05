@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <array>
 
 #define DEBUG(x) std::cout << x << '\n';
 #define assertm(expr, msg) assert(((void)(msg), (expr)))
@@ -22,9 +23,11 @@
 
 
 static const int MAX_TRIES = 6;
-static const int NUM_WORDS = 50000;
-
+static const int NUM_WORDS = 2315;
+static const int MAX_NUM_GUESSES = 13000;
+static const char NULL_LETTER = '-';
 using WordProbPair = std::pair<double, std::string>;
+using MinLetterType = std::array<int8_t, 26>;
 
 
 inline std::string toLower(const std::string &s) {

@@ -15,19 +15,19 @@ std::string getPattern(const std::string &word, const std::string &answer) {
         }
     }
 
-    std::string pattern = "";
+    std::string pattern(word.size(), NULL_LETTER);
     for (std::size_t i = 0; i < word.size(); ++i) {
         if (word[i] == answer[i]) {
-            pattern.push_back('+');
+            pattern[i] = '+';
             continue;
         }
 
         auto letterInd = word[i]-'a';
         if (answerLetterCount[letterInd] > 0) {
-            pattern.push_back('?');
+            pattern[i] = '?';
             answerLetterCount[letterInd]--;
         } else {
-            pattern.push_back('_');
+            pattern[i] = '_';
         }
     }
 

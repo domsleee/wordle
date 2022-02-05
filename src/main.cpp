@@ -3,22 +3,26 @@
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
 #include "../include/BranchSolver.h"
-#include "../include/GuessesAndWordsSolver.h"
+#include "../include/AnswersAndGuessesSolver.h"
 
 #include <algorithm>
 #include <numeric>
 #include <execution>
-int simpleSolverInv(const std::vector<std::string> &answers);
+int simpleSolverInv(const std::vector<std::string> &guesses, const std::vector<std::string> &answers);
 
 template<typename T>
-void printSolverInformation(T& solver) {
-
-}
-
-void printSolverInformation(const BranchSolver& solver) {
+void printSolverInformationInner(const T& solver) {
     auto cacheTotal = solver.cacheHit + solver.cacheMiss;
     DEBUG("solver cache: " << solver.cacheHit << "/" << cacheTotal << " (" << 100.00 * solver.cacheHit / cacheTotal << "%)");
 }
+
+void printSolverInformation(const BranchSolver& solver) {
+    printSolverInformationInner(solver);
+}
+void printSolverInformation(const AnswersAndGuessesSolver& solver) {
+    printSolverInformationInner(solver);
+}
+std::vector<std::string> getWordsToSolve();
 
 int main(int argc, char *argv[]) {
     //runTests(); return 0;
@@ -32,49 +36,60 @@ int main(int argc, char *argv[]) {
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
 
-    return simpleSolverInv(answers);
+    //return simpleSolverInv(guesses, answers);
 
     //words = getWordsOfLength(words, 5);
-    //words = getFirstNWords(words, NUM_WORDS);
+    answers = getFirstNWords(answers, NUM_WORDS);
     //DEBUG(words[0] << '\n'); exit(1);
     //DEBUG(words.size()); exit(1);
     
-    auto solver = GuessesAndWordsSolver(answers, guesses);
+    auto solver = AnswersAndGuessesSolver(answers, answers);
     solver.precompute();
+    //solver.setupInitial4Words();
 
     START_TIMER(total);
-    std::vector<int> results(answers.size());
-    for (std::size_t i = 0; i < answers.size(); ++i) {
-        auto word = answers[i];
-        DEBUG(word << ": solving " << (i+1) << " / " << answers.size() << " (" << 100.0*(i+1)/answers.size() << "%)");
+
+    auto wordsToSolve = getWordsToSolve();
+    DEBUG("calc total.." << wordsToSolve.size());
+    std::vector<long long> results(wordsToSolve.size(), 0);
+    std::vector<std::string> unsolved = {};
+    for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
+        auto word = wordsToSolve[i];
+        DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
         auto r = solver.solveWord(word);
         if (r != -1) correct++;
-        results[i] = r;
+        else unsolved.push_back(word);
+        results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
     }
-
+    
     double avg = (double)std::reduce(results.begin(), results.end()) / correct;
 
     DEBUG("=============");
     DEBUG("MAX_TRIES   : " << MAX_TRIES);
-    DEBUG("correct     : " << correct << "/" << answers.size() << " (" << 100.0 * correct / answers.size() << "%)");    
+    DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
     DEBUG("average     : " << avg);
     printSolverInformation(solver);
     auto attemptStateTotal = AttemptState::cacheHit + AttemptState::cacheMiss;
     DEBUG("state cache : " << AttemptState::cacheHit << "/" << attemptStateTotal << " (" << 100.00 * AttemptState::cacheHit/attemptStateTotal << "%)");
     END_TIMER(total);
+
+    DEBUG("UNSOLVED");
+    for (auto w: unsolved) DEBUG(w);
+
+    return 0;
 }
 
-int simpleSolverInv(const std::vector<std::string> &answers) {
-    auto solver = SimpleSolver(answers);
+int simpleSolverInv(const std::vector<std::string> &guesses, const std::vector<std::string> &answers) {
+    auto solver = AnswersAndGuessesSolver(answers, guesses);
     solver.precompute();
     std::vector<std::pair<int, int>> numCorrect(answers.size(), {0, 0});
     std::pair<int,int> best = {0, 0};
     
     for (std::size_t i = 0; i < answers.size(); ++i) {
         DEBUG("doing: " << getPerc(i, answers.size()));
-        solver.firstWord = answers[i];
+        //solver.firstWord = answers[i];
         numCorrect[i].second = i;
         auto res = std::transform_reduce(
             std::execution::par,
@@ -105,3 +120,6 @@ int simpleSolverInv(const std::vector<std::string> &answers) {
     exit(0);
 }
 
+std::vector<std::string> getWordsToSolve() {
+    return readFromFile("./ext/wordsToSolve.txt");
+}
