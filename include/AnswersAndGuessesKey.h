@@ -1,3 +1,4 @@
+#pragma once
 #include "WordSetUtil.h"
 #include "Util.h"
 
@@ -6,6 +7,7 @@ struct AnswersAndGuessesKey {
     const WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
     const int tries, triesRemaining;
+
     AnswersAndGuessesKey(const MinLetterType &minLetterLimit, const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, int tries, int triesRemaining)
         : minLetterLimit(minLetterLimit),
           wsAnswers(wsAnswers),

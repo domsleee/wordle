@@ -47,7 +47,7 @@ struct BranchSolver {
         prepareHashTable(allWords);
         startingWord = "soare";//res.second;
 
-        AttemptState::setupWordCache(allWords.size());
+        //AttemptState::setupWordCache(allWords.size());
 
         //auto res = getBestWord(allWords, 0);
         //DEBUG("starting word " << res.second << " with PROB: " <<  res.first);
@@ -62,7 +62,6 @@ struct BranchSolver {
         //DEBUG("solve for all words with " << lim << " tries");
         START_TIMER(FOUR);
         resetWsForTry();
-        int changeNo = 0;
 
         std::vector<std::vector<std::string>> wordSolutions(MAX_TRIES);
         for (int i = lim; i <= lim; ++i) {

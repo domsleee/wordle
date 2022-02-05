@@ -1,5 +1,7 @@
 #pragma once
 #include "AttemptState.h"
+#include "AttemptStateKey.h"
+
 #include "PatternGetter.h"
 #include "WordSetUtil.h"
 #include "BestWordResult.h"
@@ -75,7 +77,7 @@ struct AnswersAndGuessesSolver {
 
             auto answers = answersState.words;
             GUESSESSOLVER_DEBUG(answer << ", " << i << ": words size: " << answers.size());
-            auto pr = getBestWord(answersState.globLetterMinLimit, answers, guessesState.words, answersState.tries, 3);
+            auto pr = getBestWord(answersState.globLetterMinLimit, answers, guessesState.words, answersState.tries, 2);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
             //if (pr.prob != 1.00) break;
 
@@ -90,7 +92,7 @@ struct AnswersAndGuessesSolver {
 
         if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
         if (triesRemaining == 0) return {1.00/answers.size(), answers[0], MAX_LOWER_BOUND}; // no guesses left.
-        if (answers.size() == 1) return BestWordResult {1.00, answers[0], tries+1};
+        if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0], tries+1};
 
         if (triesRemaining == 1) { // we can't use info from last guess
             return {1.00/answers.size(), answers[0], MAX_LOWER_BOUND};
@@ -110,7 +112,8 @@ struct AnswersAndGuessesSolver {
         for (auto newTriesRemaining = triesRemaining; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
             for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
                 auto possibleGuess = guesses[myInd];
-                if (tries==1) DEBUG(possibleGuess << ": " << getPerc(myInd, guesses.size()));
+                //if (tries==1) DEBUG(possibleGuess << ": " << getPerc(myInd, guesses.size()));
+                //if (tries==1 && myInd > 2) break;
                 auto prob = 0.00;
                 for (std::size_t i = 0; i < answers.size(); ++i) {
                     auto actualWord = answers[i];
@@ -118,8 +121,11 @@ struct AnswersAndGuessesSolver {
                     auto answersState = AttemptState(getter, tries, answers, minLetterLimit);
                     auto guessesState = AttemptState(getter, tries, guesses, minLetterLimit);
 
-                    answersState = answersState.guessWord(possibleGuess);
-                    guessesState = guessesState.guessWord(possibleGuess);
+                    //auto guessesKey = AttemptStateKey(minLetterLimit, wsGuesses, reverseIndexGuesses[possibleGuess], reverseIndexAnswers[actualWord]);
+                    //auto answersKey = AttemptStateKey(minLetterLimit, wsAnswers, reverseIndexGuesses[possibleGuess], reverseIndexAnswers[actualWord]);
+
+                    answersState = answersState.guessWord(possibleGuess); // answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
+                    guessesState = guessesState.guessWord(possibleGuess); //guessesState.guessWord(possibleGuess);
 
                     auto pr = getBestWord(answersState.globLetterMinLimit, answersState.words, guessesState.words, tries+1, newTriesRemaining-1);
                     prob += pr.prob;
@@ -153,6 +159,7 @@ struct AnswersAndGuessesSolver {
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
             reverseIndexGuesses[allGuesses[i]] = i;
         }
+        DEBUG("RESETTING CACHE??");
         getBestWordCache = {};
     }
 

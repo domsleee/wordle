@@ -10,17 +10,15 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
  
 
-# Make data base, printed on Fri Feb  4 21:53:40 2022
+# Make data base, printed on Sun Feb  6 01:14:32 2022
 
 # Variables
 
 # automatic
- 
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
+ 
 ?F = $(notdir $?)
-# environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
@@ -52,25 +50,25 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/pq/bd75fj8j4sl6mfyjl35st5qc0000gn/T/vscode-ipc-ea08c8d8-0a13-4208-869f-8c8496d9ea6c.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/pq/bd75fj8j4sl6mfyjl35st5qc0000gn/T/vscode-ipc-a902829a-f10c-4ac5-8e22-a9c5af905726.sock
 # environment
-VSCODE_CWD = /Users/dom/git/wordle
+VSCODE_CWD = /
 # makefile (from `Makefile', line 21)
 OBJ_FILES := obj/AttemptState.o obj/PatternGetter.o obj/Tests.o obj/main.o
 # environment
 PATH = /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/dom/git/emsdk:/Users/dom/git/emsdk/node/14.15.5_64bit/bin:/Users/dom/git/emsdk/upstream/emscriptenec:/Users/dom/git/emsdk/upstream/emscripten:/usr/local/go/bin
 # environment
-LaunchInstanceID = 3AABB420-FBA5-48B2-BC54-E177D6803A42
+LaunchInstanceID = 4604CB1B-244F-4482-A2BF-A1C58553C040
 # environment
 VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # makefile (from `Makefile', line 22)
-LDFLAGS := -ltbb -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
+LDFLAGS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.53PkPpicYO/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.65QAxvrjeC/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -90,8 +88,6 @@ HOME = /Users/dom
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CLI = 1
-# environment
 VSCODE_CODE_CACHE_PATH = /Users/dom/Library/Application Support/Code/CachedData/899d46d82c4c95423fb7e10e68eba52050e30ba3
 # environment
 LOGNAME = dom
@@ -103,32 +99,24 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 XPC_FLAGS = 0x0
-# environment
-COLORTERM = truecolor
 # default
 MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
 # environment
-LC_TERMINAL = iTerm2
-# environment
-SHLVL = 3
+SHLVL = 1
 # default
 MAKE_VERSION := 3.81
 # environment
 USER = dom
 # makefile
 .DEFAULT_GOAL := bin/solve
-# default
-MAKECMDGOALS := all
-# environment
-TERM_SESSION_ID = w0t0p0:63366328-61E2-487F-85CD-CDCB96539552
 # makefile (from `Makefile', line 9)
 UNAME := Darwin
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
-# environment
-TERM_PROGRAM = iTerm.app
 # default
 .VARIABLES := 
 # environment
@@ -144,11 +132,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-TERM_PROGRAM_VERSION = 3.4.12
-# environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.3588540.3588546.2842E697-8AD5-4EA5-9FB6-CDCBB50138B9
-# environment
-LC_TERMINAL_VERSION = 3.4.12
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.3588540.3588546
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -156,11 +140,7 @@ HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +F = $(notdir $+)
 # environment
-ITERM_SESSION_ID = w0t0p0:63366328-61E2-487F-85CD-CDCB96539552
-# environment
 HOMEBREW_REPOSITORY = /opt/homebrew
-# environment
-COLORFGBG = 7;0
 # environment
 __CF_USER_TEXT_ENCODING = 0x1F5:0:15
 # environment
@@ -171,8 +151,6 @@ MAKEFILES :=
 SRC_DIR := src
 # automatic
 <F = $(notdir $<)
-# environment
-ITERM_PROFILE = Default
 # makefile (from `Makefile', line 10)
 CXX = g++-11
 # makefile (from `Makefile', line 19)
@@ -180,12 +158,11 @@ BIN_DIR := bin
 # environment
 LC_ALL = C
 # makefile (from `Makefile', line 14)
-LIBS := -ltbb -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
+LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 # environment
-SECURITYSESSIONID = 186e7
+SECURITYSESSIONID = 18a75
 # automatic
 ^F = $(notdir $^)
- 
 # makefile (from `Makefile', line 20)
 SRC_FILES := src/AttemptState.cpp src/PatternGetter.cpp src/Tests.cpp src/main.cpp
 # default
@@ -195,13 +172,12 @@ SUFFIXES :=
 # environment
 MAKELEVEL := 0
 # environment
+ 
 LANG = C
 # environment
-TERM = xterm-256color
-# environment
-VSCODE_PID = 18352
+VSCODE_PID = 30647
 # variable set hash-table stats:
-# Load=92/1024=9%, Rehash=0, Collisions=4/130=3%
+# Load=80/1024=8%, Rehash=0, Collisions=1/118=1%
 
 # Pattern-specific Variable Values
 
@@ -209,10 +185,10 @@ VSCODE_PID = 18352
 
 # Directories
 
-# . (device 16777234, inode 4411203): 13 files, no impossibilities.
+# . (device 16777234, inode 4411203): 16 files, no impossibilities.
 # src (device 16777234, inode 4411572): 6 files, no impossibilities.
 
-# 19 files, no impossibilities in 2 directories.
+# 22 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -250,7 +226,7 @@ obj/main.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-02-04 19:50:09
+#  Last modified 2022-02-06 01:13:46
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -310,6 +286,6 @@ bin/solve: obj/AttemptState.o obj/PatternGetter.o obj/Tests.o obj/main.o
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Fri Feb  4 21:53:40 2022
+# Finished Make data base on Sun Feb  6 01:14:32 2022
 
  

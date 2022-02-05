@@ -5,11 +5,13 @@
 #include "PatternGetter.h"
 #include "Util.h"
 #include "WordSetUtil.h"
+#include "AttemptStateKey.h"
 
 #include <unordered_map>
 
 struct AttemptState {
-    using CacheType = std::vector<std::vector<std::unordered_map<WordSet, AttemptState>>>;
+    template <typename T>
+    using CacheType = std::unordered_map<AttemptStateKey<T>, AttemptState>;
 
     AttemptState(): patternGetter(PatternGetter("")) {
         //throw "??";
@@ -127,38 +129,41 @@ struct AttemptState {
             for (auto w: words) DEBUG(w);
             exit(1);
         }
-        
 
         auto res = AttemptState(patternGetter, tries+1, result);
         //res.deletedWords = deletedWords;
         return res;
     }
 
-    AttemptState guessWordCached(const std::string &word, int actualIndex, int guessIndex, const WordSet &ws, int tries) {
-        exit(1); // disabled due to globLetterMinLimit
-        auto &myCache = cache[actualIndex][guessIndex];
-        
-        auto it = myCache.find(ws);
-        if (it != myCache.end()) {
+    template <typename T>
+    AttemptState guessWordFromCache(const std::string &word, CacheType<T> &cache, const AttemptStateKey<T> &key, int tries) {
+        auto it = cache.find(key);
+        if (it != cache.end()) {
             auto ret = it->second;
             ret.tries = tries+1;
             cacheHit++;
-            return ret;
+            return ret; 
         }
+
         cacheMiss++;
         cacheSize++;
-        return myCache[ws] = guessWord(word);
+        return cache[key] = guessWord(word);
     }
 
-    static CacheType cache;
+    AttemptState guessWordFromAnswers(const std::string &word, const AttemptStateKey<WordSetAnswers> &key, int tries) {
+        return guessWordFromCache(word, wsAnswerCache, key, tries);
+    }
+
+    AttemptState guessWordFromGuesses(const std::string &word, const AttemptStateKey<WordSetGuesses> &key, int tries) {
+        return guessWordFromCache(word, wsGuessCache, key, tries);
+    }
+
+    static CacheType<WordSetGuesses> wsGuessCache;
+    static CacheType<WordSetAnswers> wsAnswerCache;
     static long long cacheSize;
     static long long cacheHit;
     static long long cacheMiss;
     static void setupWordCache(int numIndexes) {
-        cache = {};
-        cache.assign(numIndexes, {});
-        for (auto i = 0; i < numIndexes; ++i) {
-            cache[i].assign(numIndexes, {});
-        }
+        // do nothing?
     }
 };

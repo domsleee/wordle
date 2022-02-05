@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     START_TIMER(total);
 
-    auto wordsToSolve = getWordsToSolve();
+    std::vector<std::string> wordsToSolve = getWordsToSolve();//{getWordsToSolve()[4]};
     DEBUG("calc total.." << wordsToSolve.size());
     std::vector<long long> results(wordsToSolve.size(), 0);
     std::vector<std::string> unsolved = {};
