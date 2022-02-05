@@ -65,8 +65,9 @@ struct AnswersAndGuessesSolver {
 
         std::string guess = startingWord;// firstPr.second;
         if (getFirstWord) {
+            DEBUG("guessing first word...");
             auto firstPr = getBestWord(answersState.globLetterMinLimit, answersState.words, guessesState.words, 0);
-            //DEBUG("known prob: " << firstPr.prob);
+            DEBUG("first word: " << firstPr.word << ", known prob: " << firstPr.prob);
             guess = firstPr.word;
         }
 
@@ -115,11 +116,11 @@ struct AnswersAndGuessesSolver {
         //DEBUG("TRIES: " << tries);
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
-        auto startingTries = useExactSearch ? 2 : triesRemaining;
+        auto startingTries = useExactSearch ? triesRemaining : triesRemaining;
         for (auto newTriesRemaining = startingTries; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
             for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
                 auto possibleGuess = guesses[myInd];
-                //if (tries==1) DEBUG(possibleGuess << ": " << getPerc(myInd, guesses.size()));
+                if (tries==0) DEBUG(possibleGuess << ": " << newTriesRemaining << ": " << getPerc(myInd, guesses.size()));
                 //if (tries==1 && myInd > 2) break;
                 auto prob = 0.00;
                 for (std::size_t i = 0; i < answers.size(); ++i) {
