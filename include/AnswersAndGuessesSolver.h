@@ -45,6 +45,7 @@ struct AnswersAndGuessesSolver {
     ReverseIndexType reverseIndexAnswers = {}, reverseIndexGuesses = {};
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
+    bool useExactSearch = true; // only if probablity is 1.00
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
@@ -76,10 +77,15 @@ struct AnswersAndGuessesSolver {
             guessesState = guessesState.guessWord(guess);
 
             auto answers = answersState.words;
-            GUESSESSOLVER_DEBUG(answer << ", " << i << ": words size: " << answers.size());
-            auto pr = getBestWord(answersState.globLetterMinLimit, answers, guessesState.words, answersState.tries, 2);
+            GUESSESSOLVER_DEBUG(answer << ", " << i << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
+            /*if (answers.size() != 400) {
+                DEBUG(guess << ": " << getter.getPatternFromWord(guess));
+                for (auto w: answers) DEBUG(w);
+            }*/
+            auto pr = getBestWord(answersState.globLetterMinLimit, answers, guessesState.words, answersState.tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
-            //if (pr.prob != 1.00) break;
+
+            if (useExactSearch && pr.prob != 1.00) break;
 
             guess = pr.word;
         }
@@ -109,7 +115,8 @@ struct AnswersAndGuessesSolver {
         //DEBUG("TRIES: " << tries);
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
-        for (auto newTriesRemaining = triesRemaining; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
+        auto startingTries = useExactSearch ? 2 : triesRemaining;
+        for (auto newTriesRemaining = startingTries; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
             for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
                 auto possibleGuess = guesses[myInd];
                 //if (tries==1) DEBUG(possibleGuess << ": " << getPerc(myInd, guesses.size()));
@@ -129,7 +136,7 @@ struct AnswersAndGuessesSolver {
 
                     auto pr = getBestWord(answersState.globLetterMinLimit, answersState.words, guessesState.words, tries+1, newTriesRemaining-1);
                     prob += pr.prob;
-                    //if (pr.prob != 1) break; // only correct if solution is guaranteed
+                    if (useExactSearch && pr.prob != 1) break;
                 }
 
                 BestWordResult newRes = {prob/answers.size(), possibleGuess, MAX_LOWER_BOUND};

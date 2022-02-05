@@ -10,14 +10,14 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
  
 
-# Make data base, printed on Sun Feb  6 01:14:32 2022
+# Make data base, printed on Sun Feb  6 02:07:14 2022
 
 # Variables
 
 # automatic
+ 
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
- 
 ?F = $(notdir $?)
 # environment
 VSCODE_LOG_NATIVE = false
@@ -34,7 +34,7 @@ SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # makefile (from `Makefile', line 5)
-CONDITIONAL_CXX = -O3 -DNDEBUG -g
+CONDITIONAL_CXX = -O3 -g
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 1)
@@ -156,6 +156,7 @@ CXX = g++-11
 # makefile (from `Makefile', line 19)
 BIN_DIR := bin
 # environment
+ 
 LC_ALL = C
 # makefile (from `Makefile', line 14)
 LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
@@ -172,7 +173,6 @@ SUFFIXES :=
 # environment
 MAKELEVEL := 0
 # environment
- 
 LANG = C
 # environment
 VSCODE_PID = 30647
@@ -226,7 +226,7 @@ obj/main.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-02-06 01:13:46
+#  Last modified 2022-02-06 02:07:09
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -286,6 +286,6 @@ bin/solve: obj/AttemptState.o obj/PatternGetter.o obj/Tests.o obj/main.o
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sun Feb  6 01:14:32 2022
+# Finished Make data base on Sun Feb  6 02:07:14 2022
 
  

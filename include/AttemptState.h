@@ -77,7 +77,7 @@ struct AttemptState {
         
         for (std::size_t i = 0; i < pattern.size(); ++i) {
             rightSpotPattern[i] = (pattern[i] == '+' ? guess[i] : NULL_LETTER);
-            wrongSpotPattern[i] = (pattern[i] != '+' ? guess[i] : NULL_LETTER);
+            wrongSpotPattern[i] = (pattern[i] == '?' ? guess[i] : NULL_LETTER);
 
             int letterInd = guess[i]-'a';
             if (pattern[i] == '_') {
@@ -109,9 +109,8 @@ struct AttemptState {
                 if (letterMaxLimit[letterInd] != 0 && letterCount[letterInd] > letterMaxLimit[letterInd]) { allowed = false; break; }
             }
 
-            if (!allowed) {
-                for (auto c: word) {
-                    auto letterInd = c-'a';
+            if (allowed) {
+                for (int letterInd = 0; letterInd < 26; ++letterInd) {
                     if (letterCount[letterInd] < letterMinLimit[letterInd]) { allowed = false; break; }
                 }
             }

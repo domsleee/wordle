@@ -40,6 +40,14 @@
         "chrono": "cpp",
         "bitset": "cpp",
         "ctime": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "cstddef": "cpp",
+        "set": "cpp",
+        "iomanip": "cpp",
+        "memory": "cpp",
+        "numeric": "cpp",
+        "sstream": "cpp"
     }
 }

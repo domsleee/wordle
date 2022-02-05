@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     //DEBUG(words[0] << '\n'); exit(1);
     //DEBUG(words.size()); exit(1);
     
-    auto solver = AnswersAndGuessesSolver(answers, answers);
+    auto solver = AnswersAndGuessesSolver(answers, guesses);
     solver.precompute();
     //solver.setupInitial4Words();
 
