@@ -22,7 +22,7 @@
     }
 
 
-static const int MAX_TRIES = 6;
+static const int MAX_TRIES = 5;
 static const int NUM_WORDS = 14000;
 static const int MAX_NUM_GUESSES = 13000;
 static const char NULL_LETTER = '-';

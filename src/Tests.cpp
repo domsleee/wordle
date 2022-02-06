@@ -22,9 +22,7 @@ void testAttemptState() {
     };
 
     auto getter = PatternGetter("night");
-    MinLetterType minLetterLimit = {};
-    minLetterLimit['h'-'a'] = 1; // from blahs (___+_)
-    auto answersState = AttemptState(getter, 0, words, minLetterLimit);
+    auto answersState = AttemptState(getter, words);
 
     auto wordState = answersState.guessWord("foehn");
     DEBUG("num words " << wordState.words.size());

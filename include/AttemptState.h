@@ -5,40 +5,23 @@
 #include "PatternGetter.h"
 #include "Util.h"
 #include "WordSetUtil.h"
-#include "AttemptStateKey.h"
 
 #include <unordered_map>
 
 struct AttemptState {
     template <typename T>
-    using CacheType = std::unordered_map<AttemptStateKey<T>, AttemptState>;
+    using CacheType = std::unordered_map<int, AttemptState>;
 
     AttemptState(): patternGetter(PatternGetter("")) {
         //throw "??";
     }
 
     AttemptState(const PatternGetter &getter, const std::vector<std::string> &words)
-      : AttemptState(getter, 0, words) {
-    }
-
-    AttemptState(const PatternGetter &getter, int tries, const std::vector<std::string> &words)
       : patternGetter(getter),
-        tries(tries),
-        words(words) {
-            for (int i = 0; i < 26; ++i) globLetterMinLimit[i] = 0;
-        }
-    
-    AttemptState(const PatternGetter &getter, int tries, const std::vector<std::string> &words, const MinLetterType &minLetterLimit)
-      : patternGetter(getter),
-        tries(tries),
-        words(words),
-        globLetterMinLimit(minLetterLimit) {
-        }
+        words(words) {}
 
     PatternGetter patternGetter;
-    int tries;
     std::vector<std::string> words;
-    mutable MinLetterType globLetterMinLimit;
     //std::vector<std::string> deletedWords;
 
     AttemptState guessWord(const std::string &guess) {
@@ -61,16 +44,15 @@ struct AttemptState {
             if (pattern[i] == '+' || pattern[i] == '?') {
                 auto ind = guess[i]-'a';
                 letterMinLimit[ind]++;
-                globLetterMinLimit[ind] = std::max(globLetterMinLimit[ind], letterMinLimit[ind]);
             }
             if (pattern[i] == '+') correct++;
         }
         if (correct == guess.size()) {
-            return AttemptState(patternGetter, tries+1, {guess});
+            return AttemptState(patternGetter, {guess});
         }
 
         std::size_t numValidLetters = 0;
-        for (int i = 0; i < 26; ++i) numValidLetters += globLetterMinLimit[i];
+        for (int i = 0; i < 26; ++i) numValidLetters += letterMinLimit[i];
         if (numValidLetters == guess.size()) {
             for (int i = 0; i < 26; ++i) letterMaxLimit[i] = letterMinLimit[i];
         }
@@ -121,7 +103,7 @@ struct AttemptState {
         }
 
         if (result.size() == 0) {
-            DEBUG("ERROR");
+            DEBUG("ERROR no results when guessing word!");
             DEBUG("guess: " << guess);
             DEBUG("pattern: " << pattern);
             DEBUG("words: ");
@@ -129,32 +111,9 @@ struct AttemptState {
             exit(1);
         }
 
-        auto res = AttemptState(patternGetter, tries+1, result);
+        auto res = AttemptState(patternGetter, result);
         //res.deletedWords = deletedWords;
         return res;
-    }
-
-    template <typename T>
-    AttemptState guessWordFromCache(const std::string &word, CacheType<T> &cache, const AttemptStateKey<T> &key, int tries) {
-        auto it = cache.find(key);
-        if (it != cache.end()) {
-            auto ret = it->second;
-            ret.tries = tries+1;
-            cacheHit++;
-            return ret; 
-        }
-
-        cacheMiss++;
-        cacheSize++;
-        return cache[key] = guessWord(word);
-    }
-
-    AttemptState guessWordFromAnswers(const std::string &word, const AttemptStateKey<WordSetAnswers> &key, int tries) {
-        return guessWordFromCache(word, wsAnswerCache, key, tries);
-    }
-
-    AttemptState guessWordFromGuesses(const std::string &word, const AttemptStateKey<WordSetGuesses> &key, int tries) {
-        return guessWordFromCache(word, wsGuessCache, key, tries);
     }
 
     static CacheType<WordSetGuesses> wsGuessCache;

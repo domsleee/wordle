@@ -1,6 +1,5 @@
 #pragma once
 #include "AttemptState.h"
-#include "AttemptStateKey.h"
 
 #include "PatternGetter.h"
 #include "WordSetUtil.h"
@@ -14,6 +13,7 @@
 #include <bitset>
 #include <set>
 #include <stack>
+#include <unordered_set>
 
 #define GUESSESSOLVER_DEBUG(x) DEBUG(x)
 
@@ -22,6 +22,7 @@ struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(const std::vector<std::string> &allAnswers, const std::vector<std::string> &allGuesses, int maxTries = MAX_TRIES)
         : allAnswers(allAnswers),
           allGuesses(allGuesses),
+          allAnswersSet(allAnswers.begin(), allAnswers.end()),
           maxTries(maxTries)
         {
             precompute();
@@ -35,10 +36,19 @@ struct AnswersAndGuessesSolver {
                 DEBUG("ERROR: guesses too big " << allGuesses.size() << " vs " << guessesSize);
                 exit(1);
             }
+
+            std::unordered_set<std::string> allGuessesSet{allGuesses.begin(), allGuesses.end()};
+            for (auto ans: allAnswers) {
+                if (allGuessesSet.count(ans) == 0) {
+                    DEBUG("possible answer is missing in guesses: " << ans);
+                    exit(1);
+                }
+            }
         }
     
     using ReverseIndexType = std::unordered_map<std::string, int>;
     const std::vector<std::string> allAnswers, allGuesses;
+    const std::unordered_set<std::string> allAnswersSet;
     int maxTries;
 
     std::string startingWord = "blahs";
@@ -46,6 +56,7 @@ struct AnswersAndGuessesSolver {
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
     bool useExactSearch = true; // only if probablity is 1.00
+    bool getMaximumAmountOfMoves = false; // NOT smallest average. this can be used to determine if it can be solved in 4 moves
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
@@ -59,6 +70,11 @@ struct AnswersAndGuessesSolver {
     }
 
     int solveWord(const std::string &answer, bool getFirstWord = false) {
+        if (allAnswersSet.count(answer) == 0) {
+            DEBUG("word not a possible answer: " << answer);
+            exit(1);
+        }
+
         auto getter = PatternGetter(answer);
         auto answersState = AttemptState(getter, allAnswers);
         auto guessesState = AttemptState(getter, allGuesses);
@@ -66,24 +82,24 @@ struct AnswersAndGuessesSolver {
         std::string guess = startingWord;// firstPr.second;
         if (getFirstWord) {
             DEBUG("guessing first word...");
-            auto firstPr = getBestWord(answersState.globLetterMinLimit, answersState.words, guessesState.words, 0);
+            auto firstPr = getBestWord(answersState.words, guessesState.words, maxTries);
             DEBUG("first word: " << firstPr.word << ", known prob: " << firstPr.prob);
             guess = firstPr.word;
         }
 
-        for (int i = 1; i <= maxTries; ++i) {
-            if (guess == answer) return i;
-            if (i == maxTries) break;
+        for (int tries = 1; tries <= maxTries; ++tries) {
+            if (guess == answer) return tries;
+            if (tries == maxTries) break;
             answersState = answersState.guessWord(guess);
             guessesState = guessesState.guessWord(guess);
 
             auto answers = answersState.words;
-            GUESSESSOLVER_DEBUG(answer << ", " << i << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
+            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
             /*if (answers.size() != 400) {
                 DEBUG(guess << ": " << getter.getPatternFromWord(guess));
                 for (auto w: answers) DEBUG(w);
             }*/
-            auto pr = getBestWord(answersState.globLetterMinLimit, answers, guessesState.words, answersState.tries);
+            auto pr = getBestWord(answers, guessesState.words, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
 
             if (useExactSearch && pr.prob != 1.00) break;
@@ -94,63 +110,54 @@ struct AnswersAndGuessesSolver {
     }
     
 
-    BestWordResult getBestWord(const MinLetterType &minLetterLimit, const std::vector<std::string> &answers, const std::vector<std::string> &guesses, int tries, int triesRemaining=MAX_TRIES) {
-        triesRemaining = std::min(triesRemaining, maxTries-tries);
-
+    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, int triesRemaining) {
         if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
-        if (triesRemaining == 0) return {1.00/answers.size(), answers[0], MAX_LOWER_BOUND}; // no guesses left.
-        if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0], tries+1};
+        if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
+        if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
-            return {1.00/answers.size(), answers[0], MAX_LOWER_BOUND};
+            return {1.00/answers.size(), answers[0]};
         }
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
-        auto key = getCacheKey(minLetterLimit, wsAnswers, wsGuesses, tries, triesRemaining);
+        auto key = getCacheKey(wsAnswers, wsGuesses, triesRemaining);
 
         auto cacheVal = getFromCache(key);
         if (cacheVal.prob != -1) return cacheVal;
 
-        BestWordResult res = {-1.00, "", MAX_LOWER_BOUND};
-        //DEBUG("TRIES: " << tries);
+        BestWordResult res = {-1.00, ""};
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
-        auto startingTries = useExactSearch ? triesRemaining : triesRemaining;
+        auto startingTries = getMaximumAmountOfMoves ? 2 : triesRemaining;
         for (auto newTriesRemaining = startingTries; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
             for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
                 auto possibleGuess = guesses[myInd];
-                if (tries==0) DEBUG(possibleGuess << ": " << newTriesRemaining << ": " << getPerc(myInd, guesses.size()));
-                //if (tries==1 && myInd > 2) break;
+                if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << newTriesRemaining << ": " << getPerc(myInd, guesses.size()));
                 auto prob = 0.00;
                 for (std::size_t i = 0; i < answers.size(); ++i) {
                     auto actualWord = answers[i];
                     auto getter = PatternGetter(actualWord);
-                    auto answersState = AttemptState(getter, tries, answers, minLetterLimit);
-                    auto guessesState = AttemptState(getter, tries, guesses, minLetterLimit);
+                    auto answersState = AttemptState(getter, answers);
+                    auto guessesState = AttemptState(getter, guesses);
 
-                    //auto guessesKey = AttemptStateKey(minLetterLimit, wsGuesses, reverseIndexGuesses[possibleGuess], reverseIndexAnswers[actualWord]);
-                    //auto answersKey = AttemptStateKey(minLetterLimit, wsAnswers, reverseIndexGuesses[possibleGuess], reverseIndexAnswers[actualWord]);
-
-                    answersState = answersState.guessWord(possibleGuess); // answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
+                    answersState = answersState.guessWord(possibleGuess); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
                     guessesState = guessesState.guessWord(possibleGuess); //guessesState.guessWord(possibleGuess);
 
-                    auto pr = getBestWord(answersState.globLetterMinLimit, answersState.words, guessesState.words, tries+1, newTriesRemaining-1);
+                    auto pr = getBestWord(answersState.words, guessesState.words, newTriesRemaining-1);
                     prob += pr.prob;
                     if (useExactSearch && pr.prob != 1) break;
                 }
 
-                BestWordResult newRes = {prob/answers.size(), possibleGuess, MAX_LOWER_BOUND};
+                BestWordResult newRes = {prob/answers.size(), possibleGuess};
                 if (newRes.prob > res.prob) {
                     res = newRes;
                     if (res.prob == 1.00) {
-                        res.lowerBound = tries + newTriesRemaining;
                         return setCacheVal(key, res);
                     }
                 }
             }
         }
-        
 
         return setCacheVal(key, res);
     }
@@ -167,20 +174,19 @@ struct AnswersAndGuessesSolver {
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
             reverseIndexGuesses[allGuesses[i]] = i;
         }
-        DEBUG("RESETTING CACHE??");
+        DEBUG("RESETTING ANSWERSANDGUESSESSOLVER CACHE");
         getBestWordCache = {};
     }
 
-    AnswersAndGuessesKey getCacheKey(const MinLetterType &minLetterLimit, const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, int tries, int triesRemaining) {
-        // tries is only relevant for upper bound.
-        return AnswersAndGuessesKey(minLetterLimit, wsAnswers, wsGuesses, 0, triesRemaining);
+    AnswersAndGuessesKey getCacheKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, int triesRemaining) {
+        return AnswersAndGuessesKey(wsAnswers, wsGuesses, triesRemaining);
     }
 
     BestWordResult getFromCache(const AnswersAndGuessesKey &key) {
         auto it = getBestWordCache.find(key);
         if (it == getBestWordCache.end()) {
             cacheMiss++;
-            return {-1, "", MAX_LOWER_BOUND};
+            return {-1, ""};
         }
         cacheHit++;
         return it->second;
