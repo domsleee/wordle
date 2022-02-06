@@ -30,16 +30,18 @@ int main(int argc, char *argv[]) {
     auto guesses = readFromFile(std::string(argv[1]));
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
+    guesses = answers;
 
-    //words = getWordsOfLength(words, 5);
-    //answers = getFirstNWords(answers, NUM_WORDS);
-    
     auto solver = AnswersAndGuessesSolver(answers, guesses);
+
+    START_TIMER(precompute);
+    AttemptState::precompute(guesses);
     solver.precompute();
     //solver.setupInitial4Words();
 
-    START_TIMER(total);
+    END_TIMER(precompute);
 
+    START_TIMER(total);
     std::vector<std::string> wordsToSolve = answers;//getWordsToSolve();//{getWordsToSolve()[4]};
     DEBUG("calc total.." << wordsToSolve.size());
     std::vector<long long> results(wordsToSolve.size(), 0);
@@ -49,7 +51,7 @@ int main(int argc, char *argv[]) {
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
         solver.startingWord = "aahed";
-        auto r = solver.solveWord(word, false);
+        auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);
         results[i] = r == -1 ? 0 : r;

@@ -23,7 +23,7 @@ struct SimpleSolver {
         for (int i = 1; MAX_TRIES; ++i) {
             if (guess == answer) { return i; }
             if (i == MAX_TRIES) break;
-            auto newState = state.guessWord(guess);
+            auto newState = state.guessWord(guess, state.words);
             guess = newState.words[0];//getBestWord(newState.words);
             state = newState;
         }

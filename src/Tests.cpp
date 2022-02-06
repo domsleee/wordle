@@ -22,9 +22,9 @@ void testAttemptState() {
     };
 
     auto getter = PatternGetter("night");
-    auto answersState = AttemptState(getter, words);
+    auto answersState = AttemptState(getter, {});
 
-    auto wordState = answersState.guessWord("foehn");
+    auto wordState = answersState.guessWord("foehn", words);
     DEBUG("num words " << wordState.words.size());
     for (auto w: wordState.words) DEBUG(w);
     assertm(wordState.words.size() == 1, "one word");

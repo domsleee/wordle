@@ -90,8 +90,8 @@ struct AnswersAndGuessesSolver {
         for (int tries = 1; tries <= maxTries; ++tries) {
             if (guess == answer) return tries;
             if (tries == maxTries) break;
-            answersState = answersState.guessWord(guess);
-            guessesState = guessesState.guessWord(guess);
+            answersState = answersState.guessWord(guess, answersState.words);
+            guessesState = guessesState.guessWord(guess, guessesState.words);
 
             auto answers = answersState.words;
             GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
@@ -132,17 +132,17 @@ struct AnswersAndGuessesSolver {
         auto startingTries = getMaximumAmountOfMoves ? 2 : triesRemaining;
         for (auto newTriesRemaining = startingTries; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
             for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
-                auto possibleGuess = guesses[myInd];
+                const auto &possibleGuess = guesses[myInd];
                 if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << newTriesRemaining << ": " << getPerc(myInd, guesses.size()));
                 auto prob = 0.00;
                 for (std::size_t i = 0; i < answers.size(); ++i) {
-                    auto actualWord = answers[i];
+                    const auto & actualWord = answers[i];
                     auto getter = PatternGetter(actualWord);
-                    auto answersState = AttemptState(getter, answers);
-                    auto guessesState = AttemptState(getter, guesses);
+                    auto answersState = AttemptState(getter, {});
+                    auto guessesState = AttemptState(getter, {});
 
-                    answersState = answersState.guessWord(possibleGuess); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
-                    guessesState = guessesState.guessWord(possibleGuess); //guessesState.guessWord(possibleGuess);
+                    answersState = answersState.guessWordCached(possibleGuess, answers); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
+                    guessesState = guessesState.guessWordCached(possibleGuess, guesses); //guessesState.guessWord(possibleGuess);
 
                     auto pr = getBestWord(answersState.words, guessesState.words, newTriesRemaining-1);
                     prob += pr.prob;
