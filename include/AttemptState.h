@@ -13,17 +13,12 @@
 struct AttemptState {
     using CacheType = std::unordered_map<AttemptStateCacheKey, std::unordered_set<int>>;
 
-    AttemptState(): patternGetter(PatternGetter("")) {
-        //throw "??";
-    }
-
     AttemptState(const PatternGetter &getter, const std::vector<std::string> &words)
       : patternGetter(getter),
         words(words) {}
 
     PatternGetter patternGetter;
     std::vector<std::string> words;
-    //std::vector<std::string> deletedWords;
 
     AttemptState guessWord(const std::string &guess, const std::vector<std::string> &words) {
         auto pattern = patternGetter.getPatternFromWord(guess);
@@ -109,7 +104,6 @@ struct AttemptState {
         }
 
         auto res = AttemptState(patternGetter, std::move(result));
-        //res.deletedWords = deletedWords;
         return res;
     }
 
@@ -129,7 +123,7 @@ struct AttemptState {
     }
 
     using ReverseIndexType = std::unordered_map<std::string, int>;
-    static ReverseIndexType reverseGuessToIndex;
+    static inline ReverseIndexType reverseGuessToIndex;
 
     static void precompute(const std::vector<std::string> &guesses) {
         DEBUG("precomputing AttemptState");
@@ -189,11 +183,9 @@ struct AttemptState {
         }
     }
 
-    static CacheType attemptStateCache;
-    static long long cacheSize;
-    static long long cacheHit;
-    static long long cacheMiss;
-    static bool suppressErrors;
+    static inline CacheType attemptStateCache = {};
+    static inline long long cacheSize, cacheHit, cacheMiss;
+    static inline bool suppressErrors = false;
     static void setupWordCache(int numIndexes) {
         // do nothing?
     }

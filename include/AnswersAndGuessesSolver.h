@@ -158,8 +158,7 @@ struct AnswersAndGuessesSolver {
         return setCacheVal(key, res);
     }
 
-    #pragma region hash table
-
+    // hash table
     void prepareHashTable() {
         reverseIndexAnswers.clear();
         reverseIndexGuesses.clear();
@@ -212,6 +211,4 @@ struct AnswersAndGuessesSolver {
     WordSetGuesses buildGuessesWordSet(const std::vector<std::string> &guesses) {
         return buildWordSet<WordSetGuesses>(guesses, reverseIndexGuesses);
     }
-
-    #pragma endregion
 };

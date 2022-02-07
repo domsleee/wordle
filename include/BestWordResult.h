@@ -11,9 +11,7 @@ struct BestWordResult {
           word(word)
         {}
     
-    friend inline bool operator==(const BestWordResult &a, const BestWordResult &b) {
-        return a.prob == b.prob && a.word == b.word;
-    }
+    friend inline bool operator==(const BestWordResult &a, const BestWordResult &b) = default;
 };
 
 template <>

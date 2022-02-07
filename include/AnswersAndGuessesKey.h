@@ -12,11 +12,7 @@ struct AnswersAndGuessesKey {
           wsGuesses(wsGuesses),
           triesRemaining(triesRemaining) {}
 
-    friend bool operator==(const AnswersAndGuessesKey &a, const AnswersAndGuessesKey &b) {
-        return a.wsAnswers == b.wsAnswers
-          && a.wsGuesses == b.wsGuesses
-          && a.triesRemaining == b.triesRemaining;
-    }
+    friend bool operator==(const AnswersAndGuessesKey &a, const AnswersAndGuessesKey &b) = default;
 };
 
 

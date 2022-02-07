@@ -20,7 +20,7 @@ struct AttemptStateCacheKey {
         return res;
     }
 
-    static inline int charToInt(char c) {
+    static int charToInt(char c) {
         switch(c) {
             case '?': return 0;
             case '_': return 1;
@@ -32,10 +32,7 @@ struct AttemptStateCacheKey {
         }
     }
 
-    friend bool operator==(const AttemptStateCacheKey &a, const AttemptStateCacheKey &b) {
-        return a.guessIndex == b.guessIndex
-          && a.pattern == b.pattern;
-    }
+    friend bool operator==(const AttemptStateCacheKey &a, const AttemptStateCacheKey &b) = default;
 };
 
 
