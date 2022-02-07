@@ -2,8 +2,7 @@
 #include "../include/Util.h"
 
 std::string getPattern(const std::string &word, const std::string &answer) {
-    int answerLetterCount[26] = {};
-    for (int i = 0; i < 26; ++i) answerLetterCount[i] = 0;
+    MinLetterType answerLetterCount = {};
     for (auto c: answer) {
         answerLetterCount[c-'a']++;
     }

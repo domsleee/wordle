@@ -32,11 +32,11 @@ int main(int argc, char *argv[]) {
     guesses = mergeAndSort(guesses, answers);
     guesses = answers;
 
+    START_TIMER(precompute);
     auto solver = AnswersAndGuessesSolver(answers, guesses);
 
-    START_TIMER(precompute);
     AttemptState::precompute(guesses);
-    solver.precompute();
+    //solver.precompute();
     //solver.setupInitial4Words();
 
     END_TIMER(precompute);
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         auto word = wordsToSolve[i];
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
-        solver.startingWord = "aahed";
+        solver.startingWord = "brahs";
         auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);

@@ -56,7 +56,6 @@ struct AnswersAndGuessesSolver {
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
     bool useExactSearch = true; // only if probablity is 1.00
-    bool getMaximumAmountOfMoves = false; // NOT smallest average. this can be used to determine if it can be solved in 4 moves
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
@@ -129,32 +128,29 @@ struct AnswersAndGuessesSolver {
         BestWordResult res = {-1.00, ""};
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
-        auto startingTries = getMaximumAmountOfMoves ? 2 : triesRemaining;
-        for (auto newTriesRemaining = startingTries; newTriesRemaining <= triesRemaining; ++newTriesRemaining) {
-            for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
-                const auto &possibleGuess = guesses[myInd];
-                if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << newTriesRemaining << ": " << getPerc(myInd, guesses.size()));
-                auto prob = 0.00;
-                for (std::size_t i = 0; i < answers.size(); ++i) {
-                    const auto & actualWord = answers[i];
-                    auto getter = PatternGetter(actualWord);
-                    auto answersState = AttemptState(getter, {});
-                    auto guessesState = AttemptState(getter, {});
+        for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
+            const auto &possibleGuess = guesses[myInd];
+            if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
+            auto prob = 0.00;
+            for (std::size_t i = 0; i < answers.size(); ++i) {
+                const auto & actualWord = answers[i];
+                auto getter = PatternGetter(actualWord);
+                auto answersState = AttemptState(getter, {});
+                auto guessesState = AttemptState(getter, {});
 
-                    answersState = answersState.guessWordCached(possibleGuess, answers); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
-                    guessesState = guessesState.guessWordCached(possibleGuess, guesses); //guessesState.guessWord(possibleGuess);
+                answersState = answersState.guessWordCached(possibleGuess, answers); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
+                guessesState = guessesState.guessWordCached(possibleGuess, guesses); //guessesState.guessWord(possibleGuess);
 
-                    auto pr = getBestWord(answersState.words, guessesState.words, newTriesRemaining-1);
-                    prob += pr.prob;
-                    if (useExactSearch && pr.prob != 1) break;
-                }
+                auto pr = getBestWord(answersState.words, guessesState.words, triesRemaining-1);
+                prob += pr.prob;
+                if (useExactSearch && pr.prob != 1) break;
+            }
 
-                BestWordResult newRes = {prob/answers.size(), possibleGuess};
-                if (newRes.prob > res.prob) {
-                    res = newRes;
-                    if (res.prob == 1.00) {
-                        return setCacheVal(key, res);
-                    }
+            BestWordResult newRes = {prob/answers.size(), possibleGuess};
+            if (newRes.prob > res.prob) {
+                res = newRes;
+                if (res.prob == 1.00) {
+                    return setCacheVal(key, res);
                 }
             }
         }

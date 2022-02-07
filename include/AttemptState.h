@@ -11,7 +11,7 @@
 #include <cmath>
 
 struct AttemptState {
-    using CacheType = std::unordered_map<AttemptStateCacheKey, std::unordered_set<std::string>>;
+    using CacheType = std::unordered_map<AttemptStateCacheKey, std::unordered_set<int>>;
 
     AttemptState(): patternGetter(PatternGetter("")) {
         //throw "??";
@@ -120,7 +120,8 @@ struct AttemptState {
         auto key = AttemptStateCacheKey(reverseGuessToIndex[guess], pattern);
         const auto &allowedWords = attemptStateCache[key];
         for (const auto &wordToCheck: words) {
-            if (allowedWords.count(wordToCheck) == 1) {
+            auto ind = reverseGuessToIndex[wordToCheck];
+            if (allowedWords.count(ind) == 1) {
                 ret.words.push_back(wordToCheck);
             }
         }
@@ -131,20 +132,28 @@ struct AttemptState {
     static ReverseIndexType reverseGuessToIndex;
 
     static void precompute(const std::vector<std::string> &guesses) {
-        DEBUG("PRECOMPUTING");
+        DEBUG("precomputing AttemptState");
         reverseGuessToIndex = {};
         return;
         suppressErrors = true;
         auto patterns = getAllPatterns(guesses[0].size());
+
+        for (std::size_t i = 0; i < guesses.size(); ++i) {
+            const auto &guess = guesses[i];
+            reverseGuessToIndex[guess] = i;
+        }
+
         for (std::size_t i = 0; i < guesses.size(); ++i) {
             DEBUG("guessing " << getPerc(i, guesses.size()));
             const auto &guess = guesses[i];
-            reverseGuessToIndex[guess] = i;
             auto attemptState = AttemptState(PatternGetter(""), {});
             for (const auto &pattern: patterns) {
-                std::unordered_set<std::string> allowedWords = {};
+                std::unordered_set<int> allowedWords = {};
                 auto newState = attemptState.guessWord(guess, pattern, guesses);
-                allowedWords = {newState.words.begin(), newState.words.end()};
+                for (const auto &w: newState.words) {
+                    allowedWords.insert(reverseGuessToIndex[w]);
+                }
+                //allowedWords = {newState.words.begin(), newState.words.end()};
                 auto key = AttemptStateCacheKey(i, pattern);
                 attemptStateCache[key] = allowedWords;
             }
