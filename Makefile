@@ -2,14 +2,14 @@
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g
 else
-	CONDITIONAL_CXX = -O3 -g
+	CONDITIONAL_CXX = -O3 -DNDEBUG -g
 endif
 
 
 UNAME := $(shell uname)
 CXX = g++-11
 CXXFLAGS = -std=c++20 -Wall $(CONDITIONAL_CXX)
-LIBS := -ltbb
+LIBS := -ltbb -lprofiler
 ifeq ($(UNAME), Darwin)
 LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 endif

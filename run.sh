@@ -1,4 +1,4 @@
 set -e;
 make clean;
 make -j;
-env CPUPROFILE=out2.prof ./bin/solve ext/wordle-guesses.txt ext/wordle-answers.txt
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=out11.prof ./bin/solve ext/wordle-guesses.txt ext/wordle-answers.txt

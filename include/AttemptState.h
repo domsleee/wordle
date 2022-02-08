@@ -25,11 +25,16 @@ struct AttemptState {
         return guessWord(guess, pattern, words);
     }
 
-    AttemptState guessWord(const std::string &guess, const std::string &pattern, const std::vector<std::string> &words) const {
-        MinLetterType letterMinLimit = {}, letterMaxLimit = {};
-        bool excludedLetters[26] = {};
-        auto wrongSpotPattern = std::string(guess.size(), NULL_LETTER);
-        auto rightSpotPattern = std::string(guess.size(), NULL_LETTER);
+    AttemptState guessWord(const std::string &guess, const std::string &pattern, const std::vector<std::string> &words) {
+        static MinLetterType letterMinLimit = {}, letterMaxLimit = {};
+        static bool excludedLetters[26] = {};
+        static auto wrongSpotPattern = std::string(guess.size(), NULL_LETTER);
+        static auto rightSpotPattern = std::string(guess.size(), NULL_LETTER);
+
+        for (int i = 0; i < 26; ++i) {
+            letterMinLimit[i] = letterMaxLimit[i] = 0;
+            excludedLetters[i] = false;
+        }
 
         std::size_t correct = 0;
         for (std::size_t i = 0; i < pattern.size(); ++i) {
@@ -43,12 +48,6 @@ struct AttemptState {
             return AttemptState(patternGetter, {guess});
         }
 
-        std::size_t numValidLetters = 0;
-        for (int i = 0; i < 26; ++i) numValidLetters += letterMinLimit[i];
-        if (numValidLetters == guess.size()) {
-            for (int i = 0; i < 26; ++i) letterMaxLimit[i] = letterMinLimit[i];
-        }
-        
         for (std::size_t i = 0; i < pattern.size(); ++i) {
             rightSpotPattern[i] = (pattern[i] == '+' ? guess[i] : NULL_LETTER);
             wrongSpotPattern[i] = (pattern[i] == '?' ? guess[i] : NULL_LETTER);
@@ -58,9 +57,6 @@ struct AttemptState {
                 if (letterMinLimit[letterInd] == 0) {
                     excludedLetters[letterInd] = true;
                 } else if (letterMaxLimit[letterInd] == 0) {
-                    /*for (std::size_t j = 0; j < guess.size(); ++j) {
-                        letterMaxLimit[letterInd] += (guess[j] == guess[i] && pattern[i] != '_');
-                    }*/
                     letterMaxLimit[letterInd] = letterMinLimit[letterInd];
                 }
             }
@@ -68,8 +64,6 @@ struct AttemptState {
 
         std::vector<std::string> result = {};
         for (const auto &word: words) {
-            if (word == guess) continue;
-
             MinLetterType letterCount = {};
             //for (auto i = 0; i < 26; ++i) letterCount[i] = 0;
             bool allowed = true;
@@ -84,12 +78,13 @@ struct AttemptState {
             }
 
             if (allowed) {
-                for (int letterInd = 0; letterInd < 26; ++letterInd) {
+                for (char c: guess) {
+                    auto letterInd = c-'a';
                     if (letterCount[letterInd] < letterMinLimit[letterInd]) { allowed = false; break; }
                 }
             }
 
-            if (allowed) {
+            if (allowed && word != guess) {
                 result.push_back(word);
             }
         }
@@ -137,13 +132,13 @@ struct AttemptState {
             reverseGuessToIndex[guess] = i;
         }
 
+        auto dummyAttemptState = AttemptState(PatternGetter(""), {});
         for (std::size_t i = 0; i < guesses.size(); ++i) {
-            DEBUG("guessing " << getPerc(i, guesses.size()));
+            //DEBUG("guessing " << getPerc(i, guesses.size()));
             const auto &guess = guesses[i];
-            auto attemptState = AttemptState(PatternGetter(""), {});
             for (const auto &pattern: patterns) {
                 std::unordered_set<int> allowedWords = {};
-                auto newState = attemptState.guessWord(guess, pattern, guesses);
+                auto newState = dummyAttemptState.guessWord(guess, pattern, guesses);
                 for (const auto &w: newState.words) {
                     allowedWords.insert(reverseGuessToIndex[w]);
                 }
