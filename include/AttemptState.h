@@ -123,7 +123,7 @@ struct AttemptState {
     static void precompute(const std::vector<std::string> &guesses) {
         DEBUG("precomputing AttemptState");
         reverseGuessToIndex = {};
-        return;
+        //return;
         suppressErrors = true;
         auto patterns = getAllPatterns(guesses[0].size());
 
@@ -133,21 +133,40 @@ struct AttemptState {
         }
 
         auto dummyAttemptState = AttemptState(PatternGetter(""), {});
+        std::vector<std::vector<int>> values = {};
+
         for (std::size_t i = 0; i < guesses.size(); ++i) {
-            //DEBUG("guessing " << getPerc(i, guesses.size()));
+            DEBUG("guessing " << getPerc(i, guesses.size()));
             const auto &guess = guesses[i];
             for (const auto &pattern: patterns) {
                 std::unordered_set<int> allowedWords = {};
+                std::vector<int> allowedWordVec = {};
                 auto newState = dummyAttemptState.guessWord(guess, pattern, guesses);
                 for (const auto &w: newState.words) {
-                    allowedWords.insert(reverseGuessToIndex[w]);
+                    auto ind = reverseGuessToIndex[w];
+                    allowedWords.insert(ind);
+                    allowedWordVec.push_back(ind);
                 }
                 //allowedWords = {newState.words.begin(), newState.words.end()};
                 auto key = AttemptStateCacheKey(i, pattern);
                 attemptStateCache[key] = allowedWords;
+
+                allowedWordVec.push_back(i);
+                std::sort(allowedWordVec.begin(), allowedWordVec.end());
+                values.emplace_back(allowedWordVec);
             }
         }
         suppressErrors = false;
+
+        DEBUG("total values: " << values.size());
+        DEBUG("sorting...");
+        std::sort(values.begin(), values.end());
+        DEBUG("uniq...");
+        auto last = std::unique(values.begin(), values.end());
+        values.erase(last, values.end());
+
+        DEBUG("now ttal: " << values.size());
+        exit(1);
 
         //exit(1);
     }

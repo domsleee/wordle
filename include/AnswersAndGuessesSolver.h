@@ -85,20 +85,22 @@ struct AnswersAndGuessesSolver {
             DEBUG("first word: " << firstPr.word << ", known prob: " << firstPr.prob);
             guess = firstPr.word;
         }
+        DEBUG("use first word: " << guess);
 
         for (int tries = 1; tries <= maxTries; ++tries) {
             if (guess == answer) return tries;
             if (tries == maxTries) break;
             answersState = answersState.guessWord(guess, answersState.words);
-            guessesState = guessesState.guessWord(guess, guessesState.words);
+            //guessesState = guessesState.guessWord(guess, guessesState.words);
 
-            auto answers = answersState.words;
-            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
+            const auto &answers = answersState.words;
+            const auto &guesses = allGuesses;
+            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guesses.size());
             /*if (answers.size() != 400) {
                 DEBUG(guess << ": " << getter.getPatternFromWord(guess));
                 for (auto w: answers) DEBUG(w);
             }*/
-            auto pr = getBestWord(answers, guessesState.words, maxTries-tries);
+            auto pr = getBestWord(answers, guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
 
             if (useExactSearch && pr.prob != 1.00) break;
@@ -109,7 +111,7 @@ struct AnswersAndGuessesSolver {
     }
     
 
-    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, int triesRemaining) {
+    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, uint8_t triesRemaining) {
         if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
         if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
@@ -141,7 +143,7 @@ struct AnswersAndGuessesSolver {
                 answersState = answersState.guessWordCached(possibleGuess, answers); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
                 guessesState = guessesState.guessWordCached(possibleGuess, guesses); //guessesState.guessWord(possibleGuess);
 
-                auto pr = getBestWord(answersState.words, guessesState.words, triesRemaining-1);
+                auto pr = getBestWord(answersState.words, guesses, triesRemaining-1);
                 prob += pr.prob;
                 if (useExactSearch && pr.prob != 1) break;
             }
