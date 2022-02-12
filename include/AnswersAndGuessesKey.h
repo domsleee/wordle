@@ -5,9 +5,9 @@
 struct AnswersAndGuessesKey {
     const WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
-    const int triesRemaining;
+    const uint8_t triesRemaining;
 
-    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, int triesRemaining)
+    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
         : wsAnswers(wsAnswers),
           wsGuesses(wsGuesses),
           triesRemaining(triesRemaining) {}
@@ -22,7 +22,7 @@ struct std::hash<AnswersAndGuessesKey> {
         size_t res = 17;
         res = res * 31 + hash<WordSetAnswers>()( k.wsAnswers );
         res = res * 31 + hash<WordSetGuesses>()( k.wsGuesses );
-        res = res * 31 + hash<int>()( k.triesRemaining );
+        res = res * 31 + hash<uint8_t>()( k.triesRemaining );
         return res;
     }
 };

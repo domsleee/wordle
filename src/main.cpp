@@ -9,14 +9,11 @@
 #include <execution>
 
 template<typename T>
-void printSolverInformationInner(const T& solver) {
+void printSolverInformation(const T& solver) {
     auto cacheTotal = solver.cacheHit + solver.cacheMiss;
     DEBUG("solver cache: " << solver.cacheHit << "/" << cacheTotal << " (" << 100.00 * solver.cacheHit / cacheTotal << "%)");
 }
 
-void printSolverInformation(const AnswersAndGuessesSolver& solver) {
-    printSolverInformationInner(solver);
-}
 std::vector<std::string> getWordsToSolve();
 
 int main(int argc, char *argv[]) {
@@ -30,10 +27,10 @@ int main(int argc, char *argv[]) {
     auto guesses = readFromFile(std::string(argv[1]));
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
-    guesses = answers;
+    //guesses = answers;
 
     START_TIMER(precompute);
-    auto solver = AnswersAndGuessesSolver(answers, guesses);
+    auto solver = AnswersAndGuessesSolver<false>(answers, guesses);
 
     AttemptState::precompute(guesses);
     //solver.precompute();
@@ -70,8 +67,8 @@ int main(int argc, char *argv[]) {
     END_TIMER(total);
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
-    else DEBUG("UNSOLVED WORDS:");
-    for (auto w: unsolved) DEBUG(w);
+    else DEBUG("UNSOLVED WORDS: " << unsolved.size());
+    //for (auto w: unsolved) DEBUG(w);
 
     return 0;
 }

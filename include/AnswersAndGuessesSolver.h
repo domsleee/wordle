@@ -17,7 +17,7 @@
 
 #define GUESSESSOLVER_DEBUG(x) DEBUG(x)
 
-
+template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(const std::vector<std::string> &allAnswers, const std::vector<std::string> &allGuesses, int maxTries = MAX_TRIES)
         : allAnswers(allAnswers),
@@ -55,7 +55,7 @@ struct AnswersAndGuessesSolver {
     ReverseIndexType reverseIndexAnswers = {}, reverseIndexGuesses = {};
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
-    bool useExactSearch = true; // only if probablity is 1.00
+    const bool useExactSearch = true; // only if probablity is 1.00
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
@@ -75,13 +75,17 @@ struct AnswersAndGuessesSolver {
         }
 
         auto getter = PatternGetter(answer);
-        auto answersState = AttemptState(getter, allAnswers);
-        auto guessesState = AttemptState(getter, allGuesses);
+        auto state = AttemptState(getter);
+        std::vector<std::string> answers = allAnswers, guesses = allGuesses;
+
+        if (isEasyMode) {
+            guesses = clearGuesses(guesses, answers);
+        }
 
         std::string guess = startingWord;// firstPr.second;
         if (getFirstWord) {
             DEBUG("guessing first word...");
-            auto firstPr = getBestWord(answersState.words, guessesState.words, maxTries);
+            auto firstPr = getBestWord(answers, guesses, maxTries);
             DEBUG("first word: " << firstPr.word << ", known prob: " << firstPr.prob);
             guess = firstPr.word;
         }
@@ -89,16 +93,11 @@ struct AnswersAndGuessesSolver {
         for (int tries = 1; tries <= maxTries; ++tries) {
             if (guess == answer) return tries;
             if (tries == maxTries) break;
-            answersState = answersState.guessWord(guess, answersState.words);
-            guessesState = guessesState.guessWord(guess, guessesState.words);
+            answers = state.guessWord(guess, answers).words;
+            if (!isEasyMode) guesses = state.guessWord(guess, guesses).words;
 
-            auto answers = answersState.words;
-            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guessesState.words.size());
-            /*if (answers.size() != 400) {
-                DEBUG(guess << ": " << getter.getPatternFromWord(guess));
-                for (auto w: answers) DEBUG(w);
-            }*/
-            auto pr = getBestWord(answers, guessesState.words, maxTries-tries);
+            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guesses.size());
+            auto pr = getBestWord(answers, guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
 
             if (useExactSearch && pr.prob != 1.00) break;
@@ -109,7 +108,7 @@ struct AnswersAndGuessesSolver {
     }
     
 
-    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, int triesRemaining) {
+    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, uint8_t triesRemaining) {
         if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
         if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
@@ -117,6 +116,10 @@ struct AnswersAndGuessesSolver {
         if (triesRemaining == 1) { // we can't use info from last guess
             return {1.00/answers.size(), answers[0]};
         }
+
+        /*const std::vector<std::string> guessWords = isEasyMode
+            ? clearGuesses(guesses, answers)
+            : guesses;*/
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
@@ -133,15 +136,16 @@ struct AnswersAndGuessesSolver {
             if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
             auto prob = 0.00;
             for (std::size_t i = 0; i < answers.size(); ++i) {
-                const auto & actualWord = answers[i];
+                const auto &actualWord = answers[i];
                 auto getter = PatternGetter(actualWord);
-                auto answersState = AttemptState(getter, {});
-                auto guessesState = AttemptState(getter, {});
+                auto state = AttemptState(getter);
 
-                answersState = answersState.guessWordCached(possibleGuess, answers); //answersState.guessWordFromAnswers(possibleGuess, answersKey, tries);
-                guessesState = guessesState.guessWordCached(possibleGuess, guesses); //guessesState.guessWord(possibleGuess);
+                const auto answerWords = state.guessWordCached(possibleGuess, answers).words;
+                const auto nextGuessWords = isEasyMode
+                    ? guesses
+                    : state.guessWordCached(possibleGuess, guesses).words;
 
-                auto pr = getBestWord(answersState.words, guessesState.words, triesRemaining-1);
+                auto pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
                 prob += pr.prob;
                 if (useExactSearch && pr.prob != 1) break;
             }
@@ -157,6 +161,21 @@ struct AnswersAndGuessesSolver {
 
         return setCacheVal(key, res);
     }
+
+    inline std::vector<std::string> clearGuesses(std::vector<std::string> guesses, const std::vector<std::string> &answers) {
+        MinLetterType lettersInAnswers = {};
+        for (auto &ans: answers) {
+            for (auto c: ans) lettersInAnswers[c-'a'] = 1;
+        }
+        auto sizeBefore = guesses.size();
+        std::erase_if(guesses, [&](const std::string &s) {
+            return std::all_of(s.begin(), s.end(), [&](const char c) { return lettersInAnswers[c-'a'] == 0; });
+        });
+        //auto numRemoved = sizeBefore - guesses.size();
+        //if (numRemoved > 0) DEBUG("REMOVED " << getPerc(numRemoved, sizeBefore));
+        return guesses;
+    }
+
 
     // hash table
     void prepareHashTable() {

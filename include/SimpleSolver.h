@@ -14,7 +14,7 @@ struct SimpleSolver {
 
     int solveWord(const std::string &answer) const {
         auto getter = PatternGetter(answer);
-        auto state = AttemptState(getter, words);
+        auto state = AttemptState(getter);
 
         auto guess = words[0];
         if (std::find(words.begin(), words.end(), firstWord) != words.end()) {

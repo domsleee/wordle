@@ -13,6 +13,9 @@
 struct AttemptState {
     using CacheType = std::unordered_map<AttemptStateCacheKey, std::unordered_set<int>>;
 
+    AttemptState(const PatternGetter &getter)
+      : patternGetter(getter) {}
+    
     AttemptState(const PatternGetter &getter, const std::vector<std::string> &words)
       : patternGetter(getter),
         words(words) {}
@@ -20,12 +23,12 @@ struct AttemptState {
     PatternGetter patternGetter;
     std::vector<std::string> words;
 
-    AttemptState guessWord(const std::string &guess, const std::vector<std::string> &words) {
+    AttemptState guessWord(const std::string &guess, const std::vector<std::string> &words) const {
         auto pattern = patternGetter.getPatternFromWord(guess);
         return guessWord(guess, pattern, words);
     }
 
-    AttemptState guessWord(const std::string &guess, const std::string &pattern, const std::vector<std::string> &words) {
+    AttemptState guessWord(const std::string &guess, const std::string &pattern, const std::vector<std::string> &words) const {
         static MinLetterType letterMinLimit = {}, letterMaxLimit = {};
         static bool excludedLetters[26] = {};
         static auto wrongSpotPattern = std::string(guess.size(), NULL_LETTER);
@@ -98,13 +101,14 @@ struct AttemptState {
             exit(1);
         }
 
-        auto res = AttemptState(patternGetter, std::move(result));
+        auto res = AttemptState(patternGetter);
+        res.words = std::move(result);
         return res;
     }
 
     AttemptState guessWordCached(const std::string &guess, const std::vector<std::string> &words) {
         return guessWord(guess, words);
-        auto ret = AttemptState(patternGetter, {});
+        auto ret = AttemptState(patternGetter);
         auto pattern = patternGetter.getPatternFromWord(guess);
         auto key = AttemptStateCacheKey(reverseGuessToIndex[guess], pattern);
         const auto &allowedWords = attemptStateCache[key];
@@ -132,7 +136,7 @@ struct AttemptState {
             reverseGuessToIndex[guess] = i;
         }
 
-        auto dummyAttemptState = AttemptState(PatternGetter(""), {});
+        auto dummyAttemptState = AttemptState(PatternGetter(""));
         for (std::size_t i = 0; i < guesses.size(); ++i) {
             //DEBUG("guessing " << getPerc(i, guesses.size()));
             const auto &guess = guesses[i];
