@@ -1,5 +1,4 @@
 #include "../include/AttemptState.h"
-#include "../include/Tests.h"
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
 #include "../include/AnswersAndGuessesSolver.h"
@@ -27,10 +26,10 @@ int main(int argc, char *argv[]) {
     auto guesses = readFromFile(std::string(argv[1]));
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
-    //guesses = answers;
+    guesses = answers;
 
     START_TIMER(precompute);
-    auto solver = AnswersAndGuessesSolver<false>(answers, guesses);
+    auto solver = AnswersAndGuessesSolver<true>(answers, guesses);
 
     AttemptState::precompute(guesses);
     //solver.precompute();
@@ -59,7 +58,9 @@ int main(int argc, char *argv[]) {
 
     DEBUG("=============");
     DEBUG("MAX_TRIES   : " << MAX_TRIES);
+    DEBUG("easy mode   : " << solver.isEasyModeVar);
     DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
+    DEBUG("guess words : " << guesses.size());
     DEBUG("average     : " << avg);
     printSolverInformation(solver);
     auto attemptStateTotal = AttemptState::cacheHit + AttemptState::cacheMiss;

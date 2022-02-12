@@ -3,7 +3,7 @@
 #include "Util.h"
 
 struct AttemptStateCacheKey {
-    const int guessIndex;
+    const IndexType guessIndex;
     const int pattern;
 
     AttemptStateCacheKey(int guessIndex, const std::string &patternStr)

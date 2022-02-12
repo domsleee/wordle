@@ -3,10 +3,10 @@
 
 struct BestWordResult {
     double prob;
-    std::string word;
+    int wordIndex;
     BestWordResult() {}
 
-    BestWordResult(double prob, const std::string &word)
+    BestWordResult(double prob, const int wordIndex)
         : prob(prob),
-          word(word){}
+          wordIndex(wordIndex){}
 };

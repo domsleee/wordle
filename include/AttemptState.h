@@ -15,28 +15,23 @@ struct AttemptState {
 
     AttemptState(const PatternGetter &getter)
       : patternGetter(getter) {}
-    
-    AttemptState(const PatternGetter &getter, const std::vector<std::string> &words)
-      : patternGetter(getter),
-        words(words) {}
 
     PatternGetter patternGetter;
-    std::vector<std::string> words;
 
-    AttemptState guessWord(const std::string &guess, const std::vector<std::string> &words) const {
-        auto pattern = patternGetter.getPatternFromWord(guess);
-        return guessWord(guess, pattern, words);
+    std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
+        auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
+        return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
     }
 
-    AttemptState guessWord(const std::string &guess, const std::string &pattern, const std::vector<std::string> &words) const {
+    std::vector<IndexType> guessWord(IndexType guessIndex, const std::string &pattern, const std::vector<IndexType> wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
         static MinLetterType letterMinLimit = {}, letterMaxLimit = {};
-        static bool excludedLetters[26] = {};
-        static auto wrongSpotPattern = std::string(guess.size(), NULL_LETTER);
-        static auto rightSpotPattern = std::string(guess.size(), NULL_LETTER);
+        static auto wrongSpotPattern = std::string(wordIndexLookup[0].size(), NULL_LETTER);
+        static auto rightSpotPattern = std::string(wordIndexLookup[0].size(), NULL_LETTER);
 
+        const auto &guess = wordIndexLookup[guessIndex];
         for (int i = 0; i < 26; ++i) {
-            letterMinLimit[i] = letterMaxLimit[i] = 0;
-            excludedLetters[i] = false;
+            letterMinLimit[i] = 0;
+            letterMaxLimit[i] = 10;
         }
 
         std::size_t correct = 0;
@@ -48,7 +43,7 @@ struct AttemptState {
             if (pattern[i] == '+') correct++;
         }
         if (correct == guess.size()) {
-            return AttemptState(patternGetter, {guess});
+            return {guessIndex};
         }
 
         for (std::size_t i = 0; i < pattern.size(); ++i) {
@@ -58,26 +53,26 @@ struct AttemptState {
             int letterInd = guess[i]-'a';
             if (pattern[i] == '_') {
                 if (letterMinLimit[letterInd] == 0) {
-                    excludedLetters[letterInd] = true;
-                } else if (letterMaxLimit[letterInd] == 0) {
+                    letterMaxLimit[letterInd] = 0;
+                } else if (letterMaxLimit[letterInd] == 10) {
                     letterMaxLimit[letterInd] = letterMinLimit[letterInd];
                 }
             }
         }
 
-        std::vector<std::string> result = {};
-        for (const auto &word: words) {
+        std::vector<IndexType> result = {};
+        for (const auto &wordIndex: wordIndexes) {
+            const auto &word = wordIndexLookup[wordIndex];
             MinLetterType letterCount = {};
             //for (auto i = 0; i < 26; ++i) letterCount[i] = 0;
             bool allowed = true;
 
             for (std::size_t i = 0; i < word.size(); ++i) {
                 auto letterInd = word[i]-'a';
-                if (excludedLetters[letterInd]) { allowed = false; break; }
                 if (wrongSpotPattern[i] == word[i]) { allowed = false; break; }
                 if (rightSpotPattern[i] != NULL_LETTER && rightSpotPattern[i] != word[i]) { allowed = false; break; }
                 letterCount[letterInd]++;
-                if (letterMaxLimit[letterInd] != 0 && letterCount[letterInd] > letterMaxLimit[letterInd]) { allowed = false; break; }
+                if (letterCount[letterInd] > letterMaxLimit[letterInd]) { allowed = false; break; }
             }
 
             if (allowed) {
@@ -88,7 +83,7 @@ struct AttemptState {
             }
 
             if (allowed && word != guess) {
-                result.push_back(word);
+                result.push_back(wordIndex);
             }
         }
 
@@ -101,14 +96,12 @@ struct AttemptState {
             exit(1);
         }
 
-        auto res = AttemptState(patternGetter);
-        res.words = std::move(result);
-        return res;
+        return result;
     }
 
-    AttemptState guessWordCached(const std::string &guess, const std::vector<std::string> &words) {
-        return guessWord(guess, words);
-        auto ret = AttemptState(patternGetter);
+    std::vector<IndexType> guessWordCached(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) {
+        return guessWord(guessIndex, wordIndexes, wordIndexLookup);
+        /*auto ret = AttemptState(patternGetter);
         auto pattern = patternGetter.getPatternFromWord(guess);
         auto key = AttemptStateCacheKey(reverseGuessToIndex[guess], pattern);
         const auto &allowedWords = attemptStateCache[key];
@@ -118,7 +111,7 @@ struct AttemptState {
                 ret.words.push_back(wordToCheck);
             }
         }
-        return ret;
+        return ret;*/
     }
 
     using ReverseIndexType = std::unordered_map<std::string, int>;
@@ -128,6 +121,7 @@ struct AttemptState {
         DEBUG("precomputing AttemptState");
         reverseGuessToIndex = {};
         return;
+        /*
         suppressErrors = true;
         auto patterns = getAllPatterns(guesses[0].size());
 
@@ -151,7 +145,7 @@ struct AttemptState {
                 attemptStateCache[key] = allowedWords;
             }
         }
-        suppressErrors = false;
+        suppressErrors = false;*/
 
         //exit(1);
     }

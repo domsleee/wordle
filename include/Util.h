@@ -22,11 +22,12 @@
     }
 
 
-static const int MAX_TRIES = 6;
+using IndexType = uint16_t;
+
+static const int MAX_TRIES = 3;
 static const int NUM_WORDS = 2400;
 static const int MAX_NUM_GUESSES = 13000;
 static const char NULL_LETTER = '-';
-using WordProbPair = std::pair<double, std::string>;
 using MinLetterType = std::array<int8_t, 26>;
 
 

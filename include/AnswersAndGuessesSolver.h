@@ -46,13 +46,14 @@ struct AnswersAndGuessesSolver {
             }
         }
     
-    using ReverseIndexType = std::unordered_map<std::string, int>;
     const std::vector<std::string> allAnswers, allGuesses;
     const std::unordered_set<std::string> allAnswersSet;
-    int maxTries;
+    const int maxTries;
+
+    static const int isEasyModeVar = isEasyMode;
 
     std::string startingWord = "blahs";
-    ReverseIndexType reverseIndexAnswers = {}, reverseIndexGuesses = {};
+    std::vector<std::string> reverseIndexLookup;
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
     const bool useExactSearch = true; // only if probablity is 1.00
@@ -76,39 +77,51 @@ struct AnswersAndGuessesSolver {
 
         auto getter = PatternGetter(answer);
         auto state = AttemptState(getter);
-        std::vector<std::string> answers = allAnswers, guesses = allGuesses;
+        std::vector<IndexType> answers = getVector(allAnswers.size(), 0), guesses = getVector(allGuesses.size(), allAnswers.size());
 
         if (isEasyMode) {
             guesses = clearGuesses(guesses, answers);
         }
 
-        std::string guess = startingWord;// firstPr.second;
+        int guessIndex = std::distance(
+            reverseIndexLookup.begin(),
+            std::find(reverseIndexLookup.begin() + allAnswers.size(), reverseIndexLookup.end(), startingWord)
+        );
         if (getFirstWord) {
             DEBUG("guessing first word...");
             auto firstPr = getBestWord(answers, guesses, maxTries);
-            DEBUG("first word: " << firstPr.word << ", known prob: " << firstPr.prob);
-            guess = firstPr.word;
+            DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known prob: " << firstPr.prob);
+            guessIndex = firstPr.wordIndex;
         }
 
         for (int tries = 1; tries <= maxTries; ++tries) {
-            if (guess == answer) return tries;
+            if (reverseIndexLookup[guessIndex] == answer) return tries;
             if (tries == maxTries) break;
-            answers = state.guessWord(guess, answers).words;
-            if (!isEasyMode) guesses = state.guessWord(guess, guesses).words;
+            answers = state.guessWord(guessIndex, answers, reverseIndexLookup);
+            if (!isEasyMode) guesses = state.guessWord(guessIndex, guesses, reverseIndexLookup);
 
             GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guesses.size());
             auto pr = getBestWord(answers, guesses, maxTries-tries);
-            GUESSESSOLVER_DEBUG("NEXT GUESS: " << pr.word << ", PROB: " << pr.prob);
+            GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
 
             if (useExactSearch && pr.prob != 1.00) break;
 
-            guess = pr.word;
+            guessIndex = pr.wordIndex;
         }
         return -1;
     }
-    
 
-    BestWordResult getBestWord(const std::vector<std::string> &answers, const std::vector<std::string> &guesses, uint8_t triesRemaining) {
+private:
+
+    std::vector<IndexType> getVector(std::size_t size, std::size_t offset) {
+        std::vector<IndexType> res(size);
+        for (std::size_t i = 0; i < size; ++i) {
+            res[i] = i + offset;
+        }
+        return res;
+    }
+    
+    BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {
         if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
         if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
@@ -117,9 +130,10 @@ struct AnswersAndGuessesSolver {
             return {1.00/answers.size(), answers[0]};
         }
 
-        /*const std::vector<std::string> guessWords = isEasyMode
-            ? clearGuesses(guesses, answers)
-            : guesses;*/
+        std::vector<IndexType> clearedGuesses;
+        const auto &guesses = isEasyMode
+            ? (clearedGuesses = clearGuesses(_guesses, answers))
+            : _guesses;
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
@@ -128,24 +142,26 @@ struct AnswersAndGuessesSolver {
         auto cacheVal = getFromCache(key);
         if (cacheVal.prob != -1) return cacheVal;
 
-        BestWordResult res = {-1.00, ""};
+        BestWordResult res = {-1.00, -1};
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
         for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
             const auto &possibleGuess = guesses[myInd];
-            if (triesRemaining == maxTries) DEBUG(possibleGuess << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
+            if (triesRemaining == maxTries) DEBUG(reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
             auto prob = 0.00;
             for (std::size_t i = 0; i < answers.size(); ++i) {
-                const auto &actualWord = answers[i];
-                auto getter = PatternGetter(actualWord);
+                const auto &actualWordIndex = answers[i];
+                auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
                 auto state = AttemptState(getter);
 
-                const auto answerWords = state.guessWordCached(possibleGuess, answers).words;
-                const auto nextGuessWords = isEasyMode
-                    ? guesses
-                    : state.guessWordCached(possibleGuess, guesses).words;
-
-                auto pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
+                const auto answerWords = state.guessWordCached(possibleGuess, answers, reverseIndexLookup);
+                BestWordResult pr;
+                if (isEasyMode) {
+                    pr = getBestWord(answerWords, guesses, triesRemaining-1);
+                } else {
+                    const auto nextGuessWords = state.guessWordCached(possibleGuess, guesses, reverseIndexLookup);
+                    pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
+                }
                 prob += pr.prob;
                 if (useExactSearch && pr.prob != 1) break;
             }
@@ -162,37 +178,50 @@ struct AnswersAndGuessesSolver {
         return setCacheVal(key, res);
     }
 
-    inline std::vector<std::string> clearGuesses(std::vector<std::string> guesses, const std::vector<std::string> &answers) {
-        MinLetterType lettersInAnswers = {};
-        for (auto &ans: answers) {
-            for (auto c: ans) lettersInAnswers[c-'a'] = 1;
+    inline std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
+        buildClearGuessesInfo();
+        int answerLetterMask = 0;
+        for (auto &answerIndex: answers) {
+            answerLetterMask |= letterCountLookup[answerIndex];
         }
         auto sizeBefore = guesses.size();
-        std::erase_if(guesses, [&](const std::string &s) {
-            return std::all_of(s.begin(), s.end(), [&](const char c) { return lettersInAnswers[c-'a'] == 0; });
+        std::erase_if(guesses, [&](const int &guessIndex) {
+            return (answerLetterMask & letterCountLookup[guessIndex]) == 0;
         });
-        //auto numRemoved = sizeBefore - guesses.size();
+        auto numRemoved = sizeBefore - guesses.size();
         //if (numRemoved > 0) DEBUG("REMOVED " << getPerc(numRemoved, sizeBefore));
+
         return guesses;
+    }
+
+    inline static std::vector<int> letterCountLookup = {};
+    void buildClearGuessesInfo() {
+        if (letterCountLookup.size() > 0) return;
+        letterCountLookup.resize(reverseIndexLookup.size());
+        for (std::size_t i = 0; i < reverseIndexLookup.size(); ++i) {
+            letterCountLookup[i] = 0;
+            for (auto c: reverseIndexLookup[i]) {
+                letterCountLookup[i] |= (1 << (c-'a'));
+            }
+        }
     }
 
 
     // hash table
     void prepareHashTable() {
-        reverseIndexAnswers.clear();
-        reverseIndexGuesses.clear();
+        reverseIndexLookup.resize(allAnswers.size() + allGuesses.size());
 
         for (std::size_t i = 0; i < allAnswers.size(); ++i) {
-            reverseIndexAnswers[allAnswers[i]] = i;
+            reverseIndexLookup[i] = allAnswers[i];
         }
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
-            reverseIndexGuesses[allGuesses[i]] = i;
+            reverseIndexLookup[i + allAnswers.size()] = allGuesses[i];
         }
         DEBUG("RESETTING ANSWERSANDGUESSESSOLVER CACHE");
         getBestWordCache = {};
     }
 
-    AnswersAndGuessesKey getCacheKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, int triesRemaining) {
+    AnswersAndGuessesKey getCacheKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining) {
         return AnswersAndGuessesKey(wsAnswers, wsGuesses, triesRemaining);
     }
 
@@ -200,7 +229,7 @@ struct AnswersAndGuessesSolver {
         auto it = getBestWordCache.find(key);
         if (it == getBestWordCache.end()) {
             cacheMiss++;
-            return {-1, ""};
+            return {-1, -1};
         }
         cacheHit++;
         return it->second;
@@ -215,19 +244,19 @@ struct AnswersAndGuessesSolver {
     }
 
     template<typename T>
-    T buildWordSet(const std::vector<std::string> &words, ReverseIndexType &reverseIndex) {
+    T buildWordSet(const std::vector<IndexType> &wordIndexes, int offset) {
         auto wordset = T();
-        for (auto word: words) {
-            wordset.set(reverseIndex[word]);
+        for (auto wordIndex: wordIndexes) {
+            wordset.set(offset + wordIndex);
         }
         return wordset;
     }
 
-    WordSetAnswers buildAnswersWordSet(const std::vector<std::string> &answers) {
-        return buildWordSet<WordSetAnswers>(answers, reverseIndexAnswers);
+    WordSetAnswers buildAnswersWordSet(const std::vector<IndexType> &answers) {
+        return buildWordSet<WordSetAnswers>(answers, 0);
     }
 
-    WordSetGuesses buildGuessesWordSet(const std::vector<std::string> &guesses) {
-        return buildWordSet<WordSetGuesses>(guesses, reverseIndexGuesses);
+    WordSetGuesses buildGuessesWordSet(const std::vector<IndexType> &guesses) {
+        return buildWordSet<WordSetGuesses>(guesses, -allAnswers.size());
     }
 };

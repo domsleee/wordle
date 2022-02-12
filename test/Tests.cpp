@@ -1,10 +1,14 @@
 #include "../include/Tests.h"
 #include "../include/AttemptState.h"
 #include "../include/Util.h"
+#define CATCH_CONFIG_MAIN
+#include "../third_party/catch.hpp"
 
 #include <iostream>
 
-void testAttemptState() {
+#define REQUIRE_MESSAGE(cond, msg) do { INFO(msg); REQUIRE(cond); } while((void)0, 0)
+
+TEST_CASE("attempt state") {
     std::vector<std::string> words = {
         "ought",
         "duchy",
@@ -25,34 +29,28 @@ void testAttemptState() {
     auto answersState = AttemptState(getter, {});
 
     auto wordState = answersState.guessWord("foehn", words);
-    DEBUG("num words " << wordState.words.size());
-    for (auto w: wordState.words) DEBUG(w);
-    assertm(wordState.words.size() == 1, "one word");
-    assertm(wordState.words[0] == "night", "correct word");
+    INFO("num words " << wordState.words.size());
+    for (auto w: wordState.words) INFO(w);
+    REQUIRE_MESSAGE(wordState.words.size() == 1, "one word");
+    REQUIRE_MESSAGE(wordState.words[0] == "night", "correct word");
 }
 
-void testPatternGetter1() {
+TEST_CASE("PatternGetter 1") {
     auto getter = PatternGetter("aaron");
     auto pattern = getter.getPatternFromWord("opera");
-    assertm(pattern == "?__??", "pattern should be right");
+    REQUIRE_MESSAGE(pattern == "?__??", "pattern should be right");
 }
 
-void testPatternGetter2() {
+TEST_CASE("PatternGetter 2") {
     auto getter = PatternGetter("absolutely");
     auto pattern = getter.getPatternFromWord("aboriginal");
-    DEBUG("PATTERN " << pattern);
-    assertm(pattern == "++?______?", "pattern should be right");
+    INFO("PATTERN " << pattern);
+    REQUIRE_MESSAGE(pattern == "++?______?", "pattern should be right");
 }
 
-void runTests() {
-    DEBUG("RUN TESTS");
-
-    testAttemptState();
-    testPatternGetter1();
-    testPatternGetter2();
-
+TEST_CASE("PatternGetter 3") {
     auto pattern = getPattern(toLower("ALARM"), toLower("SHARD"));
-    assertm(pattern == "__++_", "pattern should be right");
-
-    DEBUG("all tests passed");
+    REQUIRE_MESSAGE(pattern == "__++_", "pattern should be right");
 }
+
+TEST_CASE
