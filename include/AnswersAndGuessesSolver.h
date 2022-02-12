@@ -23,6 +23,7 @@ struct AnswersAndGuessesSolver {
         : allAnswers(allAnswers),
           allGuesses(allGuesses),
           allAnswersSet(allAnswers.begin(), allAnswers.end()),
+          reverseIndexLookup(buildLookup()),
           maxTries(maxTries)
         {
             precompute();
@@ -48,20 +49,22 @@ struct AnswersAndGuessesSolver {
     
     const std::vector<std::string> allAnswers, allGuesses;
     const std::unordered_set<std::string> allAnswersSet;
+    const std::vector<std::string> reverseIndexLookup;
     const int maxTries;
 
     static const int isEasyModeVar = isEasyMode;
+    const bool useExactSearch = true; // only if probablity is 1.00
 
     std::string startingWord = "blahs";
-    std::vector<std::string> reverseIndexLookup;
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
-    const bool useExactSearch = true; // only if probablity is 1.00
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
         //AttemptState::setupWordCache(allGuesses.size());
-        prepareHashTable();
+        getBestWordCache = {};
+        buildClearGuessesInfo();
+
     }
 
     void setStartWord(const std::string &word) {
@@ -179,7 +182,6 @@ private:
     }
 
     inline std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
-        buildClearGuessesInfo();
         int answerLetterMask = 0;
         for (auto &answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
@@ -208,17 +210,17 @@ private:
 
 
     // hash table
-    void prepareHashTable() {
-        reverseIndexLookup.resize(allAnswers.size() + allGuesses.size());
+    auto buildLookup() {
+        std::vector<std::string> lookup(allAnswers.size() + allGuesses.size());
 
         for (std::size_t i = 0; i < allAnswers.size(); ++i) {
-            reverseIndexLookup[i] = allAnswers[i];
+            lookup[i] = allAnswers[i];
         }
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
-            reverseIndexLookup[i + allAnswers.size()] = allGuesses[i];
+            lookup[i + allAnswers.size()] = allGuesses[i];
         }
-        DEBUG("RESETTING ANSWERSANDGUESSESSOLVER CACHE");
-        getBestWordCache = {};
+
+        return lookup;
     }
 
     AnswersAndGuessesKey getCacheKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining) {
