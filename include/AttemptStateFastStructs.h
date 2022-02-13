@@ -3,7 +3,7 @@
 #include <vector>
 
 using LetterCountNumberType = uint32_t;
-using PositionLetterType = uint64_t;
+using PositionLetterType = uint32_t;
 
 
 struct WordIndexData {

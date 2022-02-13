@@ -40,7 +40,7 @@ struct AttemptStateFast {
             if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
 
             // replaced by one 32-bit bitwise AND
-            if ((wordIndexData.positionalLetterNumber % guessIndexPattern.rightSpotNumber) != 0) continue;
+            if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber) != guessIndexPattern.rightSpotNumber) continue;
 
             if (std::any_of(
                 guessIndexPattern.letterMaxLimit.begin(),
@@ -57,7 +57,7 @@ struct AttemptStateFast {
                 guessIndexPattern.wrongSpotPattern.begin(),
                 guessIndexPattern.wrongSpotPattern.begin() + guessIndexPattern.wrongSpotPatternSize,
                 [&](const WrongSpotPatternType &wrongSpotPattern) {
-                    return (wordIndexData.positionalLetterNumber % wrongSpotPattern) == 0;
+                    return (wordIndexData.positionalLetterNumber & wrongSpotPattern) == wrongSpotPattern;
                 }
             )) continue;
             //if (gcd(wordIndexData.positionalLetterNumber, guessIndexPattern.wrongSpotPatternNumber) != 1) continue;
@@ -107,13 +107,13 @@ private:
         for (std::size_t i = 0; i < reverseIndexLookup.size(); ++i) {
             const auto &word = reverseIndexLookup[i];
             LetterCountNumberType letterCountNumber = 1;
-            PositionLetterType positionalLetterNumber = 1;
+            PositionLetterType positionalLetterNumber = 0;
             int letterMap = 0;
             for (std::size_t j = 0; j < word.size(); ++j) {
                 char c = word[j];
                 letterMap |= (1 << (c-'a'));
                 letterCountNumber = safeMultiply(letterCountNumber, getPrimeForLetter<LetterCountNumberType>(c));
-                positionalLetterNumber = safeMultiply(positionalLetterNumber, getPrimeForPosition<PositionLetterType>(c, j));
+                positionalLetterNumber |= (c-'a') << (5 * j);
             }
             wordIndexDataLookup.push_back(WordIndexData(letterCountNumber, positionalLetterNumber, letterMap));
         }
@@ -134,17 +134,17 @@ private:
                 calcWordAndPattern(data, word, pattern);
 
                 LetterCountNumberType letterMinLimitNumber = 1;
-                PositionLetterType rightSpotNumber = 1;
+                PositionLetterType rightSpotNumber = 0;
                 std::vector<LetterMaxLimitType> letterMaxLimit = {};
                 std::vector<WrongSpotPatternType> wrongSpotPattern = {};
                 int excludedLetterMap = 0;
 
                 for (int j = 0; j < WORD_LENGTH; ++j) {
                     if (data.rightSpotPattern[j] != NULL_LETTER) {
-                        rightSpotNumber = safeMultiply(rightSpotNumber, getPrimeForPosition<PositionLetterType>(word[j], j));
+                        rightSpotNumber |= (word[j]-'a') << (5 * j);
                     }
                     if (data.wrongSpotPattern[j] != NULL_LETTER) {
-                        wrongSpotPattern.push_back(getPrimeForPosition<WrongSpotPatternType>(word[j], j));
+                        wrongSpotPattern.push_back((word[j]-'a') << (5 * j));
                     }
                 }
 
