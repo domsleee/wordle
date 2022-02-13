@@ -4,15 +4,41 @@
 
 using LetterCountNumberType = uint32_t;
 using PositionLetterType = uint32_t;
+using LetterMapType = int;
 
 
 struct WordIndexData {
     const LetterCountNumberType letterCountNumber;
     const PositionLetterType positionalLetterNumber;
-    const int letterMap;
-    WordIndexData(LetterCountNumberType letterCountNumber, PositionLetterType positionalLetterNumber, int letterMap)
-        : letterCountNumber(letterCountNumber),
-          positionalLetterNumber(positionalLetterNumber),
+    const LetterMapType letterMap;
+    const std::array<LetterMapType, 4> letterCountMap;
+    WordIndexData(
+        LetterCountNumberType letterCountNumber,
+        PositionLetterType positionalLetterNumber,
+        LetterMapType letterMap,
+        const std::array<LetterMapType, 4> &letterCountMap
+    )
+    : letterCountNumber(letterCountNumber),
+      positionalLetterNumber(positionalLetterNumber),
+      letterMap(letterMap),
+      letterCountMap(letterCountMap) {}
+};
+
+template<typename T>
+struct ValueWithMask {
+    T value = 0;
+    T mask = 0;
+    ValueWithMask() {}
+    ValueWithMask(T value, T mask): value(value), mask(mask) {}
+    //ValueWithMask<T>& operator=(const ValueWithMask<T> &classObj);
+};
+
+struct LetterToCheckLetterMap {
+    uint8_t letterCountToCheck = 0;
+    LetterMapType letterMap = 0;
+    LetterToCheckLetterMap() {}
+    LetterToCheckLetterMap(uint8_t letterCountToCheck, LetterMapType letterMap)
+        : letterCountToCheck(letterCountToCheck),
           letterMap(letterMap) {}
 };
 
@@ -20,10 +46,10 @@ using LetterMaxLimitType = uint32_t;
 using WrongSpotPatternType = uint32_t;
 struct GuessIndexPatternData {
     const LetterCountNumberType letterMinLimitNumber;
-    const PositionLetterType rightSpotNumber;
-    const std::array<LetterMaxLimitType, 2> letterMaxLimit;
+    const ValueWithMask<PositionLetterType> rightSpotNumber;
+    const std::array<LetterToCheckLetterMap, 2> letterMaxLimit;
     const uint8_t letterMaxLimitSize;
-    const std::array<WrongSpotPatternType, 5> wrongSpotPattern;
+    const std::array<ValueWithMask<PositionLetterType>, 5> wrongSpotPattern;
     const uint8_t wrongSpotPatternSize;
     const int excludedLetterMap;
     //const int letterMaxLimitNumber;
@@ -31,16 +57,16 @@ struct GuessIndexPatternData {
 
     GuessIndexPatternData(
         LetterCountNumberType letterMinLimitNumber,
-        PositionLetterType rightSpotNumber,
-        const std::vector<LetterMaxLimitType> &letterMaxLimit,
-        const std::vector<WrongSpotPatternType> &wrongSpotPattern,
+        ValueWithMask<PositionLetterType> rightSpotNumber,
+        const std::vector<LetterToCheckLetterMap> &letterMaxLimit,
+        const std::vector<ValueWithMask<PositionLetterType>> &wrongSpotPattern,
         const int excludedLetterMap
     )
     : letterMinLimitNumber(letterMinLimitNumber),
       rightSpotNumber(rightSpotNumber),
-      letterMaxLimit(buildArrayFromVec<LetterMaxLimitType, 2>(letterMaxLimit)),
+      letterMaxLimit(buildArrayFromVec<LetterToCheckLetterMap, 2>(letterMaxLimit)),
       letterMaxLimitSize(letterMaxLimit.size()),
-      wrongSpotPattern(buildArrayFromVec<WrongSpotPatternType, 5>(wrongSpotPattern)),
+      wrongSpotPattern(buildArrayFromVec<ValueWithMask<PositionLetterType>, 5>(wrongSpotPattern)),
       wrongSpotPatternSize(wrongSpotPattern.size()),
       excludedLetterMap(excludedLetterMap)
       //letterMaxLimitNumber(combine<int>(letterMaxLimit)),
@@ -54,7 +80,7 @@ struct GuessIndexPatternData {
             DEBUG("incorrect size for array, given " << vec.size() << ", expected: " << N);
             exit(1);
         }
-        for (std::size_t i = 0; i < N; ++i) ret[i] = std::numeric_limits<T>::max();
+        // for (std::size_t i = 0; i < N; ++i) ret[i] = std::numeric_limits<T>::max();
         for (std::size_t i = 0; i < vec.size(); ++i) {
             ret[i] = vec[i];
         }
