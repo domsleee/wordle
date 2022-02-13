@@ -17,6 +17,7 @@ struct AttemptState {
       : patternGetter(getter) {}
 
     PatternGetter patternGetter;
+    static const bool suppressErrors = false;
 
     std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
         auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
@@ -174,12 +175,5 @@ struct AttemptState {
                 exit(1);
             }
         }
-    }
-
-    static inline CacheType attemptStateCache = {};
-    static inline long long cacheSize, cacheHit, cacheMiss;
-    static inline bool suppressErrors = false;
-    static void setupWordCache(int numIndexes) {
-        // do nothing?
     }
 };

@@ -9,7 +9,7 @@ endif
 UNAME := $(shell uname)
 CXX = g++-11
 CXXFLAGS = -std=c++20 -Wall $(CONDITIONAL_CXX)
-CXXFLAGSTEST = -std=c++20 -Wall
+CXXFLAGSTEST = -std=c++20 -Wall -g
 LIBS := -ltbb -lprofiler
 ifeq ($(UNAME), Darwin)
 LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib

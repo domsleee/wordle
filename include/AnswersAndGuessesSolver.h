@@ -1,5 +1,6 @@
 #pragma once
 #include "AttemptState.h"
+#include "AttemptStateFast.h"
 
 #include "PatternGetter.h"
 #include "WordSetUtil.h"
@@ -64,6 +65,7 @@ struct AnswersAndGuessesSolver {
         //AttemptState::setupWordCache(allGuesses.size());
         getBestWordCache = {};
         buildClearGuessesInfo();
+        AttemptStateFast::buildForReverseIndexLookup(reverseIndexLookup);
 
     }
 
@@ -115,17 +117,11 @@ struct AnswersAndGuessesSolver {
     }
 
 private:
-
-    std::vector<IndexType> getVector(std::size_t size, std::size_t offset) {
-        std::vector<IndexType> res(size);
-        for (std::size_t i = 0; i < size; ++i) {
-            res[i] = i + offset;
-        }
-        return res;
-    }
     
     BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {
-        if (answers.size() == 0) { DEBUG("NO WORDS!"); exit(1); }
+        if (answers.size() == 0) {
+            DEBUG("NO WORDS!"); exit(1);
+        }
         if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
 
@@ -155,14 +151,14 @@ private:
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
                 auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
-                auto state = AttemptState(getter);
+                auto state = AttemptStateFast(getter);
 
-                const auto answerWords = state.guessWordCached(possibleGuess, answers, reverseIndexLookup);
+                const auto answerWords = state.guessWord(possibleGuess, answers, reverseIndexLookup);
                 BestWordResult pr;
                 if (isEasyMode) {
                     pr = getBestWord(answerWords, guesses, triesRemaining-1);
                 } else {
-                    const auto nextGuessWords = state.guessWordCached(possibleGuess, guesses, reverseIndexLookup);
+                    const auto nextGuessWords = state.guessWord(possibleGuess, guesses, reverseIndexLookup);
                     pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
                 }
                 prob += pr.prob;

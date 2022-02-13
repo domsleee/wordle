@@ -1,4 +1,6 @@
 #include "../include/AttemptState.h"
+#include "../include/AttemptStateFast.h"
+
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
 #include "../include/AnswersAndGuessesSolver.h"
@@ -63,8 +65,6 @@ int main(int argc, char *argv[]) {
     DEBUG("guess words : " << guesses.size());
     DEBUG("average     : " << avg);
     printSolverInformation(solver);
-    auto attemptStateTotal = AttemptState::cacheHit + AttemptState::cacheMiss;
-    DEBUG("state cache : " << AttemptState::cacheHit << "/" << attemptStateTotal << " (" << 100.00 * AttemptState::cacheHit/attemptStateTotal << "%)");
     END_TIMER(total);
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }

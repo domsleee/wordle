@@ -8,9 +8,9 @@ struct AttemptStateCacheKey {
 
     AttemptStateCacheKey(int guessIndex, const std::string &patternStr)
         : guessIndex(guessIndex),
-          pattern(calcPattern(patternStr)) {}
+          pattern(calcPatternInt(patternStr)) {}
     
-    int calcPattern(const std::string &patternStr) {
+    static int calcPatternInt(const std::string &patternStr) {
         int res = 0, mult = 1;
         for (char c: patternStr) {
             int v = charToInt(c);
