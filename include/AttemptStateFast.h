@@ -22,20 +22,24 @@ struct AttemptStateFast {
         auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
         auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
 
-        if (pattern == "+++++") return {guessIndex};
+        // is equal to +++++
+        if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
         std::vector<IndexType> res = {};
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
         //DEBUG("PATTERN: " << pattern);
         for (auto wordIndex: wordIndexes) {
             //if (guessIndex == 3117) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex]);
-            const auto &wordIndexData = wordIndexDataLookup[wordIndex];
-
             if (wordIndex == guessIndex) continue;
 
-            if (wordIndexData.letterMap & guessIndexPattern.excludedLetterMap != 0) continue;
+            const auto &wordIndexData = wordIndexDataLookup[wordIndex];
 
+            if ((wordIndexData.letterMap & guessIndexPattern.excludedLetterMap) != 0) continue;
+
+            // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
             if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
+
+            // replaced by one 32-bit bitwise AND
             if ((wordIndexData.positionalLetterNumber % guessIndexPattern.rightSpotNumber) != 0) continue;
 
             if (std::any_of(
@@ -48,6 +52,7 @@ struct AttemptStateFast {
 
             //if (gcd(wordIndexData.letterCountNumber, guessIndexPattern.letterMaxLimitNumber) != 1) continue;
             
+            // replaced by 32-bit bitwise ANDs
             if (std::any_of(
                 guessIndexPattern.wrongSpotPattern.begin(),
                 guessIndexPattern.wrongSpotPattern.begin() + guessIndexPattern.wrongSpotPatternSize,
@@ -62,6 +67,15 @@ struct AttemptStateFast {
 
         return res;
         //return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
+    }
+
+    // https://stackoverflow.com/questions/33333363/built-in-mod-vs-custom-mod-function-improve-the-performance-of-modulus-op
+    template <typename T>
+    T fastMod(const T input, const T ceil) const {
+        // apply the modulo operator only when needed
+        // (i.e. when the input is greater than the ceiling)
+        return input >= ceil ? input % ceil : input;
+        // NB: the assumption here is that the numbers are positive
     }
 
     int64_t gcd(int64_t a, int64_t b) const {

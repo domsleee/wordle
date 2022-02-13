@@ -21,7 +21,7 @@ using WrongSpotPatternType = uint32_t;
 struct GuessIndexPatternData {
     const LetterCountNumberType letterMinLimitNumber;
     const PositionLetterType rightSpotNumber;
-    const std::array<LetterMaxLimitType, 5> letterMaxLimit;
+    const std::array<LetterMaxLimitType, 2> letterMaxLimit;
     const uint8_t letterMaxLimitSize;
     const std::array<WrongSpotPatternType, 5> wrongSpotPattern;
     const uint8_t wrongSpotPatternSize;
@@ -38,7 +38,7 @@ struct GuessIndexPatternData {
     )
     : letterMinLimitNumber(letterMinLimitNumber),
       rightSpotNumber(rightSpotNumber),
-      letterMaxLimit(buildArrayFromVec<LetterMaxLimitType, 5>(letterMaxLimit)),
+      letterMaxLimit(buildArrayFromVec<LetterMaxLimitType, 2>(letterMaxLimit)),
       letterMaxLimitSize(letterMaxLimit.size()),
       wrongSpotPattern(buildArrayFromVec<WrongSpotPatternType, 5>(wrongSpotPattern)),
       wrongSpotPatternSize(wrongSpotPattern.size()),
@@ -54,6 +54,7 @@ struct GuessIndexPatternData {
             DEBUG("incorrect size for array, given " << vec.size() << ", expected: " << N);
             exit(1);
         }
+        for (std::size_t i = 0; i < N; ++i) ret[i] = std::numeric_limits<T>::max();
         for (std::size_t i = 0; i < vec.size(); ++i) {
             ret[i] = vec[i];
         }

@@ -3,25 +3,21 @@
 
 std::string getPattern(const std::string &word, const std::string &answer) {
     MinLetterType answerLetterCount = {};
-    for (auto c: answer) {
-        answerLetterCount[c-'a']++;
-    }
+    std::string pattern(WORD_LENGTH, NULL_LETTER);
 
-    for (std::size_t i = 0; i < answer.size(); ++i) {
-        if (word[i] == answer[i]) {
-            auto c = word[i];
-            answerLetterCount[c-'a']--;
-        }
-    }
-
-    std::string pattern(word.size(), NULL_LETTER);
-    for (std::size_t i = 0; i < word.size(); ++i) {
-        if (word[i] == answer[i]) {
+    for (std::size_t i = 0; i < WORD_LENGTH; ++i) {
+        auto c = answer[i];
+        if (word[i] == c) {
             pattern[i] = '+';
-            continue;
+        } else {
+            answerLetterCount[c-'a']++;
         }
+    }
 
-        auto letterInd = word[i]-'a';
+    for (std::size_t i = 0; i < WORD_LENGTH; ++i) {
+        if (word[i] == answer[i]) continue;
+
+        const auto letterInd = word[i]-'a';
         if (answerLetterCount[letterInd] > 0) {
             pattern[i] = '?';
             answerLetterCount[letterInd]--;
