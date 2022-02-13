@@ -25,13 +25,17 @@ struct AttemptStateFast {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
-        //auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
+        /*
+        auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
+        DEBUG("guess index " << guessIndex << " other " << otherResult.size() << ", pattern " << pattern);
+        DEBUG("other: " << otherResult[0]);
+        */
 
         std::vector<IndexType> res = {};
+        res.reserve(wordIndexes.size());
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
-        //DEBUG("PATTERN: " << pattern);
         for (auto wordIndex: wordIndexes) {
-            /*if (guessIndex == 4285 && wordIndex == 135 && pattern == "__++_") {
+            /*if (guessIndex == 2315 && wordIndex == 1 && pattern == "____?") {
                 DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
             }*/
             if (wordIndex == guessIndex) continue;
@@ -40,12 +44,16 @@ struct AttemptStateFast {
 
             if ((wordIndexData.letterMap & guessIndexPattern.excludedLetterMap) != 0) continue;
 
-            // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
-            //if ((wordIndexData.letterCountMap[0] & guessIndexPattern.))
-            if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
-
             // replaced by one 32-bit bitwise AND
             if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber.mask) != guessIndexPattern.rightSpotNumber.value) continue;
+
+            // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
+            //if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
+            
+            const auto &v1 = readAsInt64(guessIndexPattern.letterMinLimit, 0);
+            if ((readAsInt64(wordIndexData.letterCountMap, 0) & v1) != v1) continue;
+            const auto &v2 = readAsInt64(guessIndexPattern.letterMinLimit, 1);
+            if ((readAsInt64(wordIndexData.letterCountMap, 1) & v2) != v2) continue;
 
             if (std::any_of(
                 guessIndexPattern.letterMaxLimit.begin(),
@@ -72,6 +80,10 @@ struct AttemptStateFast {
 
         return res;
         //return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
+    }
+
+    inline int64_t readAsInt64(const std::array<LetterMapType, 4> &arr, int index) const {
+        return reinterpret_cast<const std::array<int64_t, 2>&>(arr)[index];
     }
 
     // https://stackoverflow.com/questions/33333363/built-in-mod-vs-custom-mod-function-improve-the-performance-of-modulus-op
@@ -152,10 +164,11 @@ private:
                 calcWordAndPattern(data, word, pattern);
 
                 LetterCountNumberType letterMinLimitNumber = 1;
+                std::array<LetterMapType, 4> letterMinLimit = {};
                 PositionLetterType rightSpotNumber = 0, rightSpotMask = 0;
                 std::vector<LetterToCheckLetterMap> letterMaxLimit = {};
                 std::vector<ValueWithMask<PositionLetterType>> wrongSpotPattern = {};
-                int excludedLetterMap = 0;
+                LetterMapType excludedLetterMap = 0;
 
                 for (int j = 0; j < WORD_LENGTH; ++j) {
                     if (data.rightSpotPattern[j] != NULL_LETTER) {
@@ -174,15 +187,17 @@ private:
 
                 int knownLetterCount = 0;
                 for (int j = 0; j < 26; ++j) {
+                    if (data.letterMinLimit[j] == 0) continue;
                     for (auto k = 0; k < data.letterMinLimit[j]; ++k) {
                         letterMinLimitNumber = safeMultiply(letterMinLimitNumber, getPrimeForLetter<LetterCountNumberType>('a' + j));
                         knownLetterCount++;
                     }
+
+                    letterMinLimit[data.letterMinLimit[j]-1] |= 1 << j;
                 }
 
                 if (knownLetterCount != WORD_LENGTH) {
                     for (int j = 0; j < 26; ++j) {
-                        LetterMaxLimitType multForLetter = 1;
                         if (data.letterMaxLimit[j] == MAX_LETTER_LIMIT_MAX) continue;
                         if (data.letterMaxLimit[j] == 0) {
                             excludedLetterMap |= 1 << j;
@@ -206,6 +221,7 @@ private:
                 // NUM_PATTERNS * i + patternInt
                 guessIndexPatternLookup.push_back(GuessIndexPatternData(
                     letterMinLimitNumber,
+                    letterMinLimit,
                     ValueWithMask<PositionLetterType>(rightSpotNumber, rightSpotMask),
                     letterMaxLimit,
                     wrongSpotPattern,
@@ -270,12 +286,12 @@ private:
     }
 
     template <typename T>
-    static std::vector<T> getFirstNPrimes(int n) {
+    static std::vector<T> getFirstNPrimes(T n) {
         std::vector<T> res(n);
         T resIndex = 0;
         for (T i = 2; resIndex < n; ++i) {
             bool valid = true;
-            auto sqrti = (int)sqrt(i);
+            auto sqrti = (T)sqrt(i);
             for (T j = 0; j < resIndex && res[j] <= sqrti; ++j) {
                 if (i % res[j] == 0) { valid = false; break; }
             }

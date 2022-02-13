@@ -182,11 +182,11 @@ private:
         for (auto &answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
         }
-        auto sizeBefore = guesses.size();
+        //auto sizeBefore = guesses.size();
         std::erase_if(guesses, [&](const int &guessIndex) {
             return (answerLetterMask & letterCountLookup[guessIndex]) == 0;
         });
-        auto numRemoved = sizeBefore - guesses.size();
+        //auto numRemoved = sizeBefore - guesses.size();
         //if (numRemoved > 0) DEBUG("REMOVED " << getPerc(numRemoved, sizeBefore));
 
         return guesses;

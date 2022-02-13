@@ -4,7 +4,7 @@
 
 using LetterCountNumberType = uint32_t;
 using PositionLetterType = uint32_t;
-using LetterMapType = int;
+using LetterMapType = uint32_t;
 
 
 struct WordIndexData {
@@ -46,6 +46,7 @@ using LetterMaxLimitType = uint32_t;
 using WrongSpotPatternType = uint32_t;
 struct GuessIndexPatternData {
     const LetterCountNumberType letterMinLimitNumber;
+    const std::array<LetterMapType, 4> letterMinLimit;
     const ValueWithMask<PositionLetterType> rightSpotNumber;
     const std::array<LetterToCheckLetterMap, 2> letterMaxLimit;
     const uint8_t letterMaxLimitSize;
@@ -57,12 +58,14 @@ struct GuessIndexPatternData {
 
     GuessIndexPatternData(
         LetterCountNumberType letterMinLimitNumber,
+        const std::array<LetterMapType, 4> &letterMinLimit,
         ValueWithMask<PositionLetterType> rightSpotNumber,
         const std::vector<LetterToCheckLetterMap> &letterMaxLimit,
         const std::vector<ValueWithMask<PositionLetterType>> &wrongSpotPattern,
         const int excludedLetterMap
     )
     : letterMinLimitNumber(letterMinLimitNumber),
+      letterMinLimit(letterMinLimit),
       rightSpotNumber(rightSpotNumber),
       letterMaxLimit(buildArrayFromVec<LetterToCheckLetterMap, 2>(letterMaxLimit)),
       letterMaxLimitSize(letterMaxLimit.size()),
