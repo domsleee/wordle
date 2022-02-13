@@ -25,11 +25,13 @@ struct AttemptStateFast {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
+        auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
+
         std::vector<IndexType> res = {};
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
         //DEBUG("PATTERN: " << pattern);
         for (auto wordIndex: wordIndexes) {
-            //if (guessIndex == 3117) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex]);
+            if (guessIndex == 4285 && wordIndex == 135) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
             if (wordIndex == guessIndex) continue;
 
             const auto &wordIndexData = wordIndexDataLookup[wordIndex];
@@ -40,13 +42,13 @@ struct AttemptStateFast {
             if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
 
             // replaced by one 32-bit bitwise AND
-            if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber) != guessIndexPattern.rightSpotNumber) continue;
+            if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber.mask) != guessIndexPattern.rightSpotNumber.value) continue;
 
             if (std::any_of(
                 guessIndexPattern.letterMaxLimit.begin(),
                 guessIndexPattern.letterMaxLimit.begin() + guessIndexPattern.letterMaxLimitSize,
-                [&](const LetterMaxLimitType &limit) {
-                    return (wordIndexData.letterCountNumber % limit) == 0; // divisible if exceeds max
+                [&](const LetterToCheckLetterMap &pair) {
+                    return (wordIndexData.letterCountMap[pair.letterCountToCheck] & pair.letterMap) != 0; // divisible if exceeds max
                 }
             )) continue;
 
@@ -56,8 +58,8 @@ struct AttemptStateFast {
             if (std::any_of(
                 guessIndexPattern.wrongSpotPattern.begin(),
                 guessIndexPattern.wrongSpotPattern.begin() + guessIndexPattern.wrongSpotPatternSize,
-                [&](const WrongSpotPatternType &wrongSpotPattern) {
-                    return (wordIndexData.positionalLetterNumber & wrongSpotPattern) == wrongSpotPattern;
+                [&](const auto &wrongSpotPattern) {
+                    return (wordIndexData.positionalLetterNumber & wrongSpotPattern.mask) == wrongSpotPattern.value;
                 }
             )) continue;
             //if (gcd(wordIndexData.positionalLetterNumber, guessIndexPattern.wrongSpotPatternNumber) != 1) continue;
@@ -108,14 +110,27 @@ private:
             const auto &word = reverseIndexLookup[i];
             LetterCountNumberType letterCountNumber = 1;
             PositionLetterType positionalLetterNumber = 0;
+            MinLetterType letterCount = {};
             int letterMap = 0;
             for (std::size_t j = 0; j < word.size(); ++j) {
                 char c = word[j];
                 letterMap |= (1 << (c-'a'));
                 letterCountNumber = safeMultiply(letterCountNumber, getPrimeForLetter<LetterCountNumberType>(c));
                 positionalLetterNumber |= (c-'a') << (5 * j);
+                letterCount[c-'a']++;
             }
-            wordIndexDataLookup.push_back(WordIndexData(letterCountNumber, positionalLetterNumber, letterMap));
+            std::array<LetterMapType, 4> letterCountMap = {};
+            for (int j = 1; j <= 4; ++j) {
+                for (int k = 0; k < 26; ++k) {
+                    letterCountMap[j-1] |= letterCount[k] >= j;
+                }
+            }
+
+            wordIndexDataLookup.push_back(WordIndexData(
+                letterCountNumber,
+                positionalLetterNumber,
+                letterMap,
+                letterCountMap));
         }
     }
 
@@ -134,17 +149,23 @@ private:
                 calcWordAndPattern(data, word, pattern);
 
                 LetterCountNumberType letterMinLimitNumber = 1;
-                PositionLetterType rightSpotNumber = 0;
-                std::vector<LetterMaxLimitType> letterMaxLimit = {};
-                std::vector<WrongSpotPatternType> wrongSpotPattern = {};
+                PositionLetterType rightSpotNumber = 0, rightSpotMask = 0;
+                std::vector<LetterToCheckLetterMap> letterMaxLimit = {};
+                std::vector<ValueWithMask<PositionLetterType>> wrongSpotPattern = {};
                 int excludedLetterMap = 0;
 
                 for (int j = 0; j < WORD_LENGTH; ++j) {
                     if (data.rightSpotPattern[j] != NULL_LETTER) {
                         rightSpotNumber |= (word[j]-'a') << (5 * j);
+                        rightSpotMask |= (0b11111 << (5 * j));
                     }
                     if (data.wrongSpotPattern[j] != NULL_LETTER) {
-                        wrongSpotPattern.push_back((word[j]-'a') << (5 * j));
+                        wrongSpotPattern.push_back(
+                            ValueWithMask<PositionLetterType>(
+                                (word[j]-'a') << (5 * j),
+                                (0b11111 << (5 * j))
+                            )
+                        );
                     }
                 }
 
@@ -164,10 +185,8 @@ private:
                             excludedLetterMap |= 1 << j;
                             continue;
                         }
-                        for (auto k = 0; k <= data.letterMaxLimit[j]; ++k) {
-                            multForLetter = safeMultiply(multForLetter, (LetterMaxLimitType)getPrimeForLetter<LetterMaxLimitType>('a' + j));
-                        }
-                        letterMaxLimit.push_back(multForLetter);
+                        if (data.letterMaxLimit[j] == WORD_LENGTH-1) continue; // assumption "aaaa" is not a word
+                        letterMaxLimit.push_back(LetterToCheckLetterMap(data.letterMaxLimit[j], 0b1 << j));
                     }
                 }
 
@@ -176,7 +195,7 @@ private:
                 // NUM_PATTERNS * i + patternInt
                 guessIndexPatternLookup.push_back(GuessIndexPatternData(
                     letterMinLimitNumber,
-                    rightSpotNumber,
+                    ValueWithMask<PositionLetterType>(rightSpotNumber, rightSpotMask),
                     letterMaxLimit,
                     wrongSpotPattern,
                     excludedLetterMap
