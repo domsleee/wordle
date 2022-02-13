@@ -25,13 +25,15 @@ struct AttemptStateFast {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
-        auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
+        //auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
 
         std::vector<IndexType> res = {};
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
         //DEBUG("PATTERN: " << pattern);
         for (auto wordIndex: wordIndexes) {
-            if (guessIndex == 4285 && wordIndex == 135) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
+            /*if (guessIndex == 4285 && wordIndex == 135 && pattern == "__++_") {
+                DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
+            }*/
             if (wordIndex == guessIndex) continue;
 
             const auto &wordIndexData = wordIndexDataLookup[wordIndex];
@@ -39,6 +41,7 @@ struct AttemptStateFast {
             if ((wordIndexData.letterMap & guessIndexPattern.excludedLetterMap) != 0) continue;
 
             // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
+            //if ((wordIndexData.letterCountMap[0] & guessIndexPattern.))
             if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
 
             // replaced by one 32-bit bitwise AND
@@ -122,7 +125,7 @@ private:
             std::array<LetterMapType, 4> letterCountMap = {};
             for (int j = 1; j <= 4; ++j) {
                 for (int k = 0; k < 26; ++k) {
-                    letterCountMap[j-1] |= letterCount[k] >= j;
+                    letterCountMap[j-1] |= ((letterCount[k] >= j) << k);
                 }
             }
 
@@ -186,7 +189,15 @@ private:
                             continue;
                         }
                         if (data.letterMaxLimit[j] == WORD_LENGTH-1) continue; // assumption "aaaa" is not a word
-                        letterMaxLimit.push_back(LetterToCheckLetterMap(data.letterMaxLimit[j], 0b1 << j));
+                        auto newEntry = LetterToCheckLetterMap(data.letterMaxLimit[j], 0b1 << j);
+                        auto it = std::find_if(letterMaxLimit.begin(), letterMaxLimit.end(), [&](const LetterToCheckLetterMap &entry) {
+                            return entry.letterCountToCheck == newEntry.letterCountToCheck;
+                        });
+                        if (it != letterMaxLimit.end()) {
+                            it->letterMap |= newEntry.letterMap;
+                        } else {
+                            letterMaxLimit.push_back(newEntry);
+                        }
                     }
                 }
 
