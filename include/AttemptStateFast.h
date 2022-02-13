@@ -76,7 +76,7 @@ struct AttemptStateFast {
     static inline std::vector<GuessIndexPatternData> guessIndexPatternLookup = {};
     static void buildForReverseIndexLookup(const std::vector<std::string> &reverseIndexLookup) {
         DEBUG("buildForReverseIndexLookup with " << reverseIndexLookup.size() << " strings");
-        firstPrimes = getFirstNPrimes<int>(26 * WORD_LENGTH);
+        firstPrimes = getFirstNPrimes<uint64_t>(26 * WORD_LENGTH);
         buildWordIndexDataLookup(reverseIndexLookup);
         buildGuessIndexPatternData(reverseIndexLookup);
         DEBUG("buildForReverseIndexLookup finished");
