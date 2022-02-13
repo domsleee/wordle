@@ -2,7 +2,7 @@
 #include <array>
 #include <vector>
 
-using LetterCountNumberType = int64_t;
+using LetterCountNumberType = uint64_t;
 using PositionLetterType = uint64_t;
 
 
@@ -14,8 +14,8 @@ struct WordIndexData {
           positionalLetterNumber(positionalLetterNumber) {}
 };
 
-using LetterMaxLimitType = int;
-using WrongSpotPatternType = int;
+using LetterMaxLimitType = uint32_t;
+using WrongSpotPatternType = uint32_t;
 struct GuessIndexPatternData {
     const LetterCountNumberType letterMinLimitNumber;
     const PositionLetterType rightSpotNumber;
@@ -24,7 +24,7 @@ struct GuessIndexPatternData {
     const std::array<WrongSpotPatternType, 5> wrongSpotPattern;
     const uint8_t wrongSpotPatternSize;
     //const int letterMaxLimitNumber;
-    //const int wrongSpotPatternNumber;
+    //const int64_t wrongSpotPatternNumber;
 
     GuessIndexPatternData(
         LetterCountNumberType letterMinLimitNumber,
@@ -39,7 +39,7 @@ struct GuessIndexPatternData {
       wrongSpotPattern(buildArrayFromVec<WrongSpotPatternType, 5>(wrongSpotPattern)),
       wrongSpotPatternSize(wrongSpotPattern.size())
       //letterMaxLimitNumber(combine<int>(letterMaxLimit)),
-      //wrongSpotPatternNumber(combine<int>(wrongSpotPattern))
+      //wrongSpotPatternNumber(combine<int64_t>(wrongSpotPattern))
     {}
 
     template <class T, std::size_t N>
@@ -58,7 +58,7 @@ struct GuessIndexPatternData {
     template <typename T>
     T combine(const std::vector<int> &vec) {
         T res = 1;
-        for (auto v: vec) res *= v;
+        for (auto v: vec) res = safeMultiply(res, v);
         return res;
     }
 };

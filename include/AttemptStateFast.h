@@ -28,8 +28,7 @@ struct AttemptStateFast {
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
         //DEBUG("PATTERN: " << pattern);
         for (auto wordIndex: wordIndexes) {
-            const auto &word = wordIndexLookup[wordIndex];
-            //if (guessIndex == 2315) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << word);
+            //if (guessIndex == 3117) DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex]);
             const auto &wordIndexData = wordIndexDataLookup[wordIndex];
 
             if (wordIndex == guessIndex) continue;
@@ -62,11 +61,17 @@ struct AttemptStateFast {
         //return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
     }
 
-    int gcd(int a, int b) const {
-        return b == 0 ? a : gcd(b, a % b);
+    int64_t gcd(int64_t a, int64_t b) const {
+        while (b != 0) {
+            auto tmp = b;
+            b = a % b;
+            a = tmp;
+        }
+        return a;
+        //return b == 0 ? a : gcd(b, a % b);
     }
 
-    static inline std::vector<int> firstPrimes = {};
+    static inline std::vector<uint64_t> firstPrimes = {};
     static inline std::vector<WordIndexData> wordIndexDataLookup = {};
     static inline std::vector<GuessIndexPatternData> guessIndexPatternLookup = {};
     static void buildForReverseIndexLookup(const std::vector<std::string> &reverseIndexLookup) {
@@ -142,7 +147,7 @@ private:
                     }
                 }
 
-                auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+                //auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
 
                 // NUM_PATTERNS * i + patternInt
                 guessIndexPatternLookup.push_back(GuessIndexPatternData(
@@ -183,18 +188,6 @@ private:
         }
     }
 
-
-    template <typename T>
-    static T safeMultiply(T a, T b) {
-        T x = a * b;
-        if (a != 0 && x / a != b) {
-            DEBUG("multiplication overflow " << (long long)a << " x " << (long long)b << ", typeid: " << typeid(a).name());
-            //throw std::runtime_error("fail");
-            exit(1);
-        }
-        return x;
-    }
-
     template <typename T>
     static T getPrimeForLetter(char c) {
         return (T)firstPrimes[c-'a'];
@@ -203,7 +196,7 @@ private:
     template <typename T>
     static T getPrimeForPosition(char c, int position) {
         int charIndex = c-'a';
-        int64_t ind = 26 * position + charIndex;
+        uint64_t ind = 26 * position + charIndex;
         if (ind > firstPrimes.size()) {
             if (ind < 0) {
                 DEBUG("HELLO");
@@ -211,7 +204,7 @@ private:
             DEBUG("requested a large prime " << (int64_t)ind << ", total primes: " << firstPrimes.size());
             exit(1);
         }
-        int64_t v = firstPrimes[ind];
+        uint64_t v = firstPrimes[ind];
         T M = std::numeric_limits<T>::max();
         if (v > M) {
             DEBUG("cannot cast! trying: " << (int64_t)v << " to " << (int64_t)M << " typeid: " << typeid(v).name());

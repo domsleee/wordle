@@ -33,6 +33,17 @@ const int WORD_LENGTH = 5;
 const int NUM_PATTERNS = pow(3, WORD_LENGTH);
 using MinLetterType = std::array<int8_t, 26>;
 
+template <typename T>
+static T safeMultiply(T a, T b) {
+    T x = a * b;
+    if (a != 0 && x / a != b) {
+        DEBUG("multiplication overflow " << (long long)a << " x " << (long long)b << ", typeid: " << typeid(a).name());
+        //throw std::runtime_error("fail");
+        exit(1);
+    }
+    return x;
+}
+
 inline std::vector<IndexType> getVector(std::size_t size, std::size_t offset) {
     std::vector<IndexType> res(size);
     for (std::size_t i = 0; i < size; ++i) {
