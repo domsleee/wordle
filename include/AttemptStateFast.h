@@ -33,6 +33,8 @@ struct AttemptStateFast {
 
             if (wordIndex == guessIndex) continue;
 
+            if (wordIndexData.letterMap & guessIndexPattern.excludedLetterMap != 0) continue;
+
             if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
             if ((wordIndexData.positionalLetterNumber % guessIndexPattern.rightSpotNumber) != 0) continue;
 
@@ -43,6 +45,7 @@ struct AttemptStateFast {
                     return (wordIndexData.letterCountNumber % limit) == 0; // divisible if exceeds max
                 }
             )) continue;
+
             //if (gcd(wordIndexData.letterCountNumber, guessIndexPattern.letterMaxLimitNumber) != 1) continue;
             
             if (std::any_of(
@@ -91,12 +94,14 @@ private:
             const auto &word = reverseIndexLookup[i];
             LetterCountNumberType letterCountNumber = 1;
             PositionLetterType positionalLetterNumber = 1;
+            int letterMap = 0;
             for (std::size_t j = 0; j < word.size(); ++j) {
                 char c = word[j];
+                letterMap |= (1 << (c-'a'));
                 letterCountNumber = safeMultiply(letterCountNumber, getPrimeForLetter<LetterCountNumberType>(c));
                 positionalLetterNumber = safeMultiply(positionalLetterNumber, getPrimeForPosition<PositionLetterType>(c, j));
             }
-            wordIndexDataLookup.push_back(WordIndexData(letterCountNumber, positionalLetterNumber));
+            wordIndexDataLookup.push_back(WordIndexData(letterCountNumber, positionalLetterNumber, letterMap));
         }
     }
 
@@ -118,6 +123,7 @@ private:
                 PositionLetterType rightSpotNumber = 1;
                 std::vector<LetterMaxLimitType> letterMaxLimit = {};
                 std::vector<WrongSpotPatternType> wrongSpotPattern = {};
+                int excludedLetterMap = 0;
 
                 for (int j = 0; j < WORD_LENGTH; ++j) {
                     if (data.rightSpotPattern[j] != NULL_LETTER) {
@@ -140,6 +146,10 @@ private:
                     for (int j = 0; j < 26; ++j) {
                         LetterMaxLimitType multForLetter = 1;
                         if (data.letterMaxLimit[j] == MAX_LETTER_LIMIT_MAX) continue;
+                        if (data.letterMaxLimit[j] == 0) {
+                            excludedLetterMap |= 1 << j;
+                            continue;
+                        }
                         for (auto k = 0; k <= data.letterMaxLimit[j]; ++k) {
                             multForLetter = safeMultiply(multForLetter, (LetterMaxLimitType)getPrimeForLetter<LetterMaxLimitType>('a' + j));
                         }
@@ -154,7 +164,8 @@ private:
                     letterMinLimitNumber,
                     rightSpotNumber,
                     letterMaxLimit,
-                    wrongSpotPattern
+                    wrongSpotPattern,
+                    excludedLetterMap
                 ));
             }
         }

@@ -2,16 +2,18 @@
 #include <array>
 #include <vector>
 
-using LetterCountNumberType = uint64_t;
+using LetterCountNumberType = uint32_t;
 using PositionLetterType = uint64_t;
 
 
 struct WordIndexData {
     const LetterCountNumberType letterCountNumber;
     const PositionLetterType positionalLetterNumber;
-    WordIndexData(LetterCountNumberType letterCountNumber, PositionLetterType positionalLetterNumber)
+    const int letterMap;
+    WordIndexData(LetterCountNumberType letterCountNumber, PositionLetterType positionalLetterNumber, int letterMap)
         : letterCountNumber(letterCountNumber),
-          positionalLetterNumber(positionalLetterNumber) {}
+          positionalLetterNumber(positionalLetterNumber),
+          letterMap(letterMap) {}
 };
 
 using LetterMaxLimitType = uint32_t;
@@ -23,6 +25,7 @@ struct GuessIndexPatternData {
     const uint8_t letterMaxLimitSize;
     const std::array<WrongSpotPatternType, 5> wrongSpotPattern;
     const uint8_t wrongSpotPatternSize;
+    const int excludedLetterMap;
     //const int letterMaxLimitNumber;
     //const int64_t wrongSpotPatternNumber;
 
@@ -30,14 +33,16 @@ struct GuessIndexPatternData {
         LetterCountNumberType letterMinLimitNumber,
         PositionLetterType rightSpotNumber,
         const std::vector<LetterMaxLimitType> &letterMaxLimit,
-        const std::vector<WrongSpotPatternType> &wrongSpotPattern
+        const std::vector<WrongSpotPatternType> &wrongSpotPattern,
+        const int excludedLetterMap
     )
     : letterMinLimitNumber(letterMinLimitNumber),
       rightSpotNumber(rightSpotNumber),
       letterMaxLimit(buildArrayFromVec<LetterMaxLimitType, 5>(letterMaxLimit)),
       letterMaxLimitSize(letterMaxLimit.size()),
       wrongSpotPattern(buildArrayFromVec<WrongSpotPatternType, 5>(wrongSpotPattern)),
-      wrongSpotPatternSize(wrongSpotPattern.size())
+      wrongSpotPatternSize(wrongSpotPattern.size()),
+      excludedLetterMap(excludedLetterMap)
       //letterMaxLimitNumber(combine<int>(letterMaxLimit)),
       //wrongSpotPatternNumber(combine<int64_t>(wrongSpotPattern))
     {}

@@ -2,7 +2,7 @@
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g
 else
-	CONDITIONAL_CXX = -O3 -g
+	CONDITIONAL_CXX = -O3 -g -DNDEBUG
 endif
 
 
