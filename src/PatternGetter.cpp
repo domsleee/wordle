@@ -3,9 +3,9 @@
 
 std::string getPattern(const std::string &word, const std::string &answer) {
     MinLetterType answerLetterCount = {};
-    std::string pattern(WORD_LENGTH, NULL_LETTER);
+    std::string pattern(word.size(), NULL_LETTER);
 
-    for (std::size_t i = 0; i < WORD_LENGTH; ++i) {
+    for (std::size_t i = 0; i < word.size(); ++i) {
         auto c = answer[i];
         if (word[i] == c) {
             pattern[i] = '+';
@@ -14,7 +14,7 @@ std::string getPattern(const std::string &word, const std::string &answer) {
         }
     }
 
-    for (std::size_t i = 0; i < WORD_LENGTH; ++i) {
+    for (std::size_t i = 0; i < word.size(); ++i) {
         if (word[i] == answer[i]) continue;
 
         const auto letterInd = word[i]-'a';
