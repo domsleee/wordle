@@ -12,6 +12,8 @@
 #include <cmath>
 #include <stdexcept>
 
+#define ATTEMPTSTATEFAST_DEBUG(x) 
+
 struct AttemptStateFast {
     AttemptStateFast(const PatternGetter &getter)
       : patternGetter(getter) {}
@@ -109,16 +111,16 @@ struct AttemptStateFast {
     static inline std::vector<WordIndexData> wordIndexDataLookup = {};
     static inline std::vector<GuessIndexPatternData> guessIndexPatternLookup = {};
     static void buildForReverseIndexLookup(const std::vector<std::string> &reverseIndexLookup) {
-        DEBUG("buildForReverseIndexLookup with " << reverseIndexLookup.size() << " strings");
+        ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup with " << reverseIndexLookup.size() << " strings");
         firstPrimes = getFirstNPrimes<uint64_t>(26 * WORD_LENGTH);
         buildWordIndexDataLookup(reverseIndexLookup);
         buildGuessIndexPatternData(reverseIndexLookup);
-        DEBUG("buildForReverseIndexLookup finished");
+        ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup finished");
     }
 
 private:
     static void buildWordIndexDataLookup(const std::vector<std::string> &reverseIndexLookup) {
-        DEBUG("build WordIndexData");
+        ATTEMPTSTATEFAST_DEBUG("build WordIndexData");
         wordIndexDataLookup.clear();
         wordIndexDataLookup.reserve(reverseIndexLookup.size());
         for (std::size_t i = 0; i < reverseIndexLookup.size(); ++i) {
@@ -150,7 +152,7 @@ private:
     }
 
     static void buildGuessIndexPatternData(const std::vector<std::string> &reverseIndexLookup) {
-        DEBUG("build GuessIndexPatternData");
+        ATTEMPTSTATEFAST_DEBUG("build GuessIndexPatternData");
         guessIndexPatternLookup.clear();
 
         auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);

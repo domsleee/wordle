@@ -16,14 +16,13 @@
 #include <stack>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x) DEBUG(x)
+#define GUESSESSOLVER_DEBUG(x)
 
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(const std::vector<std::string> &allAnswers, const std::vector<std::string> &allGuesses, int maxTries = MAX_TRIES)
         : allAnswers(allAnswers),
           allGuesses(allGuesses),
-          allAnswersSet(allAnswers.begin(), allAnswers.end()),
           reverseIndexLookup(buildLookup()),
           maxTries(maxTries)
         {
@@ -49,7 +48,6 @@ struct AnswersAndGuessesSolver {
         }
     
     const std::vector<std::string> allAnswers, allGuesses;
-    const std::unordered_set<std::string> allAnswersSet;
     const std::vector<std::string> reverseIndexLookup;
     const int maxTries;
 
@@ -60,28 +58,19 @@ struct AnswersAndGuessesSolver {
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
 
-    void precompute() {
-        GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
-        //AttemptState::setupWordCache(allGuesses.size());
-        getBestWordCache = {};
-        buildClearGuessesInfo();
-        AttemptStateFast::buildForReverseIndexLookup(reverseIndexLookup);
-
-    }
-
     void setStartWord(const std::string &word) {
         DEBUG("set starting word "<< word);
         startingWord = word;
     }
 
     int solveWord(const std::string &answer, bool getFirstWord = false) {
-        if (allAnswersSet.count(answer) == 0) {
+        if (std::find(allAnswers.begin(), allAnswers.end(), answer) == allAnswers.end()) {
             DEBUG("word not a possible answer: " << answer);
             exit(1);
         }
 
         auto getter = PatternGetter(answer);
-        auto state = AttemptState(getter);
+        auto state = AttemptStateFast(getter);
         std::vector<IndexType> answers = getVector(allAnswers.size(), 0), guesses = getVector(allGuesses.size(), allAnswers.size());
 
         if (isEasyMode) {
@@ -175,6 +164,13 @@ private:
         }
 
         return setCacheVal(key, res);
+    }
+
+    void precompute() {
+        GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
+        //AttemptState::setupWordCache(allGuesses.size());
+        getBestWordCache = {};
+        buildClearGuessesInfo();
     }
 
     inline std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   

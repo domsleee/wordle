@@ -4,16 +4,12 @@
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
 #include "../include/AnswersAndGuessesSolver.h"
+#include "../include/RunnerUtil.h"
+#include "../include/MultiRunner.h"
 
 #include <algorithm>
 #include <numeric>
 #include <execution>
-
-template<typename T>
-void printSolverInformation(const T& solver) {
-    auto cacheTotal = solver.cacheHit + solver.cacheMiss;
-    DEBUG("solver cache: " << solver.cacheHit << "/" << cacheTotal << " (" << 100.00 * solver.cacheHit / cacheTotal << "%)");
-}
 
 std::vector<std::string> getWordsToSolve();
 
@@ -24,19 +20,16 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int correct = 0;
     auto guesses = readFromFile(std::string(argv[1]));
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
-    guesses = answers;
+    //guesses = answers;
+
+    MultiRunner::run(answers, guesses);
 
     START_TIMER(precompute);
-    auto solver = AnswersAndGuessesSolver<true>(answers, guesses);
-
-    AttemptState::precompute(guesses);
-    //solver.precompute();
-    //solver.setupInitial4Words();
-
+    auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
+    AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
     END_TIMER(precompute);
 
     START_TIMER(total);
@@ -44,11 +37,13 @@ int main(int argc, char *argv[]) {
     DEBUG("calc total.." << wordsToSolve.size());
     std::vector<long long> results(wordsToSolve.size(), 0);
     std::vector<std::string> unsolved = {};
+    int correct = 0;
+
     for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
         auto word = wordsToSolve[i];
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
-        solver.startingWord = "brahs";
+        solver.startingWord = "pleat"; // pleat solved 326/2315 (14.08%)
         auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);
@@ -56,15 +51,8 @@ int main(int argc, char *argv[]) {
         //DEBUG("RES: " << r);
     }
     
-    double avg = (double)std::reduce(results.begin(), results.end()) / correct;
 
-    DEBUG("=============");
-    DEBUG("MAX_TRIES   : " << MAX_TRIES);
-    DEBUG("easy mode   : " << solver.isEasyModeVar);
-    DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
-    DEBUG("guess words : " << guesses.size());
-    DEBUG("average     : " << avg);
-    printSolverInformation(solver);
+    RunnerUtil::printInfo(solver, results, guesses, wordsToSolve);    
     END_TIMER(total);
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }

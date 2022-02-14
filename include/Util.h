@@ -24,7 +24,9 @@
 
 using IndexType = uint16_t;
 
-static const int MAX_TRIES = 3;
+static const bool IS_EASY_MODE = true;
+
+static const int MAX_TRIES = 4;
 static const int NUM_WORDS = 2400;
 static const int MAX_NUM_GUESSES = 13000;
 static const char NULL_LETTER = '-';
@@ -44,8 +46,9 @@ static T safeMultiply(T a, T b) {
     return x;
 }
 
-inline std::vector<IndexType> getVector(std::size_t size, std::size_t offset) {
-    std::vector<IndexType> res(size);
+template <typename T = IndexType>
+inline std::vector<T> getVector(std::size_t size, std::size_t offset) {
+    std::vector<T> res(size);
     for (std::size_t i = 0; i < size; ++i) {
         res[i] = i + offset;
     }

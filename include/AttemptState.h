@@ -100,57 +100,6 @@ struct AttemptState {
         return result;
     }
 
-    std::vector<IndexType> guessWordCached(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) {
-        return guessWord(guessIndex, wordIndexes, wordIndexLookup);
-        /*auto ret = AttemptState(patternGetter);
-        auto pattern = patternGetter.getPatternFromWord(guess);
-        auto key = AttemptStateCacheKey(reverseGuessToIndex[guess], pattern);
-        const auto &allowedWords = attemptStateCache[key];
-        for (const auto &wordToCheck: words) {
-            auto ind = reverseGuessToIndex[wordToCheck];
-            if (allowedWords.count(ind) == 1) {
-                ret.words.push_back(wordToCheck);
-            }
-        }
-        return ret;*/
-    }
-
-    using ReverseIndexType = std::unordered_map<std::string, int>;
-    static inline ReverseIndexType reverseGuessToIndex;
-
-    static void precompute(const std::vector<std::string> &guesses) {
-        DEBUG("precomputing AttemptState");
-        reverseGuessToIndex = {};
-        return;
-        /*
-        suppressErrors = true;
-        auto patterns = getAllPatterns(guesses[0].size());
-
-        for (std::size_t i = 0; i < guesses.size(); ++i) {
-            const auto &guess = guesses[i];
-            reverseGuessToIndex[guess] = i;
-        }
-
-        auto dummyAttemptState = AttemptState(PatternGetter(""));
-        for (std::size_t i = 0; i < guesses.size(); ++i) {
-            //DEBUG("guessing " << getPerc(i, guesses.size()));
-            const auto &guess = guesses[i];
-            for (const auto &pattern: patterns) {
-                std::unordered_set<int> allowedWords = {};
-                auto newState = dummyAttemptState.guessWord(guess, pattern, guesses);
-                for (const auto &w: newState.words) {
-                    allowedWords.insert(reverseGuessToIndex[w]);
-                }
-                //allowedWords = {newState.words.begin(), newState.words.end()};
-                auto key = AttemptStateCacheKey(i, pattern);
-                attemptStateCache[key] = allowedWords;
-            }
-        }
-        suppressErrors = false;*/
-
-        //exit(1);
-    }
-
     static std::vector<std::string> getAllPatterns(int length) {
         auto max = std::pow(3, length);
         std::vector<std::string> res(max, std::string(length, NULL_LETTER));
