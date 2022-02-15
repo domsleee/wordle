@@ -23,9 +23,10 @@ int main(int argc, char *argv[]) {
     auto guesses = readFromFile(std::string(argv[1]));
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
-    //guesses = answers;
+    //answers = getFirstNWords(answers, 2);
+    guesses = answers;
 
-    MultiRunner::run(answers, guesses);
+    //MultiRunner::run(answers, guesses);
 
     START_TIMER(precompute);
     auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
@@ -43,10 +44,11 @@ int main(int argc, char *argv[]) {
         auto word = wordsToSolve[i];
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
-        solver.startingWord = "pleat"; // pleat solved 326/2315 (14.08%)
+        solver.startingWord = "began"; // pleat solved 326/2315 (14.08%)
         auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);
+        if (r == -1) break;
         results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
     }
@@ -58,6 +60,8 @@ int main(int argc, char *argv[]) {
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
     else DEBUG("UNSOLVED WORDS: " << unsolved.size());
     //for (auto w: unsolved) DEBUG(w);
+    DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
+
 
     return 0;
 }

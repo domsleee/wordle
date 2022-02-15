@@ -24,9 +24,9 @@
 
 using IndexType = uint16_t;
 
-static const bool IS_EASY_MODE = true;
+static const bool IS_EASY_MODE = false;
 
-static const int MAX_TRIES = 4;
+static const int MAX_TRIES = 5;
 static const int NUM_WORDS = 2400;
 static const int MAX_NUM_GUESSES = 13000;
 static const char NULL_LETTER = '-';

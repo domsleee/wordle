@@ -18,6 +18,15 @@
 
 #define GUESSESSOLVER_DEBUG(x)
 
+struct AnswersGuessesIndexesPair {
+    std::vector<IndexType> answers = {};
+    std::vector<IndexType> guesses = {};
+    AnswersGuessesIndexesPair(std::size_t numAnswers, std::size_t numGuesses) {
+        answers = getVector(numAnswers, 0);
+        guesses = getVector(numGuesses, numAnswers);
+    }
+};
+
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(const std::vector<std::string> &allAnswers, const std::vector<std::string> &allGuesses, int maxTries = MAX_TRIES)
@@ -69,33 +78,36 @@ struct AnswersAndGuessesSolver {
             exit(1);
         }
 
-        auto getter = PatternGetter(answer);
-        auto state = AttemptStateFast(getter);
-        std::vector<IndexType> answers = getVector(allAnswers.size(), 0), guesses = getVector(allGuesses.size(), allAnswers.size());
-
-        if (isEasyMode) {
-            guesses = clearGuesses(guesses, answers);
-        }
-
-        int guessIndex = std::distance(
+        int firstWordIndex = std::distance(
             reverseIndexLookup.begin(),
             std::find(reverseIndexLookup.begin() + allAnswers.size(), reverseIndexLookup.end(), startingWord)
         );
+
+        auto p = AnswersGuessesIndexesPair(allAnswers.size(), allGuesses.size());
         if (getFirstWord) {
             DEBUG("guessing first word...");
-            auto firstPr = getBestWord(answers, guesses, maxTries);
+            auto firstPr = getBestWord(p.answers, p.guesses, maxTries);
             DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known prob: " << firstPr.prob);
-            guessIndex = firstPr.wordIndex;
+            firstWordIndex = firstPr.wordIndex;
+            if (useExactSearch && firstPr.prob != 1.00) return -1;
         }
 
+        return solveWord(answer, firstWordIndex, p);
+    }
+
+    int solveWord(const std::string &answer, int firstWordIndex, AnswersGuessesIndexesPair &p) {
+        auto getter = PatternGetter(answer);
+        auto state = AttemptStateFast(getter);
+        
+        int guessIndex = firstWordIndex;
         for (int tries = 1; tries <= maxTries; ++tries) {
             if (reverseIndexLookup[guessIndex] == answer) return tries;
             if (tries == maxTries) break;
-            answers = state.guessWord(guessIndex, answers, reverseIndexLookup);
-            if (!isEasyMode) guesses = state.guessWord(guessIndex, guesses, reverseIndexLookup);
 
-            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answers.size() << ", guesses size: " << guesses.size());
-            auto pr = getBestWord(answers, guesses, maxTries-tries);
+            makeGuess(p, state, guessIndex, reverseIndexLookup);
+
+            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answerIndexes.size() << ", guesses size: " << guessIndexes.size());
+            auto pr = getBestWord(p.answers, p.guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
 
             if (useExactSearch && pr.prob != 1.00) break;
@@ -105,7 +117,14 @@ struct AnswersAndGuessesSolver {
         return -1;
     }
 
+
+    void makeGuess(AnswersGuessesIndexesPair &pair, const AttemptStateFast &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
+        pair.answers = state.guessWord(guessIndex, pair.answers, reverseIndexLookup);
+        if (!isEasyMode) pair.guesses = state.guessWord(guessIndex, pair.guesses, reverseIndexLookup);
+    }
+
 private:
+
     
     BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {
         if (answers.size() == 0) {
@@ -232,6 +251,7 @@ private:
     inline BestWordResult setCacheVal(const AnswersAndGuessesKey &key, const BestWordResult &res) {
         if (getBestWordCache.count(key) == 0) {
             cacheSize++;
+            //if (key.triesRemaining == MAX_TRIES) return res;
             getBestWordCache[key] = res;
         }
         return getBestWordCache[key];
