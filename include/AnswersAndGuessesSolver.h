@@ -234,7 +234,7 @@ private:
 
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
             lookup[i] = allGuesses[i];
-            if (allGuesses[i] != allAnswers[i]) {
+            if (i < allAnswers.size() && allGuesses[i] != allAnswers[i]) {
                 DEBUG("allGuesses[" << i << "] should equal allAnswers[" << i << "], " << allGuesses[i] << " vs " << allAnswers[i]);
                 exit(1);
             }
