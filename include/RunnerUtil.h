@@ -19,6 +19,7 @@ struct RunnerUtil {
 
         DEBUG("=============");
         DEBUG("MAX_TRIES   : " << MAX_TRIES);
+        DEBUG("MAX_INCORREC: " << MAX_INCORRECT);
         DEBUG("easy mode   : " << solver.isEasyModeVar);
         DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
         DEBUG("guess words : " << guesses.size());

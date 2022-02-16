@@ -24,9 +24,9 @@ int main(int argc, char *argv[]) {
     auto answers = readFromFile(std::string(argv[2]));
     guesses = mergeAndSort(guesses, answers);
     //answers = getFirstNWords(answers, 2);
-    guesses = answers;
+    //guesses = answers;
 
-    //MultiRunner::run(answers, guesses);
+    MultiRunner::run(answers, guesses);
 
     START_TIMER(precompute);
     auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
         auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);
-        if (r == -1) break;
+        if (EARLY_EXIT && r == -1) break;
         results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
     }

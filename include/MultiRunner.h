@@ -18,7 +18,7 @@ struct MultiRunner {
         auto nothingSolver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
         AttemptStateFast::buildForReverseIndexLookup(nothingSolver.reverseIndexLookup);
 
-        auto batchesOfFirstWords = getBatches(guesses.size(), guesses.size()/8);
+        auto batchesOfFirstWords = getBatches(guesses.size(), 1);
 
         DEBUG("#batches: " << batchesOfFirstWords.size());
         std::vector<IndexType> allAnswerIndexes = getVector(answers.size(), 0),
@@ -26,7 +26,7 @@ struct MultiRunner {
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(
-            std::execution::seq,
+            std::execution::par_unseq,
             batchesOfFirstWords.begin(),
             batchesOfFirstWords.end(),
             transformResults.begin(),
@@ -41,7 +41,7 @@ struct MultiRunner {
             ]
                 (std::vector<int> &firstWordBatch) -> std::vector<P>
             {
-                DEBUG("batch size " << firstWordBatch.size());
+                //DEBUG("batch size " << firstWordBatch.size());
                 //auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
                 
                 std::vector<P> results(firstWordBatch.size());
@@ -56,12 +56,16 @@ struct MultiRunner {
 
                     std::size_t correct = 0;
                     solver.startingWord = firstWord;
-                    for (const auto &wordToSolve: answers) {
+                    for (std::size_t j = 0; j < answers.size(); ++j) {
+                        if (j - correct > MAX_INCORRECT) {
+                            continue;
+                        }
+                        const auto &wordToSolve = answers[j];
                         if (solved.load() > 0) return {};
                         auto p = AnswersGuessesIndexesPair(answers.size(), guesses.size());
                         auto r = solver.solveWord(wordToSolve, firstWordIndex, p);
                         correct += r != -1;
-                        if (r == -1) break;
+                        if (EARLY_EXIT && r == -1) break;
                     }
                     completed++;
                     DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()));
@@ -98,7 +102,7 @@ struct MultiRunner {
 
     static std::vector<std::vector<int>> getBatches(int n, int batchSize) {
         std::vector<std::vector<int>> res = {};
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n;) {
             std::vector<int> inner = {};
             int j = i;
             for (;j < std::min(n, i + batchSize); ++j) {

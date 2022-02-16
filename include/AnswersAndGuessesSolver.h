@@ -110,7 +110,7 @@ struct AnswersAndGuessesSolver {
             auto pr = getBestWord(p.answers, p.guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
 
-            if (useExactSearch && pr.prob != 1.00) break;
+            if (EARLY_EXIT && pr.prob != 1.00) break;
 
             guessIndex = pr.wordIndex;
         }
@@ -156,6 +156,7 @@ private:
             const auto &possibleGuess = guesses[myInd];
             if (triesRemaining == maxTries) DEBUG(reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
             auto prob = 0.00;
+            int correct = 0;
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
                 auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
@@ -170,7 +171,9 @@ private:
                     pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
                 }
                 prob += pr.prob;
-                if (useExactSearch && pr.prob != 1) break;
+                if (EARLY_EXIT && pr.prob != 1) break;
+                if (pr.prob == 1.00) correct++;
+                else if ((1.00-pr.prob) * answerWords.size() > MAX_INCORRECT) break;
             }
 
             BestWordResult newRes = {prob/answers.size(), possibleGuess};
