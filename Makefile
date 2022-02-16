@@ -2,7 +2,7 @@
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g
 else
-	CONDITIONAL_CXX = -O3 -g -DNDEBUG
+	CONDITIONAL_CXX = -O3 -DNDEBUG -g #-fprofile-use=./prof/out_single2.pgo -lgcov
 endif
 
 
@@ -10,7 +10,7 @@ UNAME := $(shell uname)
 CXX = g++-11
 CXXFLAGS = -std=c++20 -Wall $(CONDITIONAL_CXX)
 CXXFLAGSTEST = -std=c++20 -Wall -g
-LIBS := -ltbb -lprofiler
+LIBS := -ltbb -lprofiler #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
 LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 endif

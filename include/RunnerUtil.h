@@ -12,14 +12,16 @@ void printSolverInformation(const T& solver) {
 
 struct RunnerUtil {
     template <typename T>
-    static void printInfo(const T& solver, const std::vector<long long> &results, const std::vector<std::string> &guesses, const std::vector<std::string> &wordsToSolve) {
+    static void printInfo(const T& solver, const std::vector<long long> &results) {
+        const auto &wordsToSolve = solver.allAnswers;
+        const auto &guesses = solver.allGuesses;
         auto correct = 0;
         for (auto r: results) if (r > 0) correct++;
         double avg = (double)std::reduce(results.begin(), results.end()) / correct;
 
         DEBUG("=============");
-        DEBUG("MAX_TRIES   : " << MAX_TRIES);
-        DEBUG("MAX_INCORREC: " << MAX_INCORRECT);
+        DEBUG("MAX_TRIES   : " << (int)solver.maxTries);
+        DEBUG("MAX_INCORREC: " << (int)solver.maxIncorrect);
         DEBUG("easy mode   : " << solver.isEasyModeVar);
         DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
         DEBUG("guess words : " << guesses.size());

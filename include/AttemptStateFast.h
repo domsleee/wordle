@@ -28,6 +28,10 @@ struct AttemptStateFast {
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
+        return guessWord(guessIndex, wordIndexes, wordIndexLookup, patternInt);
+    }
+
+    static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup, int patternInt) {
 
         /*
         auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
@@ -86,7 +90,7 @@ struct AttemptStateFast {
         //return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
     }
 
-    inline int64_t readAsInt64(const std::array<LetterMapType, 4> &arr, int index) const {
+    static inline int64_t readAsInt64(const std::array<LetterMapType, 4> &arr, int index) {
         return reinterpret_cast<const std::array<int64_t, 2>&>(arr)[index];
     }
 
@@ -99,7 +103,7 @@ struct AttemptStateFast {
         // NB: the assumption here is that the numbers are positive
     }
 
-    int64_t gcd(int64_t a, int64_t b) const {
+    static int64_t gcd(int64_t a, int64_t b) {
         while (b != 0) {
             auto tmp = b;
             b = a % b;

@@ -1,5 +1,8 @@
 #include "../include/AttemptState.h"
 #include "../include/AttemptStateFast.h"
+#include "../include/AttemptStateFaster.h"
+
+#include "../third_party/cxxopts.hpp"
 
 #include "../include/Util.h"
 #include "../include/SimpleSolver.h"
@@ -15,23 +18,46 @@ std::vector<std::string> getWordsToSolve();
 
 int main(int argc, char *argv[]) {
     //runTests(); return 0;
-    if (argc != 3) {
-        std::cout << "USAGE: " << argv[0] << " <guesses> <answers>\n";
-        return 1;
+    cxxopts::Options options("WordleSolver", "One line description of WordleSolver");
+    
+    options.add_options()
+        ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
+        ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
+        ("p,parallel", "Use parallel processing")
+        ("r,reduce-guesses", "Reduce the number of guesses")
+        ("guesses", "Guesses", cxxopts::value<std::string>())
+        ("answers", "Answers", cxxopts::value<std::string>())
+        ("h,help", "Print usage")
+    ;
+
+    options.parse_positional({"guesses", "answers"});
+
+    auto result = options.parse(argc, argv);
+    auto maxTries = result["max-tries"].as<int>();
+    auto maxIncorrect = result["max-incorrect"].as<int>();
+
+    if (result.count("help")) {
+      std::cout << options.help({""}) << std::endl;
+      exit(0);
     }
 
-    auto guesses = readFromFile(std::string(argv[1]));
-    auto answers = readFromFile(std::string(argv[2]));
-    guesses = mergeAndSort(guesses, answers);
+    auto guesses = readFromFile(result["guesses"].as<std::string>());
+    auto answers = readFromFile(result["answers"].as<std::string>());
+    guesses = mergeAndUniq(answers, guesses);
     //answers = getFirstNWords(answers, 2);
-    //guesses = answers;
-
-    MultiRunner::run(answers, guesses);
+    if (result.count("reduce-guesses")) {
+        guesses = answers;
+    }
 
     START_TIMER(precompute);
-    auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
+    auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses, maxTries, maxIncorrect);
     AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
+    AttemptStateFaster::buidWSLookup(solver.reverseIndexLookup);
     END_TIMER(precompute);
+
+    if (result.count("parallel")) {
+        return MultiRunner::run(solver);
+    }
 
     START_TIMER(total);
     std::vector<std::string> wordsToSolve = answers;//getWordsToSolve();//{getWordsToSolve()[4]};
@@ -54,7 +80,7 @@ int main(int argc, char *argv[]) {
     }
     
 
-    RunnerUtil::printInfo(solver, results, guesses, wordsToSolve);    
+    RunnerUtil::printInfo(solver, results);    
     END_TIMER(total);
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }

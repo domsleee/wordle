@@ -5,9 +5,12 @@
 #include <algorithm>
 
 struct SimpleSolver {
-    SimpleSolver(const std::vector<std::string> &allWords): allWords(allWords) {}
+    SimpleSolver(const std::vector<std::string> &allWords, uint8_t maxTries)
+      : allWords(allWords),
+        maxTries(maxTries) {}
 
     const std::vector<std::string> allWords;
+    const uint8_t maxTries;
     std::string firstWord = "soare";
 
     void precompute(){}
@@ -33,9 +36,9 @@ struct SimpleSolver {
         if (it != allWords.end()) {
             guessIndex = std::distance(allWords.begin(), it);
         }
-        for (int i = 1; MAX_TRIES; ++i) {
+        for (int i = 1; maxTries; ++i) {
             if (guessIndex == answerIndex) { return i; }
-            if (i == MAX_TRIES) break;
+            if (i == maxTries) break;
             words = state.guessWord(guessIndex, words, allWords);
             guessIndex = words[0];
         }

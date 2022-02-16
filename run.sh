@@ -1,5 +1,9 @@
 set -e;
 make clean;
 make -j;
-LD_PRELOAD=/opt/homebrew/lib/libprofiler.dylib env CPUPROFILE=out11.prof ./bin/solve ext/wordle-guesses.txt ext/wordle-answers.txt
-#./bin/solve ext/wordle-guesses.txt ext/wordle-answers.txt
+#./bin/solve --max-tries 2 --max-incorrect 500 -p "ext/wordle-guesses.txt" "ext/wordle-answers.txt"
+
+
+# use -r for profiling
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=out11.prof \
+./bin/solve --max-tries 3 --max-incorrect 0 -p ext/wordle-guesses.txt ext/wordle-answers.txt

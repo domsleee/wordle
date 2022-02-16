@@ -26,13 +26,12 @@ using IndexType = uint16_t;
 
 static const bool IS_EASY_MODE = false;
 static const bool EARLY_EXIT = false;
-static const int MAX_INCORRECT = 20;
 
-static const int MAX_TRIES = 4;
 static const int NUM_WORDS = 2400;
 static const int MAX_NUM_GUESSES = 13000;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
+
 const int WORD_LENGTH = 5;
 const int NUM_PATTERNS = pow(3, WORD_LENGTH);
 using MinLetterType = std::array<int8_t, 26>;
@@ -95,11 +94,18 @@ inline std::vector<std::string> getWordsOfLength(const std::vector<std::string> 
 
 #include <set>
 
-inline std::vector<std::string> mergeAndSort(const std::vector<std::string> &a, const std::vector<std::string> &b) {
-    std::set<std::string> res;
-    for (auto w: a) res.insert(w);
-    for (auto w: b) res.insert(w);
-    return {res.begin(), res.end()};
+inline std::vector<std::string> mergeAndUniq(const std::vector<std::string> &a, const std::vector<std::string> &b) {
+    std::vector<std::string> res = {};
+    std::set<std::string> seen = {};
+    for (auto w: a) {
+        res.push_back(w);
+        seen.insert(w);
+    }
+    for (auto w: b) {
+        if (seen.count(w)) continue;
+        res.push_back(w);
+    }
+    return res;
 }
 
 #include <sstream>

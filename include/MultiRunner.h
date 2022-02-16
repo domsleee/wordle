@@ -5,7 +5,7 @@
 #include "Util.h"
 
 struct MultiRunner {
-    static void run(const std::vector<std::string> &answers, const std::vector<std::string> &guesses) {
+    static int run(const AnswersAndGuessesSolver<IS_EASY_MODE> &nothingSolver) {
         START_TIMER(total);
         using P = std::pair<int,int>;
         std::atomic<int> completed = 0, solved = 0;
@@ -15,14 +15,9 @@ struct MultiRunner {
             exit(1);
         }
 
-        auto nothingSolver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
-        AttemptStateFast::buildForReverseIndexLookup(nothingSolver.reverseIndexLookup);
-
-        auto batchesOfFirstWords = getBatches(guesses.size(), 1);
+        auto batchesOfFirstWords = getBatches(nothingSolver.allGuesses.size(), 8);
 
         DEBUG("#batches: " << batchesOfFirstWords.size());
-        std::vector<IndexType> allAnswerIndexes = getVector(answers.size(), 0),
-            allGuessIndexes = getVector(guesses.size(), answers.size());
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(
@@ -33,16 +28,15 @@ struct MultiRunner {
             [
                 &completed,
                 &solved,
-                &nothingSolver=std::as_const(nothingSolver),
-                &guesses=std::as_const(guesses),
-                &answers=std::as_const(answers),
-                &allAnswerIndexes=std::as_const(allAnswerIndexes),
-                &allGuessIndexes=std::as_const(allGuessIndexes)
+                &nothingSolver=std::as_const(nothingSolver)
             ]
-                (std::vector<int> &firstWordBatch) -> std::vector<P>
+                (const std::vector<int> &firstWordBatch) -> std::vector<P>
             {
                 //DEBUG("batch size " << firstWordBatch.size());
                 //auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
+                
+                const auto &answers = nothingSolver.allAnswers;
+                const auto &guesses = nothingSolver.allGuesses;
                 
                 std::vector<P> results(firstWordBatch.size());
                 auto solver = nothingSolver;
@@ -51,19 +45,19 @@ struct MultiRunner {
                     if (solved.load() > 0) return {};
                     auto firstWordIndex = firstWordBatch[i];
                     const auto &firstWord = guesses[firstWordIndex];
+                    solver.startingWord = firstWord;
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
 
                     std::size_t correct = 0;
-                    solver.startingWord = firstWord;
                     for (std::size_t j = 0; j < answers.size(); ++j) {
-                        if (j - correct > MAX_INCORRECT) {
+                        if (j - correct > solver.maxIncorrect) {
                             continue;
                         }
                         const auto &wordToSolve = answers[j];
                         if (solved.load() > 0) return {};
-                        auto p = AnswersGuessesIndexesPair(answers.size(), guesses.size());
-                        auto r = solver.solveWord(wordToSolve, firstWordIndex, p);
+                        //auto p = AnswersGuessesIndexesPair(answers.size(), guesses.size());
+                        auto r = solver.solveWord(wordToSolve, false);
                         correct += r != -1;
                         if (EARLY_EXIT && r == -1) break;
                     }
@@ -80,7 +74,7 @@ struct MultiRunner {
             }
         );
 
-        std::vector<P> results(guesses.size());
+        std::vector<P> results(nothingSolver.allGuesses.size());
         int ind = 0;
         for (const auto &batchResult: transformResults) {
             for (const auto &p: batchResult) results[ind++] = p;
@@ -88,16 +82,16 @@ struct MultiRunner {
 
         std::sort(results.begin(), results.end(), std::greater<P>());
         DEBUG("solved " << transformResults.size() << " batches of ~" << transformResults[0].size());
-        DEBUG("best result: " << guesses[results[0].second] << " solved " << getPerc(results[0].first, answers.size()));
+        DEBUG("best result: " << nothingSolver.allGuesses[results[0].second] << " solved " << getPerc(results[0].first, nothingSolver.allAnswers.size()));
         std::vector<long long> v(results.size());
         for (std::size_t i = 0; i < results.size(); ++i) {
             v[i] = (int)i < results[0].first;
         }
         
-        RunnerUtil::printInfo(nothingSolver, v, guesses, answers);
+        RunnerUtil::printInfo(nothingSolver, v);
         END_TIMER(total);
         DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
-        exit(1);
+        return 0;
     }
 
     static std::vector<std::vector<int>> getBatches(int n, int batchSize) {
