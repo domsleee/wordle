@@ -56,8 +56,8 @@ struct MultiRunner {
                         }
                         const auto &wordToSolve = answers[j];
                         if (solved.load() > 0) return {};
-                        //auto p = AnswersGuessesIndexesPair(answers.size(), guesses.size());
-                        auto r = solver.solveWord(wordToSolve, false);
+                        auto p = AnswersGuessesIndexesPair(answers.size(), guesses.size());
+                        auto r = solver.solveWord(wordToSolve, firstWordIndex, p);
                         correct += r != -1;
                         if (EARLY_EXIT && r == -1) break;
                     }

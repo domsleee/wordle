@@ -26,7 +26,7 @@ struct AnswersGuessesIndexesPair {
     std::vector<IndexType> guesses;
     AnswersGuessesIndexesPair(std::size_t numAnswers, std::size_t numGuesses) {
         answers = getVector(numAnswers, 0);
-        guesses = getVector(numGuesses, numAnswers);
+        guesses = getVector(numGuesses, 0);
     }
 };
 
@@ -83,10 +83,7 @@ struct AnswersAndGuessesSolver {
             exit(1);
         }
 
-        int firstWordIndex = std::distance(
-            reverseIndexLookup.begin(),
-            std::find(reverseIndexLookup.begin() + allAnswers.size(), reverseIndexLookup.end(), startingWord)
-        );
+        int firstWordIndex;
 
         auto p = AnswersGuessesIndexesPair(allAnswers.size(), allGuesses.size());
         if (getFirstWord) {
@@ -95,6 +92,15 @@ struct AnswersAndGuessesSolver {
             DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known prob: " << firstPr.prob);
             firstWordIndex = firstPr.wordIndex;
             if (useExactSearch && firstPr.prob != 1.00) return -1;
+        } else {
+            firstWordIndex = std::distance(
+                reverseIndexLookup.begin(),
+                std::find(reverseIndexLookup.begin(), reverseIndexLookup.end(), startingWord)
+            );
+            if (firstWordIndex == reverseIndexLookup.size()) {
+                DEBUG("guess not in word list: " << startingWord);
+                exit(1);
+            }
         }
 
         return solveWord(answer, firstWordIndex, p);
@@ -132,10 +138,9 @@ private:
 
     
     BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {
-        if (answers.size() == 0) {
-            DEBUG("NO WORDS!"); exit(1);
-        }
-        if (triesRemaining == 0) return {1.00/answers.size(), answers[0]}; // no guesses left.
+        assertm(answers.size() != 0, "NO WORDS!");
+        assertm(triesRemaining != 0, "no tries remaining");
+
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
@@ -161,7 +166,6 @@ private:
             const auto &possibleGuess = guesses[myInd];
             if (triesRemaining == maxTries) DEBUG(reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
             auto prob = 0.00;
-            int correct = 0;
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
                 auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
@@ -177,7 +181,6 @@ private:
                 }
                 prob += pr.prob;
                 if (EARLY_EXIT && pr.prob != 1) break;
-                if (pr.prob == 1.00) correct++;
                 else if ((1.00-pr.prob) * answerWords.size() > maxIncorrect) break;
             }
 

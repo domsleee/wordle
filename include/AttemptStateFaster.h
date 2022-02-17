@@ -6,11 +6,37 @@
 #include <algorithm>
 #include <execution>
 #include "AttemptStateFast.h"
+#include "AttemptStateUtil.h"
+
 #include "Util.h"
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
 
-const int REVERSE_INDEX_LOOKUP_SIZE = NUM_WORDS + MAX_NUM_GUESSES;
+const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
 using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
+
+struct MyProxy {
+    MyProxy(std::vector<BigBitset> &cache): cache(cache) {}
+    std::vector<BigBitset> &cache;
+    static const std::size_t bsSize = REVERSE_INDEX_LOOKUP_SIZE;
+
+    auto operator[](std::size_t pos) {
+        auto p = getIndex(pos);
+        return cache[p.first][p.second];
+    }
+
+    bool operator[](std::size_t pos) const {
+        auto p = getIndex(pos);
+        return cache[p.first][p.second];
+    }
+
+    std::pair<std::size_t, int> getIndex(std::size_t pos) const {
+        std::size_t ind = pos % bsSize;
+        std::size_t patternInt = (pos % (bsSize * NUM_PATTERNS)) / bsSize;
+        std::size_t guessIndex = pos / (NUM_PATTERNS * bsSize);
+
+        return {guessIndex * NUM_PATTERNS + patternInt, ind};
+    }
+};
 
 struct AttemptStateFaster {
     AttemptStateFaster(const PatternGetter &getter)
@@ -44,6 +70,8 @@ struct AttemptStateFaster {
         auto dummy = wordIndexes;
         std::atomic<int> done = 0;
 
+        std::string filename = "databases/test.out";
+
         std::transform(
             std::execution::par,
             wordIndexes.begin(),
@@ -68,6 +96,8 @@ struct AttemptStateFaster {
                 return 0;
             }
         );
+        
+        AttemptStateUtil::writeToFile(MyProxy(cache), (int64_t)REVERSE_INDEX_LOOKUP_SIZE * REVERSE_INDEX_LOOKUP_SIZE * NUM_PATTERNS  , filename);
         ATTEMPTSTATEFASTER_DEBUG("buidWSLookup finished");
     }
 

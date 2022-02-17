@@ -111,7 +111,7 @@ inline std::vector<std::string> mergeAndUniq(const std::vector<std::string> &a, 
 #include <sstream>
 #include <iomanip>
 
-inline std::string getPerc(long long a, long long b) {
+inline std::string getPerc(int64_t a, int64_t b) {
     std::stringstream ss;
     ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*a/b << "%)";
     return ss.str();
