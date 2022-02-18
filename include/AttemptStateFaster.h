@@ -7,36 +7,11 @@
 #include <execution>
 #include "AttemptStateFast.h"
 #include "AttemptStateUtil.h"
+#include "UnorderedVector.h"
+#include "BigBitsetProxy.h"
 
 #include "Util.h"
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
-
-const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
-using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
-
-struct MyProxy {
-    MyProxy(std::vector<BigBitset> &cache): cache(cache) {}
-    std::vector<BigBitset> &cache;
-    static const std::size_t bsSize = REVERSE_INDEX_LOOKUP_SIZE;
-
-    auto operator[](std::size_t pos) {
-        auto p = getIndex(pos);
-        return cache[p.first][p.second];
-    }
-
-    bool operator[](std::size_t pos) const {
-        auto p = getIndex(pos);
-        return cache[p.first][p.second];
-    }
-
-    std::pair<std::size_t, int> getIndex(std::size_t pos) const {
-        std::size_t ind = pos % bsSize;
-        std::size_t patternInt = (pos % (bsSize * NUM_PATTERNS)) / bsSize;
-        std::size_t guessIndex = pos / (NUM_PATTERNS * bsSize);
-
-        return {guessIndex * NUM_PATTERNS + patternInt, ind};
-    }
-};
 
 struct AttemptStateFaster {
     AttemptStateFaster(const PatternGetter &getter)
@@ -51,26 +26,66 @@ struct AttemptStateFaster {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
-        std::vector<IndexType> res = {};
-        res.reserve(wordIndexes.size());
+        std::vector<IndexType> res(wordIndexes.size());
         const auto &ws = cache[NUM_PATTERNS * guessIndex + patternInt];
+        int i = 0;
         for (auto wordIndex: wordIndexes) {
-            if (ws[wordIndex]) res.emplace_back(wordIndex);
+            if (ws[wordIndex]) res[i++] = wordIndex;
         }
+        res.resize(i);
 
         return res;
     }
 
+    std::size_t guessWordAndRemoveUnmatched(IndexType guessIndex, UnorderedVector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
+        auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
+        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+
+        // is equal to +++++
+        if (patternInt == NUM_PATTERNS-1) {
+            auto sizeBefore = wordIndexes.size();
+            for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
+                auto wordIndex = wordIndexes[i];
+                if (wordIndex != guessIndex) {
+                    wordIndexes.deleteIndex(i);
+                    i--;
+                }
+            }
+
+            return sizeBefore-1;
+        }
+
+        const auto &ws = cache[NUM_PATTERNS * guessIndex + patternInt];
+        std::size_t removed = 0;
+        auto sizeBefore = wordIndexes.size();
+        for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
+            auto wordIndex = wordIndexes[i];
+            if (ws[wordIndex]) {
+                wordIndexes.deleteIndex(i);
+                removed++;
+                i--;
+            }
+        }
+        return removed;
+    }
+
     static inline std::vector<BigBitset> cache;
-    static void buidWSLookup(const std::vector<std::string> &reverseIndexLookup) {
+    static void buildWSLookup(const std::vector<std::string> &reverseIndexLookup) {
         ATTEMPTSTATEFASTER_DEBUG("buildWSLookup");
-        cache.resize(REVERSE_INDEX_LOOKUP_SIZE * NUM_PATTERNS);
+        cache.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
         auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);
         auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
         auto dummy = wordIndexes;
         std::atomic<int> done = 0;
 
         std::string filename = "databases/test.out";
+
+        if (false && std::filesystem::exists(filename)) {
+            DEBUG("reading from file...");
+            auto v = MyProxy(cache);
+            AttemptStateUtil::readFromFile(v, (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
+            return;
+        }
 
         std::transform(
             std::execution::par,
@@ -85,7 +100,7 @@ struct AttemptStateFaster {
                 &reverseIndexLookup = std::as_const(reverseIndexLookup)
             ](const int guessIndex) -> int {
                 done++;
-                DEBUG("PROGRESS: " << getPerc(done.load(), reverseIndexLookup.size()));
+                DEBUG("AttemptStateFaster: " << getPerc(done.load(), reverseIndexLookup.size()));
                 for (const auto &pattern: allPatterns) {
                     auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
                     BigBitset ws = {};
@@ -97,7 +112,20 @@ struct AttemptStateFaster {
             }
         );
         
-        AttemptStateUtil::writeToFile(MyProxy(cache), (int64_t)REVERSE_INDEX_LOOKUP_SIZE * REVERSE_INDEX_LOOKUP_SIZE * NUM_PATTERNS  , filename);
+        if (false) AttemptStateUtil::writeToFile(MyProxy(cache), (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
+        if (false) {
+            std::vector<BigBitset> cache2;
+            cache2.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
+            auto v = MyProxy(cache2);
+            AttemptStateUtil::readFromFile(v, (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
+            for (std::size_t i = 0; i < cache.size(); ++i) {
+                if (cache[i] != cache2[i]) {
+                    DEBUG("MISMATCH AT " << i);
+                    exit(1);
+                }
+            }
+
+        }
         ATTEMPTSTATEFASTER_DEBUG("buidWSLookup finished");
     }
 

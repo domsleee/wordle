@@ -1,5 +1,6 @@
 #include "../include/AttemptState.h"
 #include "../include/AttemptStateFast.h"
+#include "../include/UnorderedVector.h"
 
 #include "../include/Util.h"
 #define CATCH_CONFIG_MAIN
@@ -84,4 +85,26 @@ TEST_CASE("PatternGetter 2") {
 TEST_CASE("PatternGetter 3") {
     auto pattern = getPattern(toLower("ALARM"), toLower("SHARD"));
     REQUIRE_MESSAGE(pattern == "__++_", "pattern should be right");
+}
+
+TEST_CASE("UnorderedVector basic") {
+    auto vec = UnorderedVector<int>(5);
+    vec[0] = 0;
+    vec[1] = 1;
+    vec[2] = 2;
+    vec[3] = 3;
+    vec[4] = 4;
+
+    vec.deleteIndex(2);
+    REQUIRE_MESSAGE(vec[2] == 4, "back should have been moved");
+    REQUIRE_MESSAGE(vec.size() == 4, "should have decreased");
+    vec.deleteIndex(0);
+
+    vec.restoreValues(2);
+    REQUIRE_MESSAGE(vec.size() == 5, "should have decreased");
+    REQUIRE(vec[0] == 0);
+    REQUIRE(vec[1] == 1);
+    REQUIRE(vec[2] == 2);
+    REQUIRE(vec[3] == 3);
+    REQUIRE(vec[4] == 4);
 }

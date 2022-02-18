@@ -5,15 +5,15 @@
 #include <atomic>
 #include <algorithm>
 #include <execution>
+#include <unordered_map>
 #include "AttemptStateFast.h"
+#include "AttemptState.h"
+
 #include "Util.h"
 #define ATTEMPTSTATEFASTEST_DEBUG(x) DEBUG(x)
 
-const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
-using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
-
 struct AttemptStateFastest {
-    AttemptStateFaster(const PatternGetter &getter)
+    AttemptStateFastest(const PatternGetter &getter)
       : patternGetter(getter) {}
 
     PatternGetter patternGetter;
@@ -25,26 +25,63 @@ struct AttemptStateFastest {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
-        std::vector<IndexType> res = {};
-        res.reserve(wordIndexes.size());
-        const auto &ws = cache[NUM_PATTERNS * guessIndex + patternInt];
-        for (auto wordIndex: wordIndexes) {
-            if (ws[wordIndex]) res.emplace_back(wordIndex);
-        }
+        // vector<char>: ~50.5~ 49.83
+        // vector<bool>: 68.19
+        // Faster: 49.8913
+        // Faster(right size): 48.73
 
+        std::vector<IndexType> res(wordIndexes.size());
+        //auto b = getBaseIndex(guessIndex, patternInt);
+        int i = 0;
+        for (auto wordIndex: wordIndexes) {
+            if (cache[getIndex(guessIndex, patternInt, wordIndex)]) res[i++] = wordIndex;
+        }
+        res.resize(i);
         return res;
     }
 
-    static inline std::vector<BigBitset> cache;
-    static void buidWSLookup(const std::vector<std::string> &reverseIndexLookup) {
-        ATTEMPTSTATEFASTER_DEBUG("buildWSLookup");
-        cache.resize(REVERSE_INDEX_LOOKUP_SIZE * NUM_PATTERNS);
+    static inline std::size_t getBaseIndex(const std::size_t &guessIndex, int patternInt) {
+        return guessIndex * NUM_PATTERNS * reverseIndexLookupSize + patternInt * reverseIndexLookupSize;
+    }
+
+    static inline std::size_t getIndex(IndexType guessIndex, int patternInt, IndexType wordIndex) {
+        /*return reverseIndexLookupSizeSq * patternInt
+            + reverseIndexLookupSize * wordIndex
+            + guessIndex;*/
+        
+        /*return reverseIndexLookupSizeSq * patternInt
+            + reverseIndexLookupSize * guessIndex
+            + wordIndex;*/
+        return guessIndex * reverseIndexLookupSize * NUM_PATTERNS + patternInt * reverseIndexLookupSize + wordIndex;
+    }
+
+    static inline std::vector<char> cache;
+    static inline std::size_t reverseIndexLookupSize;
+    static inline std::size_t reverseIndexLookupSizeSq;
+
+    static void buildWSLookup(const std::vector<std::string> &reverseIndexLookup) {
+        ATTEMPTSTATEFASTEST_DEBUG("buildWSLookup");
+        reverseIndexLookupSize = reverseIndexLookup.size();
+        reverseIndexLookupSizeSq = reverseIndexLookupSize * reverseIndexLookupSize;
+        cache.assign(reverseIndexLookup.size() * reverseIndexLookup.size() * NUM_PATTERNS, {});
         auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);
         auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
         auto dummy = wordIndexes;
-        std::atomic<int> done = 0;
-        
-        ATTEMPTSTATEFASTER_DEBUG("buidWSLookup finished");
-    }
 
+        int done = 0;
+
+        for (auto guessIndex: wordIndexes) {
+            DEBUG("AttemptStateFastest: " << getPerc(done, wordIndexes.size()));
+            for (const auto &pattern: allPatterns) {
+                auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+                auto ret = AttemptStateFast::guessWord(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
+                for (auto ind: ret) {
+                    cache[getIndex(guessIndex, patternInt, ind)] = true;
+                }
+            }
+            done++;
+        }
+        
+        ATTEMPTSTATEFASTEST_DEBUG("buildWSLookup finished");
+    }
 };

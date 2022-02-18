@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     START_TIMER(precompute);
     auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses, maxTries, maxIncorrect);
     AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
-    AttemptStateFaster::buidWSLookup(solver.reverseIndexLookup);
+    AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
     END_TIMER(precompute);
 
     if (result.count("parallel")) {

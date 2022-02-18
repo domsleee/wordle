@@ -26,6 +26,7 @@ struct RunnerUtil {
         DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
         DEBUG("guess words : " << guesses.size());
         DEBUG("average     : " << avg);
+        //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);
     }
 };
