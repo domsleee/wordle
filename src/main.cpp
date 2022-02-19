@@ -60,23 +60,24 @@ int main(int argc, char *argv[]) {
     }
 
     START_TIMER(total);
-    std::vector<std::string> wordsToSolve = answers;//getWordsToSolve();//{getWordsToSolve()[4]};
+    std::vector<std::string> wordsToSolve = {"awake"};// answers;//getWordsToSolve();//{getWordsToSolve()[4]};
     DEBUG("calc total.." << wordsToSolve.size());
     std::vector<long long> results(wordsToSolve.size(), 0);
     std::vector<std::string> unsolved = {};
     int correct = 0;
 
     for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
-        auto word = wordsToSolve[i];
+        std::string word = wordsToSolve[i];
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
-        solver.startingWord = "began"; // pleat solved 326/2315 (14.08%)
-        auto r = solver.solveWord(word, true);
+        solver.startingWord = "least"; // pleat solved 326/2315 (14.08%)
+        auto r = solver.solveWord(word, false);
         if (r != -1) correct++;
         else unsolved.push_back(word);
         if (EARLY_EXIT && r == -1) break;
         results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
+        break;
     }
     
 
@@ -85,7 +86,7 @@ int main(int argc, char *argv[]) {
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
     else DEBUG("UNSOLVED WORDS: " << unsolved.size());
-    //for (auto w: unsolved) DEBUG(w);
+    for (auto w: unsolved) DEBUG(w);
     DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
 
 

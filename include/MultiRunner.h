@@ -16,8 +16,11 @@ struct MultiRunner {
         }
 
         auto batchesOfFirstWords = getBatches(nothingSolver.allGuesses.size(), 8);
-
+        auto it = std::find(nothingSolver.reverseIndexLookup.begin(), nothingSolver.reverseIndexLookup.end(), "least");
+        auto indo = std::distance(nothingSolver.reverseIndexLookup.begin(), it);
+        DEBUG("INDEX" <<  indo);
         DEBUG("#batches: " << batchesOfFirstWords.size());
+        batchesOfFirstWords = {{1285}};
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(

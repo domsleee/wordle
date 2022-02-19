@@ -43,16 +43,17 @@ struct AttemptStateFaster {
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) {
-            auto sizeBefore = wordIndexes.size();
+            std::size_t removed = 0;
             for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
                 auto wordIndex = wordIndexes[i];
                 if (wordIndex != guessIndex) {
                     wordIndexes.deleteIndex(i);
                     i--;
+                    removed++;
                 }
             }
 
-            return sizeBefore-1;
+            return removed;
         }
 
         const auto &ws = cache[NUM_PATTERNS * guessIndex + patternInt];
@@ -60,7 +61,7 @@ struct AttemptStateFaster {
         auto sizeBefore = wordIndexes.size();
         for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
             auto wordIndex = wordIndexes[i];
-            if (ws[wordIndex]) {
+            if (!ws[wordIndex]) {
                 wordIndexes.deleteIndex(i);
                 removed++;
                 i--;

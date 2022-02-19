@@ -5,5 +5,5 @@ make -j;
 
 
 # use -r for profiling
-#LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=out11.prof \
-./bin/solve --max-tries 3 --max-incorrect 50 ext/wordle-guesses.txt ext/wordle-answers.txt
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=out11.prof \
+./bin/solve --max-tries 4 --max-incorrect 500 -r ext/wordle-guesses.txt ext/wordle-answers.txt

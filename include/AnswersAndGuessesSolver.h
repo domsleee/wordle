@@ -20,12 +20,7 @@
 #include <stack>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x)
-
-// m1pro: --max-tries 3 --max-incorrect 50 -r
-// 52s: std::vector<IndexType>
-// 28s: UnorderedVector<IndexType>
-using TypeToUse = UnorderedVector<IndexType>;
+#define GUESSESSOLVER_DEBUG(x) DEBUG(x)
 
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
@@ -113,9 +108,10 @@ struct AnswersAndGuessesSolver {
             if (reverseIndexLookup[guessIndex] == answer) return tries;
             if (tries == maxTries) break;
 
-            makeGuess(p, state, guessIndex, reverseIndexLookup);
+            auto wasCorrect = makeGuess(p, state, guessIndex, reverseIndexLookup);
+            assertm(!wasCorrect, "cannot be correct");
 
-            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << answerIndexes.size() << ", guesses size: " << guessIndexes.size());
+            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p.answers, p.guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
 
@@ -128,17 +124,19 @@ struct AnswersAndGuessesSolver {
 
 
     template<typename T>
-    void makeGuess(AnswersGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
+    bool makeGuess(AnswersGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             pair.answers = state.guessWord(guessIndex, pair.answers, reverseIndexLookup);
             if constexpr (!isEasyMode) pair.guesses = state.guessWord(guessIndex, pair.guesses, reverseIndexLookup);
         } else {
             // makeGuessAndRemoveUnmatched
-            state.guessWordAndRemoveUnmatched(guessIndex, pair.answers, reverseIndexLookup);
+            auto numAnswers = state.guessWordAndRemoveUnmatched(guessIndex, pair.answers, reverseIndexLookup);
+            if (numAnswers == 500000) return true;
             if constexpr (!isEasyMode) {
                 state.guessWordAndRemoveUnmatched(guessIndex, pair.guesses, reverseIndexLookup);
             }
         }
+        return false;
     }
 
 private:
@@ -201,7 +199,7 @@ private:
                 answers.restoreValues(numAnswersRemoved);
                 prob += pr.prob;
                 if (EARLY_EXIT && pr.prob != 1) break;
-                else if ((1.00-pr.prob) * answers.size() > maxIncorrect) break;
+                //else if ((1.00-pr.prob) * answers.size() > maxIncorrect) break;
             }
 
             BestWordResult newRes = {prob/answers.size(), possibleGuess};
