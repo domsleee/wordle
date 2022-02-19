@@ -16,11 +16,8 @@ struct MultiRunner {
         }
 
         auto batchesOfFirstWords = getBatches(nothingSolver.allGuesses.size(), 8);
-        auto it = std::find(nothingSolver.reverseIndexLookup.begin(), nothingSolver.reverseIndexLookup.end(), "least");
-        auto indo = std::distance(nothingSolver.reverseIndexLookup.begin(), it);
-        DEBUG("INDEX" <<  indo);
         DEBUG("#batches: " << batchesOfFirstWords.size());
-        batchesOfFirstWords = {{1285}};
+        //batchesOfFirstWords = {{1285}};
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(
@@ -53,14 +50,13 @@ struct MultiRunner {
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
 
                     std::size_t correct = 0;
-                    for (std::size_t j = 0; j < answers.size(); ++j) {
-                        if (j - correct > solver.maxIncorrect) {
+                    for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
+                        if (answerIndex - correct > solver.maxIncorrect) {
                             continue;
                         }
-                        const auto &wordToSolve = answers[j];
                         if (solved.load() > 0) return {};
-                        auto p = AnswersGuessesIndexesPair<std::vector<IndexType>>(answers.size(), guesses.size());
-                        auto r = solver.solveWord(wordToSolve, firstWordIndex, p);
+                        auto p = AnswersGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
+                        auto r = solver.solveWord(answerIndex, firstWordIndex, p);
                         correct += r != -1;
                         if (EARLY_EXIT && r == -1) break;
                     }

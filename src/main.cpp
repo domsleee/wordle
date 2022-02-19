@@ -9,6 +9,7 @@
 #include "../include/AnswersAndGuessesSolver.h"
 #include "../include/RunnerUtil.h"
 #include "../include/MultiRunner.h"
+#include "../include/PatternGetterCached.h"
 
 #include <algorithm>
 #include <numeric>
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
         ("p,parallel", "Use parallel processing")
         ("r,reduce-guesses", "Reduce the number of guesses")
+        ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
         ("guesses", "Guesses", cxxopts::value<std::string>())
         ("answers", "Answers", cxxopts::value<std::string>())
         ("h,help", "Print usage")
@@ -43,9 +45,12 @@ int main(int argc, char *argv[]) {
 
     auto guesses = readFromFile(result["guesses"].as<std::string>());
     auto answers = readFromFile(result["answers"].as<std::string>());
+    auto numToRestrict = result["num-to-restrict"].as<int>();
+
     guesses = mergeAndUniq(answers, guesses);
     //answers = getFirstNWords(answers, 2);
     if (result.count("reduce-guesses")) {
+        answers = getFirstNWords(answers, numToRestrict);
         guesses = answers;
     }
 
@@ -53,6 +58,7 @@ int main(int argc, char *argv[]) {
     auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses, maxTries, maxIncorrect);
     AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
     AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
+    PatternGetterCached::buildCache(solver.reverseIndexLookup);
     END_TIMER(precompute);
 
     if (result.count("parallel")) {
@@ -60,7 +66,7 @@ int main(int argc, char *argv[]) {
     }
 
     START_TIMER(total);
-    std::vector<std::string> wordsToSolve = {"awake"};// answers;//getWordsToSolve();//{getWordsToSolve()[4]};
+    std::vector<std::string> wordsToSolve = answers;//getWordsToSolve();//{getWordsToSolve()[4]};
     DEBUG("calc total.." << wordsToSolve.size());
     std::vector<long long> results(wordsToSolve.size(), 0);
     std::vector<std::string> unsolved = {};

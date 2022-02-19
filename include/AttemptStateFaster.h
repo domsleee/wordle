@@ -9,19 +9,19 @@
 #include "AttemptStateUtil.h"
 #include "UnorderedVector.h"
 #include "BigBitsetProxy.h"
+#include "PatternGetterCached.h"
 
 #include "Util.h"
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
 
 struct AttemptStateFaster {
-    AttemptStateFaster(const PatternGetter &getter)
+    AttemptStateFaster(const PatternGetterCached &getter)
       : patternGetter(getter) {}
 
-    PatternGetter patternGetter;
+    const PatternGetterCached patternGetter;
 
     std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
-        auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
-        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+        auto patternInt = patternGetter.getPatternIntCached(guessIndex);
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
@@ -38,8 +38,7 @@ struct AttemptStateFaster {
     }
 
     std::size_t guessWordAndRemoveUnmatched(IndexType guessIndex, UnorderedVector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
-        auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
-        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+        auto patternInt = patternGetter.getPatternIntCached(guessIndex);
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) {

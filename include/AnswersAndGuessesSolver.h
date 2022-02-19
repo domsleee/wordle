@@ -20,7 +20,7 @@
 #include <stack>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x) DEBUG(x)
+#define GUESSESSOLVER_DEBUG(x)
 
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
@@ -75,7 +75,7 @@ struct AnswersAndGuessesSolver {
             exit(1);
         }
 
-        int firstWordIndex;
+        IndexType firstWordIndex;
 
         auto p = AnswersGuessesIndexesPair<TypeToUse>(allAnswers.size(), allGuesses.size());
         if (getFirstWord) {
@@ -94,24 +94,24 @@ struct AnswersAndGuessesSolver {
                 exit(1);
             }
         }
-
-        return solveWord(answer, firstWordIndex, p);
+        auto answerIndex = getAnswerIndex(answer);
+        return solveWord(answerIndex, firstWordIndex, p);
     }
 
     template<class T>
-    int solveWord(const std::string &answer, int firstWordIndex, AnswersGuessesIndexesPair<T> &p) {
-        auto getter = PatternGetter(answer);
+    int solveWord(IndexType answerIndex, IndexType firstWordIndex, AnswersGuessesIndexesPair<T> &p) {
+        auto getter = PatternGetterCached(answerIndex);
         auto state = AttemptStateToUse(getter);
         
         int guessIndex = firstWordIndex;
         for (int tries = 1; tries <= maxTries; ++tries) {
-            if (reverseIndexLookup[guessIndex] == answer) return tries;
+            if (guessIndex == answerIndex) return tries;
             if (tries == maxTries) break;
 
             auto wasCorrect = makeGuess(p, state, guessIndex, reverseIndexLookup);
             assertm(!wasCorrect, "cannot be correct");
 
-            GUESSESSOLVER_DEBUG(answer << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
+            GUESSESSOLVER_DEBUG(reverseIndexLookup[answer] << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p.answers, p.guesses, maxTries-tries);
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
 
@@ -120,6 +120,15 @@ struct AnswersAndGuessesSolver {
             guessIndex = pr.wordIndex;
         }
         return -1;
+    }
+
+    IndexType getAnswerIndex(const std::string &answer) const {
+        auto it = std::find(allAnswers.begin(), allAnswers.end(), answer);
+        if (it == allAnswers.end()) {
+            DEBUG("word not a possible answer: " << answer);
+            exit(1);
+        }
+        return std::distance(allAnswers.begin(), it);
     }
 
 
@@ -158,7 +167,7 @@ private:
         if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
-            return {1.00/answers.size(), answers[0]};
+            return {1.00/answers.size(), *std::min_element(answers.cbegin(), answers.cend())};
         }
 
         /*std::vector<IndexType> clearedGuesses;
@@ -182,7 +191,7 @@ private:
             auto prob = 0.00;
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
-                auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
+                auto getter = PatternGetterCached(actualWordIndex);
                 auto state = AttemptStateToUse(getter);
 
                 auto numAnswersRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, answers, reverseIndexLookup);
@@ -199,11 +208,11 @@ private:
                 answers.restoreValues(numAnswersRemoved);
                 prob += pr.prob;
                 if (EARLY_EXIT && pr.prob != 1) break;
-                //else if ((1.00-pr.prob) * answers.size() > maxIncorrect) break;
+                else if ((1.00-pr.prob) * answers.size() > maxIncorrect) break;
             }
 
             BestWordResult newRes = {prob/answers.size(), possibleGuess};
-            if (newRes.prob > res.prob) {
+            if (newRes.prob > res.prob || (newRes.prob == res.prob && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
                 if (res.prob == 1.00) {
                     return setCacheVal(key, res);

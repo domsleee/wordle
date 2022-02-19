@@ -25,6 +25,7 @@
 
 
 using IndexType = uint16_t;
+using PatternType = uint8_t;
 
 static const bool IS_EASY_MODE = false;
 static const bool EARLY_EXIT = false;

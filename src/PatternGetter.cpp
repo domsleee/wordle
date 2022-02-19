@@ -28,3 +28,35 @@ std::string getPattern(const std::string &word, const std::string &answer) {
 
     return pattern;
 }
+
+PatternType getPatternInteger(const std::string &word, const std::string &answer) {
+    MinLetterType answerLetterCount = {};
+    PatternType patternInt = 0;
+    int mult = 1;
+
+    for (std::size_t i = 0; i < word.size(); ++i) {
+        auto c = answer[i];
+        if (word[i] == c) {
+            patternInt += PatternGetter::charToInt('+') * mult;
+        } else {
+            answerLetterCount[c-'a']++;
+        }
+        mult *= 3;
+    }
+
+    mult = 1;
+    for (std::size_t i = 0; i < word.size(); ++i) {
+        if (word[i] != answer[i]) {
+            const auto letterInd = word[i]-'a';
+            if (answerLetterCount[letterInd] > 0) {
+                patternInt += PatternGetter::charToInt('?') * mult;
+                answerLetterCount[letterInd]--;
+            } else {
+                patternInt += PatternGetter::charToInt('_') * mult;
+            }
+        }
+        mult *= 3;
+    }
+
+    return patternInt;
+}
