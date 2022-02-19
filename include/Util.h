@@ -27,7 +27,7 @@
 using IndexType = uint16_t;
 using PatternType = uint8_t;
 
-static const bool IS_EASY_MODE = false;
+static const bool IS_EASY_MODE = true;
 static const bool EARLY_EXIT = false;
 
 static const int NUM_WORDS = 2432;
@@ -41,6 +41,8 @@ using MinLetterType = std::array<int8_t, 26>;
 
 const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
 using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
+
+static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::max();
 
 template <typename T>
 static T safeMultiply(T a, T b) {

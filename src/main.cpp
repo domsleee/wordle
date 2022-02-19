@@ -1,6 +1,7 @@
 #include "../include/AttemptState.h"
 #include "../include/AttemptStateFast.h"
 #include "../include/AttemptStateFaster.h"
+#include "../include/GlobalArgs.h"
 
 #include "../third_party/cxxopts.hpp"
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[]) {
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
         ("p,parallel", "Use parallel processing")
         ("r,reduce-guesses", "Reduce the number of guesses")
+        ("force-sequential", "No parallel when generating cache")
         ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
         ("guesses", "Guesses", cxxopts::value<std::string>())
         ("answers", "Answers", cxxopts::value<std::string>())
@@ -37,6 +39,8 @@ int main(int argc, char *argv[]) {
     auto result = options.parse(argc, argv);
     auto maxTries = result["max-tries"].as<int>();
     auto maxIncorrect = result["max-incorrect"].as<int>();
+
+    GlobalArgs.forceSequential = result.count("force-sequential");
 
     if (result.count("help")) {
       std::cout << options.help({""}) << std::endl;
@@ -83,7 +87,6 @@ int main(int argc, char *argv[]) {
         if (EARLY_EXIT && r == -1) break;
         results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
-        break;
     }
     
 
@@ -92,7 +95,7 @@ int main(int argc, char *argv[]) {
 
     if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
     else DEBUG("UNSOLVED WORDS: " << unsolved.size());
-    for (auto w: unsolved) DEBUG(w);
+    //for (auto w: unsolved) DEBUG(w);
     DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
 
 

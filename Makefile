@@ -1,6 +1,6 @@
 #ifndef
 ifdef ENV_DEBUG
-	CONDITIONAL_CXX = -O3
+	CONDITIONAL_CXX = -O3 -g
 else
 	CONDITIONAL_CXX = -O3 -g -DNDEBUG #-fprofile-use=./prof/out_single2.pgo -lgcov
 endif
@@ -8,9 +8,9 @@ endif
 
 UNAME := $(shell uname)
 CXX = g++-11
-CXXFLAGS = -std=c++20 -Wall $(CONDITIONAL_CXX)
+CXXFLAGS = -std=c++20 -Wall $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
 CXXFLAGSTEST = -std=c++20 -Wall -g
-LIBS := -ltbb -lprofiler #-lgcov -fprofile-use=./prof/out_single2.pgo
+LIBS := -ltbb -lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
 LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 endif
@@ -39,7 +39,7 @@ $(BIN_DIR)/test: $(OBJ_FILES_NO_MAIN)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(ENV_CXXFLAGS) -c -o $@ $< $(LIBS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $< $(LIBS)
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)

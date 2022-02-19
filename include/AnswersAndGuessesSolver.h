@@ -108,8 +108,7 @@ struct AnswersAndGuessesSolver {
             if (guessIndex == answerIndex) return tries;
             if (tries == maxTries) break;
 
-            auto wasCorrect = makeGuess(p, state, guessIndex, reverseIndexLookup);
-            assertm(!wasCorrect, "cannot be correct");
+            makeGuess(p, state, guessIndex, reverseIndexLookup);
 
             GUESSESSOLVER_DEBUG(reverseIndexLookup[answer] << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p.answers, p.guesses, maxTries-tries);
@@ -133,19 +132,17 @@ struct AnswersAndGuessesSolver {
 
 
     template<typename T>
-    bool makeGuess(AnswersGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
+    void makeGuess(AnswersGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             pair.answers = state.guessWord(guessIndex, pair.answers, reverseIndexLookup);
             if constexpr (!isEasyMode) pair.guesses = state.guessWord(guessIndex, pair.guesses, reverseIndexLookup);
         } else {
             // makeGuessAndRemoveUnmatched
-            auto numAnswers = state.guessWordAndRemoveUnmatched(guessIndex, pair.answers, reverseIndexLookup);
-            if (numAnswers == 500000) return true;
+            state.guessWordAndRemoveUnmatched(guessIndex, pair.answers, reverseIndexLookup);
             if constexpr (!isEasyMode) {
                 state.guessWordAndRemoveUnmatched(guessIndex, pair.guesses, reverseIndexLookup);
             }
         }
-        return false;
     }
 
 private:
@@ -170,10 +167,7 @@ private:
             return {1.00/answers.size(), *std::min_element(answers.cbegin(), answers.cend())};
         }
 
-        /*std::vector<IndexType> clearedGuesses;
-        const auto &guesses = isEasyMode
-            ? (clearedGuesses = clearGuesses(_guesses, answers))
-            : _guesses;*/
+        clearGuesses(guesses, answers);
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
@@ -302,6 +296,19 @@ private:
         //if (numRemoved > 0) DEBUG("REMOVED " << getPerc(numRemoved, sizeBefore));
 
         return guesses;
+    }
+
+    void clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {   
+        int answerLetterMask = 0;
+        for (auto &answerIndex: answers) {
+            answerLetterMask |= letterCountLookup[answerIndex];
+        }
+        for (std::size_t i = guesses.size()-1; i != MAX_SIZE_VAL; --i) {
+            auto guessIndex = guesses[i];
+            if ((answerLetterMask & letterCountLookup[guessIndex]) == 0) {
+                guesses.deleteIndex(i);
+            }
+        }
     }
 
     inline static std::vector<int> letterCountLookup = {};

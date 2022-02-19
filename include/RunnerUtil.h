@@ -19,9 +19,13 @@ struct RunnerUtil {
         for (auto r: results) if (r > 0) correct++;
         double avg = (double)std::reduce(results.begin(), results.end()) / correct;
 
+        int numIncorrect = wordsToSolve.size() - correct;
+        std::string valid = numIncorrect <= solver.maxIncorrect ? "Yes" : "No";
+
         DEBUG("=============");
         DEBUG("MAX_TRIES   : " << (int)solver.maxTries);
         DEBUG("MAX_INCORREC: " << (int)solver.maxIncorrect);
+        DEBUG("valid?      : " << valid << " (" << wordsToSolve.size() << "-" << correct << " <= " << solver.maxIncorrect << ")");
         DEBUG("easy mode   : " << solver.isEasyModeVar);
         DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
         DEBUG("guess words : " << guesses.size());

@@ -10,8 +10,10 @@
 #include "UnorderedVector.h"
 #include "BigBitsetProxy.h"
 #include "PatternGetterCached.h"
-
 #include "Util.h"
+#include "Defs.h"
+#include "GlobalArgs.h"
+
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
 
 struct AttemptStateFaster {
@@ -43,11 +45,10 @@ struct AttemptStateFaster {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) {
             std::size_t removed = 0;
-            for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
+            for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
                 auto wordIndex = wordIndexes[i];
                 if (wordIndex != guessIndex) {
                     wordIndexes.deleteIndex(i);
-                    i--;
                     removed++;
                 }
             }
@@ -57,13 +58,12 @@ struct AttemptStateFaster {
 
         const auto &ws = cache[NUM_PATTERNS * guessIndex + patternInt];
         std::size_t removed = 0;
-        auto sizeBefore = wordIndexes.size();
-        for (std::size_t i = 0; i < wordIndexes.size(); ++i) {
+        for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
             auto wordIndex = wordIndexes[i];
             if (!ws[wordIndex]) {
+                //DEBUG("INSPECTING " << i << ", wordIndex: " << wordIndex << ", size: " << wordIndexes.size());
                 wordIndexes.deleteIndex(i);
                 removed++;
-                i--;
             }
         }
         return removed;
@@ -87,30 +87,38 @@ struct AttemptStateFaster {
             return;
         }
 
-        std::transform(
-            std::execution::par,
-            wordIndexes.begin(),
-            wordIndexes.end(),
-            dummy.begin(),
-            [
-                &cache,
-                &done,
-                &allPatterns = std::as_const(allPatterns),
-                &wordIndexes = std::as_const(wordIndexes),
-                &reverseIndexLookup = std::as_const(reverseIndexLookup)
-            ](const int guessIndex) -> int {
-                done++;
-                DEBUG("AttemptStateFaster: " << getPerc(done.load(), reverseIndexLookup.size()));
-                for (const auto &pattern: allPatterns) {
-                    auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
-                    BigBitset ws = {};
-                    auto ret = AttemptStateFast::guessWord(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
-                    for (auto ind: ret) ws[ind] = true;
-                    cache[guessIndex * NUM_PATTERNS + patternInt] = ws;
+        auto lambda = [&]<typename T>(const T& executionType) {
+            std::transform(
+                executionType,
+                wordIndexes.begin(),
+                wordIndexes.end(),
+                dummy.begin(),
+                [
+                    &cache,
+                    &done,
+                    &allPatterns = std::as_const(allPatterns),
+                    &wordIndexes = std::as_const(wordIndexes),
+                    &reverseIndexLookup = std::as_const(reverseIndexLookup)
+                ](const int guessIndex) -> int {
+                    done++;
+                    DEBUG("AttemptStateFaster: " << getPerc(done.load(), reverseIndexLookup.size()));
+                    for (const auto &pattern: allPatterns) {
+                        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+                        BigBitset ws = {};
+                        auto ret = AttemptStateFast::guessWord(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
+                        for (auto ind: ret) ws[ind] = true;
+                        cache[guessIndex * NUM_PATTERNS + patternInt] = ws;
+                    }
+                    return 0;
                 }
-                return 0;
-            }
-        );
+            );
+        };
+
+        if (GlobalArgs.forceSequential) {
+            lambda(std::execution::seq);
+        } else {
+            lambda(std::execution::par_unseq);
+        }
         
         if (false) AttemptStateUtil::writeToFile(MyProxy(cache), (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
         if (false) {
