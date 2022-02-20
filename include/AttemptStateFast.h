@@ -2,15 +2,16 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
+#include <cmath>
+#include <stdexcept>
+
+#include "AttemptState.h"
 #include "PatternGetter.h"
 #include "Util.h"
 #include "WordSetUtil.h"
 #include "AttemptStateCacheKey.h"
 #include "AttemptStateFastStructs.h"
-#include <unordered_map>
-#include <unordered_set>
-#include <cmath>
-#include <stdexcept>
 
 #define ATTEMPTSTATEFAST_DEBUG(x) 
 

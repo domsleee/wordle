@@ -2,13 +2,17 @@
 #include <algorithm>
 #include <atomic>
 #include <execution>
-#include "Util.h"
 
-struct MultiRunner {
-    static int run(const AnswersAndGuessesSolver<IS_EASY_MODE> &nothingSolver) {
+#include "AnswersAndGuessesSolver.h"
+#include "Util.h"
+#include "RunnerUtil.h"
+
+struct RunnerMulti {
+    template <bool isEasyMode>
+    static int run(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         START_TIMER(total);
         using P = std::pair<int,int>;
-        std::atomic<int> completed = 0, solved = 0, bestCorrect = 0;
+        std::atomic<int> completed = 0, solved = 0, bestIncorrect = (int)nothingSolver.allAnswers.size();
 
         if (!completed.is_lock_free()) {
             DEBUG("not lock free!");
@@ -28,7 +32,7 @@ struct MultiRunner {
             [
                 &completed,
                 &solved,
-                &bestCorrect,
+                &bestIncorrect,
                 &nothingSolver=std::as_const(nothingSolver)
             ]
                 (const std::vector<int> &firstWordBatch) -> std::vector<P>
@@ -50,25 +54,25 @@ struct MultiRunner {
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
 
-                    int correct = 0;
+                    int incorrect = 0;
                     for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
-                        if (answerIndex - correct > solver.maxIncorrect) {
+                        if (incorrect > solver.maxIncorrect) {
                             continue;
                         }
                         if (solved.load() > 0) return {};
                         auto p = AnswersGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto r = solver.solveWord(answerIndex, firstWordIndex, p);
-                        correct += r != -1;
+                        incorrect += r == -1;
                     }
-                    auto currBestCorrect = bestCorrect.load();
-                    if (correct > currBestCorrect) {
-                        bestCorrect = correct;
-                        currBestCorrect = bestCorrect;
+                    auto currBestIncorrect = bestIncorrect.load();
+                    if (incorrect < currBestIncorrect) {
+                        currBestIncorrect = incorrect;
+                        bestIncorrect = incorrect;
                     }
                     completed++;
-                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()) << ", best: " << currBestCorrect);
-                    results[i] = {correct, firstWordIndex};
-                    if (correct == static_cast<int>(answers.size())) {
+                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()) << ", best incorrect: " << currBestIncorrect);
+                    results[i] = {answers.size() - incorrect, firstWordIndex};
+                    if (incorrect == 0) {
                         solved++;
                         break;
                     }

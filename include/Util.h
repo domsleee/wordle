@@ -28,7 +28,6 @@ using IndexType = uint16_t;
 using PatternType = uint8_t;
 
 static const bool IS_EASY_MODE = true;
-static const bool EARLY_EXIT = false;
 
 static const int NUM_WORDS = 2432;
 static const int MAX_NUM_GUESSES = 13056;

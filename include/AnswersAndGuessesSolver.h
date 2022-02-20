@@ -161,10 +161,13 @@ private:
         if (triesRemaining >= answers.size()) return {0, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
-            return {((double)(answers.size()-1)) / answers.size(), answers[0]};
+            return {
+                ((double)(answers.size()-1)) / answers.size(),
+                *std::min_element(answers.begin(), answers.end())
+            };
         }
 
-        auto guessesRemovedByClearGuesses = clearGuesses(guesses, answers);
+        auto guessesRemovedByClearGuesses = isEasyMode ? clearGuesses(guesses, answers) : 0;
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
@@ -194,20 +197,23 @@ private:
                     pr = getBestWord2(answers, guesses, triesRemaining-1);
                 } else {
                     auto numGuessesRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, guesses, reverseIndexLookup);
-                    DEBUG((int)triesRemaining << ": REMOVED " << numGuessesRemoved << " GUESSES" << ", size:" << guesses.size() << " maxsize: " << guesses.maxSize);
+                    //DEBUG((int)triesRemaining << ": REMOVED " << numGuessesRemoved << " GUESSES" << ", size:" << guesses.size() << " maxsize: " << guesses.maxSize);
                     pr = getBestWord2(answers, guesses, triesRemaining-1);
-                    DEBUG((int)triesRemaining << ": RESTORE " << numGuessesRemoved << " GUESSES");
+                    //DEBUG((int)triesRemaining << ": RESTORE " << numGuessesRemoved << " GUESSES");
                     guesses.restoreValues(numGuessesRemoved);
                 }
                 answers.restoreValues(numAnswersRemoved);
                 probWrong += pr.probWrong;
-                if (pr.probWrong * answers.size() > maxIncorrect) break;
+                if (pr.probWrong * (answers.size() - numAnswersRemoved) > maxIncorrect+0.1) {
+                    probWrong = 2 * answers.size();
+                    break;
+                }
             }
 
             BestWordResult newRes = {probWrong / answers.size(), possibleGuess};
             if (newRes.probWrong < res.probWrong || (newRes.probWrong == res.probWrong && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
-                if (res.probWrong == 0) {
+                if (res.probWrong == 0.00) {
                     guesses.restoreValues(guessesRemovedByClearGuesses);
                     return setCacheVal(key, res);
                 }
@@ -265,10 +271,13 @@ private:
                     pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
                 }
                 probWrong += pr.probWrong;
-                if (pr.probWrong * answers.size() > maxIncorrect) break;
+                if (pr.probWrong * answerWords.size() > maxIncorrect+0.1) {
+                    probWrong = 2 * answers.size();
+                    break;
+                }
             }
 
-            BestWordResult newRes = {probWrong, possibleGuess};
+            BestWordResult newRes = {probWrong / answers.size(), possibleGuess};
             if (newRes.probWrong < res.probWrong) {
                 res = newRes;
                 if (res.probWrong == 0) {

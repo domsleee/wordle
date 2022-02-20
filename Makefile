@@ -31,7 +31,7 @@ LDFLAGS := $(LIBS)
 
 $(BIN_DIR)/solve: $(OBJ_FILES_NO_TEST)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(BIN_DIR)/test: $(OBJ_FILES_NO_MAIN)
 	@mkdir -p $(BIN_DIR)

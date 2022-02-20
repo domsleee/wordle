@@ -1,6 +1,15 @@
 #pragma once
+#include <vector>
+#include <string>
+
 struct _GlobalArgs {
-    static inline bool forceSequential = false;
+    static inline std::string guesses, answers;
+
+    // values
+    static inline int numToRestrict, maxTries, maxIncorrect;
+
+    // flags
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode;
 };
 
 static inline auto GlobalArgs = _GlobalArgs();
