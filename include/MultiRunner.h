@@ -8,7 +8,7 @@ struct MultiRunner {
     static int run(const AnswersAndGuessesSolver<IS_EASY_MODE> &nothingSolver) {
         START_TIMER(total);
         using P = std::pair<int,int>;
-        std::atomic<int> completed = 0, solved = 0;
+        std::atomic<int> completed = 0, solved = 0, bestCorrect = 0;
 
         if (!completed.is_lock_free()) {
             DEBUG("not lock free!");
@@ -28,6 +28,7 @@ struct MultiRunner {
             [
                 &completed,
                 &solved,
+                &bestCorrect,
                 &nothingSolver=std::as_const(nothingSolver)
             ]
                 (const std::vector<int> &firstWordBatch) -> std::vector<P>
@@ -49,7 +50,7 @@ struct MultiRunner {
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
 
-                    std::size_t correct = 0;
+                    int correct = 0;
                     for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
                         if (answerIndex - correct > solver.maxIncorrect) {
                             continue;
@@ -59,10 +60,15 @@ struct MultiRunner {
                         auto r = solver.solveWord(answerIndex, firstWordIndex, p);
                         correct += r != -1;
                     }
+                    auto currBestCorrect = bestCorrect.load();
+                    if (correct > currBestCorrect) {
+                        bestCorrect = correct;
+                        currBestCorrect = bestCorrect;
+                    }
                     completed++;
-                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()));
+                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()) << ", best: " << currBestCorrect);
                     results[i] = {correct, firstWordIndex};
-                    if (correct == answers.size()) {
+                    if (correct == static_cast<int>(answers.size())) {
                         solved++;
                         break;
                     }
