@@ -34,12 +34,16 @@ int Runner::run() {
         std::vector<std::string> unsolved = {};
         int correct = 0;
 
+        bool getFirstWord = true;
+        if (GlobalArgs.firstWord != "") {
+            solver.startingWord = GlobalArgs.firstWord;
+            getFirstWord = false;
+        }
+
         for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
             std::string word = wordsToSolve[i];
             DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
-
-            solver.startingWord = "least";
-            auto r = solver.solveWord(word, false);
+            auto r = solver.solveWord(word, getFirstWord);
             if (r != -1) correct++;
             else unsolved.push_back(word);
             results[i] = r == -1 ? 0 : r;

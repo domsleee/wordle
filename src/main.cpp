@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
     options.add_options()
         ("guesses", "Guesses", cxxopts::value<std::string>())
         ("answers", "Answers", cxxopts::value<std::string>())
+        ("w,first-word", "First Word", cxxopts::value<std::string>()->default_value(""))
         ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
         ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
@@ -33,6 +34,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.numToRestrict = result["num-to-restrict"].as<int>();
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxIncorrect = result["max-incorrect"].as<int>();
+    GlobalArgs.firstWord = result["first-word"].as<std::string>();
 
     // flags
     GlobalArgs.parallel = result.count("parallel");
