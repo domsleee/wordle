@@ -43,6 +43,8 @@ const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
 using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
 
 static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::max();
+static constexpr IndexType MAX_INDEX_TYPE = std::numeric_limits<IndexType>::max();
+static constexpr uint32_t MAX_UINT32_T = std::numeric_limits<uint32_t>::max();
 
 template <typename T>
 static T safeMultiply(T a, T b) {

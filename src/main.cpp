@@ -21,7 +21,7 @@ std::vector<std::string> getWordsToSolve();
 int main(int argc, char *argv[]) {
     //runTests(); return 0;
     cxxopts::Options options("WordleSolver", "One line description of WordleSolver");
-    
+
     options.add_options()
         ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
@@ -81,10 +81,9 @@ int main(int argc, char *argv[]) {
         DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
 
         solver.startingWord = "least"; // pleat solved 326/2315 (14.08%)
-        auto r = solver.solveWord(word, false);
+        auto r = solver.solveWord(word, true);
         if (r != -1) correct++;
         else unsolved.push_back(word);
-        if (EARLY_EXIT && r == -1) break;
         results[i] = r == -1 ? 0 : r;
         //DEBUG("RES: " << r);
     }

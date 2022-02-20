@@ -1,6 +1,6 @@
 #ifndef
 ifdef ENV_DEBUG
-	CONDITIONAL_CXX = -O3 -g
+	CONDITIONAL_CXX = -g
 else
 	CONDITIONAL_CXX = -O3 -g -DNDEBUG #-fprofile-use=./prof/out_single2.pgo -lgcov
 endif

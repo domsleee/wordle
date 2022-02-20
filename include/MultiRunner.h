@@ -58,7 +58,6 @@ struct MultiRunner {
                         auto p = AnswersGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto r = solver.solveWord(answerIndex, firstWordIndex, p);
                         correct += r != -1;
-                        if (EARLY_EXIT && r == -1) break;
                     }
                     completed++;
                     DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()));

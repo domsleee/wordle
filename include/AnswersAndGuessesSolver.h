@@ -81,9 +81,8 @@ struct AnswersAndGuessesSolver {
         if (getFirstWord) {
             DEBUG("guessing first word with " << (int)maxTries << " tries...");
             auto firstPr = getBestWordDecider(p.answers, p.guesses, maxTries);
-            DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known prob: " << firstPr.prob);
+            DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known probWrong: " << firstPr.probWrong);
             firstWordIndex = firstPr.wordIndex;
-            if (useExactSearch && firstPr.prob != 1.00) return -1;
         } else {
             firstWordIndex = std::distance(
                 reverseIndexLookup.begin(),
@@ -112,9 +111,7 @@ struct AnswersAndGuessesSolver {
 
             GUESSESSOLVER_DEBUG(reverseIndexLookup[answer] << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p.answers, p.guesses, maxTries-tries);
-            GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", PROB: " << pr.prob);
-
-            if (EARLY_EXIT && pr.prob != 1.00) break;
+            GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", #WRONG: " << pr.numWordsWrong);
 
             guessIndex = pr.wordIndex;
         }
@@ -161,28 +158,31 @@ private:
         assertm(answers.size() != 0, "NO WORDS!");
         assertm(triesRemaining != 0, "no tries remaining");
 
-        if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
+        if (triesRemaining >= answers.size()) return {0, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
-            return {1.00/answers.size(), *std::min_element(answers.cbegin(), answers.cend())};
+            return {((double)(answers.size()-1)) / answers.size(), answers[0]};
         }
 
-        clearGuesses(guesses, answers);
+        auto guessesRemovedByClearGuesses = clearGuesses(guesses, answers);
 
         auto wsAnswers = buildAnswersWordSet(answers);
         auto wsGuesses = buildGuessesWordSet(guesses);
         auto key = getCacheKey(wsAnswers, wsGuesses, triesRemaining);
 
         auto cacheVal = getFromCache(key);
-        if (cacheVal.prob != -1) return cacheVal;
+        if (cacheVal.wordIndex != MAX_INDEX_TYPE) {
+            guesses.restoreValues(guessesRemovedByClearGuesses);
+            return cacheVal;
+        }
 
-        BestWordResult res = {-1.00, -1};
+        BestWordResult res = getDefaultBestWordResult();
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
         for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
             const auto &possibleGuess = guesses[myInd];
             if (triesRemaining == maxTries) DEBUG(reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
-            auto prob = 0.00;
+            double probWrong = 0.00;
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
                 auto getter = PatternGetterCached(actualWordIndex);
@@ -194,37 +194,42 @@ private:
                     pr = getBestWord2(answers, guesses, triesRemaining-1);
                 } else {
                     auto numGuessesRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, guesses, reverseIndexLookup);
-                    //DEBUG((int)triesRemaining << ": REMOVED " << numGuessesRemoved << " GUESSES" << ", size:" << guesses.size() << " maxsize: " << guesses.maxSize);
+                    DEBUG((int)triesRemaining << ": REMOVED " << numGuessesRemoved << " GUESSES" << ", size:" << guesses.size() << " maxsize: " << guesses.maxSize);
                     pr = getBestWord2(answers, guesses, triesRemaining-1);
-                    //DEBUG((int)triesRemaining << ": RESTORE " << numGuessesRemoved << " GUESSES");
+                    DEBUG((int)triesRemaining << ": RESTORE " << numGuessesRemoved << " GUESSES");
                     guesses.restoreValues(numGuessesRemoved);
                 }
                 answers.restoreValues(numAnswersRemoved);
-                prob += pr.prob;
-                if (EARLY_EXIT && pr.prob != 1) break;
-                else if ((1.00-pr.prob) * answers.size() > maxIncorrect) break;
+                probWrong += pr.probWrong;
+                if (pr.probWrong * answers.size() > maxIncorrect) break;
             }
 
-            BestWordResult newRes = {prob/answers.size(), possibleGuess};
-            if (newRes.prob > res.prob || (newRes.prob == res.prob && newRes.wordIndex < res.wordIndex)) {
+            BestWordResult newRes = {probWrong / answers.size(), possibleGuess};
+            if (newRes.probWrong < res.probWrong || (newRes.probWrong == res.probWrong && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
-                if (res.prob == 1.00) {
+                if (res.probWrong == 0) {
+                    guesses.restoreValues(guessesRemovedByClearGuesses);
                     return setCacheVal(key, res);
                 }
             }
         }
 
+        guesses.restoreValues(guessesRemovedByClearGuesses);
         return setCacheVal(key, res);
+    }
+
+    static BestWordResult getDefaultBestWordResult() {
+        return {1.01, MAX_INDEX_TYPE};
     }
 
     BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {
         assertm(answers.size() != 0, "NO WORDS!");
         assertm(triesRemaining != 0, "no tries remaining");
 
-        if (triesRemaining >= answers.size()) return BestWordResult {1.00, answers[0]};
+        if (triesRemaining >= answers.size()) return BestWordResult {0.00, answers[0]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
-            return {1.00/answers.size(), answers[0]};
+            return {((double)(answers.size()-1)) / answers.size(), answers[0]};
         }
 
         std::vector<IndexType> clearedGuesses;
@@ -237,15 +242,15 @@ private:
         auto key = getCacheKey(wsAnswers, wsGuesses, triesRemaining);
 
         auto cacheVal = getFromCache(key);
-        if (cacheVal.prob != -1) return cacheVal;
+        if (cacheVal.wordIndex != MAX_INDEX_TYPE) return cacheVal;
 
-        BestWordResult res = {-1.00, -1};
+        BestWordResult res = getDefaultBestWordResult();
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
         for (std::size_t myInd = 0; myInd < guesses.size(); myInd++) {
             const auto &possibleGuess = guesses[myInd];
             if (triesRemaining == maxTries) DEBUG(reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, guesses.size()));
-            auto prob = 0.00;
+            double probWrong = 0.00;
             for (std::size_t i = 0; i < answers.size(); ++i) {
                 const auto &actualWordIndex = answers[i];
                 auto getter = PatternGetter(reverseIndexLookup[actualWordIndex]);
@@ -259,15 +264,14 @@ private:
                     const auto nextGuessWords = state.guessWord(possibleGuess, guesses, reverseIndexLookup);
                     pr = getBestWord(answerWords, nextGuessWords, triesRemaining-1);
                 }
-                prob += pr.prob;
-                if (EARLY_EXIT && pr.prob != 1) break;
-                else if ((1.00-pr.prob) * answerWords.size() > maxIncorrect) break;
+                probWrong += pr.probWrong;
+                if (pr.probWrong * answers.size() > maxIncorrect) break;
             }
 
-            BestWordResult newRes = {prob/answers.size(), possibleGuess};
-            if (newRes.prob > res.prob) {
+            BestWordResult newRes = {probWrong, possibleGuess};
+            if (newRes.probWrong < res.probWrong) {
                 res = newRes;
-                if (res.prob == 1.00) {
+                if (res.probWrong == 0) {
                     return setCacheVal(key, res);
                 }
             }
@@ -288,17 +292,14 @@ private:
         for (auto &answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
         }
-        //auto sizeBefore = guesses.size();
         std::erase_if(guesses, [&](const int &guessIndex) {
             return (answerLetterMask & letterCountLookup[guessIndex]) == 0;
         });
-        //auto numRemoved = sizeBefore - guesses.size();
-        //if (numRemoved > 0) DEBUG("REMOVED " << getPerc(numRemoved, sizeBefore));
-
         return guesses;
     }
 
-    void clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {   
+    std::size_t clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {   
+        std::size_t guessesRemoved = 0;
         int answerLetterMask = 0;
         for (auto &answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
@@ -307,8 +308,11 @@ private:
             auto guessIndex = guesses[i];
             if ((answerLetterMask & letterCountLookup[guessIndex]) == 0) {
                 guesses.deleteIndex(i);
+                guessesRemoved++;
             }
         }
+
+        return guessesRemoved;
     }
 
     inline static std::vector<int> letterCountLookup = {};
@@ -347,7 +351,7 @@ private:
         auto it = getBestWordCache.find(key);
         if (it == getBestWordCache.end()) {
             cacheMiss++;
-            return {-1, -1};
+            return getDefaultBestWordResult();
         }
         cacheHit++;
         return it->second;

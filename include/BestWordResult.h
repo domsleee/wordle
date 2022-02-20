@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
+#include "Util.h"
 
 struct BestWordResult {
-    double prob;
-    int wordIndex;
+    double probWrong;
+    IndexType wordIndex;
     BestWordResult() {}
 
-    BestWordResult(double prob, const int wordIndex)
-        : prob(prob),
+    BestWordResult(double probWrong, IndexType wordIndex)
+        : probWrong(probWrong),
           wordIndex(wordIndex){}
 };

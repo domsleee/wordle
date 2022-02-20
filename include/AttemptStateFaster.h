@@ -94,7 +94,6 @@ struct AttemptStateFaster {
                 wordIndexes.end(),
                 dummy.begin(),
                 [
-                    &cache,
                     &done,
                     &allPatterns = std::as_const(allPatterns),
                     &wordIndexes = std::as_const(wordIndexes),
