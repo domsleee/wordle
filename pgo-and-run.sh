@@ -10,5 +10,5 @@ ENV_CXXFLAGS="$FLAGS_GEN" ENV_LIBFLAGS="$FLAGS_GEN" make -j
 make clean
 ENV_CXXFLAGS="$FLAGS_USE" ENV_LIBFLAGS="$FLAGS_USE" make -j
 
-./bin/solve --max-tries 3 --max-incorrect 974 -p ext/wordle-guesses.txt ext/wordle-answers.txt
-./bin/solve --max-tries 4 --max-incorrect 37 -p -r ext/wordle-guesses.txt ext/wordle-answers.txt
+#./bin/solve --max-tries 3 --max-incorrect 974 -p ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve --max-tries 4 --max-incorrect 37 -p -r --guesses-to-skip ./databases/wordsToSkip ext/wordle-guesses.txt ext/wordle-answers.txt

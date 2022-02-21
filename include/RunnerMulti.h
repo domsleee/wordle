@@ -6,6 +6,7 @@
 #include "AnswersAndGuessesSolver.h"
 #include "Util.h"
 #include "RunnerUtil.h"
+#include "GlobalArgs.h"
 
 struct RunnerMulti {
     template <bool isEasyMode>
@@ -19,7 +20,16 @@ struct RunnerMulti {
             exit(1);
         }
 
-        auto batchesOfFirstWords = getBatches(nothingSolver.allGuesses.size(), 8);
+        auto guessIndexesToCheck = getVector(nothingSolver.allGuesses.size(), 0);
+        if (GlobalArgs.guessesToSkip != "") {
+            auto guessWordsToSkip = readFromFile(GlobalArgs.guessesToSkip);
+            std::erase_if(guessIndexesToCheck, [&](int guessIndex) {
+                return std::find(guessWordsToSkip.begin(), guessWordsToSkip.end(), nothingSolver.allGuesses[guessIndex]) != guessWordsToSkip.end();
+            });
+            DEBUG("erased " << (nothingSolver.allGuesses.size() - guessIndexesToCheck.size()) << " words from " << GlobalArgs.guessesToSkip);
+        }
+
+        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
         DEBUG("#batches: " << batchesOfFirstWords.size());
         //batchesOfFirstWords = {{1285}};
 
@@ -35,7 +45,7 @@ struct RunnerMulti {
                 &bestIncorrect,
                 &nothingSolver=std::as_const(nothingSolver)
             ]
-                (const std::vector<int> &firstWordBatch) -> std::vector<P>
+                (const std::vector<IndexType> &firstWordBatch) -> std::vector<P>
             {
                 //DEBUG("batch size " << firstWordBatch.size());
                 //auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
@@ -102,13 +112,13 @@ struct RunnerMulti {
         return 0;
     }
 
-    static std::vector<std::vector<int>> getBatches(int n, int batchSize) {
-        std::vector<std::vector<int>> res = {};
-        for (int i = 0; i < n;) {
-            std::vector<int> inner = {};
-            int j = i;
-            for (;j < std::min(n, i + batchSize); ++j) {
-                inner.push_back(j);
+    static std::vector<std::vector<IndexType>> getBatches(const std::vector<IndexType> &guesses, std::size_t batchSize) {
+        std::vector<std::vector<IndexType>> res = {};
+        for (std::size_t i = 0; i < guesses.size();) {
+            std::vector<IndexType> inner = {};
+            std::size_t j = i;
+            for (;j < std::min(guesses.size(), i + batchSize); ++j) {
+                inner.push_back(guesses[j]);
             }
             res.push_back(inner);
             i = j;
