@@ -31,7 +31,7 @@ struct RunnerMulti {
         if (GlobalArgs.guessesToCheck != "") {
             auto guessWordsToCheck = readFromFile(GlobalArgs.guessesToCheck);
             guessIndexesToCheck.clear();
-            for (const auto &w: guessWordsToCheck) guessIndexesToCheck.push_back(getIndex(guessWordsToCheck, w));
+            for (const auto &w: guessWordsToCheck) guessIndexesToCheck.push_back(getIndex(nothingSolver.allGuesses, w));
         }
 
         auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
@@ -87,7 +87,7 @@ struct RunnerMulti {
                         bestIncorrect = incorrect;
                     }
                     completed++;
-                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guessIndexesToCheck.size()) << ", best incorrect: " << currBestIncorrect);
+                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guessIndexesToCheck.size()) << " (" << incorrect << "), best incorrect: " << currBestIncorrect);
                     results[i] = {answers.size() - incorrect, firstWordIndex};
                     if (incorrect == 0) {
                         solved++;
