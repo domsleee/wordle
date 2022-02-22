@@ -64,6 +64,10 @@ struct AnswersAndGuessesSolver {
     std::unordered_map<AnswersAndGuessesKey, BestWordResult> getBestWordCache;
     long long cacheSize = 0, cacheMiss = 0, cacheHit = 0;
 
+    void buildStaticState() {
+        buildClearGuessesInfo(reverseIndexLookup);
+    }
+
     void setStartWord(const std::string &word) {
         DEBUG("set starting word "<< word);
         startingWord = word;
@@ -291,9 +295,7 @@ private:
 
     void precompute() {
         GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
-        //AttemptState::setupWordCache(allGuesses.size());
         getBestWordCache = {};
-        buildClearGuessesInfo();
     }
 
     inline std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
@@ -325,7 +327,7 @@ private:
     }
 
     inline static std::vector<int> letterCountLookup = {};
-    void buildClearGuessesInfo() {
+    static void buildClearGuessesInfo(const std::vector<std::string> &reverseIndexLookup) {
         if (letterCountLookup.size() > 0) return;
         letterCountLookup.resize(reverseIndexLookup.size());
         for (std::size_t i = 0; i < reverseIndexLookup.size(); ++i) {

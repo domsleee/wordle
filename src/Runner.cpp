@@ -21,6 +21,7 @@ int Runner::run() {
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
+        solver.buildStaticState();
         END_TIMER(precompute);
 
         if (GlobalArgs.parallel) {
