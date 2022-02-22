@@ -20,7 +20,7 @@
 #include <stack>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x)
+#define GUESSESSOLVER_DEBUG(x) 
 
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
@@ -109,9 +109,9 @@ struct AnswersAndGuessesSolver {
 
             makeGuess(p, state, guessIndex, reverseIndexLookup);
 
-            GUESSESSOLVER_DEBUG(reverseIndexLookup[answer] << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
+            GUESSESSOLVER_DEBUG(reverseIndexLookup[answerIndex] << ", " << tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p.answers, p.guesses, maxTries-tries);
-            GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", #WRONG: " << pr.numWordsWrong);
+            GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", probWrong: " << pr.probWrong);
 
             guessIndex = pr.wordIndex;
         }
@@ -163,7 +163,7 @@ private:
         if (triesRemaining == 1) { // we can't use info from last guess
             return {
                 ((double)(answers.size()-1)) / answers.size(),
-                *std::min_element(answers.begin(), answers.end())
+                *std::min_element(guesses.begin(), guesses.end())
             };
         }
 
@@ -225,7 +225,7 @@ private:
     }
 
     static BestWordResult getDefaultBestWordResult() {
-        return {1.01, MAX_INDEX_TYPE};
+        return {1e8, MAX_INDEX_TYPE};
     }
 
     BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, uint8_t triesRemaining) {

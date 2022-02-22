@@ -45,6 +45,13 @@ static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::ma
 static constexpr IndexType MAX_INDEX_TYPE = std::numeric_limits<IndexType>::max();
 static constexpr uint32_t MAX_UINT32_T = std::numeric_limits<uint32_t>::max();
 
+template <class T>
+int getIndex(const std::vector<T> &vec, const T& val) {
+    auto it = std::find(vec.begin(), vec.end(), val);
+    if (it == vec.end()) return -1;
+    return std::distance(vec.begin(), it);
+}
+
 template <typename T>
 static T safeMultiply(T a, T b) {
     T x = a * b;

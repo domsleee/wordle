@@ -24,9 +24,14 @@ struct RunnerMulti {
         if (GlobalArgs.guessesToSkip != "") {
             auto guessWordsToSkip = readFromFile(GlobalArgs.guessesToSkip);
             std::erase_if(guessIndexesToCheck, [&](int guessIndex) {
-                return std::find(guessWordsToSkip.begin(), guessWordsToSkip.end(), nothingSolver.allGuesses[guessIndex]) != guessWordsToSkip.end();
+                return getIndex(guessWordsToSkip, nothingSolver.allGuesses[guessIndex]) != -1;
             });
             DEBUG("erased " << (nothingSolver.allGuesses.size() - guessIndexesToCheck.size()) << " words from " << GlobalArgs.guessesToSkip);
+        }
+        if (GlobalArgs.guessesToCheck != "") {
+            auto guessWordsToCheck = readFromFile(GlobalArgs.guessesToCheck);
+            guessIndexesToCheck.clear();
+            for (const auto &w: guessWordsToCheck) guessIndexesToCheck.push_back(getIndex(guessWordsToCheck, w));
         }
 
         auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
@@ -43,7 +48,8 @@ struct RunnerMulti {
                 &completed,
                 &solved,
                 &bestIncorrect,
-                &nothingSolver=std::as_const(nothingSolver)
+                &nothingSolver=std::as_const(nothingSolver),
+                &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
             ]
                 (const std::vector<IndexType> &firstWordBatch) -> std::vector<P>
             {
@@ -60,6 +66,7 @@ struct RunnerMulti {
                     if (solved.load() > 0) return {};
                     auto firstWordIndex = firstWordBatch[i];
                     const auto &firstWord = guesses[firstWordIndex];
+                    DEBUG("CHECKING FIRST WORD: " << firstWord);
                     solver.startingWord = firstWord;
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
@@ -80,7 +87,7 @@ struct RunnerMulti {
                         bestIncorrect = incorrect;
                     }
                     completed++;
-                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guesses.size()) << ", best incorrect: " << currBestIncorrect);
+                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guessIndexesToCheck.size()) << ", best incorrect: " << currBestIncorrect);
                     results[i] = {answers.size() - incorrect, firstWordIndex};
                     if (incorrect == 0) {
                         solved++;

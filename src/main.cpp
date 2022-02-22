@@ -10,6 +10,8 @@ int main(int argc, char *argv[]) {
         ("answers", "Answers", cxxopts::value<std::string>())
         ("w,first-word", "First Word", cxxopts::value<std::string>()->default_value(""))
         ("s,guesses-to-skip", "Words to skip", cxxopts::value<std::string>()->default_value(""))
+        ("guesses-to-check", "Guesses to check", cxxopts::value<std::string>()->default_value(""))
+
         ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
         ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
@@ -37,6 +39,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.maxIncorrect = result["max-incorrect"].as<int>();
     GlobalArgs.firstWord = result["first-word"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
+    GlobalArgs.guessesToCheck = result["guesses-to-check"].as<std::string>();
 
     // flags
     GlobalArgs.parallel = result.count("parallel");
