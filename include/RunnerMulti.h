@@ -34,7 +34,7 @@ struct RunnerMulti {
             for (const auto &w: guessWordsToCheck) guessIndexesToCheck.push_back(getIndex(nothingSolver.allGuesses, w));
         }
 
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
+        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 8);
         DEBUG("#batches: " << batchesOfFirstWords.size());
         //batchesOfFirstWords = {{1285}};
 

@@ -167,7 +167,7 @@ private:
         if (triesRemaining == 1) { // we can't use info from last guess
             return {
                 ((double)(answers.size()-1)) / answers.size(),
-                *std::min_element(guesses.begin(), guesses.end())
+                *std::min_element(answers.begin(), answers.end())
             };
         }
 
