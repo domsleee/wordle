@@ -20,6 +20,7 @@ int Runner::run() {
         auto solver = AnswersAndGuessesSolver<isEasyMode>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
+        AttemptStateFast::clearCache();
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
         solver.buildStaticState();
         END_TIMER(precompute);

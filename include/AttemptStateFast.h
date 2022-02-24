@@ -125,6 +125,15 @@ struct AttemptStateFast {
         ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup finished");
     }
 
+    static void clearCache() {
+        firstPrimes.clear();
+        wordIndexDataLookup.clear();
+        guessIndexPatternLookup.clear();
+        firstPrimes.shrink_to_fit();
+        wordIndexDataLookup.shrink_to_fit();
+        guessIndexPatternLookup.shrink_to_fit();
+    }
+
 private:
     static void buildWordIndexDataLookup(const std::vector<std::string> &reverseIndexLookup) {
         ATTEMPTSTATEFAST_DEBUG("build WordIndexData");
