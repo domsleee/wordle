@@ -5,7 +5,7 @@ FLAGS_USE="-fprofile-use=./prof/out_single.pgo -lgcov"
 
 make clean
 ENV_CXXFLAGS="$FLAGS_GEN" ENV_LIBFLAGS="$FLAGS_GEN" make -j
-./bin/solve -r --max-tries 3 --max-incorrect 150 -w slate --force-sequential ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -r --lowest-average --force-sequential -w crane --guesses-to-check databases/wordsAvgPgo ext/wordle-guesses.txt ext/wordle-answers.txt
 
 make clean
 ENV_CXXFLAGS="$FLAGS_USE" ENV_LIBFLAGS="$FLAGS_USE" make -j
@@ -14,4 +14,4 @@ ENV_CXXFLAGS="$FLAGS_USE" ENV_LIBFLAGS="$FLAGS_USE" make -j
 #./bin/solve -pr --max-tries 4 --max-incorrect 33 ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -p --max-tries 4 --max-incorrect 33 ext/wordle-guesses.txt ext/wordle-answers.txt
 
-./bin/solve -p --max-tries 4 --max-incorrect 33 --guesses-to-check databases/wordsp5 ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -p --lowest-average -w crane ext/wordle-guesses.txt ext/wordle-answers.txt

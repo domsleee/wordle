@@ -133,3 +133,9 @@ inline std::string getPerc(int64_t a, int64_t b) {
     return ss.str();
 }
 
+inline std::string getDivided(int64_t a, int64_t b) {
+    std::stringstream ss;
+    ss << a << "/" << b << "=" << std::setprecision(2) << std::fixed << ((double)a) / b;
+    return ss.str();
+}
+

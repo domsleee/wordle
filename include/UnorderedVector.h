@@ -41,6 +41,10 @@ struct UnorderedVector {
         }
     }
 
+    void restoreAllValues() {
+        restoreValues(maxSize - _size);
+    }
+
     auto begin() const {
         return vec.begin();
     }

@@ -12,12 +12,12 @@ void printSolverInformation(const T& solver) {
 
 struct RunnerUtil {
     template <typename T>
-    static void printInfo(const T& solver, const std::vector<long long> &results) {
+    static void printInfo(const T& solver, const std::vector<long long> &answerIndexToResult) {
         const auto &wordsToSolve = solver.allAnswers;
         const auto &guesses = solver.allGuesses;
         auto correct = 0;
-        for (auto r: results) if (r > 0) correct++;
-        double avg = (double)std::reduce(results.begin(), results.end()) / correct;
+        for (auto r: answerIndexToResult) if (r > 0) correct++;
+        double avg = (double)std::reduce(answerIndexToResult.begin(), answerIndexToResult.end()) / correct;
 
         int numIncorrect = wordsToSolve.size() - correct;
         std::string valid = getBoolVal(numIncorrect <= solver.maxIncorrect);

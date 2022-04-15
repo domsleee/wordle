@@ -19,17 +19,17 @@ int main(int argc, char *argv[]) {
         ("r,reduce-guesses", "Reduce the number of guesses")
         ("force-sequential", "No parallel when generating cache")
         ("hard-mode", "Solve the hard mode of wordle")
+        ("lowest-average", "Get the lowest average score (default is to find the maximum correct words)")
         ("h,help", "Print usage")
     ;
-
     options.parse_positional({"guesses", "answers"});
-
     auto result = options.parse(argc, argv);
 
     if (result.count("help")) {
       std::cout << options.help({""}) << std::endl;
       exit(0);
     }
+
     GlobalArgs.guesses = result["guesses"].as<std::string>();
     GlobalArgs.answers = result["answers"].as<std::string>();
 
@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.reduceGuesses = result.count("reduce-guesses");
     GlobalArgs.forceSequential = result.count("force-sequential");
     GlobalArgs.hardMode = result.count("hard-mode");
+    GlobalArgs.isGetLowestAverage = result.count("lowest-average");
 
     return Runner::run();
 }

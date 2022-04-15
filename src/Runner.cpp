@@ -15,9 +15,9 @@ int Runner::run() {
         guesses = answers;
     }
 
-    auto lambda = [&]<bool isEasyMode>() -> bool {
+    auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
         START_TIMER(precompute);
-        auto solver = AnswersAndGuessesSolver<isEasyMode>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
+        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
@@ -25,22 +25,25 @@ int Runner::run() {
         solver.buildStaticState();
         END_TIMER(precompute);
 
+        if (GlobalArgs.firstWord != "") {
+            solver.startingWord = GlobalArgs.firstWord;
+        }
+
         if (GlobalArgs.parallel) {
             return RunnerMulti::run(solver);
         }
 
         START_TIMER(total);
-        std::vector<std::string> wordsToSolve = answers;//getWordsToSolve();//{getWordsToSolve()[4]};
+        auto indexesToCheck = RunnerMulti::getIndexesToCheck(answers);
+        std::vector<std::string> wordsToSolve = {};
+        for (auto ind: indexesToCheck) wordsToSolve.push_back(answers[ind]);
+
         DEBUG("calc total.." << wordsToSolve.size());
         std::vector<long long> results(wordsToSolve.size(), 0);
         std::vector<std::string> unsolved = {};
         int correct = 0;
 
-        bool getFirstWord = true;
-        if (GlobalArgs.firstWord != "") {
-            solver.startingWord = GlobalArgs.firstWord;
-            getFirstWord = false;
-        }
+        bool getFirstWord = GlobalArgs.firstWord == "";
 
         for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
             std::string word = wordsToSolve[i];
@@ -63,9 +66,16 @@ int Runner::run() {
         return 0;
     };
 
+    auto lambda2 = [&]<bool isEasyMode>() -> bool {
+        if (GlobalArgs.isGetLowestAverage) {
+            return lambda.template operator()<isEasyMode, true>();
+        }
+        return lambda.template operator()<isEasyMode, false>();
+    };
+
     if (GlobalArgs.hardMode) {
-        return lambda.template operator()<false>();
+        return lambda2.template operator()<false>();
         //return lambda<false>();
     }
-    return lambda.template operator()<true>();
+    return lambda2.template operator()<true>();
 }

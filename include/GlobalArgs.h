@@ -10,7 +10,7 @@ struct _GlobalArgs {
     static inline std::string firstWord, guessesToSkip, guessesToCheck;
 
     // flags
-    static inline bool parallel, reduceGuesses, forceSequential, hardMode;
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage;
 };
 
 static inline auto GlobalArgs = _GlobalArgs();
