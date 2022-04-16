@@ -429,19 +429,6 @@ private:
         auto it = getBestWordCache.find(key);
         if (it == getBestWordCache.end()) {
             cacheMiss++;
-            if constexpr (false && !isGetLowestAverage) {
-                if (key.triesRemaining == GlobalArgs.maxTries - 1) {
-                    //DEBUG("CHECKING....");
-                    for (auto it = getBestWordCache.cbegin(); it != getBestWordCache.cend(); ++it) {
-                        if (it->second.probWrong == 0.00 && key.isEasierThanProblem(it->first)) {
-                            easierThanProblemCacheHit++;
-                            //DEBUG("HIT");
-                            return it->second;
-                        }
-                    }
-                    easierThanProblemCacheMiss++;
-                }
-            }
             return getDefaultBestWordResult();
         }
 
