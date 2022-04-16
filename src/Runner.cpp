@@ -39,7 +39,7 @@ int Runner::run() {
         for (auto ind: indexesToCheck) wordsToSolve.push_back(answers[ind]);
 
         DEBUG("calc total.." << wordsToSolve.size());
-        std::vector<long long> results(wordsToSolve.size(), 0);
+        std::vector<int64_t> results(wordsToSolve.size(), 0);
         std::vector<std::string> unsolved = {};
         int correct = 0;
 
@@ -48,7 +48,7 @@ int Runner::run() {
         for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
             std::string word = wordsToSolve[i];
             DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
-            auto r = solver.solveWord(word, getFirstWord);
+            auto r = solver.solveWord(word, getFirstWord).tries;
             if (r != -1) correct++;
             else unsolved.push_back(word);
             results[i] = r == -1 ? 0 : r;

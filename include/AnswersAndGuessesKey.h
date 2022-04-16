@@ -11,8 +11,31 @@ struct AnswersAndGuessesKey {
         : wsAnswers(wsAnswers),
           wsGuesses(wsGuesses),
           triesRemaining(triesRemaining) {}
+    
+    // for unordered_map value
+    AnswersAndGuessesKey()
+        : wsAnswers({}),
+          wsGuesses({}),
+          triesRemaining(0) {}
 
     friend bool operator==(const AnswersAndGuessesKey &a, const AnswersAndGuessesKey &b) = default;
+    friend bool operator<(const AnswersAndGuessesKey& l, const AnswersAndGuessesKey& r)
+    {
+        if (l.wsAnswers.count() != r.wsAnswers.count()) {
+            return l.wsAnswers.count() < r.wsAnswers.count();
+        }
+        if (l.wsGuesses.count() != r.wsGuesses.count()) {
+            return r.wsGuesses.count() < r.wsGuesses.count();
+        }
+        return l.triesRemaining < r.triesRemaining;
+    }
+
+    // is this an easier problem
+    bool isEasierThanProblem(const AnswersAndGuessesKey &harderProblem) const {
+        return (wsAnswers & harderProblem.wsAnswers) == wsAnswers
+         && (wsGuesses & harderProblem.wsGuesses) == wsGuesses
+         && (triesRemaining >= harderProblem.triesRemaining);
+    }
 };
 
 
