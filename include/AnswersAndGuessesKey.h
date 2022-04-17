@@ -1,51 +1,91 @@
 #pragma once
 #include "WordSetUtil.h"
+#include "WordSetHelpers.h"
+
 #include "Util.h"
 
-struct AnswersAndGuessesKey {
+struct StateWithGuesses {
     const WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
     const uint8_t triesRemaining;
+    StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
+        : wsAnswers(wsAnswers), wsGuesses(wsGuesses), triesRemaining(triesRemaining) {}
+    friend bool operator==(const StateWithGuesses &a, const StateWithGuesses &b) = default;
+};
+
+struct StateNoGuesses {
+    const WordSetAnswers wsAnswers;
+    const uint8_t triesRemaining;
+    StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
+        : wsAnswers(wsAnswers), triesRemaining(triesRemaining) {}
+    friend bool operator==(const StateNoGuesses &a, const StateNoGuesses &b) = default;
+};
+
+template<bool isEasyMode>
+struct AnswersAndGuessesKey {
+    using State = std::conditional_t<isEasyMode, StateNoGuesses, StateWithGuesses>;
 
     AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
-        : wsAnswers(wsAnswers),
-          wsGuesses(wsGuesses),
-          triesRemaining(triesRemaining) {}
+        : state(wsAnswers, wsGuesses, triesRemaining) {}
+
+    template<typename T>
+    AnswersAndGuessesKey(const T& answers, const T& guesses, int8_t triesRemaining)
+        : AnswersAndGuessesKey(
+            WordSetHelpers::buildAnswersWordSet(answers),
+            WordSetHelpers::buildGuessesWordSet(guesses),
+            triesRemaining
+        ) {}
     
+    template<typename T>
+    AnswersAndGuessesKey(const T& answers, int8_t triesRemaining)
+        : AnswersAndGuessesKey(
+            WordSetHelpers::buildAnswersWordSet(answers),
+            defaultWordSetGuesses,
+            triesRemaining
+        ) {}
+    
+    constexpr static WordSetGuesses defaultWordSetGuesses = WordSetGuesses();
+
     // for unordered_map value
     AnswersAndGuessesKey()
-        : wsAnswers({}),
-          wsGuesses({}),
-          triesRemaining(0) {}
+        : AnswersAndGuessesKey({}, {}, 0) {}
+    
 
-    friend bool operator==(const AnswersAndGuessesKey &a, const AnswersAndGuessesKey &b) = default;
-    friend bool operator<(const AnswersAndGuessesKey& l, const AnswersAndGuessesKey& r)
+    const State state;
+
+    friend bool operator==(const AnswersAndGuessesKey<isEasyMode> &a, const AnswersAndGuessesKey<isEasyMode> &b) = default;
+    friend bool operator<(const AnswersAndGuessesKey<isEasyMode> &l, const AnswersAndGuessesKey<isEasyMode> &r)
     {
-        if (l.wsAnswers.count() != r.wsAnswers.count()) {
-            return l.wsAnswers.count() < r.wsAnswers.count();
+        if (l.state.wsAnswers.count() != r.state.wsAnswers.count()) {
+            return l.state.wsAnswers.count() < r.state.wsAnswers.count();
         }
-        if (l.wsGuesses.count() != r.wsGuesses.count()) {
-            return r.wsGuesses.count() < r.wsGuesses.count();
+        if constexpr (!isEasyMode) {
+            if (l.state.wsGuesses.count() != r.state.wsGuesses.count()) {
+                return r.state.wsGuesses.count() < r.state.wsGuesses.count();
+            }
         }
-        return l.triesRemaining < r.triesRemaining;
+
+        return l.state.triesRemaining < r.state.triesRemaining;
     }
 
     // is this an easier problem
-    bool isEasierThanProblem(const AnswersAndGuessesKey &harderProblem) const {
+    /*bool isEasierThanProblem(const AnswersAndGuessesKey &harderProblem) const {
         return (wsAnswers & harderProblem.wsAnswers) == wsAnswers
          && (wsGuesses & harderProblem.wsGuesses) == wsGuesses
          && (triesRemaining >= harderProblem.triesRemaining);
-    }
+    }*/
 };
 
 
-template <>
-struct std::hash<AnswersAndGuessesKey> {
-    std::size_t operator()(const AnswersAndGuessesKey& k) const {
+template <bool isEasyMode>
+struct std::hash<AnswersAndGuessesKey<isEasyMode>> {
+    std::size_t operator()(const AnswersAndGuessesKey<isEasyMode>& k) const {
         size_t res = 17;
-        res = res * 31 + hash<WordSetAnswers>()( k.wsAnswers );
-        res = res * 31 + hash<WordSetGuesses>()( k.wsGuesses );
-        res = res * 31 + hash<uint8_t>()( k.triesRemaining );
+        res = res * 31 + hash<WordSetAnswers>()( k.state.wsAnswers );
+        if constexpr (!isEasyMode) {
+            res = res * 31 + hash<WordSetGuesses>()( k.state.wsGuesses );
+        }
+        res = res * 31 + hash<uint8_t>()( k.state.triesRemaining );
         return res;
     }
 };

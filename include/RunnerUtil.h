@@ -8,8 +8,6 @@ template<typename T>
 void printSolverInformation(const T& solver) {
     auto cacheTotal = solver.cacheHit + solver.cacheMiss;
     DEBUG("solver cache: " << getPerc(solver.cacheHit, cacheTotal));
-    auto easierTotal = solver.easierThanProblemCacheHit + solver.easierThanProblemCacheMiss;
-    DEBUG("ezThanProb c: " << getPerc(solver.easierThanProblemCacheHit, easierTotal));
 
 }
 

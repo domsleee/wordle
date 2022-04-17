@@ -55,7 +55,6 @@ struct RunnerMulti {
                 (const std::vector<IndexType> &firstWordBatch) -> std::vector<P>
             {
                 //DEBUG("batch size " << firstWordBatch.size());
-                //auto solver = AnswersAndGuessesSolver<IS_EASY_MODE>(answers, guesses);
                 
                 const auto &answers = nothingSolver.allAnswers;
                 const auto &guesses = nothingSolver.allGuesses;
@@ -64,10 +63,10 @@ struct RunnerMulti {
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
-                    if (solved.load() > 0) return {};
+                    //if (solved.load() > 0) return {};
                     auto firstWordIndex = firstWordBatch[i];
                     const auto &firstWord = guesses[firstWordIndex];
-                    DEBUG("CHECKING FIRST WORD: " << firstWord);
+                    DEBUG("CHECKING FIRST WORD: " << firstWord << " first in batch: " << guesses[firstWordBatch[0]]);
                     solver.startingWord = firstWord;
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
@@ -77,7 +76,7 @@ struct RunnerMulti {
                         if (incorrect > solver.maxIncorrect) {
                             continue;
                         }
-                        if (solved.load() > 0) return {};
+                        //if (solved.load() > 0) return {};
                         auto p = AnswersGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto solverRes = solver.solveWord(answerIndex, firstWordIndex, p);
                         incorrect += solverRes.tries == -1;
@@ -169,9 +168,10 @@ struct RunnerMulti {
                 for (std::size_t i = 0; i < answerIndexBatch.size(); ++i) {
                     auto answerIndex = answerIndexBatch[i];
                     const auto &actualAnswer = nothingSolver.allAnswers[answerIndex];
-                    DEBUG("CHECKING ANSWER:" << actualAnswer);
+                    DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);
                     
                     auto r = solver.solveWord(actualAnswer);
+                    if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
                     completed++;
                     incorrect += r.tries == -1;
                     totalSum += r.tries != -1 ? r.tries : 0;
