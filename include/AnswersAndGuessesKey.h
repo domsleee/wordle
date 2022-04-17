@@ -7,16 +7,16 @@
 struct StateWithGuesses {
     const WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
-    const uint8_t triesRemaining;
-    StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
+    const TriesRemainingType triesRemaining;
+    StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
         : wsAnswers(wsAnswers), wsGuesses(wsGuesses), triesRemaining(triesRemaining) {}
     friend bool operator==(const StateWithGuesses &a, const StateWithGuesses &b) = default;
 };
 
 struct StateNoGuesses {
     const WordSetAnswers wsAnswers;
-    const uint8_t triesRemaining;
-    StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
+    const TriesRemainingType triesRemaining;
+    StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
         : wsAnswers(wsAnswers), triesRemaining(triesRemaining) {}
     friend bool operator==(const StateNoGuesses &a, const StateNoGuesses &b) = default;
 };
@@ -25,11 +25,11 @@ template<bool isEasyMode>
 struct AnswersAndGuessesKey {
     using State = std::conditional_t<isEasyMode, StateNoGuesses, StateWithGuesses>;
 
-    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, uint8_t triesRemaining)
+    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
         : state(wsAnswers, wsGuesses, triesRemaining) {}
 
     template<typename T>
-    AnswersAndGuessesKey(const T& answers, const T& guesses, int8_t triesRemaining)
+    AnswersAndGuessesKey(const T& answers, const T& guesses, TriesRemainingType triesRemaining)
         : AnswersAndGuessesKey(
             WordSetHelpers::buildAnswersWordSet(answers),
             WordSetHelpers::buildGuessesWordSet(guesses),
@@ -37,7 +37,7 @@ struct AnswersAndGuessesKey {
         ) {}
     
     template<typename T>
-    AnswersAndGuessesKey(const T& answers, int8_t triesRemaining)
+    AnswersAndGuessesKey(const T& answers, TriesRemainingType triesRemaining)
         : AnswersAndGuessesKey(
             WordSetHelpers::buildAnswersWordSet(answers),
             defaultWordSetGuesses,

@@ -162,7 +162,7 @@ struct AnswersAndGuessesSolver {
 
 private:
 
-    /*inline BestWordResult getBestWordDecider(std::vector<IndexType>& answers, std::vector<IndexType>& guesses, uint8_t triesRemaining) {
+    /*inline BestWordResult getBestWordDecider(std::vector<IndexType>& answers, std::vector<IndexType>& guesses, TriesRemainingType triesRemaining) {
         return getBestWord(answers, guesses, triesRemaining);
     }
 
@@ -177,7 +177,7 @@ private:
     }*/
     
     template <typename T>
-    inline BestWordResult getBestWordDecider(T& answers, T& guesses, const uint8_t triesRemaining) {
+    inline BestWordResult getBestWordDecider(T& answers, T& guesses, const TriesRemainingType triesRemaining) {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             return getBestWord(answers, guesses, triesRemaining);
         } else {
@@ -189,7 +189,7 @@ private:
         }
     }
 
-    BestWordResult getBestWord2(UnorderedVector<IndexType> &answers, UnorderedVector<IndexType> &guesses, const uint8_t triesRemaining) {
+    BestWordResult getBestWord2(UnorderedVector<IndexType> &answers, UnorderedVector<IndexType> &guesses, const TriesRemainingType triesRemaining) {
         assertm(answers.size() != 0, "NO WORDS!");
         assertm(triesRemaining != 0, "no tries remaining");
 
@@ -244,7 +244,7 @@ private:
         return setCacheVal(key, res);
     }
 
-    BestWordResult getWordForLowestAverage(UnorderedVector<IndexType> &answers, UnorderedVector<IndexType> &guesses, const uint8_t triesRemaining) {
+    BestWordResult getWordForLowestAverage(UnorderedVector<IndexType> &answers, UnorderedVector<IndexType> &guesses, const TriesRemainingType triesRemaining) {
         assertm(answers.size() != 0, "NO WORDS!");
         assertm(triesRemaining != 0, "no tries remaining");
 
@@ -296,7 +296,7 @@ private:
         UnorderedVector<IndexType> &answers,
         UnorderedVector<IndexType> &guesses,
         const IndexType possibleGuess,
-        const uint8_t triesRemaining,
+        const TriesRemainingType triesRemaining,
         const AttemptStateToUse &state)
     {
         auto nR = state.guessWordAndRemoveUnmatched(possibleGuess, answers, reverseIndexLookup);
@@ -315,7 +315,7 @@ private:
         return pr;
     }
 
-    BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, const uint8_t triesRemaining) {
+    BestWordResult getBestWord(const std::vector<IndexType> &answers, const std::vector<IndexType> &_guesses, const TriesRemainingType triesRemaining) {
         assertm(answers.size() != 0, "NO WORDS!");
         assertm(triesRemaining != 0, "no tries remaining");
 
@@ -448,7 +448,7 @@ private:
     }
 
     template<typename T>
-    std::pair<AnswersAndGuessesKey<isEasyMode>, const BestWordResult> getCacheKeyAndValue(T& answers, T& guesses, const uint8_t triesRemaining) {
+    std::pair<AnswersAndGuessesKey<isEasyMode>, const BestWordResult> getCacheKeyAndValue(T& answers, T& guesses, const TriesRemainingType triesRemaining) {
         auto key = getCacheKey(answers, guesses, triesRemaining);
         const auto cacheVal = getFromCache(key);
         return {key, cacheVal};
@@ -456,7 +456,7 @@ private:
 
 public:
     template<typename T>
-    static AnswersAndGuessesKey<isEasyMode> getCacheKey(const T& answers, const T& guesses, uint8_t triesRemaining) {
+    static AnswersAndGuessesKey<isEasyMode> getCacheKey(const T& answers, const T& guesses, TriesRemainingType triesRemaining) {
         if constexpr (isEasyMode) {
             return AnswersAndGuessesKey<isEasyMode>(answers, triesRemaining);
         } else {
