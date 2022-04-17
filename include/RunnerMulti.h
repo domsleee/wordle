@@ -77,7 +77,7 @@ struct RunnerMulti {
                             continue;
                         }
                         //if (solved.load() > 0) return {};
-                        auto p = AnswersGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
+                        auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto solverRes = solver.solveWord(answerIndex, firstWordIndex, p);
                         incorrect += solverRes.tries == -1;
                     }
@@ -220,7 +220,7 @@ struct RunnerMulti {
         std::map<IndexType, int> indexKeys;
         std::vector<IndexType> sortedIndexes = indexes;
 
-        auto p = AnswersGuessesIndexesPair<UnorderedVector<IndexType>>(nothingSolver.allAnswers.size(), nothingSolver.allGuesses.size());
+        auto p = AnswerGuessesIndexesPair<UnorderedVector<IndexType>>(nothingSolver.allAnswers.size(), nothingSolver.allGuesses.size());
         auto guessIndex = nothingSolver.getIndexForWord(nothingSolver.startingWord);
 
         DEBUG("start: " << p.answers.size() << ", " << p.guesses.size());
