@@ -292,7 +292,7 @@ private:
 
     static inline thread_local std::size_t numAnswersRemoved;
 
-    BestWordResult makeGuessAndRestoreAfter(
+    inline BestWordResult makeGuessAndRestoreAfter(
         UnorderedVector<IndexType> &answers,
         UnorderedVector<IndexType> &guesses,
         const IndexType possibleGuess,

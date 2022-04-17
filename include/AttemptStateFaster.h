@@ -8,7 +8,6 @@
 #include "AttemptStateFast.h"
 #include "AttemptStateUtil.h"
 #include "UnorderedVector.h"
-#include "BigBitsetProxy.h"
 #include "PatternGetterCached.h"
 #include "Util.h"
 #include "Defs.h"
@@ -77,16 +76,7 @@ struct AttemptStateFaster {
         auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
         auto dummy = wordIndexes;
         std::atomic<int> done = 0;
-
-        std::string filename = "databases/test.out";
-
-        if (false && std::filesystem::exists(filename)) {
-            DEBUG("reading from file...");
-            auto v = MyProxy(cache);
-            AttemptStateUtil::readFromFile(v, (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
-            return;
-        }
-
+    
         auto lambda = [&]<typename T>(const T& executionType) {
             std::transform(
                 executionType,
@@ -118,21 +108,7 @@ struct AttemptStateFaster {
         } else {
             lambda(std::execution::par_unseq);
         }
-        
-        if (false) AttemptStateUtil::writeToFile(MyProxy(cache), (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
-        if (false) {
-            std::vector<BigBitset> cache2;
-            cache2.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
-            auto v = MyProxy(cache2);
-            AttemptStateUtil::readFromFile(v, (int64_t)cache.size() * REVERSE_INDEX_LOOKUP_SIZE, filename);
-            for (std::size_t i = 0; i < cache.size(); ++i) {
-                if (cache[i] != cache2[i]) {
-                    DEBUG("MISMATCH AT " << i);
-                    exit(1);
-                }
-            }
 
-        }
         ATTEMPTSTATEFASTER_DEBUG("buidWSLookup finished");
     }
 
