@@ -28,13 +28,12 @@ using IndexType = uint16_t;
 using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
 
-static const int NUM_WORDS = 2432;
 static const int MAX_NUM_GUESSES = 13056;
+static const int NUM_WORDS = 13056;//2432;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
 const int WORD_LENGTH = 5;
-const int NUM_PATTERNS = pow(3, WORD_LENGTH);
 using MinLetterType = std::array<int8_t, 26>;
 
 const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
@@ -126,15 +125,29 @@ inline std::vector<std::string> mergeAndUniq(const std::vector<std::string> &a, 
 #include <sstream>
 #include <iomanip>
 
+inline double safeDivide(int64_t a, int64_t b) {
+    if (b == 0) return std::numeric_limits<double>::infinity();
+    return (double)a/b;
+}
+
 inline std::string getPerc(int64_t a, int64_t b) {
     std::stringstream ss;
-    ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*a/b << "%)";
+    ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*safeDivide(a, b) << "%)";
     return ss.str();
 }
 
 inline std::string getDivided(int64_t a, int64_t b) {
     std::stringstream ss;
-    ss << a << "/" << b << "=" << std::setprecision(2) << std::fixed << ((double)a) / b;
+    ss << a << "/" << b << "=" << std::setprecision(2) << std::fixed << safeDivide(a, b);
     return ss.str();
+}
+
+// https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
+inline int64_t intPow(int64_t base, int64_t exp) {
+    if (exp == 0) return 1;  // base case;
+    int64_t temp = intPow(base, exp/2);
+    return (exp % 2 == 0)
+        ? temp * temp
+        : (base * temp * temp);
 }
 

@@ -101,7 +101,7 @@ struct AttemptState {
     }
 
     static std::vector<std::string> getAllPatterns(int length) {
-        auto max = std::pow(3, length);
+        auto max = intPow(3, length);
         std::vector<std::string> res(max, std::string(length, NULL_LETTER));
         for (auto i = 0; i < max; ++i) {
             auto v = i;

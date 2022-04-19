@@ -45,6 +45,12 @@ struct UnorderedVector {
         restoreValues(maxSize - _size);
     }
 
+    void restoreToSize(std::size_t newSize) {
+        assertm(newSize >= _size, "restoration size needs to be larger");
+        assertm(newSize <= maxSize, "cant restore elements that don't exist");
+        restoreValues(newSize - _size);
+    }
+
     auto begin() const {
         return vec.begin();
     }

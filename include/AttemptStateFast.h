@@ -9,6 +9,7 @@
 #include "AttemptState.h"
 #include "PatternGetter.h"
 #include "Util.h"
+#include "Defs.h"
 #include "WordSetUtil.h"
 #include "AttemptStateCacheKey.h"
 #include "AttemptStateFastStructs.h"

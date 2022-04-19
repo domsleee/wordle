@@ -28,7 +28,7 @@ struct RunnerUtil {
         DEBUG("MAX_INCORREC: " << (int)solver.maxIncorrect);
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << solver.maxIncorrect << ")");
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
-        DEBUG("correct     : " << correct << "/" << wordsToSolve.size() << " (" << 100.0 * correct / wordsToSolve.size() << "%)");    
+        DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));
         DEBUG("guess words : " << guesses.size());
         DEBUG("average     : " << avg);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());

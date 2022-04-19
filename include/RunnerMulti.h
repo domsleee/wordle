@@ -166,6 +166,7 @@ struct RunnerMulti {
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < answerIndexBatch.size(); ++i) {
+                    solver.skipRemoveGuessesWhichHaveBetterGuess = i > 0;
                     auto answerIndex = answerIndexBatch[i];
                     const auto &actualAnswer = nothingSolver.allAnswers[answerIndex];
                     DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);

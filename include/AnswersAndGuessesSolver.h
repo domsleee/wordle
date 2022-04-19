@@ -22,6 +22,7 @@
 #include <unordered_set>
 
 #define GUESSESSOLVER_DEBUG(x) 
+#define BETTER_GUESS_OPT_DEBUG(x)
 
 static constexpr double INF = 1e8;
 
@@ -62,6 +63,7 @@ struct AnswersAndGuessesSolver {
 
     static const int isEasyModeVar = isEasyMode;
 
+    bool skipRemoveGuessesWhichHaveBetterGuess = false;
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getBestWordCache;
     long long cacheMiss = 0, cacheHit = 0;
@@ -117,6 +119,9 @@ struct AnswersAndGuessesSolver {
         AnswersAndGuessesResult res = {};
         auto getter = PatternGetterCached(answerIndex);
         auto state = AttemptStateToUse(getter);
+
+        //clearGuesses(p.guesses, p.answers);
+        //removeGuessesWhichHaveBetterGuess(p, true);
         
         int guessIndex = firstWordIndex;
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
@@ -124,6 +129,11 @@ struct AnswersAndGuessesSolver {
             if (res.tries == maxTries) break;
 
             makeGuess(p, state, guessIndex, reverseIndexLookup);
+
+            if constexpr (std::is_same<T, UnorderedVec>::value && isEasyMode) {
+                clearGuesses(p.guesses, p.answers);
+                removeGuessesWhichHaveBetterGuess(p, true);
+            }
 
             GUESSESSOLVER_DEBUG(reverseIndexLookup[answerIndex] << ", " << res.tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p, maxTries-res.tries);
@@ -187,14 +197,15 @@ private:
             };
         }
 
-        const auto guessesRemovedByClearGuesses = isEasyMode ? clearGuesses(p.guesses, p.answers) : 0;
-
         const auto [key, cacheVal] = getCacheKeyAndValue(p, triesRemaining);
         if (cacheVal.wordIndex != MAX_INDEX_TYPE) {
-            p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return cacheVal;
         }
 
+        auto guessesRemovedByClearGuesses = isEasyMode ? clearGuesses(p.guesses, p.answers) : 0;
+        if constexpr (std::is_same<T, UnorderedVec>::value && isEasyMode) {
+            //if (triesRemaining >= 0) guessesRemovedByClearGuesses += removeGuessesWhichHaveBetterGuess(p);
+        }
         BestWordResult res = getDefaultBestWordResult();
         
         // when there is >1 word remaining, we need at least 2 tries to definitely guess it
@@ -453,5 +464,128 @@ public:
         static BestWordResult defaultBestWordResult = {INF, MAX_INDEX_TYPE};
         return defaultBestWordResult;
     }
+
+    std::unordered_map<WordSetAnswers, WordSetGuesses> bestGuesses = {};
+    long long bestGuessesCacheHit = 0, bestGuessesCacheMiss = 0;
+    std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool force = false) {
+        if (!force && !(0 <= p.answers.size() && p.answers.size() <= 200)) return 0;
+
+        auto answersWs = WordSetHelpers::buildAnswersWordSet(p.answers);
+        if (true || !bestGuesses.count(answersWs)) {
+            auto ret = removeGuessesWhichHaveBetterGuessInner(p, force);
+            //bestGuesses[answersWs] = WordSetHelpers::buildGuessesWordSet(p.guesses);
+            bestGuessesCacheMiss++;
+            BETTER_GUESS_OPT_DEBUG("bestGuessesCache hit%: " << getPerc(bestGuessesCacheHit, bestGuessesCacheHit + bestGuessesCacheMiss));
+            return ret;
+        }
+        bestGuessesCacheHit++;
+        auto &myG = bestGuesses[answersWs];
+        std::size_t ct = 0;
+        for (std::size_t i = p.guesses.size()-1; i != MAX_SIZE_VAL; --i) {
+            if (!myG[p.guesses[i]]) {
+                p.guesses.deleteIndex(i);
+                ct++;
+            }
+        }
+
+        return ct;
+    }
+        
+        
+    std::size_t removeGuessesWhichHaveBetterGuessInner(AnswerGuessesIndexesPair<UnorderedVec> &p, bool force = false) {
+        //START_TIMER(overall);
+        struct MyNode {
+            MyNode(IndexType indexOfGuesses): indexOfGuesses(indexOfGuesses) {}
+            MyNode(){}
+            IndexType indexOfGuesses = 0;
+            std::vector<int> wsAnswerVec = {};
+        };
+        
+        //clearGuesses(p.guesses, p.answers);
+        const auto guessesSize = p.guesses.size();
+        const auto answersSize = p.answers.size();
+
+        const auto &myWsAnswers = WordSetHelpers::buildAnswersWordSet(p.answers);
+
+        std::vector<IndexType> indexOfGuessesToConsider = {};
+        indexOfGuessesToConsider.reserve(p.guesses.size());
+
+        for (std::size_t indexOfGuesses = p.guesses.size()-1;;--indexOfGuesses) {
+            auto guessIndex = p.guesses[indexOfGuesses];
+            if (guessIndex >= myWsAnswers.size() || !myWsAnswers[guessIndex]) {
+                indexOfGuessesToConsider.push_back(indexOfGuesses);
+            }
+            if (indexOfGuesses == 0) break;
+        }
+
+        std::vector<MyNode> answerReductions;
+        answerReductions.reserve(indexOfGuessesToConsider.size());
+        std::unordered_map<WordSetAnswers, std::size_t> wsAnswerMap = {};
+
+        //DEBUG("idk, calc guesses * answers??");
+        //START_TIMER(t1);
+        for (auto indexOfGuesses: indexOfGuessesToConsider) {
+            auto guessIndex = p.guesses[indexOfGuesses];
+            auto node = MyNode(indexOfGuesses);
+            node.wsAnswerVec.reserve(answersSize);
+            for (std::size_t j = 0; j < answersSize; ++j) {
+                // todo: replace with cache lookup + bitwise AND
+                auto answerIndex = p.answers[j];
+                const auto getter = PatternGetterCached(answerIndex);
+                const auto state = AttemptStateToUse(getter);
+
+                makeGuess(p, state, guessIndex, reverseIndexLookup);
+                const auto wsAnswers = WordSetHelpers::buildAnswersWordSet(p.answers);
+                auto myPair = wsAnswerMap.try_emplace(wsAnswers, wsAnswerMap.size());
+                node.wsAnswerVec.push_back(
+                    (*myPair.first).second
+                );
+
+                p.answers.restoreToSize(answersSize);
+                p.guesses.restoreToSize(guessesSize);
+            }
+            answerReductions.push_back(node);
+        }
+        //END_TIMER(t1);
+
+        //DEBUG("evaluating betterThanG...");
+        //START_TIMER(t2);
+        std::unordered_map<std::vector<int>, std::size_t, VectorHasher> wsToIndex = {};
+        std::vector<std::size_t> equalTo(answerReductions.size());
+        for (std::size_t i = 0; i < answerReductions.size(); ++i) equalTo[i] = i;
+        for (std::size_t i = 0; i < answerReductions.size(); ++i) {
+            auto myPair = wsToIndex.try_emplace(answerReductions[i].wsAnswerVec, i);
+            if (!myPair.second) {
+                equalTo[i] = (*myPair.first).second;
+            }
+        }
+        //END_TIMER(t2);
+
+        //DEBUG("removing by equal...");
+        std::size_t removed = 0;
+        for (std::size_t i = 0; i < answerReductions.size(); ++i) {
+            if (equalTo[i] != i) {
+                p.guesses.deleteIndex(answerReductions[i].indexOfGuesses);
+                removed++;
+            }
+        }
+        //END_TIMER(overall);
+        if (removed > 0) {
+            BETTER_GUESS_OPT_DEBUG("REMOVed by equal: " << getPerc(removed, guessesSize)
+                << " #answers: " << p.answers.size()
+                << " #wsAnswerMap: " << wsAnswerMap.size());
+        }
+        return removed;
+    }
+
+    struct VectorHasher {
+    int operator()(const std::vector<int> &V) const {
+        int hash = V.size();
+        for(auto &i : V) {
+            hash ^= i + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+        }
+        return hash;
+    }
+};
 
 };
