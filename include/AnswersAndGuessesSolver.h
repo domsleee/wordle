@@ -248,7 +248,7 @@ private:
         if (triesRemaining == 1) { // we can't use info from last guess
             return {
                 INF,
-                *std::min_element(p.answers.begin(), p.answers.end())
+                p.answers[0]
             };
         }
 
@@ -273,6 +273,10 @@ private:
 
                 auto pr = makeGuessAndRestoreAfter(p, possibleGuess, triesRemaining, state);
                 sumOfAveragesForThisGuess += pr.probWrong;
+                if (pr.probWrong == INF) {
+                    sumOfAveragesForThisGuess = INF;
+                    break;
+                }
             }
             double averageForThisGuess = 1.00 + ((sumOfAveragesForThisGuess - 1.00) / p.answers.size());
 
