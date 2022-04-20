@@ -29,7 +29,7 @@ using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 13056;
-static const int NUM_WORDS = 13056;//2432;
+static const int NUM_WORDS = 2432;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
