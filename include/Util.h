@@ -69,6 +69,10 @@ inline Vec getVector(std::size_t size, std::size_t offset) {
     }
     return res;
 }
+ 
+#include<sstream>
+
+#define FROM_SS(x) static_cast<std::ostringstream &&>((std::ostringstream() << x)).str()
 
 inline std::string toLower(const std::string &s) {
     std::string ret = "";
@@ -130,10 +134,20 @@ inline double safeDivide(int64_t a, int64_t b) {
     return (double)a/b;
 }
 
+inline std::string getFrac(int64_t a, int64_t b) {
+    std::stringstream ss;
+    ss << a << "/" << b;
+    return ss.str();
+}
+
 inline std::string getPerc(int64_t a, int64_t b) {
     std::stringstream ss;
     ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*safeDivide(a, b) << "%)";
     return ss.str();
+}
+
+inline double getIntegerPerc(int64_t a, int64_t b) {
+    return 100.00 * safeDivide(a, b);
 }
 
 inline std::string getDivided(int64_t a, int64_t b) {

@@ -145,6 +145,20 @@ struct RunnerMulti {
         const auto numBatches = batchesOfAnswerIndexes.size();
         DEBUG("#batches: " << numBatches);
 
+        indicators::ProgressBar bar{
+            indicators::option::BarWidth{20},
+            indicators::option::Start{"["},
+            indicators::option::Fill{"■"},
+            indicators::option::Lead{"■"},
+            indicators::option::Remainder{"-"},
+            indicators::option::End{" ]"},
+            indicators::option::ForegroundColor{indicators::Color::cyan},
+            indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}},
+            indicators::option::ShowPercentage{true},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+
         std::vector<std::vector<P>> transformResults(batchesOfAnswerIndexes.size());
         std::transform(
             std::execution::par_unseq,
@@ -156,6 +170,7 @@ struct RunnerMulti {
                 &incorrect,
                 &totalSum,
                 &batches,
+                &bar,
                 &numBatches=std::as_const(numBatches),
                 &nothingSolver=std::as_const(nothingSolver),
                 &answerIndexesToCheck=std::as_const(answerIndexesToCheck)
@@ -169,18 +184,21 @@ struct RunnerMulti {
                     solver.skipRemoveGuessesWhichHaveBetterGuess = i > 0;
                     auto answerIndex = answerIndexBatch[i];
                     const auto &actualAnswer = nothingSolver.allAnswers[answerIndex];
-                    DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);
+                    //DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);
                     
                     auto r = solver.solveWord(actualAnswer);
-                    if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
+                    //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
                     completed++;
                     incorrect += r.tries == -1;
                     totalSum += r.tries != -1 ? r.tries : 0;
                     batches += i == answerIndexBatch.size() - 1;
-                    DEBUG(actualAnswer << ", completed: " << getPerc(completed.load(), answerIndexesToCheck.size())
-                            << " (batches: " << getPerc(batches.load(), numBatches)
-                            << ", avg: " << getDivided(totalSum.load(), completed.load() - incorrect)
+                    bar.set_progress(getIntegerPerc(batches.load()+1, numBatches));
+                    std::string s = FROM_SS(
+                            "batch " << getFrac(batches.load()+1, numBatches)
+                            << ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
+                            << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect)
                             << ", incorrect: " << incorrect.load() << ")");
+                    bar.set_option(indicators::option::PostfixText{s});  
 
                     results[i] = {r.tries, answerIndex};
                 }
