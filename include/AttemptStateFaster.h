@@ -12,6 +12,8 @@
 #include "Util.h"
 #include "Defs.h"
 #include "GlobalArgs.h"
+#include "../third_party/indicators/cursor_control.hpp"
+#include "../third_party/indicators/progress_bar.hpp"
 
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
 
@@ -70,7 +72,21 @@ struct AttemptStateFaster {
 
     static inline std::vector<BigBitset> cache;
     static void buildWSLookup(const std::vector<std::string> &reverseIndexLookup) {
-        ATTEMPTSTATEFASTER_DEBUG("buildWSLookup");
+        indicators::ProgressBar bar{
+            indicators::option::BarWidth{30},
+            indicators::option::Start{"["},
+            indicators::option::Fill{"■"},
+            indicators::option::Lead{"■"},
+            indicators::option::Remainder{"-"},
+            indicators::option::End{" ]"},
+            indicators::option::ForegroundColor{indicators::Color::cyan},
+            indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}},
+            indicators::option::ShowPercentage{true},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+        
+        //ATTEMPTSTATEFASTER_DEBUG("buildWSLookup");
         cache.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
         auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);
         auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
@@ -85,12 +101,16 @@ struct AttemptStateFaster {
                 dummy.begin(),
                 [
                     &done,
+                    &bar,
                     &allPatterns = std::as_const(allPatterns),
                     &wordIndexes = std::as_const(wordIndexes),
                     &reverseIndexLookup = std::as_const(reverseIndexLookup)
                 ](const int guessIndex) -> int {
                     done++;
-                    DEBUG("AttemptStateFaster: " << getPerc(done.load(), reverseIndexLookup.size()));
+                    bar.set_progress(getIntegerPerc(done.load(), reverseIndexLookup.size()));
+                    bar.set_option(indicators::option::PostfixText{"AttemptStateFaster#buildWSLookup: " + getFrac(done.load() + 1, reverseIndexLookup.size())});  
+
+                    //DEBUG("AttemptStateFaster: " << getPegetIntegerPercrc());
                     for (const auto &pattern: allPatterns) {
                         auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
                         BigBitset ws = {};
@@ -109,7 +129,7 @@ struct AttemptStateFaster {
             lambda(std::execution::par_unseq);
         }
 
-        ATTEMPTSTATEFASTER_DEBUG("buidWSLookup finished");
+        ATTEMPTSTATEFASTER_DEBUG("AttemptStateFaster#buildWSLookup finished");
     }
 
 };

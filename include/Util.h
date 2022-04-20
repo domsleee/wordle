@@ -29,7 +29,7 @@ using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 13056;
-static const int NUM_WORDS = 13056;//2432;
+static const int NUM_WORDS = 2432;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
@@ -69,6 +69,10 @@ inline Vec getVector(std::size_t size, std::size_t offset) {
     }
     return res;
 }
+ 
+#include<sstream>
+
+#define FROM_SS(x) static_cast<std::ostringstream &&>((std::ostringstream() << x)).str()
 
 inline std::string toLower(const std::string &s) {
     std::string ret = "";
@@ -130,10 +134,20 @@ inline double safeDivide(int64_t a, int64_t b) {
     return (double)a/b;
 }
 
+inline std::string getFrac(int64_t a, int64_t b) {
+    std::stringstream ss;
+    ss << a << "/" << b;
+    return ss.str();
+}
+
 inline std::string getPerc(int64_t a, int64_t b) {
     std::stringstream ss;
     ss << a << "/" << b << " (" << std::setprecision(2) << std::fixed << 100.00*safeDivide(a, b) << "%)";
     return ss.str();
+}
+
+inline double getIntegerPerc(int64_t a, int64_t b) {
+    return 100.00 * safeDivide(a, b);
 }
 
 inline std::string getDivided(int64_t a, int64_t b) {

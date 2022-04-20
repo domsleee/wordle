@@ -13,6 +13,7 @@ struct PatternGetterCached {
     static inline std::vector<PatternType> cache;
     static inline std::size_t reverseIndexLookupSize;
     static void buildCache(const std::vector<std::string> &reverseIndexLookup) {
+        DEBUG("PatternGetterCached build...");
         reverseIndexLookupSize = reverseIndexLookup.size();
         cache.resize(reverseIndexLookupSize * reverseIndexLookupSize);
         for (std::size_t answerIndex = 0; answerIndex < reverseIndexLookup.size(); ++answerIndex) {
@@ -24,6 +25,7 @@ struct PatternGetterCached {
                 cache[getIndex(answerIndex, wordIndex)] = patternInt;
             }
         }
+        DEBUG("done");
     }
 
     static std::size_t getIndex(IndexType answerIndex, IndexType wordIndex) {
