@@ -143,21 +143,8 @@ struct RunnerMulti {
         auto answerIndexesToCheck = getIndexesToCheck(nothingSolver.allAnswers);
         auto batchesOfAnswerIndexes = getBatchesByPattern(nothingSolver, answerIndexesToCheck);
         const auto numBatches = batchesOfAnswerIndexes.size();
-        DEBUG("#batches: " << numBatches);
 
-        indicators::ProgressBar bar{
-            indicators::option::BarWidth{20},
-            indicators::option::Start{"["},
-            indicators::option::Fill{"■"},
-            indicators::option::Lead{"■"},
-            indicators::option::Remainder{"-"},
-            indicators::option::End{" ]"},
-            indicators::option::ForegroundColor{indicators::Color::cyan},
-            indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}},
-            indicators::option::ShowPercentage{true},
-            indicators::option::ShowElapsedTime{true},
-            indicators::option::ShowRemainingTime{true},
-        };
+        auto bar = SimpleProgress("BY_ANSWER batch", numBatches);
 
         std::vector<std::vector<P>> transformResults(batchesOfAnswerIndexes.size());
         std::transform(
@@ -191,14 +178,16 @@ struct RunnerMulti {
                     completed++;
                     incorrect += r.tries == -1;
                     totalSum += r.tries != -1 ? r.tries : 0;
-                    batches += i == answerIndexBatch.size() - 1;
-                    bar.set_progress(getIntegerPerc(batches.load()+1, numBatches));
                     std::string s = FROM_SS(
-                            "batch " << getFrac(batches.load()+1, numBatches)
-                            << ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
+                            ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
                             << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect)
                             << ", incorrect: " << incorrect.load() << ")");
-                    bar.set_option(indicators::option::PostfixText{s});  
+                    
+                    if (i == answerIndexBatch.size() - 1) {
+                        bar.incrementAndUpdateStatus(s);
+                    } else {
+                        bar.updateStatus(s);
+                    }
 
                     results[i] = {r.tries, answerIndex};
                 }

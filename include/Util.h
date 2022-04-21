@@ -15,7 +15,7 @@
 #define START_TIMER(name) auto timer_##name = std::chrono::steady_clock::now()
 #define END_TIMER(name)                                                      \
     {                                                                        \
-        std::cout << "Time elapsed: "                                        \
+        std::cout << "Timer " << #name << ": "                               \
                   << (std::chrono::duration_cast<std::chrono::microseconds>( \
                           std::chrono::steady_clock::now() - timer_##name)   \
                           .count()) /                                        \
@@ -28,8 +28,8 @@ using IndexType = uint16_t;
 using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
 
-static const int MAX_NUM_GUESSES = 13056;
-static const int NUM_WORDS = 2432;
+static const int MAX_NUM_GUESSES = 2368;
+static const int NUM_WORDS = 2368;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
@@ -163,5 +163,20 @@ inline int64_t intPow(int64_t base, int64_t exp) {
     return (exp % 2 == 0)
         ? temp * temp
         : (base * temp * temp);
+}
+
+template <typename T>
+inline void checkWordSetSize(const std::string &desc, std::size_t arraySize) {
+    auto wordSetSize = T().size();
+    if (arraySize > wordSetSize) {
+        DEBUG("ERROR: " << desc << " too big " << arraySize << " vs " << wordSetSize);
+        exit(1);
+    }
+
+    auto optimalSize = ((arraySize + 63)/64)*64;
+    if (wordSetSize != optimalSize) {
+        DEBUG("WARNING: optimal for " << desc << " is " << optimalSize << ", currently: " << wordSetSize);
+    }
+
 }
 

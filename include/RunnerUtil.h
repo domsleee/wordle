@@ -24,8 +24,8 @@ struct RunnerUtil {
         std::string valid = getBoolVal(numIncorrect <= solver.maxIncorrect);
 
         DEBUG("=============");
-        DEBUG("MAX_TRIES   : " << (int)solver.maxTries);
-        DEBUG("MAX_INCORREC: " << (int)solver.maxIncorrect);
+        DEBUG("maxTries    : " << (int)solver.maxTries);
+        DEBUG("maxIncorrect: " << (int)solver.maxIncorrect);
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << solver.maxIncorrect << ")");
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
         DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));

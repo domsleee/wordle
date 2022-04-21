@@ -36,16 +36,8 @@ struct AnswersAndGuessesSolver {
           maxIncorrect(maxIncorrect)
         {
             precompute();
-            auto answersSize = WordSetAnswers().size();
-            if (allAnswers.size() > NUM_WORDS) {
-                DEBUG("ERROR: answers too big " << allAnswers.size() << " vs " << answersSize);
-                exit(1);
-            }
-            auto guessesSize = WordSetGuesses().size();
-            if (allGuesses.size() > guessesSize) {
-                DEBUG("ERROR: guesses too big " << allGuesses.size() << " vs " << guessesSize);
-                exit(1);
-            }
+            checkWordSetSize<WordSetAnswers>("NUM_WORDS", allAnswers.size());
+            checkWordSetSize<WordSetGuesses>("guesses", allGuesses.size());
 
             std::unordered_set<std::string> allGuessesSet{allGuesses.begin(), allGuesses.end()};
             for (auto ans: allAnswers) {
