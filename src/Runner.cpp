@@ -4,6 +4,7 @@
 #include "../include/AttemptStateFast.h"
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
+#include "../include/RemoveGuessesBetterGuess.h"
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
@@ -22,6 +23,7 @@ int Runner::run() {
         AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
+        RemoveGuessesBetterGuess::buildWSAnswersLookup(solver.reverseIndexLookup);
         solver.buildStaticState();
         END_TIMER(precompute);
 

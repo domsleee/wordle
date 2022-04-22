@@ -28,7 +28,7 @@ using IndexType = uint16_t;
 using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
 
-static const int MAX_NUM_GUESSES = 2368;
+static const int MAX_NUM_GUESSES = 12992;
 static const int NUM_WORDS = 2368;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
@@ -168,12 +168,12 @@ inline int64_t intPow(int64_t base, int64_t exp) {
 template <typename T>
 inline void checkWordSetSize(const std::string &desc, std::size_t arraySize) {
     auto wordSetSize = T().size();
+    auto optimalSize = ((arraySize + 63)/64)*64;
     if (arraySize > wordSetSize) {
-        DEBUG("ERROR: " << desc << " too big " << arraySize << " vs " << wordSetSize);
+        DEBUG("ERROR: " << desc << " too big. Optimal: " << optimalSize << ". currently: " << arraySize << " vs " << wordSetSize);
         exit(1);
     }
 
-    auto optimalSize = ((arraySize + 63)/64)*64;
     if (wordSetSize != optimalSize) {
         DEBUG("WARNING: optimal for " << desc << " is " << optimalSize << ", currently: " << wordSetSize);
     }

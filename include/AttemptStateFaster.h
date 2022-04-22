@@ -22,9 +22,12 @@ struct AttemptStateFaster {
 
     const PatternGetterCached patternGetter;
 
-    std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
+    std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes) const {
         auto patternInt = patternGetter.getPatternIntCached(guessIndex);
+        return guessWord(guessIndex, wordIndexes, patternInt);
+    }
 
+    static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, int patternInt) {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
 
@@ -39,7 +42,7 @@ struct AttemptStateFaster {
         return res;
     }
 
-    std::size_t guessWordAndRemoveUnmatched(IndexType guessIndex, UnorderedVector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
+    std::size_t guessWordAndRemoveUnmatched(IndexType guessIndex, UnorderedVector<IndexType> &wordIndexes) const {
         auto patternInt = patternGetter.getPatternIntCached(guessIndex);
 
         // is equal to +++++

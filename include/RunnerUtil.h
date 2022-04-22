@@ -28,8 +28,10 @@ struct RunnerUtil {
         DEBUG("maxIncorrect: " << (int)solver.maxIncorrect);
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << solver.maxIncorrect << ")");
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
+        DEBUG("isLowAverage: " << getBoolVal(GlobalArgs.isGetLowestAverage));
         DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));
         DEBUG("guess words : " << guesses.size());
+        DEBUG("firstWord   : " << GlobalArgs.firstWord);
         DEBUG("average     : " << avg);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);

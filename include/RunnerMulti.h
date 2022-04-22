@@ -144,7 +144,7 @@ struct RunnerMulti {
         auto batchesOfAnswerIndexes = getBatchesByPattern(nothingSolver, answerIndexesToCheck);
         const auto numBatches = batchesOfAnswerIndexes.size();
 
-        auto bar = SimpleProgress("BY_ANSWER batch", numBatches);
+        auto bar = SimpleProgress(FROM_SS("BY_ANSWER " << nothingSolver.startingWord), numBatches);
 
         std::vector<std::vector<P>> transformResults(batchesOfAnswerIndexes.size());
         std::transform(
