@@ -5,6 +5,8 @@
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
 #include "../include/RemoveGuessesBetterGuess.h"
+#include "../include/GuessesRemainingAfterGuessCacheSerialiser.h"
+
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
@@ -20,11 +22,12 @@ int Runner::run() {
         START_TIMER(precompute);
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
-        AttemptStateToUse::buildWSLookup(solver.reverseIndexLookup);
+        GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
-        RemoveGuessesBetterGuess::buildWSAnswersLookup(solver.reverseIndexLookup);
         solver.buildStaticState();
+        GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
+        return 0;
         END_TIMER(precompute);
 
         if (GlobalArgs.firstWord != "") {

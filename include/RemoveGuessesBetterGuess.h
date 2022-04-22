@@ -1,11 +1,10 @@
 #pragma once
+#include "GuessesRemainingAfterGuessCache.h"
+
 #define BETTER_GUESS_OPT_DEBUG(x)
 
 
 struct RemoveGuessesBetterGuess {
-    static inline std::vector<WordSetGuesses> cache;
-    static inline std::vector<int> indexCache;
-
     static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool force = false) {
         const auto answersSize = p.answers.size();
         const auto &pAnswersWs = WordSetHelpers::buildAnswersWordSet(p.answers);
@@ -62,7 +61,7 @@ struct RemoveGuessesBetterGuess {
             for (std::size_t j = 0; j < answersSize; ++j) {
                 auto compressedBitset = MyBitset();
                 auto answerIndex = p.answers[j];
-                const auto& wsAnswersForGuess = getWsAnswersFromCache(guessIndex, answerIndex);
+                const auto& wsAnswersForGuess = GuessesRemainingAfterGuessCache::getFromCacheWithAnswerIndex(guessIndex, answerIndex);
                 for (std::size_t k = 0; k < answersSize; ++k) {
                     if (wsAnswersForGuess[p.answers[k]]) compressedBitset.set(k);
                 }
@@ -99,67 +98,4 @@ struct RemoveGuessesBetterGuess {
             return hash;
         }
     };
-
-    static int getWsAnswersIndexFromCache(IndexType guessIndex, IndexType answerIndex) {
-        const auto getter = PatternGetterCached(answerIndex);
-        const auto patternInt = getter.getPatternIntCached(guessIndex);
-        return indexCache[guessIndex * NUM_PATTERNS + patternInt];
-    }
-
-    static WordSetGuesses& getWsAnswersFromCache(IndexType guessIndex, IndexType answerIndex) {
-        const auto getter = PatternGetterCached(answerIndex);
-        const auto patternInt = getter.getPatternIntCached(guessIndex);
-        return cache[guessIndex * NUM_PATTERNS + patternInt];
-    }
-
-    static void buildWSAnswersLookup(const std::vector<std::string> &reverseIndexLookup) {
-        auto bar = SimpleProgress("RemoveGuessesBetterGuess#buildWSAnswersLookup", reverseIndexLookup.size());
-
-        //ATTEMPTSTATEFASTER_DEBUG("buildWSLookup");
-        cache.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
-        auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);
-        auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
-        auto dummy = wordIndexes;
-    
-        auto lambda = [&]<typename T>(const T& executionType) {
-            std::transform(
-                executionType,
-                wordIndexes.begin(),
-                wordIndexes.end(),
-                dummy.begin(),
-                [
-                    &bar,
-                    &allPatterns = std::as_const(allPatterns),
-                    &wordIndexes = std::as_const(wordIndexes)
-                ](const int guessIndex) -> int {
-                    bar.incrementAndUpdateStatus();
-
-                    //DEBUG("AttemptStateFaster: " << getPegetIntegerPercrc());
-                    for (const auto &pattern: allPatterns) {
-                        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
-
-                        WordSetGuesses ws = {};
-                        auto ret = AttemptStateFaster::guessWord(guessIndex, wordIndexes, patternInt);
-                        for (auto ind: ret) ws[ind] = true;
-                        cache[guessIndex * NUM_PATTERNS + patternInt] = ws;
-                    }
-                    return 0;
-                }
-            );
-        };
-
-        if (GlobalArgs.forceSequential) {
-            lambda(std::execution::seq);
-        } else {
-            lambda(std::execution::par_unseq);
-        }
-
-        indexCache.resize(cache.size());
-        std::unordered_map<WordSetGuesses, int> myMap = {};
-        for (std::size_t i = 0; i < cache.size(); ++i) {
-            auto myPair = myMap.try_emplace(cache[i], i);
-            indexCache[i] = (*myPair.first).second;
-        }
-
-    }
 };

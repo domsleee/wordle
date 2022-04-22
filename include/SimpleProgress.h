@@ -10,10 +10,10 @@ struct SimpleProgress {
     const int64_t total;
     indicators::ProgressBar bar;
 
-    SimpleProgress(const std::string &prefix, int64_t total)
+    SimpleProgress(const std::string &prefix, int64_t total, bool isPrecompute=false)
     : prefix(prefix),
       total(total),
-      bar(getBar()) {}
+      bar(getBar(isPrecompute)) {}
 
     void incrementAndUpdateStatus(const std::string &suffix = "") {
         const std::lock_guard<std::mutex> lock(mutex);
@@ -32,7 +32,7 @@ struct SimpleProgress {
     }
 
 private:
-    static indicators::ProgressBar getBar() {
+    static indicators::ProgressBar getBar(bool isPrecompute) {
         return indicators::ProgressBar{
             indicators::option::BarWidth{20},
             indicators::option::Start{"["},
@@ -40,7 +40,7 @@ private:
             indicators::option::Lead{"■"},
             indicators::option::Remainder{"-"},
             indicators::option::End{" ]"},
-            indicators::option::ForegroundColor{indicators::Color::cyan},
+            indicators::option::ForegroundColor{isPrecompute ? indicators::Color::yellow : indicators::Color::cyan},
             indicators::option::FontStyles{std::vector<indicators::FontStyle>{indicators::FontStyle::bold}},
             indicators::option::ShowPercentage{true},
             indicators::option::ShowElapsedTime{true},

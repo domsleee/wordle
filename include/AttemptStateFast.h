@@ -41,6 +41,10 @@ struct AttemptStateFast {
         DEBUG("other: " << otherResult[0]);
         */
 
+       if (patternInt == NUM_PATTERNS-1) {
+           return {guessIndex};
+       }
+
         std::vector<IndexType> res = {};
         res.reserve(wordIndexes.size());
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
@@ -119,20 +123,23 @@ struct AttemptStateFast {
     static inline std::vector<WordIndexData> wordIndexDataLookup = {};
     static inline std::vector<GuessIndexPatternData> guessIndexPatternLookup = {};
     static void buildForReverseIndexLookup(const std::vector<std::string> &reverseIndexLookup) {
-        ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup with " << reverseIndexLookup.size() << " strings");
+        START_TIMER(AttemptStateFast);
+       // ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup with " << reverseIndexLookup.size() << " strings");
         firstPrimes = getFirstNPrimes<uint64_t>(26 * WORD_LENGTH);
         buildWordIndexDataLookup(reverseIndexLookup);
         buildGuessIndexPatternData(reverseIndexLookup);
-        ATTEMPTSTATEFAST_DEBUG("buildForReverseIndexLookup finished");
+        END_TIMER(AttemptStateFast);
     }
 
     static void clearCache() {
+        START_TIMER(AttemptStateFastClear);
         firstPrimes.clear();
         wordIndexDataLookup.clear();
         guessIndexPatternLookup.clear();
         firstPrimes.shrink_to_fit();
         wordIndexDataLookup.shrink_to_fit();
         guessIndexPatternLookup.shrink_to_fit();
+        END_TIMER(AttemptStateFastClear);
     }
 
 private:

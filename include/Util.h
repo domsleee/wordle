@@ -20,13 +20,14 @@
                           std::chrono::steady_clock::now() - timer_##name)   \
                           .count()) /                                        \
                          1000000.0                                           \
-                  << "\n\n";                                                 \
+                  << "\n";                                                 \
     }
 
 
 using IndexType = uint16_t;
 using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
+using PatternInt = int;
 
 static const int MAX_NUM_GUESSES = 12992;
 static const int NUM_WORDS = 2368;
@@ -35,9 +36,6 @@ static const int MAX_LETTER_LIMIT_MAX = 10;
 
 const int WORD_LENGTH = 5;
 using MinLetterType = std::array<int8_t, 26>;
-
-const int REVERSE_INDEX_LOOKUP_SIZE = MAX_NUM_GUESSES;
-using BigBitset = std::bitset<REVERSE_INDEX_LOOKUP_SIZE>;
 
 static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::max();
 static constexpr IndexType MAX_INDEX_TYPE = std::numeric_limits<IndexType>::max();

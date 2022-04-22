@@ -1,18 +1,21 @@
 #ifndef
+UNAME := $(shell uname)
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g -ffast-math
 else
 	CONDITIONAL_CXX = -O3 -g -DNDEBUG -ffast-math #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
+ifneq ($(UNAME), Darwin)
+	#CONDITIONAL_CXX += -fsanitize=address
+endif
 endif
 
 
-UNAME := $(shell uname)
 CXX = g++-11
 CXXFLAGS = -std=c++20 -Wall -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
 CXXFLAGSTEST = -std=c++20 -Wall -g
-LIBS := -ltbb -lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
+LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
-LIBS := -lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
+LIBS := #-lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
 endif
 
 SRC_DIR := src
