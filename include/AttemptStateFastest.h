@@ -20,7 +20,7 @@ struct AttemptStateFastest {
 
     std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
         auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
-        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+        auto patternInt = PatternIntHelpers::calcPatternInt(pattern);
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
@@ -73,7 +73,7 @@ struct AttemptStateFastest {
         for (auto guessIndex: wordIndexes) {
             DEBUG("AttemptStateFastest: " << getPerc(done, wordIndexes.size()));
             for (const auto &pattern: allPatterns) {
-                auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+                auto patternInt = PatternIntHelpers::calcPatternInt(pattern);
                 auto ret = AttemptStateFast::guessWord(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
                 for (auto ind: ret) {
                     cache[getIndex(guessIndex, patternInt, ind)] = true;

@@ -16,18 +16,6 @@ struct PatternGetter {
         return getPatternInteger(word, answer);
     }
 
-    static inline int charToInt(char c) {
-        switch(c) {
-            case '?': return 0;
-            case '_': return 1;
-            case '+': return 2;
-            default: {
-                DEBUG("UNKONWN CHAR IN PATTERN STR " << c);
-                exit(1);
-            }
-        }
-    }
-
   private:
     std::string answer;
 };

@@ -1,4 +1,5 @@
 #include "../include/PatternGetter.h"
+#include "../include/PatternIntHelpers.h"
 #include "../include/Util.h"
 
 std::string getPattern(const std::string &word, const std::string &answer) {
@@ -37,7 +38,7 @@ PatternType getPatternInteger(const std::string &word, const std::string &answer
     for (std::size_t i = 0; i < word.size(); ++i) {
         auto c = answer[i];
         if (word[i] == c) {
-            patternInt += PatternGetter::charToInt('+') * mult;
+            patternInt += PatternIntHelpers::charToInt('+') * mult;
         } else {
             answerLetterCount[c-'a']++;
         }
@@ -49,10 +50,10 @@ PatternType getPatternInteger(const std::string &word, const std::string &answer
         if (word[i] != answer[i]) {
             const auto letterInd = word[i]-'a';
             if (answerLetterCount[letterInd] > 0) {
-                patternInt += PatternGetter::charToInt('?') * mult;
+                patternInt += PatternIntHelpers::charToInt('?') * mult;
                 answerLetterCount[letterInd]--;
             } else {
-                patternInt += PatternGetter::charToInt('_') * mult;
+                patternInt += PatternIntHelpers::charToInt('_') * mult;
             }
         }
         mult *= 3;

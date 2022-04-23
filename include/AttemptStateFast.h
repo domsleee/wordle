@@ -26,7 +26,7 @@ struct AttemptStateFast {
     std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
         //guessWordCt++;
         auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
-        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
+        auto patternInt = PatternIntHelpers::calcPatternInt(pattern);
 
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {guessIndex};
