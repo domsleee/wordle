@@ -13,4 +13,4 @@ using UnorderedVec = UnorderedVector<IndexType>;
 using TypeToUse = UnorderedVec;
 
 
-const int NUM_PATTERNS = intPow(3, WORD_LENGTH);
+constexpr std::size_t NUM_PATTERNS = intPow(3, WORD_LENGTH);

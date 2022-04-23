@@ -9,7 +9,7 @@ struct GuessesRemainingAfterGuessCacheSerialiser {
         // todo.
     }
 
-    static void writeToFile(const std::string &file) {
+    static std::vector<uint64_t> writeToFile(const std::string &file) {
         START_TIMER(writeToFile);
         auto num8BytePieces = (WordSetGuesses().size() + 63) / 64;
         auto &cache = GuessesRemainingAfterGuessCache::cache;
@@ -27,7 +27,32 @@ struct GuessesRemainingAfterGuessCacheSerialiser {
             }
         }
 
+
         // done.
         END_TIMER(writeToFile);
+        return tempVal;
+    }
+
+    static void copy() {
+        START_TIMER(copy);
+        auto tempVal = writeToFile("SDF");
+        std::vector<WordSetGuesses> myCache;
+        myCache.assign(GuessesRemainingAfterGuessCache::cache.size(), {});
+        auto num8BytePieces = (WordSetGuesses().size() + 63) / 64;
+
+        int cacheI = 0, bitOffset = 0;
+        for (std::size_t i = 0; i < tempVal.size(); ++i) {
+            for (std::size_t j = 0; j < 64; ++j) {
+                if (tempVal[i] & (0b1 << j)) {
+                    myCache[cacheI][bitOffset] = true;
+                }
+            }
+            if (i > 0 && i % num8BytePieces == 0) {
+                cacheI++; bitOffset = 0;
+            } else {
+                bitOffset += 64;
+            }
+        }
+        END_TIMER(copy);
     }
 };

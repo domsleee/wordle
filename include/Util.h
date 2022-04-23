@@ -155,7 +155,7 @@ inline std::string getDivided(int64_t a, int64_t b) {
 }
 
 // https://stackoverflow.com/questions/101439/the-most-efficient-way-to-implement-an-integer-based-power-function-powint-int
-inline int64_t intPow(int64_t base, int64_t exp) {
+inline constexpr int64_t intPow(int64_t base, int64_t exp) {
     if (exp == 0) return 1;  // base case;
     int64_t temp = intPow(base, exp/2);
     return (exp % 2 == 0)

@@ -21,13 +21,14 @@ int Runner::run() {
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
         START_TIMER(precompute);
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
+        PatternGetterCached::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
-        PatternGetterCached::buildCache(solver.reverseIndexLookup);
         solver.buildStaticState();
-        GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
-        return 0;
+        GuessesRemainingAfterGuessCacheSerialiser::copy();
+        //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
+        //return 0;
         END_TIMER(precompute);
 
         if (GlobalArgs.firstWord != "") {

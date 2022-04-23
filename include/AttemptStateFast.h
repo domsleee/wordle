@@ -34,66 +34,77 @@ struct AttemptStateFast {
     }
 
     static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup, int patternInt) {
-
-        /*
-        auto otherResult = AttemptState(patternGetter).guessWord(guessIndex, wordIndexes, wordIndexLookup);
-        DEBUG("guess index " << guessIndex << " other " << otherResult.size() << ", pattern " << pattern);
-        DEBUG("other: " << otherResult[0]);
-        */
-
-       if (patternInt == NUM_PATTERNS-1) {
-           return {guessIndex};
-       }
+        if (patternInt == NUM_PATTERNS-1) {
+            return {guessIndex};
+        }
 
         std::vector<IndexType> res = {};
         res.reserve(wordIndexes.size());
         const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
         for (auto wordIndex: wordIndexes) {
-            /*if (guessIndex == 2315 && wordIndex == 1 && pattern == "____?") {
-                DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
-            }*/
-            if (wordIndex == guessIndex) continue;
-
-            const auto &wordIndexData = wordIndexDataLookup[wordIndex];
-
-            if ((wordIndexData.letterMap & guessIndexPattern.excludedLetterMap) != 0) continue;
-
-            // replaced by one 32-bit bitwise AND
-            if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber.mask) != guessIndexPattern.rightSpotNumber.value) continue;
-
-            // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
-            //if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
-            
-            const auto &v1 = readAsInt64(guessIndexPattern.letterMinLimit, 0);
-            if ((readAsInt64(wordIndexData.letterCountMap, 0) & v1) != v1) continue;
-            const auto &v2 = readAsInt64(guessIndexPattern.letterMinLimit, 1);
-            if ((readAsInt64(wordIndexData.letterCountMap, 1) & v2) != v2) continue;
-
-            if (std::any_of(
-                guessIndexPattern.letterMaxLimit.begin(),
-                guessIndexPattern.letterMaxLimit.begin() + guessIndexPattern.letterMaxLimitSize,
-                [&](const LetterToCheckLetterMap &pair) {
-                    return (wordIndexData.letterCountMap[pair.letterCountToCheck] & pair.letterMap) != 0; // divisible if exceeds max
-                }
-            )) continue;
-
-            //if (gcd(wordIndexData.letterCountNumber, guessIndexPattern.letterMaxLimitNumber) != 1) continue;
-            
-            // replaced by 32-bit bitwise ANDs
-            if (std::any_of(
-                guessIndexPattern.wrongSpotPattern.begin(),
-                guessIndexPattern.wrongSpotPattern.begin() + guessIndexPattern.wrongSpotPatternSize,
-                [&](const auto &wrongSpotPattern) {
-                    return (wordIndexData.positionalLetterNumber & wrongSpotPattern.mask) == wrongSpotPattern.value;
-                }
-            )) continue;
-            //if (gcd(wordIndexData.positionalLetterNumber, guessIndexPattern.wrongSpotPatternNumber) != 1) continue;
-
+            if (!wordIndexShouldBeAdded(wordIndex, guessIndex, guessIndexPattern)) continue;
             res.push_back(wordIndex);
         }
 
         return res;
-        //return guessWord(guessIndex, pattern, wordIndexes, wordIndexLookup);
+    }
+
+    static WordSetGuesses guessWordWordSet(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup, int patternInt) {
+        if (patternInt == NUM_PATTERNS-1) {
+            return {guessIndex};
+        }
+
+        auto res = WordSetGuesses();
+        const auto &guessIndexPattern = guessIndexPatternLookup[NUM_PATTERNS * guessIndex + patternInt];
+        for (auto wordIndex: wordIndexes) {
+            if (!wordIndexShouldBeAdded(wordIndex, guessIndex, guessIndexPattern)) continue;
+            res[wordIndex] = true;
+        }
+
+        return res;
+    }
+
+    static bool wordIndexShouldBeAdded(IndexType wordIndex, IndexType guessIndex, const GuessIndexPatternData &guessIndexPattern) {
+        /*if (guessIndex == 2315 && wordIndex == 1 && pattern == "____?") {
+            DEBUG("CHECKING guess: " << wordIndexLookup[guessIndex] << ", word: " << wordIndexLookup[wordIndex] << ", pattern: " << pattern << ", " << otherResult.size() << " : " << otherResult[0]);
+        }*/
+        if (wordIndex == guessIndex) return false;
+
+        const auto &wordIndexData = wordIndexDataLookup[wordIndex];
+
+        if ((wordIndexData.letterMap & guessIndexPattern.excludedLetterMap) != 0) return false;
+
+        // replaced by one 32-bit bitwise AND
+        if ((wordIndexData.positionalLetterNumber & guessIndexPattern.rightSpotNumber.mask) != guessIndexPattern.rightSpotNumber.value) return false;
+
+        // replaced by two 64-bit bitwise AND. Can't do more because it needs to ensure it is >= min
+        //if ((wordIndexData.letterCountNumber % guessIndexPattern.letterMinLimitNumber) != 0) continue;
+        
+        const auto &v1 = readAsInt64(guessIndexPattern.letterMinLimit, 0);
+        if ((readAsInt64(wordIndexData.letterCountMap, 0) & v1) != v1) return false;
+        const auto &v2 = readAsInt64(guessIndexPattern.letterMinLimit, 1);
+        if ((readAsInt64(wordIndexData.letterCountMap, 1) & v2) != v2) return false;
+
+        if (std::any_of(
+            guessIndexPattern.letterMaxLimit.begin(),
+            guessIndexPattern.letterMaxLimit.begin() + guessIndexPattern.letterMaxLimitSize,
+            [&](const LetterToCheckLetterMap &pair) {
+                return (wordIndexData.letterCountMap[pair.letterCountToCheck] & pair.letterMap) != 0; // divisible if exceeds max
+            }
+        )) return false;
+
+        //if (gcd(wordIndexData.letterCountNumber, guessIndexPattern.letterMaxLimitNumber) != 1) continue;
+        
+        // replaced by 32-bit bitwise ANDs
+        if (std::any_of(
+            guessIndexPattern.wrongSpotPattern.begin(),
+            guessIndexPattern.wrongSpotPattern.begin() + guessIndexPattern.wrongSpotPatternSize,
+            [&](const auto &wrongSpotPattern) {
+                return (wordIndexData.positionalLetterNumber & wrongSpotPattern.mask) == wrongSpotPattern.value;
+            }
+        )) return false;
+        //if (gcd(wordIndexData.positionalLetterNumber, guessIndexPattern.wrongSpotPatternNumber) != 1) continue;
+        return true;
     }
 
     static inline int64_t readAsInt64(const std::array<LetterMapType, 4> &arr, int index) {

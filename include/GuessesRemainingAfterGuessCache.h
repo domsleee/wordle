@@ -13,7 +13,7 @@ struct GuessesRemainingAfterGuessCache {
         auto bar = SimpleProgress("GuessesRemainingAfterGuessCache#buildCache", reverseIndexLookup.size(), true);
 
         cache.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
-        auto allPatterns = AttemptState::getAllPatterns(WORD_LENGTH);
+        auto allPatternInts = getVector(NUM_PATTERNS, 0);
         auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
         auto dummy = wordIndexes;
     
@@ -25,19 +25,24 @@ struct GuessesRemainingAfterGuessCache {
                 dummy.begin(),
                 [
                     &bar,
-                    &allPatterns = std::as_const(allPatterns),
+                    &allPatternInts = std::as_const(allPatternInts),
                     &wordIndexes = std::as_const(wordIndexes),
                     &reverseIndexLookup = std::as_const(reverseIndexLookup)
                 ](const int guessIndex) -> int {
                     bar.incrementAndUpdateStatus();
 
+                    std::array<bool, NUM_PATTERNS> possiblePattern = {};
+                    for (std::size_t i = 0; i < NUM_PATTERNS; ++i) possiblePattern[i] = false;
+                    for (auto actualWordIndex: wordIndexes) {
+                        const auto getter = PatternGetterCached(actualWordIndex);
+                        auto patternInt = getter.getPatternIntCached(guessIndex);
+                        possiblePattern[patternInt] = true;
+                    }
+
                     //DEBUG("AttemptStateFaster: " << getPegetIntegerPercrc());
-                    for (const auto &pattern: allPatterns) {
-                        auto patternInt = AttemptStateCacheKey::calcPatternInt(pattern);
-                        WordSetGuesses ws = {};
-                        auto ret = AttemptStateFast::guessWord(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
-                        for (auto ind: ret) ws[ind] = true;
-                        cache[getIndex(guessIndex, patternInt)] = ws;
+                    for (const auto &patternInt: allPatternInts) {
+                        if (!possiblePattern[patternInt]) continue;
+                        cache[getIndex(guessIndex, patternInt)] = AttemptStateFast::guessWordWordSet(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
                     }
                     return 0;
                 }
