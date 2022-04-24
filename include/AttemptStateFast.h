@@ -29,13 +29,13 @@ struct AttemptStateFast {
         auto patternInt = PatternIntHelpers::calcPatternInt(pattern);
 
         // is equal to +++++
-        if (patternInt == NUM_PATTERNS-1) return {guessIndex};
+        if (patternInt == NUM_PATTERNS-1) return {};
         return guessWord(guessIndex, wordIndexes, wordIndexLookup, patternInt);
     }
 
     static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup, int patternInt) {
         if (patternInt == NUM_PATTERNS-1) {
-            return {guessIndex};
+            return {};
         }
 
         std::vector<IndexType> res = {};
@@ -51,7 +51,7 @@ struct AttemptStateFast {
 
     static WordSetGuesses guessWordWordSet(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup, int patternInt) {
         if (patternInt == NUM_PATTERNS-1) {
-            return {guessIndex};
+            return {};
         }
 
         auto res = WordSetGuesses();

@@ -42,7 +42,7 @@ struct GuessesRemainingAfterGuessCache {
                     //DEBUG("AttemptStateFaster: " << getPegetIntegerPercrc());
                     for (const auto &patternInt: allPatternInts) {
                         if (!possiblePattern[patternInt]) continue;
-                        cache[getIndex(guessIndex, patternInt)] = AttemptStateFast::guessWordWordSet(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
+                        cache[getIndex(guessIndex, patternInt)] = guessWordWordSet(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
                     }
                     return 0;
                 }
@@ -68,5 +68,15 @@ struct GuessesRemainingAfterGuessCache {
 
     static WordSetGuesses& getFromCache(IndexType guessIndex, PatternInt patternInt) {
         return cache[getIndex(guessIndex, patternInt)];
+    }
+
+    static WordSetGuesses guessWordWordSet(
+        IndexType guessIndex,
+        const std::vector<IndexType> &wordIndexes,
+        const std::vector<std::string> &reverseIndexLookup,
+        PatternType patternInt)
+    {
+        return AttemptStateFast::guessWordWordSet(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
+        //AttemptState::guessWord()
     }
 };
