@@ -70,7 +70,7 @@ struct AnswersAndGuessesSolver {
         startingWord = word;
     }
 
-    AnswersAndGuessesResult solveWord(const std::string &answer, bool getFirstWord = false) {
+    AnswersAndGuessesResult solveWord(const std::string &answer, std::shared_ptr<SolutionModel> solutionModel) {
         if (std::find(allAnswers.begin(), allAnswers.end(), answer) == allAnswers.end()) {
             DEBUG("word not a possible answer: " << answer);
             exit(1);
@@ -79,7 +79,7 @@ struct AnswersAndGuessesSolver {
         IndexType firstWordIndex;
 
         auto p = AnswerGuessesIndexesPair<TypeToUse>(allAnswers.size(), allGuesses.size());
-        if (getFirstWord) {
+        if (startingWord == "") {
             DEBUG("guessing first word with " << (int)maxTries << " tries...");
             auto firstPr = getBestWordDecider(p, maxTries);
             DEBUG("first word: " << reverseIndexLookup[firstPr.wordIndex] << ", known probWrong: " << firstPr.probWrong);
@@ -88,7 +88,7 @@ struct AnswersAndGuessesSolver {
             firstWordIndex = getIndexFromStartingWord();
         }
         auto answerIndex = getAnswerIndex(answer);
-        return solveWord(answerIndex, firstWordIndex, p);
+        return solveWord(answerIndex, solutionModel, firstWordIndex, p);
     }
 
     IndexType getIndexFromStartingWord() const {
@@ -108,17 +108,25 @@ struct AnswersAndGuessesSolver {
     }
 
     template<class T>
-    AnswersAndGuessesResult solveWord(IndexType answerIndex, IndexType firstWordIndex, AnswerGuessesIndexesPair<T> &p) {
+    AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswerGuessesIndexesPair<T> &p) {
         AnswersAndGuessesResult res = {};
+        res.solutionModel = solutionModel;
+
         auto getter = PatternGetterCached(answerIndex);
         auto state = AttemptStateToUse(getter);
+        auto currentModel = res.solutionModel;
 
         //clearGuesses(p.guesses, p.answers);
         //removeGuessesWhichHaveBetterGuess(p, true);
         
         int guessIndex = firstWordIndex;
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
-            if (guessIndex == answerIndex) return res;
+            currentModel->guess = reverseIndexLookup[guessIndex];
+            if (guessIndex == answerIndex) {
+                currentModel->next["+++++"] = std::make_shared<SolutionModel>();
+                currentModel->next["+++++"]->guess = currentModel->guess;
+                return res;
+            }
             if (res.tries == maxTries) break;
 
             makeGuess(p, state, guessIndex, reverseIndexLookup);
@@ -128,10 +136,14 @@ struct AnswersAndGuessesSolver {
                 RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p, true);
             }
 
-            GUESSESSOLVER_DEBUG(reverseIndexLookup[answerIndex] << ", " << res.tries << ": words size: " << p.answers.size() << ", guesses size: " << p.guesses.size());
             auto pr = getBestWordDecider(p, maxTries-res.tries);
             if (res.tries == 1) res.firstGuessResult = pr;
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << reverseIndexLookup[pr.wordIndex] << ", probWrong: " << pr.probWrong);
+
+            const auto patternInt = getter.getPatternIntCached(guessIndex);
+            const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
+            
+            currentModel = currentModel->getOrCreateNext(patternStr);
 
             guessIndex = pr.wordIndex;
         }
@@ -180,7 +192,7 @@ private:
     BestWordResult getWordForLeastWrong(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
         assertm(triesRemaining != 0, "no tries remaining");
         if (p.answers.size() == 0) return {0, 0};
-        if (triesRemaining >= p.answers.size()) return {0, p.answers[0]};
+        if (triesRemaining >= p.answers.size()) return {0, *std::min_element(p.answers.begin(), p.answers.end())};
 
         if (triesRemaining == 1) { // we can't use info from last guess
             return {
@@ -213,7 +225,7 @@ private:
                 const auto expNumWrongForSubtree = pr.probWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
                 if (expNumWrongForSubtree > maxIncorrect) {
-                    numWrongForThisGuess = 50000 * p.answers.size();
+                    numWrongForThisGuess = INF_INT-1;
                     break;
                 }
             }

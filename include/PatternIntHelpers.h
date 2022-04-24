@@ -19,16 +19,28 @@ struct PatternIntHelpers {
             case '_': return 1;
             case '+': return 2;
             default: {
-                DEBUG("UNKONWN CHAR IN PATTERN STR " << c);
+                DEBUG("UNKNOWN CHAR IN PATTERN STR " << "'" << c << "'" << ", int: " << (int)c);
                 exit(1);
             }
         }
     }
 
-    std::string patternIntToString(PatternType patternInt) {
+    static char intToChar(int v) {
+        switch(v) {
+            case 0: return '?';
+            case 1: return '_';
+            case 2: return '+';
+            default: {
+                DEBUG("UNKNOWN INT " << v);
+                exit(1);
+            }
+        }
+    }
+
+    static std::string patternIntToString(PatternType patternInt) {
         std::string s(".....");
         for (int i = 0; i < WORD_LENGTH; ++i) {
-            s[i] = charToInt(patternInt % 3);
+            s[i] = intToChar(patternInt % 3);
             patternInt /= 3;
         }
         return s;

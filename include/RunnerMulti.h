@@ -7,9 +7,21 @@
 #include "Util.h"
 #include "RunnerUtil.h"
 #include "GlobalArgs.h"
+#include "JsonConverter.h"
+#include "Verifier.h"
 
 const int RESULT_INCORRECT = -1;
 const int RESULT_SKIPPED = -2;
+
+struct RunnerMultiResultPair {
+    TriesRemainingType numTries;
+    IndexType wordIndex;
+};
+
+struct RunnerMultiResult {
+    std::vector<RunnerMultiResultPair> pairs = {};
+    std::shared_ptr<SolutionModel> solutionModel = std::make_shared<SolutionModel>();
+};
 
 struct RunnerMulti {
     using P = std::pair<int,int>;
@@ -78,7 +90,7 @@ struct RunnerMulti {
                         }
                         //if (solved.load() > 0) return {};
                         auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
-                        auto solverRes = solver.solveWord(answerIndex, firstWordIndex, p);
+                        auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, p);
                         incorrect += solverRes.tries == -1;
                     }
                     auto currBestIncorrect = bestIncorrect.load();
@@ -136,6 +148,7 @@ struct RunnerMulti {
         return indexesToCheck;
     }
 
+    // since the first guess is fixed, partitioning by pattern reduces the amount of work
     template <bool isEasyMode, bool isGetLowestAverage>
     static int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
         std::atomic<int> completed = 0, incorrect = 0, totalSum = 0, batches = 0;
@@ -146,9 +159,9 @@ struct RunnerMulti {
 
         auto bar = SimpleProgress(FROM_SS("BY_ANSWER " << nothingSolver.startingWord), numBatches);
 
-        std::vector<std::vector<P>> transformResults(batchesOfAnswerIndexes.size());
+        std::vector<RunnerMultiResult> transformResults(batchesOfAnswerIndexes.size());
         std::transform(
-            std::execution::par_unseq,
+            std::execution::seq,
             batchesOfAnswerIndexes.begin(),
             batchesOfAnswerIndexes.end(),
             transformResults.begin(),
@@ -162,9 +175,10 @@ struct RunnerMulti {
                 &nothingSolver=std::as_const(nothingSolver),
                 &answerIndexesToCheck=std::as_const(answerIndexesToCheck)
             ]
-                (const std::vector<IndexType> &answerIndexBatch) -> std::vector<P>
-            {   
-                std::vector<P> results(answerIndexBatch.size());
+                (const std::vector<IndexType> &answerIndexBatch) -> RunnerMultiResult
+            {
+                RunnerMultiResult result = {};
+                result.pairs.resize(answerIndexBatch.size(), {0, 0});
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < answerIndexBatch.size(); ++i) {
@@ -173,7 +187,7 @@ struct RunnerMulti {
                     const auto &actualAnswer = nothingSolver.allAnswers[answerIndex];
                     //DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);
                     
-                    auto r = solver.solveWord(actualAnswer);
+                    auto r = solver.solveWord(actualAnswer, result.solutionModel);
                     //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
                     completed++;
                     incorrect += r.tries == -1;
@@ -189,20 +203,27 @@ struct RunnerMulti {
                         bar.updateStatus(s);
                     }
 
-                    results[i] = {r.tries, answerIndex};
+                    result.pairs[i] = {r.tries, answerIndex};
                 }
 
-                return results;
+                return result;
             }
         );
 
+        auto solutionModel = SolutionModel();
+        solutionModel.guess = nothingSolver.startingWord;
         std::vector<int64_t> answerIndexToResult(nothingSolver.allAnswers.size());
         for (const auto &r: transformResults) {
-            for (const auto &rr: r) {
-                answerIndexToResult[rr.second] = rr.first;
+            for (const auto &rr: r.pairs) {
+                answerIndexToResult[rr.wordIndex] = rr.numTries;
             }
+            solutionModel.mergeFromOtherModel(r.solutionModel);
+
         }
         RunnerUtil::printInfo(nothingSolver, answerIndexToResult);
+
+        JsonConverter::toFile(solutionModel, "./models/pretty.json");
+        Verifier::verifyModel(solutionModel, nothingSolver);
         return 0;
     }
 

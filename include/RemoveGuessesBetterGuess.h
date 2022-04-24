@@ -6,6 +6,7 @@
 
 struct RemoveGuessesBetterGuess {
     static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool force = false) {
+        return 0;
         const auto answersSize = p.answers.size();
         const auto &pAnswersWs = WordSetHelpers::buildAnswersWordSet(p.answers);
 

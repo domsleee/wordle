@@ -6,7 +6,7 @@
 
 struct Verifier {
     template <bool isEasyMode, bool isGetLowestAverage>
-    static void verifyModel(const SolutionModel &model, const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &solver) {
+    static std::vector<int64_t> verifyModel(const SolutionModel &model, const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &solver) {
         auto answerIndexes = getVector(solver.allAnswers.size(), 0);
         std::vector<int64_t> results(answerIndexes.size());
         for (auto answerIndex: answerIndexes) {
@@ -23,7 +23,7 @@ struct Verifier {
                 auto patternStr = getter.getPatternFromWord(localModel.guess);
 
                 if (!localModel.next.contains(patternStr)) {
-                    crashDuetoMissingPattern(localModel, patternStr, answer, path);
+                    crashDueToMissingPattern(localModel, patternStr, answer, path);
                 }
                 localModel = *localModel.next[patternStr];
                 path += ".next[\"" + patternStr + "\"]";
@@ -34,7 +34,7 @@ struct Verifier {
         for (auto r: results) above4 += r > 4;
         DEBUG("above4: " << above4);
 
-        RunnerUtil::printInfo(solver, results);
+        return results;
     }
 
     static void crashDueToMissingPattern(

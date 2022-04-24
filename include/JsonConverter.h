@@ -3,5 +3,5 @@
 
 namespace JsonConverter {
     SolutionModel fromFile(const std::string &file);
-    void toFile(const std::string &file);
+    void toFile(const SolutionModel &solutionModel, const std::string &file);
 };

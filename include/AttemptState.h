@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "WordSetUtil.h"
 #include "AttemptStateCacheKey.h"
+#include "PatternIntHelpers.h"
 #include <unordered_map>
 #include <unordered_set>
 #include <cmath>
@@ -107,22 +108,10 @@ struct AttemptState {
             auto v = i;
             auto &pattern = res[i];
             for (auto j = 0; j < length; ++j) {
-                pattern[j] = intToChar(v%3);
+                pattern[j] = PatternIntHelpers::intToChar(v%3);
                 v /= 3;
             }
         }
         return res;
-    }
-
-    static char intToChar(int v) {
-        switch(v) {
-            case 0: return '?';
-            case 1: return '_';
-            case 2: return '+';
-            default: {
-                DEBUG("UNKNOWN INT " << v);
-                exit(1);
-            }
-        }
     }
 };

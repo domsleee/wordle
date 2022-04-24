@@ -60,7 +60,7 @@ struct AttemptStateFaster {
         std::size_t removed = 0;
         for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
             auto wordIndex = wordIndexes[i];
-            if (!ws[wordIndex]) {
+            if (!ws[wordIndex] || guessIndex == wordIndex) {
                 //DEBUG("INSPECTING " << i << ", wordIndex: " << wordIndex << ", size: " << wordIndexes.size());
                 wordIndexes.deleteIndex(i);
                 removed++;

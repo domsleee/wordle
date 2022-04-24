@@ -22,9 +22,11 @@ int Runner::run() {
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
         
-        if (true) {
-            auto model = JsonConverter::fromFile("./models/rance.converted.json");
-            Verifier::verifyModel(model, solver); return 0;
+        if (false) {
+            auto model = JsonConverter::fromFile("./models/pretty.json");
+            auto results = Verifier::verifyModel(model, solver); return 0;
+            RunnerUtil::printInfo(solver, results);
+
         }
 
 
@@ -58,12 +60,10 @@ int Runner::run() {
         std::vector<std::string> unsolved = {};
         int correct = 0;
 
-        bool getFirstWord = GlobalArgs.firstWord == "";
-
         for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
             std::string word = wordsToSolve[i];
             DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
-            auto r = solver.solveWord(word, getFirstWord).tries;
+            auto r = solver.solveWord(word, std::make_shared<SolutionModel>()).tries;
             if (r != -1) correct++;
             else unsolved.push_back(word);
             results[i] = r == -1 ? 0 : r;
