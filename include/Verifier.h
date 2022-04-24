@@ -15,12 +15,6 @@ struct Verifier {
             auto getter = PatternGetter(answer);
             std::string path = "$";
             for (auto i = 1; i <= solver.maxTries; ++i) {
-                if (localModel.guessesLeft != -1) {
-                    // assume its fine
-                    results[answerIndex] = i + localModel.possibilitiesLeft;
-                    break;
-                }
-
                 auto guessIndex = solver.getIndexForWord(localModel.guess);
                 if (guessIndex == answerIndex) {
                     results[answerIndex] = i;
@@ -29,15 +23,7 @@ struct Verifier {
                 auto patternStr = getter.getPatternFromWord(localModel.guess);
 
                 if (!localModel.next.contains(patternStr)) {
-                    DEBUG("error: does not have next pattern '" << patternStr << "'");
-                    DEBUG("curren guess: " << localModel.guess);
-                    for (auto &key: localModel.next) {
-                        DEBUG(key.first);
-                    }
-                    DEBUG("answer: " << answer);
-                    DEBUG(path);
-                    DEBUG("amount: " << localModel.next.size());
-                    exit(1);
+                    crashDuetoMissingPattern(localModel, patternStr, answer, path);
                 }
                 localModel = *localModel.next[patternStr];
                 path += ".next[\"" + patternStr + "\"]";
@@ -49,5 +35,22 @@ struct Verifier {
         DEBUG("above4: " << above4);
 
         RunnerUtil::printInfo(solver, results);
+    }
+
+    static void crashDueToMissingPattern(
+        const SolutionModel &localModel,
+        const std::string &patternStr,
+        const std::string &answer,
+        const std::string &path)
+    {
+        DEBUG("error: does not have next pattern '" << patternStr << "'");
+        DEBUG("curren guess: " << localModel.guess);
+        for (auto &key: localModel.next) {
+            DEBUG(key.first);
+        }
+        DEBUG("answer: " << answer);
+        DEBUG(path);
+        DEBUG("amount: " << localModel.next.size());
+        exit(1);
     }
 };

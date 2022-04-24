@@ -11,6 +11,4 @@ struct SolutionModel;
 struct SolutionModel {
     std::string guess = "";
     std::unordered_map<std::string, std::shared_ptr<SolutionModel>> next = {};
-    int guessesLeft = -1;
-    int possibilitiesLeft = -1;
 };

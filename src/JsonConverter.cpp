@@ -19,11 +19,6 @@ SolutionModel parseModel(const nlohmann::json &j) {
     if (j.contains("guess")) {
         res.guess = j["guess"];
     }
-    if (j.contains("guessesLeft")) {
-        DEBUG("HAS GUESSES LEFT??");
-        res.guessesLeft = j["guessesLeft"].get<int>();
-        res.possibilitiesLeft = j["possibilities"].size();
-    }
     if (j.contains("next")) {
         for (const auto &jj: j["next"].items()) {
             auto key = jj.key();
