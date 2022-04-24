@@ -26,7 +26,7 @@ int Runner::run() {
         GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
         solver.buildStaticState();
-        GuessesRemainingAfterGuessCacheSerialiser::copy();
+        //GuessesRemainingAfterGuessCacheSerialiser::copy();
         //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
         //return 0;
         END_TIMER(precompute);

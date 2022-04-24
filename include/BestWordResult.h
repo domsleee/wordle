@@ -3,11 +3,11 @@
 #include "Util.h"
 
 struct BestWordResult {
-    double probWrong;
+    int probWrong;
     IndexType wordIndex;
     BestWordResult() {}
 
-    BestWordResult(double probWrong, IndexType wordIndex)
+    BestWordResult(int probWrong, IndexType wordIndex)
         : probWrong(probWrong),
           wordIndex(wordIndex){}
 };

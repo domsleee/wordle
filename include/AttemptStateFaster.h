@@ -29,7 +29,7 @@ struct AttemptStateFaster {
 
     static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, int patternInt) {
         // is equal to +++++
-        if (patternInt == NUM_PATTERNS-1) return {guessIndex};
+        if (patternInt == NUM_PATTERNS-1) return {};
 
         std::vector<IndexType> res(wordIndexes.size());
         const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
@@ -49,11 +49,8 @@ struct AttemptStateFaster {
         if (patternInt == NUM_PATTERNS-1) {
             std::size_t removed = 0;
             for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
-                auto wordIndex = wordIndexes[i];
-                if (wordIndex != guessIndex) {
-                    wordIndexes.deleteIndex(i);
-                    removed++;
-                }
+                wordIndexes.deleteIndex(i);
+                removed++;
             }
 
             return removed;
