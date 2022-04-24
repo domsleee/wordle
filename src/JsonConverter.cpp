@@ -1,7 +1,6 @@
 #include "../include/JsonConverter.h"
 #include "../third_party/json.hpp"
-#include "../include/JsonConverterPatternHelpers.h"
-
+#include "../include/PatternIntHelpers.h"
 SolutionModel parseModel(const nlohmann::json &j);
 
 SolutionModel JsonConverter::fromFile(const std::string &file) {
@@ -13,14 +12,23 @@ SolutionModel JsonConverter::fromFile(const std::string &file) {
 
 SolutionModel parseModel(const nlohmann::json &j) {
     SolutionModel res = {};
-    res.guess = j["guess"];
+    if (j.is_string()) {
+        res.guess = j;
+        return res;
+    }
+    if (j.contains("guess")) {
+        res.guess = j["guess"];
+    }
     if (j.contains("guessesLeft")) {
-        res.guess = j["guessesLeft"].get<int>();
+        DEBUG("HAS GUESSES LEFT??");
+        res.guessesLeft = j["guessesLeft"].get<int>();
+        res.possibilitiesLeft = j["possibilities"].size();
     }
     if (j.contains("next")) {
-        for (auto &jj: j["next"].items()) {
-            auto key = JsonConverterPatternHelpers::emojiToPatternInt(jj.key().get<std::wstring>());
-            res.next[key] = parseModel(jj.value());
+        for (const auto &jj: j["next"].items()) {
+            auto key = jj.key();
+            const auto newModel = parseModel(jj.value());
+            res.next[key] = std::make_shared<SolutionModel>(std::move(newModel));
         }
     }
     return res;

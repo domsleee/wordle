@@ -6,6 +6,7 @@
 #include "../include/RunnerMulti.h"
 #include "../include/RemoveGuessesBetterGuess.h"
 #include "../include/GuessesRemainingAfterGuessCacheSerialiser.h"
+#include "../include/Verifier.h"
 
 
 int Runner::run() {
@@ -19,17 +20,25 @@ int Runner::run() {
     }
 
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
-        START_TIMER(precompute);
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
+        
+        if (true) {
+            auto model = JsonConverter::fromFile("./models/rance.converted.json");
+            Verifier::verifyModel(model, solver); return 0;
+        }
+
+
+        START_TIMER(precompute);
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
         AttemptStateFast::clearCache();
         solver.buildStaticState();
-        GuessesRemainingAfterGuessCacheSerialiser::copy();
+        //GuessesRemainingAfterGuessCacheSerialiser::copy();
         //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
         //return 0;
         END_TIMER(precompute);
+
 
         if (GlobalArgs.firstWord != "") {
             solver.startingWord = GlobalArgs.firstWord;

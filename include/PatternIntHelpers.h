@@ -24,4 +24,13 @@ struct PatternIntHelpers {
             }
         }
     }
+
+    std::string patternIntToString(PatternType patternInt) {
+        std::string s(".....");
+        for (int i = 0; i < WORD_LENGTH; ++i) {
+            s[i] = charToInt(patternInt % 3);
+            patternInt /= 3;
+        }
+        return s;
+    }
 };
