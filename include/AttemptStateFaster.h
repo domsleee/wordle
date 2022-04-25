@@ -5,7 +5,6 @@
 #include <atomic>
 #include <algorithm>
 #include <execution>
-#include "AttemptStateUtil.h"
 #include "UnorderedVector.h"
 #include "PatternGetterCached.h"
 #include "Util.h"
