@@ -14,8 +14,8 @@ ENV_CXXFLAGS="$FLAGS_USE" ENV_LIBFLAGS="$FLAGS_USE" make -j
 #./bin/solve -pr --max-tries 4 --max-incorrect 33 ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -p --max-tries 4 --max-incorrect 33 ext/wordle-guesses.txt ext/wordle-answers.txt
 
-./bin/solve -p -w crane --lowest-average --max-total-guesses 8000 ext/wordle-guesses.txt ext/wordle-answers.txt
-
+#./bin/solve -p -w crane --lowest-average --max-total-guesses 8000 ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -p --lowest-average -w salet --max-total-guesses 7950 ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --hard-mode --lowest-average -w scowl ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -p --lowest-average -w crane ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --lowest-average -w crane ext/wordle-guesses.txt ext/wordle-answers.txt

@@ -3,25 +3,31 @@
 #include "../include/Runner.h"
 
 int main(int argc, char *argv[]) {
-    cxxopts::Options options("WordleSolver", "One line description of WordleSolver");
+    cxxopts::Options options("WordleSolver", "A solver for the wordle game.");
 
     options.add_options()
         ("guesses", "Guesses", cxxopts::value<std::string>())
         ("answers", "Answers", cxxopts::value<std::string>())
-        ("w,first-word", "First Word", cxxopts::value<std::string>()->default_value(""))
-        ("v,verify", "Solution model to verify", cxxopts::value<std::string>()->default_value(""))
-        ("s,guesses-to-skip", "Words to skip", cxxopts::value<std::string>()->default_value(""))
-        ("guesses-to-check", "Guesses to check", cxxopts::value<std::string>()->default_value(""))
 
-        ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
-        ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
-        ("max-total-guesses", "Max total guesses", cxxopts::value<int>()->default_value("500000"))
-        ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
+        // flags
+        ("H,hard-mode", "Solve the hard mode of wordle")
+        ("l,lowest-average", "Find a strategy for the lowest average score (default is least wrong)")
         ("p,parallel", "Use parallel processing")
-        ("r,reduce-guesses", "Reduce the number of guesses")
-        ("force-sequential", "No parallel when generating cache")
-        ("hard-mode", "Solve the hard mode of wordle")
-        ("lowest-average", "Get the lowest average score (default is to find the maximum correct words)")
+        ("r,reduce-guesses", "Use the answer dictionary as the guess dictionary")
+        ("s,force-sequential", "No parallel when generating cache (for profiling)")
+
+        // strings
+        ("w,first-guess", "First guess", cxxopts::value<std::string>()->default_value(""))
+        ("v,verify", "Solution model to verify", cxxopts::value<std::string>()->default_value(""))
+        ("guesses-to-skip", "Filename of words to skip", cxxopts::value<std::string>()->default_value(""))
+        ("guesses-to-check", "Filename of guesses to check", cxxopts::value<std::string>()->default_value(""))
+
+        // ints
+        ("t,max-tries", "Max tries for least wrong strategy", cxxopts::value<int>()->default_value("6"))
+        ("I,max-incorrect", "Max incorrect for lowest average strategy", cxxopts::value<int>()->default_value("0"))
+        ("G,max-total-guesses", "Max total guesses", cxxopts::value<int>()->default_value("500000"))
+        ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
+
         ("h,help", "Print usage")
     ;
     options.parse_positional({"guesses", "answers"});
