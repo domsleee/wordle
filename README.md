@@ -15,23 +15,25 @@ A solver for the wordle game.
 Usage:
   WordleSolver [OPTION...] positional parameters
 
-  -w, --first-word arg         First Word (default: "")
-  -v, --verify arg             Solution model to verify (default: "")
-  -s, --guesses-to-skip arg    Words to skip (default: "")
-      --guesses-to-check arg   Guesses to check (default: "")
-  -m, --max-tries arg          Max Tries (default: 6)
-  -i, --max-incorrect arg      Max incorrect (default: 0)
-      --max-total-guesses arg  Max total guesses (default: 500000)
-      --num-to-restrict arg    Reduce the number of guesses (default: 
-                               50000)
-  -p, --parallel               Use parallel processing
-  -r, --reduce-guesses         Reduce the number of guesses to the answer 
-                               dictionary
-      --force-sequential       No parallel when generating cache (for 
-                               profiling)
-      --hard-mode              Solve the hard mode of wordle
-      --lowest-average         Find a strategy for the lowest average score 
+  -H, --hard-mode              Solve the hard mode of wordle
+  -l, --lowest-average         Find a strategy for the lowest average score 
                                (default is least wrong)
+  -p, --parallel               Use parallel processing
+  -r, --reduce-guesses         Use the answer dictionary as the guess 
+                               dictionary
+  -s, --force-sequential       No parallel when generating cache (for 
+                               profiling)
+  -w, --first-guess arg        First guess (default: "")
+  -v, --verify arg             Solution model to verify (default: "")
+      --guesses-to-skip arg    Filename of words to skip (default: "")
+      --guesses-to-check arg   Filename of guesses to check (default: "")
+  -m, --max-tries arg          Max Tries for least wrong strategy (default: 
+                               6)
+  -i, --max-incorrect arg      Max incorrect for lowest average strategy 
+                               (default: 0)
+      --max-total-guesses arg  Max total guesses (default: 500000)
+      --num-to-restrict arg    Reduce the number of first guesses (default: 
+                               50000)
   -h, --help                   Print usage
 ```
 
