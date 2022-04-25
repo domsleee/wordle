@@ -1,58 +1,96 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <cstring>
+#include <filesystem>
 #include "WordSetUtil.h"
 #include "GuessesRemainingAfterGuessCache.h"
+#include  <fcntl.h>
+#include <unistd.h>
 
 struct GuessesRemainingAfterGuessCacheSerialiser {
-    static void readFromFile(const std::string &file) {
-        // todo.
+    static void initialiseFromCache() {
+        const auto filename = "databases/"
+         + getAfterSlash(GlobalArgs.guesses)
+         + "_"
+         + getAfterSlash(GlobalArgs.answers)
+         + "_"
+         + std::to_string(WordSetGuesses().size())
+         + "_"
+         + std::to_string(GuessesRemainingAfterGuessCache::getCacheSize());
+        if (std::filesystem::exists(filename)) {
+            DEBUG("readFromFile " << filename);
+            readFromFile(filename);
+            return;
+        }
+
+        GuessesRemainingAfterGuessCache::buildCache();
+        DEBUG("write to file: \"" << filename << '"');
+        writeToFile(filename);
     }
 
-    static std::vector<uint64_t> writeToFile(const std::string &file) {
-        START_TIMER(writeToFile);
-        auto num8BytePieces = (WordSetGuesses().size() + 63) / 64;
+private:
+    static std::string getAfterSlash(const std::string &filename) {
+        return filename.substr(filename.find_last_of("/")+1);
+    }
+
+    static void readFromFile(const std::string &filename) {
+        START_TIMER(readFromFile);
         auto &cache = GuessesRemainingAfterGuessCache::cache;
-        std::vector<uint64_t> tempVal(num8BytePieces * cache.size(), 0);
+        cache.assign(GuessesRemainingAfterGuessCache::getCacheSize(), {});
 
-        for (std::size_t i = 0; i < cache.size(); ++i) {
-            std::size_t offset = i*num8BytePieces;
-            int bitIndex = 0, my8ByteIndex = 0;
-            for (std::size_t j = 0; j < cache[i].size(); ++j) {
-                if (cache[i][j]) {
-                    tempVal[offset + my8ByteIndex] &= 0b1 << bitIndex;
-                }
-                bitIndex = (bitIndex + 1) & 0b111111;
-                my8ByteIndex += (bitIndex == 0);
-            }
+        FILE *fptr;
+        if ((fptr = fopen(filename.c_str(), "rb")) == NULL){
+            DEBUG("Error! opening file");
+            exit(1);
         }
+        auto bytesRead = fread((void*)cache.data(), getSizeInBytes(), 1, fptr);
+        DEBUG("bytes read? " << bytesRead);
+        fclose(fptr);
 
-
-        // done.
-        END_TIMER(writeToFile);
-        return tempVal;
+        /*
+        std::ifstream ifs(filename, std::ios::binary);
+        GuessesRemainingAfterGuessCache::cache.assign(GuessesRemainingAfterGuessCache::getCacheSize(), {});
+        ifs.read(reinterpret_cast<char*>(GuessesRemainingAfterGuessCache::cache.data()), getSizeInBytes());
+        ifs.close();
+        */
+       END_TIMER(readFromFile);
     }
 
-    static void copy() {
-        START_TIMER(copy);
-        auto tempVal = writeToFile("SDF");
-        std::vector<WordSetGuesses> myCache;
-        myCache.assign(GuessesRemainingAfterGuessCache::cache.size(), {});
-        auto num8BytePieces = (WordSetGuesses().size() + 63) / 64;
+    static void writeToFile(const std::string &filename) {
+        START_TIMER(writeToFile);
+        const auto &cache = GuessesRemainingAfterGuessCache::cache;
 
-        int cacheI = 0, bitOffset = 0;
-        for (std::size_t i = 0; i < tempVal.size(); ++i) {
-            for (std::size_t j = 0; j < 64; ++j) {
-                if (tempVal[i] & (0b1 << j)) {
-                    myCache[cacheI][bitOffset] = true;
-                }
-            }
-            if (i > 0 && i % num8BytePieces == 0) {
-                cacheI++; bitOffset = 0;
-            } else {
-                bitOffset += 64;
-            }
+        /*
+        std::ofstream of(filename, std::ios::binary);
+        if (!of.is_open()) {
+            DEBUG("failed to open..");
         }
-        END_TIMER(copy);
+        DEBUG("write this many bytes... " << getSizeInBytes());
+        DEBUG("cache size... " << cache.size());
+        if (getSizeInBytes() > std::numeric_limits<std::streamsize>::max()) {
+            DEBUG("larger than max"); exit(1);
+        }
+        of.write(reinterpret_cast<const char*>(cache.data()), getSizeInBytes());
+        of.close();
+        if (!of.good()) {
+            DEBUG("no good ofstream after writing..");
+        }
+        */
+        FILE *fptr;
+        if ((fptr = fopen(filename.c_str(), "wb")) == NULL){
+            DEBUG("Error! opening file");
+            exit(1);
+        }
+        fwrite((void*)cache.data(), getSizeInBytes(), 1, fptr);
+        fclose(fptr);
+
+        END_TIMER(writeToFile);
+    }
+
+    static std::size_t getSizeInBytes() {
+        const auto num8BytePieces = (WordSetGuesses().size() + 63) / 64;
+        const auto cacheSize = GuessesRemainingAfterGuessCache::getCacheSize();
+        return cacheSize * num8BytePieces * 8;
     }
 };

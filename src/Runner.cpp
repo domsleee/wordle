@@ -24,11 +24,10 @@ int Runner::run() {
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
 
         START_TIMER(precompute);
-        PatternGetterCached::buildCache();
-        GuessesRemainingAfterGuessCache::buildCache();
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
-        //GuessesRemainingAfterGuessCacheSerialiser::copy();
-        //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
+        PatternGetterCached::buildCache();
+        GuessesRemainingAfterGuessCacheSerialiser::initialiseFromCache();
+
         //return 0;
         END_TIMER(precompute);
 
