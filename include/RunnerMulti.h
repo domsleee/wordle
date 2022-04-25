@@ -44,9 +44,9 @@ struct RunnerMulti {
 
     template <bool isEasyMode, bool isGetLowestAverage>
     static int runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
-        std::atomic<int> completed = 0, solved = 0, bestIncorrect = (int)nothingSolver.allAnswers.size();
+        std::atomic<int> completed = 0, solved = 0, bestIncorrect = (int)GlobalState.allAnswers.size();
 
-        auto guessIndexesToCheck = getIndexesToCheck(nothingSolver.allGuesses);
+        auto guessIndexesToCheck = getIndexesToCheck(GlobalState.allGuesses);
 
         auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 8);
         DEBUG("#batches: " << batchesOfFirstWords.size());
@@ -68,8 +68,8 @@ struct RunnerMulti {
             {
                 //DEBUG("batch size " << firstWordBatch.size());
                 
-                const auto &answers = nothingSolver.allAnswers;
-                const auto &guesses = nothingSolver.allGuesses;
+                const auto &answers = GlobalState.allAnswers;
+                const auto &guesses = GlobalState.allGuesses;
                 
                 std::vector<P> results(firstWordBatch.size());
                 auto solver = nothingSolver;
@@ -111,7 +111,7 @@ struct RunnerMulti {
             }
         );
 
-        std::vector<P> results(nothingSolver.allGuesses.size());
+        std::vector<P> results(GlobalState.allGuesses.size());
         int ind = 0;
         for (const auto &batchResult: transformResults) {
             for (const auto &p: batchResult) results[ind++] = p;
@@ -119,7 +119,7 @@ struct RunnerMulti {
 
         std::sort(results.begin(), results.end(), std::greater<P>());
         DEBUG("solved " << transformResults.size() << " batches of ~" << transformResults[0].size());
-        DEBUG("best result: " << nothingSolver.allGuesses[results[0].second] << " solved " << getPerc(results[0].first, nothingSolver.allAnswers.size()));
+        DEBUG("best result: " << GlobalState.allGuesses[results[0].second] << " solved " << getPerc(results[0].first, GlobalState.allAnswers.size()));
         std::vector<int64_t> v(results.size());
         for (std::size_t i = 0; i < results.size(); ++i) {
             v[i] = (int)i < results[0].first;
@@ -153,7 +153,7 @@ struct RunnerMulti {
     static int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
         std::atomic<int> completed = 0, incorrect = 0, totalSum = 0, batches = 0;
 
-        auto answerIndexesToCheck = getIndexesToCheck(nothingSolver.allAnswers);
+        auto answerIndexesToCheck = getIndexesToCheck(GlobalState.allAnswers);
         auto batchesOfAnswerIndexes = getBatchesByPattern(nothingSolver, answerIndexesToCheck);
         const auto numBatches = batchesOfAnswerIndexes.size();
 
@@ -184,8 +184,8 @@ struct RunnerMulti {
                 for (std::size_t i = 0; i < answerIndexBatch.size(); ++i) {
                     solver.skipRemoveGuessesWhichHaveBetterGuess = i > 0;
                     auto answerIndex = answerIndexBatch[i];
-                    const auto &actualAnswer = nothingSolver.allAnswers[answerIndex];
-                    //DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << nothingSolver.allAnswers[answerIndexBatch[0]]);
+                    const auto &actualAnswer = GlobalState.allAnswers[answerIndex];
+                    //DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << GlobalState.allAnswers[answerIndexBatch[0]]);
                     
                     auto r = solver.solveWord(actualAnswer, result.solutionModel);
                     //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
@@ -212,7 +212,7 @@ struct RunnerMulti {
 
         auto solutionModel = SolutionModel();
         solutionModel.guess = nothingSolver.startingWord;
-        std::vector<int64_t> answerIndexToResult(nothingSolver.allAnswers.size());
+        std::vector<int64_t> answerIndexToResult(GlobalState.allAnswers.size());
         for (const auto &r: transformResults) {
             for (const auto &rr: r.pairs) {
                 answerIndexToResult[rr.wordIndex] = rr.numTries;
@@ -253,8 +253,8 @@ struct RunnerMulti {
         std::map<IndexType, int> indexKeys;
         std::vector<IndexType> sortedIndexes = indexes;
 
-        auto p = AnswerGuessesIndexesPair<UnorderedVector<IndexType>>(nothingSolver.allAnswers.size(), nothingSolver.allGuesses.size());
-        auto guessIndex = nothingSolver.getIndexForWord(nothingSolver.startingWord);
+        auto p = AnswerGuessesIndexesPair<UnorderedVector<IndexType>>(GlobalState.allAnswers.size(), GlobalState.allGuesses.size());
+        auto guessIndex = GlobalState.getIndexForWord(nothingSolver.startingWord);
 
         DEBUG("start: " << p.answers.size() << ", " << p.guesses.size());
 

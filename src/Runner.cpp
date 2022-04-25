@@ -18,15 +18,15 @@ int Runner::run() {
         guesses = answers;
     }
 
+    GlobalState = _GlobalState(guesses, answers);
+
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
-        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
+        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
 
         START_TIMER(precompute);
-        PatternGetterCached::buildCache(solver.reverseIndexLookup);
-        //AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
-        GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
-        //AttemptStateFast::clearCache();
-        solver.buildStaticState();
+        PatternGetterCached::buildCache();
+        GuessesRemainingAfterGuessCache::buildCache();
+        RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         //GuessesRemainingAfterGuessCacheSerialiser::copy();
         //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
         //return 0;
@@ -78,15 +78,12 @@ int Runner::run() {
     };
 
     auto lambda2 = [&]<bool isEasyMode>() -> bool {
-        if (GlobalArgs.isGetLowestAverage) {
-            return lambda.template operator()<isEasyMode, true>();
-        }
-        return lambda.template operator()<isEasyMode, false>();
+        return GlobalArgs.isGetLowestAverage
+            ? lambda.template operator()<isEasyMode, true>()
+            : lambda.template operator()<isEasyMode, false>();
     };
 
-    if (GlobalArgs.hardMode) {
-        return lambda2.template operator()<false>();
-        //return lambda<false>();
-    }
-    return lambda2.template operator()<true>();
+    return GlobalArgs.hardMode
+        ? lambda2.template operator()<false>()
+        : lambda2.template operator()<true>();
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "PatternGetter.h"
+#include "GlobalState.h"
 #include "Util.h"
 #include "WordSetUtil.h"
 #include "PatternIntHelpers.h"
@@ -16,17 +17,17 @@ struct AttemptState {
 
     PatternGetter patternGetter;
 
-    std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) const {
-        auto pattern = patternGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
-        return filterWordsMatchingGuessPattern(guessIndex, pattern, wordIndexes, wordIndexLookup);
+    std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes) const {
+        auto pattern = patternGetter.getPatternFromWord(GlobalState.reverseIndexLookup[guessIndex]);
+        return filterWordsMatchingGuessPattern(guessIndex, pattern, wordIndexes);
     }
 
-    static std::vector<IndexType> filterWordsMatchingGuessPattern(IndexType guessIndex, const std::string &pattern, const std::vector<IndexType> &wordIndexes, const std::vector<std::string> &wordIndexLookup) {
+    static std::vector<IndexType> filterWordsMatchingGuessPattern(IndexType guessIndex, const std::string &pattern, const std::vector<IndexType> &wordIndexes) {
         std::vector<IndexType> result = {};
 
         for (auto possibleAnswer: wordIndexes) {
-            auto myGetter = PatternGetter(wordIndexLookup[possibleAnswer]);
-            auto thePattern = myGetter.getPatternFromWord(wordIndexLookup[guessIndex]);
+            auto myGetter = PatternGetter(GlobalState.reverseIndexLookup[possibleAnswer]);
+            auto thePattern = myGetter.getPatternFromWord(GlobalState.reverseIndexLookup[guessIndex]);
             if (thePattern == pattern) {
                 result.push_back(possibleAnswer);
             }

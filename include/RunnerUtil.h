@@ -14,8 +14,8 @@ void printSolverInformation(const T& solver) {
 struct RunnerUtil {
     template <typename T>
     static void printInfo(const T& solver, const std::vector<int64_t> &answerIndexToResult) {
-        const auto &wordsToSolve = solver.allAnswers;
-        const auto &guesses = solver.allGuesses;
+        const auto &wordsToSolve = GlobalState.allAnswers;
+        const auto &guesses = GlobalState.allGuesses;
         auto correct = 0;
         for (auto r: answerIndexToResult) if (r != TRIES_FAILED) correct++;
         double avg = (double)std::reduce(answerIndexToResult.begin(), answerIndexToResult.end()) / correct;

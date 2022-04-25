@@ -3,6 +3,7 @@
 #include <vector>
 #include "Util.h"
 #include "PatternGetter.h"
+#include "GlobalState.h"
 
 struct PatternGetterCached {
     PatternGetterCached(IndexType answerIndex): answerIndex(answerIndex) {}
@@ -13,15 +14,15 @@ struct PatternGetterCached {
 
     static inline std::vector<PatternType> cache;
     static inline std::size_t reverseIndexLookupSize;
-    static void buildCache(const std::vector<std::string> &reverseIndexLookup) {
+    static void buildCache() {
         START_TIMER(PatternGetterCached);
-        reverseIndexLookupSize = reverseIndexLookup.size();
+        reverseIndexLookupSize = GlobalState.reverseIndexLookup.size();
         cache.resize(reverseIndexLookupSize * reverseIndexLookupSize);
-        for (std::size_t answerIndex = 0; answerIndex < reverseIndexLookup.size(); ++answerIndex) {
-            auto &answer = reverseIndexLookup[answerIndex];
+        for (std::size_t answerIndex = 0; answerIndex < reverseIndexLookupSize; ++answerIndex) {
+            auto &answer = GlobalState.reverseIndexLookup[answerIndex];
             auto patternGetter = PatternGetter(answer);
-            for (std::size_t wordIndex = 0; wordIndex < reverseIndexLookup.size(); ++ wordIndex) {
-                auto &word = reverseIndexLookup[wordIndex];
+            for (std::size_t wordIndex = 0; wordIndex < reverseIndexLookupSize; ++ wordIndex) {
+                auto &word = GlobalState.reverseIndexLookup[wordIndex];
                 PatternType patternInt = patternGetter.getPatternInt(word);
                 cache[getIndex(answerIndex, wordIndex)] = patternInt;
             }

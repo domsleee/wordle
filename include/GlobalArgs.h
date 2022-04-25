@@ -13,4 +13,4 @@ struct _GlobalArgs {
     static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage;
 };
 
-static inline auto GlobalArgs = _GlobalArgs();
+static inline _GlobalArgs GlobalArgs;

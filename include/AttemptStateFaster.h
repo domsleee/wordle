@@ -26,7 +26,7 @@ struct AttemptStateFaster {
         return guessWord(guessIndex, wordIndexes, patternInt);
     }
 
-    static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, int patternInt) {
+    static std::vector<IndexType> guessWord(IndexType guessIndex, const std::vector<IndexType> &wordIndexes, PatternType patternInt) {
         // is equal to +++++
         if (patternInt == NUM_PATTERNS-1) return {};
 

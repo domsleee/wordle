@@ -1,4 +1,5 @@
 // https://github.com/andrew-t/gaming-wordle/blob/main/easy.json
+// https://jonathanolson.net/experiments/optimal-wordle-solutions 
 #pragma once
 #include <map>
 #include <unordered_map>
@@ -59,5 +60,4 @@ struct SolutionModel {
         os << "}";
         return os;
     }
-
 };

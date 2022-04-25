@@ -12,12 +12,12 @@
 // the possible guesses that remain after guessing a word and receiving a pattern
 struct GuessesRemainingAfterGuessCache {
     static inline std::vector<WordSetGuesses> cache;
-    static void buildCache(const std::vector<std::string> &reverseIndexLookup) {
-        auto bar = SimpleProgress("GuessesRemainingAfterGuessCache#buildCache", reverseIndexLookup.size(), true);
+    static void buildCache() {
+        auto bar = SimpleProgress("GuessesRemainingAfterGuessCache#buildCache", GlobalState.reverseIndexLookup.size(), true);
 
-        cache.assign(reverseIndexLookup.size() * NUM_PATTERNS, {});
+        cache.assign(GlobalState.reverseIndexLookup.size() * NUM_PATTERNS, {});
         auto allPatternInts = getVector(NUM_PATTERNS, 0);
-        auto wordIndexes = getVector(reverseIndexLookup.size(), 0);
+        auto wordIndexes = getVector(GlobalState.reverseIndexLookup.size(), 0);
         auto dummy = wordIndexes;
     
         auto lambda = [&]<typename T>(const T& executionType) {
@@ -30,7 +30,7 @@ struct GuessesRemainingAfterGuessCache {
                     &bar,
                     &allPatternInts = std::as_const(allPatternInts),
                     &wordIndexes = std::as_const(wordIndexes),
-                    &reverseIndexLookup = std::as_const(reverseIndexLookup)
+                    &reverseIndexLookup = std::as_const(GlobalState.reverseIndexLookup)
                 ](const int guessIndex) -> int {
                     bar.incrementAndUpdateStatus();
 
