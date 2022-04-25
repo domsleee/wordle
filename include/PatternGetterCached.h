@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Util.h"
+#include "PatternGetter.h"
 
 struct PatternGetterCached {
     PatternGetterCached(IndexType answerIndex): answerIndex(answerIndex) {}

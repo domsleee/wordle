@@ -17,7 +17,7 @@ struct RunnerUtil {
         const auto &wordsToSolve = solver.allAnswers;
         const auto &guesses = solver.allGuesses;
         auto correct = 0;
-        for (auto r: answerIndexToResult) if (r > 0) correct++;
+        for (auto r: answerIndexToResult) if (r != TRIES_FAILED) correct++;
         double avg = (double)std::reduce(answerIndexToResult.begin(), answerIndexToResult.end()) / correct;
 
         int numIncorrect = wordsToSolve.size() - correct;

@@ -27,7 +27,6 @@
 using IndexType = uint16_t;
 using PatternType = uint8_t;
 using TriesRemainingType = uint8_t;
-using PatternInt = int;
 
 static const int MAX_NUM_GUESSES = 12992;
 static const int NUM_WORDS = 2368;
@@ -37,6 +36,7 @@ static const int MAX_LETTER_LIMIT_MAX = 10;
 const int WORD_LENGTH = 5;
 using MinLetterType = std::array<int8_t, 26>;
 
+static constexpr TriesRemainingType TRIES_FAILED = std::numeric_limits<TriesRemainingType>::max();
 static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::max();
 static constexpr IndexType MAX_INDEX_TYPE = std::numeric_limits<IndexType>::max();
 static constexpr uint32_t MAX_UINT32_T = std::numeric_limits<uint32_t>::max();
@@ -176,5 +176,10 @@ inline void checkWordSetSize(const std::string &desc, std::size_t arraySize) {
         DEBUG("WARNING: optimal for " << desc << " is " << optimalSize << ", currently: " << wordSetSize);
     }
 
+}
+
+template <typename T>
+inline void printIterable(const T &iterable) {
+    for (auto el: iterable) DEBUG(el);
 }
 

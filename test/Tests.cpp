@@ -87,6 +87,12 @@ TEST_CASE("PatternGetter 3") {
     REQUIRE_MESSAGE(pattern == "__++_", "pattern should be right");
 }
 
+TEST_CASE("PatternGetter 4") {
+    auto pattern = getPattern(toLower("THEED"), toLower("FILET"));
+    REQUIRE_MESSAGE(pattern == "?__+_", "pattern should be right");
+}
+
+
 TEST_CASE("UnorderedVector basic") {
     auto vec = UnorderedVector<int>(5);
     vec[0] = 0;
@@ -108,3 +114,4 @@ TEST_CASE("UnorderedVector basic") {
     REQUIRE(vec[3] == 3);
     REQUIRE(vec[4] == 4);
 }
+

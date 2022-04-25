@@ -30,6 +30,21 @@ struct SolutionModel {
         }
     }
 
+    static std::set<std::string> getAllGuessesFromNext(const SolutionModel& model) {
+        std::set<std::string> result = {};
+        getAllGuessesFromNextInner(result, model);
+        return result;
+    }
+
+    static void getAllGuessesFromNextInner(std::set<std::string> &result, const SolutionModel &model) {
+        if (model.next.size() == 0) {
+            result.insert(model.guess);
+        }
+        for (const auto &item: model.next) {
+            getAllGuessesFromNextInner(result, *item.second);
+        }
+    }
+
     std::shared_ptr<SolutionModel> getOrCreateNext(const std::string &patternStr) {
         if (next.contains(patternStr)) {
             return next[patternStr];

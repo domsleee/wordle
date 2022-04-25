@@ -1,8 +1,6 @@
 #pragma once
 #include "AttemptState.h"
-#include "AttemptStateFast.h"
 #include "AttemptStateFaster.h"
-#include "AttemptStateFastest.h"
 #include "AnswersAndGuessesResult.h"
 
 #include "PatternGetter.h"
@@ -58,7 +56,7 @@ struct AnswersAndGuessesSolver {
 
     bool skipRemoveGuessesWhichHaveBetterGuess = false;
     std::string startingWord = "";
-    std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getBestWordCache;
+    std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getBestWordCache = {};
     long long cacheMiss = 0, cacheHit = 0;
 
     void buildStaticState() {
@@ -129,7 +127,7 @@ struct AnswersAndGuessesSolver {
             }
             if (res.tries == maxTries) break;
 
-            makeGuess(p, state, guessIndex, reverseIndexLookup);
+            makeGuess(p, state, guessIndex);
 
             if constexpr (std::is_same<T, UnorderedVec>::value && isEasyMode) {
                 clearGuesses(p.guesses, p.answers);
@@ -147,7 +145,7 @@ struct AnswersAndGuessesSolver {
 
             guessIndex = pr.wordIndex;
         }
-        res.tries = -1;
+        res.tries = TRIES_FAILED;
         return res;
     }
 
@@ -162,7 +160,7 @@ struct AnswersAndGuessesSolver {
 
 
     template<typename T>
-    static void makeGuess(AnswerGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex, const std::vector<std::string> &reverseIndexLookup) {
+    void makeGuess(AnswerGuessesIndexesPair<T> &pair, const AttemptStateToUse &state, IndexType guessIndex) const {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             pair.answers = state.guessWord(guessIndex, pair.answers, reverseIndexLookup);
             if constexpr (!isEasyMode) pair.guesses = state.guessWord(guessIndex, pair.guesses, reverseIndexLookup);
@@ -224,6 +222,7 @@ private:
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining);
                 const auto expNumWrongForSubtree = pr.probWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
+                if (numWrongForThisGuess > res.probWrong) break;
                 if (expNumWrongForSubtree > maxIncorrect) {
                     numWrongForThisGuess = INF_INT-1;
                     break;
@@ -277,8 +276,10 @@ private:
                 const auto &actualWordIndex = p.answers[i];
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining);
                 totalNumGuessesForThisGuess += pr.probWrong;
+                if (totalNumGuessesForThisGuess > res.probWrong) break;
+                if (totalNumGuessesForThisGuess > GlobalArgs.maxTotalGuesses) break;
                 if (pr.probWrong == INF_INT) {
-                    totalNumGuessesForThisGuess = INF_INT;
+                    totalNumGuessesForThisGuess = INF_INT-1;
                     break;
                 }
             }
@@ -371,11 +372,6 @@ private:
         }
 
         return setCacheVal(key, res);
-    }
-
-    void precompute() {
-        GUESSESSOLVER_DEBUG("precompute AnswersAndGuessesSolver.");
-        getBestWordCache = {};
     }
 
     inline std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   

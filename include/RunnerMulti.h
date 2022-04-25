@@ -126,7 +126,7 @@ struct RunnerMulti {
         }
         
         RunnerUtil::printInfo(nothingSolver, v);
-        DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
+        //DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
         return 0;
     }
 
@@ -161,7 +161,7 @@ struct RunnerMulti {
 
         std::vector<RunnerMultiResult> transformResults(batchesOfAnswerIndexes.size());
         std::transform(
-            std::execution::seq,
+            std::execution::par_unseq,
             batchesOfAnswerIndexes.begin(),
             batchesOfAnswerIndexes.end(),
             transformResults.begin(),
@@ -190,8 +190,8 @@ struct RunnerMulti {
                     auto r = solver.solveWord(actualAnswer, result.solutionModel);
                     //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
                     completed++;
-                    incorrect += r.tries == -1;
-                    totalSum += r.tries != -1 ? r.tries : 0;
+                    incorrect += r.tries == TRIES_FAILED;
+                    totalSum += r.tries != TRIES_FAILED ? r.tries : 0;
                     std::string s = FROM_SS(
                             ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
                             << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect)
@@ -223,7 +223,11 @@ struct RunnerMulti {
         RunnerUtil::printInfo(nothingSolver, answerIndexToResult);
 
         JsonConverter::toFile(solutionModel, "./models/pretty.json");
-        Verifier::verifyModel(solutionModel, nothingSolver);
+        if (incorrect == 0) {
+            Verifier::verifyModel(solutionModel, nothingSolver);
+        } else {
+            DEBUG("skip verification... " << incorrect);
+        }
         return 0;
     }
 

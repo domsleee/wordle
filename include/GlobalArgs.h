@@ -6,8 +6,8 @@ struct _GlobalArgs {
     static inline std::string guesses, answers;
 
     // values
-    static inline int numToRestrict, maxTries, maxIncorrect;
-    static inline std::string firstWord, guessesToSkip, guessesToCheck;
+    static inline int numToRestrict, maxTries, maxIncorrect, maxTotalGuesses;
+    static inline std::string firstWord, verify, guessesToSkip, guessesToCheck;
 
     // flags
     static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage;

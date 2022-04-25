@@ -1,7 +1,6 @@
 #include "../include/Runner.h"
 
 #include "../include/Util.h"
-#include "../include/AttemptStateFast.h"
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
 #include "../include/RemoveGuessesBetterGuess.h"
@@ -21,26 +20,24 @@ int Runner::run() {
 
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(answers, guesses, GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
-        
-        if (false) {
-            auto model = JsonConverter::fromFile("./models/pretty.json");
-            auto results = Verifier::verifyModel(model, solver); return 0;
-            RunnerUtil::printInfo(solver, results);
-
-        }
-
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache(solver.reverseIndexLookup);
-        AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
+        //AttemptStateFast::buildForReverseIndexLookup(solver.reverseIndexLookup);
         GuessesRemainingAfterGuessCache::buildCache(solver.reverseIndexLookup);
-        AttemptStateFast::clearCache();
+        //AttemptStateFast::clearCache();
         solver.buildStaticState();
         //GuessesRemainingAfterGuessCacheSerialiser::copy();
         //GuessesRemainingAfterGuessCacheSerialiser::writeToFile("oh");
         //return 0;
         END_TIMER(precompute);
 
+        if (GlobalArgs.verify != "") {
+            auto model = JsonConverter::fromFile(GlobalArgs.verify);
+            auto results = Verifier::verifyModel(model, solver);
+            RunnerUtil::printInfo(solver, results);
+            return 0;
+        }
 
         if (GlobalArgs.firstWord != "") {
             solver.startingWord = GlobalArgs.firstWord;
@@ -66,7 +63,7 @@ int Runner::run() {
             auto r = solver.solveWord(word, std::make_shared<SolutionModel>()).tries;
             if (r != -1) correct++;
             else unsolved.push_back(word);
-            results[i] = r == -1 ? 0 : r;
+            results[i] = r == TRIES_FAILED ? 0 : r;
             //DEBUG("RES: " << r);
         }
         
@@ -76,7 +73,6 @@ int Runner::run() {
         if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
         else DEBUG("UNSOLVED WORDS: " << unsolved.size());
         //for (auto w: unsolved) DEBUG(w);
-        DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
 
         return 0;
     };

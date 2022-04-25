@@ -4,6 +4,9 @@
 #include <execution>
 #include "Defs.h"
 #include "WordSetUtil.h"
+#include "WordSetHelpers.h"
+#include "GlobalArgs.h"
+
 #include "SimpleProgress.h"
 
 // the possible guesses that remain after guessing a word and receiving a pattern
@@ -56,7 +59,7 @@ struct GuessesRemainingAfterGuessCache {
         }
     }
 
-    static inline int getIndex(IndexType guessIndex, PatternInt patternInt) {
+    static inline int getIndex(IndexType guessIndex, PatternType patternInt) {
         return NUM_PATTERNS * guessIndex + patternInt;
     }
 
@@ -66,7 +69,7 @@ struct GuessesRemainingAfterGuessCache {
         return getFromCache(guessIndex, patternInt);
     }
 
-    static WordSetGuesses& getFromCache(IndexType guessIndex, PatternInt patternInt) {
+    static WordSetGuesses& getFromCache(IndexType guessIndex, PatternType patternInt) {
         return cache[getIndex(guessIndex, patternInt)];
     }
 
@@ -75,8 +78,11 @@ struct GuessesRemainingAfterGuessCache {
         const std::vector<IndexType> &wordIndexes,
         const std::vector<std::string> &reverseIndexLookup,
         PatternType patternInt)
-    {
-        return AttemptStateFast::guessWordWordSet(guessIndex, wordIndexes, reverseIndexLookup, patternInt);
-        //AttemptState::guessWord()
+    {        
+        /*const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
+        const auto guessesVec = AttemptState::guessWord(guessIndex, patternStr, wordIndexes, reverseIndexLookup);
+        return WordSetHelpers::buildGuessesWordSet(guessesVec);*/
+        
+        return AttemptState::filterWordsMatchingGuessPattern(guessIndex, patternInt, wordIndexes);
     }
 };

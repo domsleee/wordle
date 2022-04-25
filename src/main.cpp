@@ -9,11 +9,13 @@ int main(int argc, char *argv[]) {
         ("guesses", "Guesses", cxxopts::value<std::string>())
         ("answers", "Answers", cxxopts::value<std::string>())
         ("w,first-word", "First Word", cxxopts::value<std::string>()->default_value(""))
+        ("v,verify", "Solution model to verify", cxxopts::value<std::string>()->default_value(""))
         ("s,guesses-to-skip", "Words to skip", cxxopts::value<std::string>()->default_value(""))
         ("guesses-to-check", "Guesses to check", cxxopts::value<std::string>()->default_value(""))
 
         ("m,max-tries", "Max Tries", cxxopts::value<int>()->default_value("6"))
         ("i,max-incorrect", "Max incorrect", cxxopts::value<int>()->default_value("0"))
+        ("max-total-guesses", "Max total guesses", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of guesses", cxxopts::value<int>()->default_value("50000"))
         ("p,parallel", "Use parallel processing")
         ("r,reduce-guesses", "Reduce the number of guesses")
@@ -37,7 +39,9 @@ int main(int argc, char *argv[]) {
     GlobalArgs.numToRestrict = result["num-to-restrict"].as<int>();
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxIncorrect = result["max-incorrect"].as<int>();
+    GlobalArgs.maxTotalGuesses = result["max-total-guesses"].as<int>();
     GlobalArgs.firstWord = result["first-word"].as<std::string>();
+    GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
     GlobalArgs.guessesToCheck = result["guesses-to-check"].as<std::string>();
 
