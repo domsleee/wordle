@@ -1,11 +1,30 @@
 #pragma once
 #include "GuessesRemainingAfterGuessCache.h"
-
+#include "AnswersAndGuessesKey.h"
+#include "AnswersAndGuessesSolver.h"
 #define BETTER_GUESS_OPT_DEBUG(x)
 
-
 struct RemoveGuessesBetterGuess {
-    static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool force = false) {
+    static inline thread_local std::unordered_map<AnswersAndGuessesKey<false>, std::pair<UnorderedVec, std::size_t>> cache = {};
+
+    static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool useCache = false) {
+        if (useCache) {
+            auto key = AnswersAndGuessesKey<false>(p.answers, p.guesses, 0);
+
+            if (cache.contains(key)) {
+                const auto &val = cache[key];
+                p.guesses = val.first;
+                return val.second;
+            }
+            auto res = removeGuessesWhichHaveBetterGuessInner(p);
+            cache[key] = {p.guesses, res};
+            return res;
+        }
+        return removeGuessesWhichHaveBetterGuessInner(p);
+    }
+
+
+    static std::size_t removeGuessesWhichHaveBetterGuessInner(AnswerGuessesIndexesPair<UnorderedVec> &p) {
         //return 0;
         const auto answersSize = p.answers.size();
         const auto &pAnswersWs = WordSetHelpers::buildAnswersWordSet(p.answers);

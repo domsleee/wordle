@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) {
         ("guesses-to-check", "Filename of guesses to check", cxxopts::value<std::string>()->default_value(""))
 
         // ints
-        ("t,max-tries", "Max tries for least wrong strategy", cxxopts::value<int>()->default_value("6"))
-        ("I,max-incorrect", "Max incorrect for lowest average strategy", cxxopts::value<int>()->default_value("0"))
-        ("G,max-total-guesses", "Max total guesses", cxxopts::value<int>()->default_value("500000"))
+        ("t,max-tries", "Max tries", cxxopts::value<int>()->default_value("6"))
+        ("I,max-incorrect", "Max incorrect for least wrong strategy", cxxopts::value<int>()->default_value("0"))
+        ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
 
         ("h,help", "Print usage")
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxIncorrect = result["max-incorrect"].as<int>();
     GlobalArgs.maxTotalGuesses = result["max-total-guesses"].as<int>();
-    GlobalArgs.firstWord = result["first-word"].as<std::string>();
+    GlobalArgs.firstWord = result["first-guess"].as<std::string>();
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
     GlobalArgs.guessesToCheck = result["guesses-to-check"].as<std::string>();

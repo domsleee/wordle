@@ -4,10 +4,12 @@
 
 template<class T>
 struct UnorderedVector {
-    std::size_t _size, maxSize;
-    std::vector<T> vec;
+    std::size_t _size = 0, maxSize = 0;
+    std::vector<T> vec = {};
     //std::stack<T> deletedStack;
-    std::size_t deletedStackIndex;
+    std::size_t deletedStackIndex = 0;
+
+    UnorderedVector() {}
 
     UnorderedVector(std::size_t size)
       : _size(size),
