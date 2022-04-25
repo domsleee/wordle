@@ -27,11 +27,11 @@ Usage:
   -v, --verify arg             Solution model to verify (default: "")
       --guesses-to-skip arg    Filename of words to skip (default: "")
       --guesses-to-check arg   Filename of guesses to check (default: "")
-  -t, --max-tries arg          Max tries for least wrong strategy (default: 
-                               6)
-  -I, --max-incorrect arg      Max incorrect for lowest average strategy 
+  -t, --max-tries arg          Max tries (default: 6)
+  -I, --max-incorrect arg      Max incorrect for least wrong strategy 
                                (default: 0)
-  -G, --max-total-guesses arg  Max total guesses (default: 500000)
+  -G, --max-total-guesses arg  Max total guesses for lowest average 
+                               strategy (default: 500000)
       --num-to-restrict arg    Reduce the number of first guesses (default: 
                                50000)
   -h, --help                   Print usage
