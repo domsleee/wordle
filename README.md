@@ -17,7 +17,7 @@ Find the strategy with the smallest expected number of guesses, with first word 
 ```
 ./bin/solve -p --lowest-average -w salet --max-total-guesses 7950 ext/wordle-guesses.txt ext/wordle-answers.txt
 ```
-Note: `--max-total-guesses` here is based on the correct solution on 7920. It reduces the search space by filtering out trees that have a total greater than the value (7920).
+Note: `--max-total-guesses` here is based on the correct solution on 7920. It reduces the search space by filtering out trees that have a total greater than the value of the arg.
 
 
 
