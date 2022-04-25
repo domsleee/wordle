@@ -54,7 +54,7 @@ struct AnswersAndGuessesSolver {
         if (startingWord == "") {
             DEBUG("guessing first word with " << (int)maxTries << " tries...");
             auto firstPr = getGuessFunctionDecider(p, maxTries);
-            DEBUG("first word: " << GlobalState.reverseIndexLookup[firstPr.wordIndex] << ", known probWrong: " << firstPr.probWrong);
+            DEBUG("first word: " << GlobalState.reverseIndexLookup[firstPr.wordIndex] << ", known numWrong: " << firstPr.numWrong);
             firstWordIndex = firstPr.wordIndex;
         } else {
             firstWordIndex = GlobalState.getIndexForWord(startingWord);
@@ -94,7 +94,7 @@ struct AnswersAndGuessesSolver {
 
             auto pr = getGuessFunctionDecider(p, maxTries-res.tries);
             if (res.tries == 1) res.firstGuessResult = pr;
-            GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] << ", probWrong: " << pr.probWrong);
+            GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] << ", numWrong: " << pr.numWrong);
 
             const auto patternInt = getter.getPatternIntCached(guessIndex);
             const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
@@ -170,9 +170,9 @@ private:
             for (std::size_t i = 0; i < p.answers.size(); ++i) {
                 const auto &actualWordIndex = p.answers[i];
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining);
-                const auto expNumWrongForSubtree = pr.probWrong;
+                const auto expNumWrongForSubtree = pr.numWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
-                if (numWrongForThisGuess > res.probWrong) break;
+                if (numWrongForThisGuess > res.numWrong) break;
                 if (expNumWrongForSubtree > maxIncorrect) {
                     numWrongForThisGuess = INF_INT-1;
                     break;
@@ -180,9 +180,9 @@ private:
             }
 
             BestWordResult newRes = {numWrongForThisGuess, possibleGuess};
-            if (newRes.probWrong < res.probWrong || (newRes.probWrong == res.probWrong && newRes.wordIndex < res.wordIndex)) {
+            if (newRes.numWrong < res.numWrong || (newRes.numWrong == res.numWrong && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
-                if (res.probWrong == 0) {
+                if (res.numWrong == 0) {
                     p.guesses.restoreValues(guessesRemovedByClearGuesses);
                     return setCacheVal(key, res);
                 }
@@ -227,17 +227,17 @@ private:
             for (std::size_t i = 0; i < p.answers.size(); ++i) {
                 const auto &actualWordIndex = p.answers[i];
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining);
-                totalNumGuessesForThisGuess += pr.probWrong;
-                if (totalNumGuessesForThisGuess > res.probWrong) break;
+                totalNumGuessesForThisGuess += pr.numWrong;
+                if (totalNumGuessesForThisGuess > res.numWrong) break;
                 if (totalNumGuessesForThisGuess > GlobalArgs.maxTotalGuesses) break;
-                if (pr.probWrong == INF_INT) {
+                if (pr.numWrong == INF_INT) {
                     totalNumGuessesForThisGuess = INF_INT-1;
                     break;
                 }
             }
 
             BestWordResult newRes = {totalNumGuessesForThisGuess, possibleGuess};
-            if (newRes.probWrong < res.probWrong || (newRes.probWrong == res.probWrong && newRes.wordIndex < res.wordIndex)) {
+            if (newRes.numWrong < res.numWrong || (newRes.numWrong == res.numWrong && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
             }
         }

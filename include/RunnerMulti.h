@@ -188,7 +188,7 @@ struct RunnerMulti {
                     //DEBUG("CHECKING ANSWER: " << actualAnswer << " first in batch: " << GlobalState.allAnswers[answerIndexBatch[0]]);
                     
                     auto r = solver.solveWord(actualAnswer, result.solutionModel);
-                    //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", probWrong: " << r.firstGuessResult.probWrong);
+                    //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", numWrong: " << r.firstGuessResult.numWrong);
                     completed++;
                     incorrect += r.tries == TRIES_FAILED;
                     totalSum += r.tries != TRIES_FAILED ? r.tries : 0;
