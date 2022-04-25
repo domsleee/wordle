@@ -2,7 +2,7 @@
 #include "../third_party/json.hpp"
 #include "../include/PatternIntHelpers.h"
 SolutionModel parseModel(const nlohmann::json &j);
-nlohmann::json toJson(const SolutionModel &solutionModel);
+nlohmann::json toJson(const SolutionModel &solutionModel, bool compress = false);
 
 SolutionModel JsonConverter::fromFile(const std::string &file) {
     std::ifstream i(file);
@@ -34,15 +34,18 @@ void JsonConverter::toFile(const SolutionModel &solutionModel, const std::string
     auto j = toJson(solutionModel);
     std::ofstream o(file);
     o << std::setw(2) << j << std::endl;
+    auto jCompressed = toJson(solutionModel, true);
+    std::ofstream oCompressed(file + ".compressed");
+    oCompressed << std::setw(2) << jCompressed << std::endl;
 }
 
-nlohmann::json toJson(const SolutionModel &solutionModel) {
+nlohmann::json toJson(const SolutionModel &solutionModel, bool compress) {
+    if (compress && solutionModel.getAllGuessesFromNext(solutionModel).size() == 1) return solutionModel.guess;
     nlohmann::json j;
     j["guess"] = solutionModel.guess;
     j["next"] = nlohmann::json({});
     for (const auto &item: solutionModel.next) {
-        if (item.first == "++++++") j["next"][item.first] = item.second->guess;
-        else j["next"][item.first] = toJson(*item.second);
+        j["next"][item.first] = toJson(*item.second, compress);
     }
     return j;
 }

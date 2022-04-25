@@ -67,13 +67,6 @@ struct AnswersAndGuessesKey {
 
         return l.state.triesRemaining < r.state.triesRemaining;
     }
-
-    // is this an easier problem
-    /*bool isEasierThanProblem(const AnswersAndGuessesKey &harderProblem) const {
-        return (wsAnswers & harderProblem.wsAnswers) == wsAnswers
-         && (wsGuesses & harderProblem.wsGuesses) == wsGuesses
-         && (triesRemaining >= harderProblem.triesRemaining);
-    }*/
 };
 
 
@@ -89,4 +82,3 @@ struct std::hash<AnswersAndGuessesKey<isEasyMode>> {
         return res;
     }
 };
-

@@ -37,7 +37,7 @@ struct AnswersAndGuessesSolver {
     const IndexType maxIncorrect;
     bool skipRemoveGuessesWhichHaveBetterGuess = false;
     std::string startingWord = "";
-    std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getBestWordCache = {};
+    std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getGuessCache = {};
     long long cacheMiss = 0, cacheHit = 0;
 
     static const int isEasyModeVar = isEasyMode;
@@ -53,7 +53,7 @@ struct AnswersAndGuessesSolver {
         auto p = AnswerGuessesIndexesPair<TypeToUse>(GlobalState.allAnswers.size(), GlobalState.allGuesses.size());
         if (startingWord == "") {
             DEBUG("guessing first word with " << (int)maxTries << " tries...");
-            auto firstPr = getBestWordDecider(p, maxTries);
+            auto firstPr = getGuessFunctionDecider(p, maxTries);
             DEBUG("first word: " << GlobalState.reverseIndexLookup[firstPr.wordIndex] << ", known probWrong: " << firstPr.probWrong);
             firstWordIndex = firstPr.wordIndex;
         } else {
@@ -92,13 +92,12 @@ struct AnswersAndGuessesSolver {
                 RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p, true);
             }
 
-            auto pr = getBestWordDecider(p, maxTries-res.tries);
+            auto pr = getGuessFunctionDecider(p, maxTries-res.tries);
             if (res.tries == 1) res.firstGuessResult = pr;
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] << ", probWrong: " << pr.probWrong);
 
             const auto patternInt = getter.getPatternIntCached(guessIndex);
             const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
-            
             currentModel = currentModel->getOrCreateNext(patternStr);
 
             guessIndex = pr.wordIndex;
@@ -123,20 +122,20 @@ struct AnswersAndGuessesSolver {
 
 private:
     template <typename T>
-    inline BestWordResult getBestWordDecider(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
+    inline BestWordResult getGuessFunctionDecider(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             return getDefaultBestWordResult();
         } else {
             if constexpr (isGetLowestAverage) {
-                return getWordForLowestAverage(p, triesRemaining);
+                return getGuessForLowestAverage(p, triesRemaining);
             } else {
-                return getWordForLeastWrong(p, triesRemaining);
+                return getGuessForLeastWrong(p, triesRemaining);
             }
         }
     }
 
     template <typename T>
-    BestWordResult getWordForLeastWrong(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
+    BestWordResult getGuessForLeastWrong(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
         assertm(triesRemaining != 0, "no tries remaining");
         if (p.answers.size() == 0) return {0, 0};
         if (triesRemaining >= p.answers.size()) return {0, *std::min_element(p.answers.begin(), p.answers.end())};
@@ -194,7 +193,7 @@ private:
         return setCacheVal(key, res);
     }
 
-    BestWordResult getWordForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const TriesRemainingType triesRemaining) {
+    BestWordResult getGuessForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const TriesRemainingType triesRemaining) {
         assertm(triesRemaining != 0, "no tries remaining");
 
         if (p.answers.size() == 0) return {0, 0};
@@ -259,10 +258,10 @@ private:
         auto numAnswersRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, p.answers);
         BestWordResult pr;
         if constexpr (isEasyMode) {
-            pr = getBestWordDecider(p, triesRemaining-1);
+            pr = getGuessFunctionDecider(p, triesRemaining-1);
         } else {
             auto numGuessesRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, p.guesses);
-            pr = getBestWordDecider(p, triesRemaining-1);
+            pr = getGuessFunctionDecider(p, triesRemaining-1);
             p.guesses.restoreValues(numGuessesRemoved);
         }
         p.answers.restoreValues(numAnswersRemoved);
@@ -270,8 +269,8 @@ private:
     }
 
     const BestWordResult getFromCache(const AnswersAndGuessesKey<isEasyMode> &key) {
-        auto it = getBestWordCache.find(key);
-        if (it == getBestWordCache.end()) {
+        auto it = getGuessCache.find(key);
+        if (it == getGuessCache.end()) {
             cacheMiss++;
             return getDefaultBestWordResult();
         }
@@ -281,7 +280,7 @@ private:
     }
 
     inline BestWordResult setCacheVal(const AnswersAndGuessesKey<isEasyMode> &key, BestWordResult res) {
-        return getBestWordCache[key] = res;
+        return getGuessCache[key] = res;
     }
 
     template<typename T>
