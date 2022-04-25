@@ -27,11 +27,11 @@ Usage:
   -v, --verify arg             Solution model to verify (default: "")
       --guesses-to-skip arg    Filename of words to skip (default: "")
       --guesses-to-check arg   Filename of guesses to check (default: "")
-  -T, --max-tries arg          Max tries for least wrong strategy (default: 
+  -t, --max-tries arg          Max tries for least wrong strategy (default: 
                                6)
   -I, --max-incorrect arg      Max incorrect for lowest average strategy 
                                (default: 0)
-      --max-total-guesses arg  Max total guesses (default: 500000)
+  -G, --max-total-guesses arg  Max total guesses (default: 500000)
       --num-to-restrict arg    Reduce the number of first guesses (default: 
                                50000)
   -h, --help                   Print usage
@@ -46,7 +46,7 @@ Find _any_ strategy that solves all words (with a maximum of 0 incorrect), with 
 
 Find the strategy with the smallest expected number of guesses, with first word salet (note: slow):
 ```
-./bin/solve -pl -w salet -T7950 ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -pl -w salet -G7950 ext/wordle-guesses.txt ext/wordle-answers.txt
 ```
 Note: `--max-total-guesses` here is based on the correct solution on 7920. It reduces the search space by filtering out trees that have a total greater than the value of the arg.
 
