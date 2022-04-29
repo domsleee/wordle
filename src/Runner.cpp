@@ -21,7 +21,7 @@ int Runner::run() {
     GlobalState = _GlobalState(guesses, answers);
 
     auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
-        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries, GlobalArgs.maxIncorrect);
+        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries);
 
         START_TIMER(precompute);
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();

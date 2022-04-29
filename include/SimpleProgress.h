@@ -13,7 +13,9 @@ struct SimpleProgress {
     SimpleProgress(const std::string &prefix, int64_t total, bool isPrecompute=false)
     : prefix(prefix),
       total(total),
-      bar(getBar(isPrecompute)) {}
+      bar(getBar(isPrecompute)) {
+          updateStatus(", loading...");
+      }
 
     void incrementAndUpdateStatus(const std::string &suffix = "") {
         const std::lock_guard<std::mutex> lock(mutex);

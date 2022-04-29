@@ -21,12 +21,12 @@ struct RunnerUtil {
         double avg = (double)std::reduce(answerIndexToResult.begin(), answerIndexToResult.end()) / correct;
 
         int numIncorrect = wordsToSolve.size() - correct;
-        std::string valid = getBoolVal(numIncorrect <= solver.maxIncorrect);
+        std::string valid = getBoolVal(numIncorrect <= GlobalArgs.maxIncorrect);
 
         DEBUG("=============");
         DEBUG("maxTries    : " << (int)solver.maxTries);
-        DEBUG("maxIncorrect: " << (int)solver.maxIncorrect);
-        DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << solver.maxIncorrect << ")");
+        DEBUG("maxIncorrect: " << (int)GlobalArgs.maxIncorrect);
+        DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxIncorrect << ")");
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
         DEBUG("isLowAverage: " << getBoolVal(GlobalArgs.isGetLowestAverage));
         DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));

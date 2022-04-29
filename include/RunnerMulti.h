@@ -51,6 +51,8 @@ struct RunnerMulti {
         auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 8);
         DEBUG("#batches: " << batchesOfFirstWords.size());
 
+        auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
+
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(
             std::execution::par_unseq,
@@ -58,6 +60,7 @@ struct RunnerMulti {
             batchesOfFirstWords.end(),
             transformResults.begin(),
             [
+                &bar,
                 &completed,
                 &solved,
                 &bestIncorrect,
@@ -78,20 +81,20 @@ struct RunnerMulti {
                     //if (solved.load() > 0) return {};
                     auto firstWordIndex = firstWordBatch[i];
                     const auto &firstWord = guesses[firstWordIndex];
-                    DEBUG("CHECKING FIRST WORD: " << firstWord << " first in batch: " << guesses[firstWordBatch[0]]);
+                   // DEBUG("CHECKING FIRST WORD: " << firstWord << " first in batch: " << guesses[firstWordBatch[0]]);
                     solver.startingWord = firstWord;
 
                     //DEBUG("solver cache size " << solver.getBestWordCache.size());
 
                     int incorrect = 0;
                     for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
-                        if (incorrect > solver.maxIncorrect) {
+                        if (incorrect > GlobalArgs.maxIncorrect) {
                             continue;
                         }
                         //if (solved.load() > 0) return {};
                         auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, p);
-                        incorrect += solverRes.tries == -1;
+                        incorrect += solverRes.tries == TRIES_FAILED;
                     }
                     auto currBestIncorrect = bestIncorrect.load();
                     if (incorrect < currBestIncorrect) {
@@ -99,7 +102,15 @@ struct RunnerMulti {
                         bestIncorrect = incorrect;
                     }
                     completed++;
-                    DEBUG(firstWord << ", completed: " << getPerc(completed.load(), guessIndexesToCheck.size()) << " (" << incorrect << "), best incorrect: " << currBestIncorrect);
+
+                    auto s = FROM_SS(
+                        ", " << firstWord << ", " << getFrac(completed.load(), guessIndexesToCheck.size())
+                        << " (" << incorrect << "), best incorrect: " << currBestIncorrect);
+                    if (i == firstWordBatch.size() - 1) {
+                        bar.incrementAndUpdateStatus(s);
+                    } else {
+                        bar.updateStatus(s);
+                    }
                     results[i] = {answers.size() - incorrect, firstWordIndex};
                     if (incorrect == 0) {
                         solved++;

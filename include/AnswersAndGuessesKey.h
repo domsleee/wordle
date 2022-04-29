@@ -10,7 +10,11 @@ struct StateWithGuesses {
     const TriesRemainingType triesRemaining;
     StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
         : wsAnswers(wsAnswers), wsGuesses(wsGuesses), triesRemaining(triesRemaining) {}
-    friend bool operator==(const StateWithGuesses &a, const StateWithGuesses &b) = default;
+    friend bool operator==(const StateWithGuesses &a, const StateWithGuesses &b) {
+        return a.triesRemaining == b.triesRemaining
+            && a.wsAnswers == b.wsAnswers
+            && a.wsGuesses == b.wsGuesses;
+    }
 };
 
 struct StateNoGuesses {
@@ -18,7 +22,10 @@ struct StateNoGuesses {
     const TriesRemainingType triesRemaining;
     StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
         : wsAnswers(wsAnswers), triesRemaining(triesRemaining) {}
-    friend bool operator==(const StateNoGuesses &a, const StateNoGuesses &b) = default;
+    friend bool operator==(const StateNoGuesses &a, const StateNoGuesses &b) {
+        return a.triesRemaining == b.triesRemaining
+            && a.wsAnswers == b.wsAnswers;
+    }
 };
 
 template<bool isEasyMode>
@@ -54,19 +61,6 @@ struct AnswersAndGuessesKey {
     const State state;
 
     friend bool operator==(const AnswersAndGuessesKey<isEasyMode> &a, const AnswersAndGuessesKey<isEasyMode> &b) = default;
-    friend bool operator<(const AnswersAndGuessesKey<isEasyMode> &l, const AnswersAndGuessesKey<isEasyMode> &r)
-    {
-        if (l.state.wsAnswers.count() != r.state.wsAnswers.count()) {
-            return l.state.wsAnswers.count() < r.state.wsAnswers.count();
-        }
-        if constexpr (!isEasyMode) {
-            if (l.state.wsGuesses.count() != r.state.wsGuesses.count()) {
-                return r.state.wsGuesses.count() < r.state.wsGuesses.count();
-            }
-        }
-
-        return l.state.triesRemaining < r.state.triesRemaining;
-    }
 };
 
 

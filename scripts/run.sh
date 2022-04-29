@@ -14,7 +14,10 @@ make -j;
 #./bin/solve -r --max-tries 3 --max-incorrect 150 -w slate --force-sequential ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -r --max-tries 4 --max-incorrect 33 -w caste --guesses-to-check databases/awake ext/wordle-guesses.txt ext/wordle-answers.txt
 # 33 --> 31s
-./bin/solve -p -I0 -w caste ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -p -I3147 -t4 -n100 -w rance ext/wordle-combined.txt ext/wordle-combined.txt
+#./bin/solve -p -I18 -t4 -w rance ext/wordle-guesses.txt ext/wordle-answers.txt
+#./bin/solve -p -I0 -w caste ext/wordle-guesses.txt ext/wordle-answers.txt
+
 #./bin/solve -pr --lowest-average -w scowl ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --hard-mode -w scowl ext/wordle-guesses.txt ext/wordle-answers.txt
 

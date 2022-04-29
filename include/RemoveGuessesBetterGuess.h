@@ -8,6 +8,7 @@ struct RemoveGuessesBetterGuess {
     static inline thread_local std::unordered_map<AnswersAndGuessesKey<false>, std::pair<UnorderedVec, std::size_t>> cache = {};
 
     static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool useCache = false) {
+        return 0;
         if (useCache) {
             auto key = AnswersAndGuessesKey<false>(p.answers, p.guesses, 0);
 

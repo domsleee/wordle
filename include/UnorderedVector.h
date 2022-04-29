@@ -6,8 +6,12 @@ template<class T>
 struct UnorderedVector {
     std::size_t _size = 0, maxSize = 0;
     std::vector<T> vec = {};
-    //std::stack<T> deletedStack;
     std::size_t deletedStackIndex = 0;
+
+    // for sorting
+    std::vector<std::size_t> sortVec;
+    std::vector<std::vector<T>> sortedStackVec;
+    int sortedStackIndex = 0;
 
     UnorderedVector() {}
 
@@ -15,7 +19,9 @@ struct UnorderedVector {
       : _size(size),
         maxSize(size),
         vec(std::vector<T>(size*2)),
-        deletedStackIndex(size) {}
+        deletedStackIndex(size),
+        sortVec(size),
+        sortedStackVec(10, std::vector<T>(size)) {}
     
     std::size_t size() const { return _size; }
 
@@ -67,5 +73,26 @@ struct UnorderedVector {
 
     auto cend() const {
         return vec.cbegin() + _size;
+    }
+
+    void registerSortVec(T ind, std::size_t val) {
+        sortVec[ind] = val;
+    }
+
+    void sortBySortVec() {
+        for (std::size_t i = 0; i < _size; ++i) {
+            sortedStackVec[sortedStackIndex][i] = vec[i];
+        }
+        std::sort(vec.begin(), vec.begin() + _size, [&](const T a, const T b) {
+            return sortVec[a] < sortVec[b];
+        });
+        sortedStackIndex++;
+    }
+
+    void restoreSort() {
+        --sortedStackIndex;
+        for (std::size_t i = 0; i < _size; ++i) {
+            vec[i] = sortedStackVec[sortedStackIndex][i];
+        }
     }
 };
