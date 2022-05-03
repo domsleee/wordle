@@ -18,7 +18,8 @@ struct RunnerUtil {
         const auto &guesses = GlobalState.allGuesses;
         auto correct = 0;
         for (auto r: answerIndexToResult) if (r != TRIES_FAILED) correct++;
-        double avg = (double)std::reduce(answerIndexToResult.begin(), answerIndexToResult.end()) / correct;
+        const auto totalSum = std::reduce(answerIndexToResult.begin(), answerIndexToResult.end());
+        double avg = (double)totalSum / correct;
 
         int numIncorrect = wordsToSolve.size() - correct;
         std::string valid = getBoolVal(numIncorrect <= GlobalArgs.maxIncorrect);
@@ -27,11 +28,13 @@ struct RunnerUtil {
         DEBUG("maxTries    : " << (int)solver.maxTries);
         DEBUG("maxIncorrect: " << (int)GlobalArgs.maxIncorrect);
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxIncorrect << ")");
+        DEBUG("totalSum:   : " << totalSum);
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
         DEBUG("isLowAverage: " << getBoolVal(GlobalArgs.isGetLowestAverage));
         DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));
         DEBUG("guess words : " << guesses.size());
         DEBUG("firstWord   : " << GlobalArgs.firstWord);
+        //DEBUG("heuristcC   : " << getPerc(solver.heuristicCacheHit, solver.heuristicTotal));
         DEBUG("average     : " << avg);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);

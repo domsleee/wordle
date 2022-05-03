@@ -205,7 +205,7 @@ struct RunnerMulti {
                     totalSum += r.tries != TRIES_FAILED ? r.tries : 0;
                     std::string s = FROM_SS(
                             ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
-                            << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect)
+                            << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect.load())
                             << ", incorrect: " << incorrect.load() << ")");
                     
                     if (i == answerIndexBatch.size() - 1) {
@@ -233,7 +233,7 @@ struct RunnerMulti {
         }
         RunnerUtil::printInfo(nothingSolver, answerIndexToResult);
 
-        JsonConverter::toFile(solutionModel, "./models/pretty.json");
+        JsonConverter::toFile(solutionModel, "./models/model.json");
         if (incorrect == 0) {
             Verifier::verifyModel(solutionModel, nothingSolver);
         } else {

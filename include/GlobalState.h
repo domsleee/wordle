@@ -49,6 +49,7 @@ struct _GlobalState {
             std::find(reverseIndexLookup.begin(), reverseIndexLookup.end(), word)
         );
         if (firstWordIndex == reverseIndexLookup.size()) {
+            DEBUG("word size: " << word.size());
             DEBUG("guess not in word list: " << word);
             exit(1);
         }

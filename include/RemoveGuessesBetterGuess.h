@@ -8,7 +8,6 @@ struct RemoveGuessesBetterGuess {
     static inline thread_local std::unordered_map<AnswersAndGuessesKey<false>, std::pair<UnorderedVec, std::size_t>> cache = {};
 
     static std::size_t removeGuessesWhichHaveBetterGuess(AnswerGuessesIndexesPair<UnorderedVec> &p, bool useCache = false) {
-        return 0;
         if (useCache) {
             auto key = AnswersAndGuessesKey<false>(p.answers, p.guesses, 0);
 
@@ -82,9 +81,12 @@ struct RemoveGuessesBetterGuess {
             for (std::size_t j = 0; j < answersSize; ++j) {
                 auto compressedBitset = MyBitset();
                 auto answerIndex = p.answers[j];
-                const auto& wsAnswersForGuess = GuessesRemainingAfterGuessCache::getFromCacheWithAnswerIndex(guessIndex, answerIndex);
+                const auto patternIntForPair = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
                 for (std::size_t k = 0; k < answersSize; ++k) {
-                    if (wsAnswersForGuess[p.answers[k]]) compressedBitset.set(k);
+                    //if (wsAnswersForGuess[p.answers[k]])
+                    if (patternIntForPair == PatternGetterCached::getPatternIntCached(p.answers[k], guessIndex)) {
+                             compressedBitset.set(k);;
+                        }
                 }
 
                 auto myPair = wsAnswerMap.try_emplace(compressedBitset, wsAnswerMap.size());

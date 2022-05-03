@@ -54,13 +54,11 @@ struct AttemptStateFaster {
             return removed;
         }
 
-        const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
+        //const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
         std::size_t removed = 0;
         for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
             auto wordIndex = wordIndexes[i];
-            if (!ws[wordIndex] || wordIndex == guessIndex) {
-                //DEBUG("INSPECTING " << i << ", wordIndex: " << wordIndex << ", size: " << wordIndexes.size());
-
+            if (PatternGetterCached::getPatternIntCached(wordIndex, guessIndex) != patternInt) {
                 wordIndexes.deleteIndex(i);
                 removed++;
             }
@@ -77,14 +75,13 @@ struct AttemptStateFaster {
         }
 
         auto numAnswersRemaining = wordIndexes.size();
-
-        const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
         for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
             auto wordIndex = wordIndexes[i];
-            if (!ws[wordIndex] || wordIndex == guessIndex) {
+            if (PatternGetterCached::getPatternIntCached(wordIndex, guessIndex) != patternInt) {
                 --numAnswersRemaining;
             }
         }
+
         return numAnswersRemaining;
     }
 };

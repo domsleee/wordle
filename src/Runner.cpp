@@ -26,7 +26,7 @@ int Runner::run() {
         START_TIMER(precompute);
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         PatternGetterCached::buildCache();
-        GuessesRemainingAfterGuessCacheSerialiser::initialiseFromCache();
+        //GuessesRemainingAfterGuessCacheSerialiser::initialiseFromCache();
 
         //return 0;
         END_TIMER(precompute);

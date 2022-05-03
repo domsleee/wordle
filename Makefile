@@ -5,13 +5,13 @@ ifdef ENV_DEBUG
 else
 	CONDITIONAL_CXX = -O3 -DNDEBUG -g -ffast-math #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
 ifneq ($(UNAME), Darwin)
-	CONDITIONAL_CXX += #-fsanitize=address
+	CONDITIONAL_CXX += -fsanitize=address
 endif
 endif
 
 
 CXX = g++-11
-CXXFLAGS = -fmax-errors=1 -std=c++20 -Wall -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
+CXXFLAGS = -std=c++20 -Wall -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
 CXXFLAGSTEST = -std=c++20 -Wall -g
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
@@ -50,3 +50,5 @@ $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 
 clean:
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*
+
+all: $(BIN_DIR)/solve

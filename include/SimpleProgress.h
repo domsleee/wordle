@@ -36,7 +36,7 @@ struct SimpleProgress {
 private:
     static indicators::ProgressBar getBar(bool isPrecompute) {
         return indicators::ProgressBar{
-            indicators::option::BarWidth{20},
+            indicators::option::BarWidth{10},
             indicators::option::Start{"["},
             indicators::option::Fill{"■"},
             indicators::option::Lead{"■"},

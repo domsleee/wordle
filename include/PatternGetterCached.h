@@ -12,6 +12,10 @@ struct PatternGetterCached {
         return cache[getIndex(answerIndex, wordIndex)];
     }
 
+    static int getPatternIntCached(IndexType _answerIndex, IndexType wordIndex) {
+        return cache[getIndex(_answerIndex, wordIndex)];
+    }
+
     static inline std::vector<PatternType> cache;
     static inline std::size_t reverseIndexLookupSize;
     static void buildCache() {
