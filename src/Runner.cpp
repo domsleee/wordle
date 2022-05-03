@@ -4,7 +4,6 @@
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
 #include "../include/RemoveGuessesBetterGuess.h"
-#include "../include/GuessesRemainingAfterGuessCacheSerialiser.h"
 #include "../include/Verifier.h"
 
 
@@ -26,7 +25,6 @@ int Runner::run() {
         START_TIMER(precompute);
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         PatternGetterCached::buildCache();
-        //GuessesRemainingAfterGuessCacheSerialiser::initialiseFromCache();
 
         //return 0;
         END_TIMER(precompute);

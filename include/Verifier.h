@@ -25,9 +25,6 @@ struct Verifier {
 
                 if (guessIndex == answerIndex) {
                     results[answerIndex] = i;
-                    if (i > 4) {
-                        //DEBUG(answer);
-                    }
                     break;
                 }
                 checkMatches(localModel, p);

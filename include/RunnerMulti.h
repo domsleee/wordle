@@ -9,6 +9,7 @@
 #include "GlobalArgs.h"
 #include "JsonConverter.h"
 #include "Verifier.h"
+#include "SimpleProgress.h"
 
 const int RESULT_INCORRECT = -1;
 const int RESULT_SKIPPED = -2;

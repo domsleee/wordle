@@ -1,5 +1,4 @@
 #pragma once
-#include "GuessesRemainingAfterGuessCache.h"
 #include "AnswersAndGuessesKey.h"
 #include "AnswersAndGuessesSolver.h"
 #define BETTER_GUESS_OPT_DEBUG(x)

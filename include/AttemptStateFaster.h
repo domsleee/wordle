@@ -10,7 +10,6 @@
 #include "Util.h"
 #include "Defs.h"
 #include "GlobalArgs.h"
-#include "GuessesRemainingAfterGuessCache.h"
 
 #define ATTEMPTSTATEFASTER_DEBUG(x) DEBUG(x)
 
@@ -30,10 +29,11 @@ struct AttemptStateFaster {
         if (patternInt == NUM_PATTERNS-1) return {};
 
         std::vector<IndexType> res(wordIndexes.size());
-        const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
         int i = 0;
         for (auto wordIndex: wordIndexes) {
-            if (ws[wordIndex] && wordIndex != guessIndex) res[i++] = wordIndex;
+            if (PatternGetterCached::getPatternIntCached(wordIndex, guessIndex) != patternInt) {
+                res[i++] = wordIndex;
+            }
         }
         res.resize(i);
 
@@ -54,7 +54,6 @@ struct AttemptStateFaster {
             return removed;
         }
 
-        //const auto &ws = GuessesRemainingAfterGuessCache::getFromCache(guessIndex, patternInt);
         std::size_t removed = 0;
         for (std::size_t i = wordIndexes.size()-1; i != MAX_SIZE_VAL; --i) {
             auto wordIndex = wordIndexes[i];
