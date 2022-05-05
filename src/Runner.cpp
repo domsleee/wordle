@@ -83,4 +83,5 @@ int Runner::run() {
     return GlobalArgs.hardMode
         ? lambda2.template operator()<false>()
         : lambda2.template operator()<true>();
+
 }

@@ -156,11 +156,10 @@ private:
             return cacheVal;
         }
 
-        auto guessesRemovedByClearGuesses = isEasyMode
-            ? RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers)
-            : 0;
-        if constexpr (std::is_same<T, UnorderedVec>::value && isEasyMode) {
-            if (isEasyMode && triesRemaining >= 3) {
+        auto guessesRemovedByClearGuesses = 0;
+        if constexpr (isEasyMode) {
+            guessesRemovedByClearGuesses += RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers);
+            if (triesRemaining >= 3) {
                 guessesRemovedByClearGuesses += RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p);
             }
         }
@@ -212,7 +211,7 @@ private:
         }
     }
 
-    BestWordResult getGuessForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const TriesRemainingType triesRemaining, const int beta) {
+    BestWordResult getGuessForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const TriesRemainingType triesRemaining, int beta) {
         assertm(triesRemaining != 0, "no tries remaining");
 
         if (p.answers.size() == 0) return {0, 0};
@@ -224,7 +223,7 @@ private:
             };
         }
 
-        const auto nh = p.answers.size();
+        const int nh = p.answers.size();
         const int lb = 2*nh - 1;
 
         if (lb > beta) {
@@ -264,23 +263,29 @@ private:
             return setCacheVal(key, {2*nh, good});
         }
 
+        static thread_local std::array<std::array<std::array<int, NUM_PATTERNS>, MAX_NUM_GUESSES>, 10> lbCache3d = {};
+
         for (const auto guessIndex: p.guesses) {
+            auto &lbCacheEntry = lbCache3d[triesRemaining][guessIndex];
             std::array<int, NUM_PATTERNS> &count = equiv;
             count.fill(0);
+            lbCacheEntry.fill(0);
 
-            int s2 = 0, lb = 0;
+            int s2 = 0, innerLb = 0;
             for (const auto answerIndex: p.answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
                 int c = (++count[patternInt]);
-                lb += 2 - (c == 1); // Assumes remdepth>=3
+                auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
+                innerLb += lbVal;
+                lbCacheEntry[patternInt] += lbVal;
                 s2 += 2*c - 1;
             }
-            lb -= count[NUM_PATTERNS - 1];
+            innerLb -= count[NUM_PATTERNS - 1];
             if (count[NUM_PATTERNS - 1] == 0 && s2 == nh) {
                 p.guesses.restoreValues(guessesRemovedByClearGuesses);
                 return setCacheVal(key, {2*nh, guessIndex});
             }
-            auto sortVal = (int64_t(2*s2 + nh*lb)<<32)|guessIndex;
+            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
             p.guesses.registerSortVec(guessIndex, sortVal);
         }
 
@@ -297,13 +302,19 @@ private:
         res.wordIndex = p.answers[0];
 
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
-            const auto possibleGuess = p.guesses[myInd];            
+            const auto possibleGuess = p.guesses[myInd];
+            const auto &lbCacheEntry = lbCache3d[triesRemaining][possibleGuess];
 
             equiv.fill(0);
+            int lbCacheSum = nh;
+
             for (const auto actualWordIndex: p.answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(actualWordIndex, possibleGuess);
                 equiv[patternInt]++;
-                patternToRep[patternInt] = actualWordIndex;
+                if (equiv[patternInt] == 1) {
+                    lbCacheSum += lbCacheEntry[patternInt];
+                    patternToRep[patternInt] = actualWordIndex;
+                }
             }
 
             int totalNumGuessesForThisGuess = nh;
@@ -311,22 +322,28 @@ private:
                 const auto patternInt = PatternGetterCached::getPatternIntCached(actualWordIndex, possibleGuess);
                 if (patternToRep[patternInt] != actualWordIndex) continue;
 
-                const auto bestLb = std::max(lb, totalNumGuessesForThisGuess);
+                if (totalNumGuessesForThisGuess > beta) break;
+                if (lbCacheSum > beta) break;
+
+                lbCacheSum -= lbCacheEntry[patternInt];
+
+                const auto bestLb = std::max(0, lbCacheSum);
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining, beta - bestLb);
 
                 const auto numWrong = pr.numWrong;
-                totalNumGuessesForThisGuess += numWrong;
-                if (totalNumGuessesForThisGuess > res.numWrong) break;
-                if (totalNumGuessesForThisGuess > beta) break;
+
                 if (numWrong == INF_INT) {
                     totalNumGuessesForThisGuess = INF_INT-1;
                     break;
                 }
+                lbCacheSum += numWrong;
+                totalNumGuessesForThisGuess += numWrong;
             }
 
-            BestWordResult newRes = {totalNumGuessesForThisGuess, possibleGuess};
+            BestWordResult newRes = {std::max(totalNumGuessesForThisGuess, lbCacheSum), possibleGuess};
             if (newRes.numWrong < res.numWrong || (newRes.numWrong == res.numWrong && newRes.wordIndex < res.wordIndex)) {
                 res = newRes;
+                beta = std::min(beta, res.numWrong);
             }
         }
 
