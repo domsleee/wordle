@@ -37,6 +37,7 @@ struct AnswersAndGuessesSolver {
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getGuessCache = {};
     long long cacheMiss = 0, cacheHit = 0;
+    std::vector<std::array<std::array<int, NUM_PATTERNS>, MAX_NUM_GUESSES>> lbCache3d;
 
     static const int isEasyModeVar = isEasyMode;
 
@@ -63,6 +64,7 @@ struct AnswersAndGuessesSolver {
 
     template<class T>
     AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswerGuessesIndexesPair<T> &p) {
+        if (lbCache3d.size() == 0 && isGetLowestAverage) lbCache3d.resize(10);
         AnswersAndGuessesResult res = {};
         res.solutionModel = solutionModel;
 
@@ -301,8 +303,6 @@ private:
             p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return setCacheVal(key, {2*nh, good});
         }
-
-        static thread_local std::array<std::array<std::array<int, NUM_PATTERNS>, MAX_NUM_GUESSES>, 10> lbCache3d = {};
 
         for (const auto guessIndex: p.guesses) {
             auto &lbCacheEntry = lbCache3d[triesRemaining][guessIndex];
