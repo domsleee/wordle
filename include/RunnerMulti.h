@@ -58,6 +58,8 @@ struct RunnerMulti {
 
         auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
         std::ofstream fout("./models/out.res");
+        fout << "maxIncorrect: " << GlobalArgs.maxIncorrect << "\n";
+        fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,incorrect,numTries\n";
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
@@ -114,6 +116,7 @@ struct RunnerMulti {
                         completed++;
                         fout << firstWord << "," << incorrect << "," << numTries << '\n';
                     }
+                    fout.flush();
 
                     auto s = FROM_SS(
                         ", " << firstWord << ", " << getFrac(completed, guessIndexesToCheck.size())
