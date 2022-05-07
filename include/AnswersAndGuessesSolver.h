@@ -33,7 +33,6 @@ struct AnswersAndGuessesSolver {
         {}
 
     const TriesRemainingType maxTries;
-    bool skipRemoveGuessesWhichHaveBetterGuess = false;
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getGuessCache = {};
     long long cacheMiss = 0, cacheHit = 0;
@@ -123,6 +122,41 @@ struct AnswersAndGuessesSolver {
         }
     }
 
+    template<typename T>
+    static BestWordResult calcSortVectorAndGetMinNumWrongFor2(
+        AnswerGuessesIndexesPair<T> &p,
+        std::array<int, NUM_PATTERNS> &equiv)
+    {
+        BestWordResult minNumWrongFor2 = {INF_INT, 0};
+        const int nh = p.answers.size();
+
+        for (const auto guessIndex: p.guesses) {
+            std::array<int, NUM_PATTERNS> &count = equiv;
+            count.fill(0);
+
+            int s2 = 0, innerLb = 0, numWrongFor2 = 0;
+            for (const auto answerIndex: p.answers) {
+                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+                int c = (++count[patternInt]);
+                auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
+                innerLb += lbVal;
+                s2 += 2*c - 1;
+                numWrongFor2 += c > 1;
+            }
+            if (numWrongFor2 < minNumWrongFor2.numWrong) {
+                minNumWrongFor2 = {numWrongFor2, guessIndex};
+            }
+            innerLb -= count[NUM_PATTERNS - 1];
+            if (numWrongFor2 == 0) {
+                return {0, guessIndex};
+            }
+            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
+            p.guesses.registerSortVec(guessIndex, sortVal);
+        }
+
+        return minNumWrongFor2;
+    }
+
 private:
     template <typename T>
     inline BestWordResult getGuessFunctionDecider(
@@ -173,35 +207,9 @@ private:
         std::array<bool, NUM_PATTERNS> patternSeen;
         std::array<int, NUM_PATTERNS> equiv;
 
-        const int nh = p.answers.size();
+        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(p, equiv);
 
-        BestWordResult minNumWrongFor2 = {INF_INT, 0};
-        for (const auto guessIndex: p.guesses) {
-            std::array<int, NUM_PATTERNS> &count = equiv;
-            count.fill(0);
-
-            int s2 = 0, innerLb = 0, numWrongFor2 = 0;
-            for (const auto answerIndex: p.answers) {
-                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
-                int c = (++count[patternInt]);
-                auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
-                innerLb += lbVal;
-                s2 += 2*c - 1;
-                numWrongFor2 += c > 1;
-            }
-            if (numWrongFor2 < minNumWrongFor2.numWrong) {
-                minNumWrongFor2 = {numWrongFor2, guessIndex};
-            }
-            innerLb -= count[NUM_PATTERNS - 1];
-            if (numWrongFor2 == 0) {
-                p.guesses.restoreValues(guessesRemovedByClearGuesses);
-                return setCacheVal(key, {0, guessIndex});
-            }
-            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
-            p.guesses.registerSortVec(guessIndex, sortVal);
-        }
-
-        if (triesRemaining <= 2) {
+        if (minNumWrongFor2.numWrong == 0 || triesRemaining <= 2) {
             p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return setCacheVal(key, minNumWrongFor2);
         }
@@ -224,7 +232,7 @@ private:
                 const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining, initBeta - numWrongForThisGuess);
                 const auto expNumWrongForSubtree = pr.numWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
-                if (numWrongForThisGuess >= beta) { numWrongForThisGuess = beta+1; break; }
+                if (numWrongForThisGuess >= beta) { numWrongForThisGuess = INF_INT; break; }
             }
 
             BestWordResult newRes = {numWrongForThisGuess, possibleGuess};
@@ -241,7 +249,7 @@ private:
 
         if (shouldSort) restoreSort(p);
         p.guesses.restoreValues(guessesRemovedByClearGuesses);
-        return setCacheVal(key, res);
+        return res.numWrong == INF_INT ? res : setCacheVal(key, res);
     }
 
     int getDefaultBeta() {
@@ -330,7 +338,8 @@ private:
 
         // no split into singletons --> infinity
         if (triesRemaining <= 2) {
-            return {INF_INT, p.answers[0]};
+            p.guesses.restoreValues(guessesRemovedByClearGuesses);
+            return setCacheVal(key, {INF_INT, p.answers[0]});
         }
 
         p.guesses.sortBySortVec();
@@ -359,7 +368,7 @@ private:
                 const auto patternInt = PatternGetterCached::getPatternIntCached(actualWordIndex, possibleGuess);
                 if (patternToRep[patternInt] != actualWordIndex) continue;
 
-                if (lbCacheSum >= beta) { lbCacheSum = INF_INT-1; break; }
+                if (lbCacheSum >= beta) { lbCacheSum = INF_INT; break; }
 
                 lbCacheSum -= lbCacheEntry[patternInt];
 
@@ -368,7 +377,7 @@ private:
 
                 const auto numWrong = pr.numWrong;
 
-                if (numWrong == INF_INT) { lbCacheSum = INF_INT-1;  break; }
+                if (numWrong == INF_INT) { lbCacheSum = INF_INT;  break; }
                 lbCacheSum += numWrong;
             }
 
@@ -381,7 +390,7 @@ private:
 
         restoreSort(p);
         p.guesses.restoreValues(guessesRemovedByClearGuesses);
-        return setCacheVal(key, res);
+        return res.numWrong == INF_INT ? res : setCacheVal(key, res);
     }
 
     inline BestWordResult makeGuessAndRestoreAfter(

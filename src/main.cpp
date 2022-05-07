@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 
         // ints
         ("n,guess-limit-per-node", "Guess limit per node", cxxopts::value<int>()->default_value("1000000"))
+        ("N,top-level-guesses", "Num top level guesses", cxxopts::value<int>()->default_value("1000000"))
         ("t,max-tries", "Max tries", cxxopts::value<int>()->default_value("6"))
         ("I,max-incorrect", "Max incorrect for least wrong strategy", cxxopts::value<int>()->default_value("0"))
         ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
@@ -44,6 +45,7 @@ int main(int argc, char *argv[]) {
 
     //values
     GlobalArgs.guessLimitPerNode = result["guess-limit-per-node"].as<int>();
+    GlobalArgs.topLevelGuesses = result["top-level-guesses"].as<int>();
     GlobalArgs.numToRestrict = result["num-to-restrict"].as<int>();
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxIncorrect = result["max-incorrect"].as<int>();

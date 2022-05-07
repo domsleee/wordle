@@ -6,7 +6,7 @@ struct _GlobalArgs {
     static inline std::string guesses, answers;
 
     // values
-    static inline int numToRestrict, maxTries, maxIncorrect, maxTotalGuesses, guessLimitPerNode;
+    static inline int numToRestrict, topLevelGuesses, maxTries, maxIncorrect, maxTotalGuesses, guessLimitPerNode;
     static inline std::string firstWord, verify, guessesToSkip, guessesToCheck;
 
     // flags

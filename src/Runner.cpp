@@ -40,38 +40,9 @@ int Runner::run() {
             solver.startingWord = GlobalArgs.firstWord;
         }
 
-        if (GlobalArgs.parallel) {
-            return RunnerMulti::run(solver);
-        }
-
-        START_TIMER(total);
-        auto indexesToCheck = RunnerMulti::getIndexesToCheck(answers);
-        std::vector<std::string> wordsToSolve = {};
-        for (auto ind: indexesToCheck) wordsToSolve.push_back(answers[ind]);
-
-        DEBUG("calc total.." << wordsToSolve.size());
-        std::vector<int64_t> results(wordsToSolve.size(), 0);
-        std::vector<std::string> unsolved = {};
-        int correct = 0;
-
-        for (std::size_t i = 0; i < wordsToSolve.size(); ++i) {
-            std::string word = wordsToSolve[i];
-            DEBUG(word << ": solving " << getPerc(i+1, wordsToSolve.size()) << ", " << getPerc(correct, i));
-            auto r = solver.solveWord(word, std::make_shared<SolutionModel>()).tries;
-            if (r != -1) correct++;
-            else unsolved.push_back(word);
-            results[i] = r == TRIES_FAILED ? 0 : r;
-            //DEBUG("RES: " << r);
-        }
-        
-        RunnerUtil::printInfo(solver, results);    
-        END_TIMER(total);
-
-        if (unsolved.size() == 0) { DEBUG("ALL WORDS SOLVED!"); }
-        else DEBUG("UNSOLVED WORDS: " << unsolved.size());
-        //for (auto w: unsolved) DEBUG(w);
-
-        return 0;
+        return GlobalArgs.parallel
+            ? RunnerMulti<true>().run(solver)
+            : RunnerMulti<false>().run(solver);
     };
 
     auto lambda2 = [&]<bool isEasyMode>() -> bool {

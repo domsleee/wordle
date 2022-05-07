@@ -23,6 +23,14 @@ struct UnorderedVector {
         sortVec(size),
         sortedStackVec(10, std::vector<T>(size)) {}
     
+    UnorderedVector(const std::vector<T> &inputVec)
+      : UnorderedVector(inputVec.size())
+    {
+        for (std::size_t i = 0; i < inputVec.size(); ++i) {
+            vec[i] = inputVec[i];
+        }
+      }
+    
     std::size_t size() const { return _size; }
 
     auto operator[](std::size_t pos) const {

@@ -21,7 +21,7 @@ struct RunnerUtil {
         const auto totalSum = std::reduce(answerIndexToResult.begin(), answerIndexToResult.end());
         double avg = (double)totalSum / correct;
 
-        int numIncorrect = wordsToSolve.size() - correct;
+        int numIncorrect = GlobalState.allAnswers.size() - correct;
         std::string valid = getBoolVal(numIncorrect <= GlobalArgs.maxIncorrect);
 
         DEBUG("=============");
