@@ -49,7 +49,7 @@ struct RunnerMulti {
         int completed = 0, minWrong = (int)GlobalState.allAnswers.size();
         double minAvg = 500;
 
-        auto guessIndexesToCheck = getIndexesToCheck(nothingSolver);
+        auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
         auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 8);
         DEBUG("#batches: " << batchesOfFirstWords.size());
@@ -141,33 +141,33 @@ struct RunnerMulti {
     }
 
     template<bool isEasyMode, bool isGetLowestAverage>
-    std::vector<IndexType> getIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
-        auto &vec = GlobalState.allGuesses;
-        auto indexesToCheck = getVector(vec.size(), 0);
-        auto prevSize = indexesToCheck.size();
+    std::vector<IndexType> getGuessIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+        auto guessIndexes = getVector(GlobalState.allGuesses.size(), 0);
+        auto prevSize = guessIndexes.size();
         if (GlobalArgs.guessesToSkip != "") {
             auto guessWordsToSkip = readFromFile(GlobalArgs.guessesToSkip);
-            std::erase_if(indexesToCheck, [&](int guessIndex) {
-                return getIndex(guessWordsToSkip, vec[guessIndex]) != -1;
+            std::erase_if(guessIndexes, [&](int guessIndex) {
+                return getIndex(guessWordsToSkip, GlobalState.allGuesses[guessIndex]) != -1;
             });
-            DEBUG("erased " << (prevSize - indexesToCheck.size()) << " words from " << GlobalArgs.guessesToSkip);
+            DEBUG("erased " << (prevSize - guessIndexes.size()) << " words from " << GlobalArgs.guessesToSkip);
         }
         if (GlobalArgs.guessesToCheck != "") {
             auto guessWordsToCheck = readFromFile(GlobalArgs.guessesToCheck);
-            indexesToCheck.clear();
-            for (const auto &w: guessWordsToCheck) indexesToCheck.push_back(getIndex(vec, w));
+            guessIndexes.clear();
+            for (const auto &w: guessWordsToCheck) guessIndexes.push_back(getIndex(GlobalState.allGuesses, w));
         }
-        if (GlobalArgs.topLevelGuesses < static_cast<int>(indexesToCheck.size())) {
-            std::array<int, NUM_PATTERNS> equiv;
-            const auto &answerVec = getVector<UnorderedVec>(GlobalState.allAnswers.size(), 0);
-            AnswerGuessesIndexesPair<UnorderedVec> p(answerVec, UnorderedVec(indexesToCheck));
-            nothingSolver.calcSortVectorAndGetMinNumWrongFor2(p, equiv);
-            p.guesses.sortBySortVec();
+        std::array<int, NUM_PATTERNS> equiv;
+        const auto &answerVec = getVector<UnorderedVec>(GlobalState.allAnswers.size(), 0);
+        AnswerGuessesIndexesPair<UnorderedVec> p(answerVec, UnorderedVec(guessIndexes));
+        nothingSolver.calcSortVectorAndGetMinNumWrongFor2(p, equiv);
+        p.guesses.sortBySortVec();
+        guessIndexes = {p.guesses.begin(), p.guesses.end()};
 
+        if (GlobalArgs.topLevelGuesses < static_cast<int>(guessIndexes.size())) {
             auto sizeOfRes = std::min(static_cast<int>(p.guesses.size()), GlobalArgs.topLevelGuesses);
-            indexesToCheck = {p.guesses.begin(), p.guesses.begin() + sizeOfRes};
+            guessIndexes = {p.guesses.begin(), p.guesses.begin() + sizeOfRes};
         }
-        return indexesToCheck;
+        return guessIndexes;
     }
 
     // since the first guess is fixed, partitioning by pattern reduces the amount of work
