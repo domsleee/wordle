@@ -25,17 +25,17 @@ struct PatternGetterCached {
         for (std::size_t answerIndex = 0; answerIndex < reverseIndexLookupSize; ++answerIndex) {
             auto &answer = GlobalState.reverseIndexLookup[answerIndex];
             auto patternGetter = PatternGetter(answer);
-            for (std::size_t wordIndex = 0; wordIndex < reverseIndexLookupSize; ++ wordIndex) {
-                auto &word = GlobalState.reverseIndexLookup[wordIndex];
+            for (std::size_t guessIndex = 0; guessIndex < reverseIndexLookupSize; ++guessIndex) {
+                auto &word = GlobalState.reverseIndexLookup[guessIndex];
                 PatternType patternInt = patternGetter.getPatternInt(word);
-                cache[getIndex(answerIndex, wordIndex)] = patternInt;
+                cache[getIndex(answerIndex, guessIndex)] = patternInt;
             }
         }
         END_TIMER(PatternGetterCached);
     }
 
-    static std::size_t getIndex(IndexType answerIndex, IndexType wordIndex) {
-        return answerIndex * reverseIndexLookupSize + wordIndex;
+    static std::size_t getIndex(IndexType answerIndex, IndexType guessIndex) {
+        return answerIndex * reverseIndexLookupSize + guessIndex;
     }
 
   private:

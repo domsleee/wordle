@@ -36,7 +36,6 @@ struct Verifier {
                 //DEBUG(answer << " guess with " << localModel.guess << " " << patternStr);
                 solver.makeGuess(p, state, guessIndex);  
 
-                    
                 if (localModel.next.contains(patternStr)) {
                     localModel = *localModel.next[patternStr];
                     path += ".next[\"" + patternStr + "\"]";
@@ -55,7 +54,7 @@ struct Verifier {
         long above4 = 0;
         for (auto r: results) above4 += r > 4;
         DEBUG("above4: " << above4);
-        DEBUG("numWrong");
+        DEBUG("wrong words (" << wrongVec.size() << "):");
         for (auto &s: wrongVec) DEBUG(s);
         if (static_cast<int>(wrongVec.size()) != numIncorrect) {
             DEBUG("error numIncorrect: expected " << numIncorrect << ", actual: " << wrongVec.size());

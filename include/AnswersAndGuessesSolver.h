@@ -275,10 +275,8 @@ private:
         }
 
         const int nh = p.answers.size();
-        const int lb = 2*nh - 1;
-
-        if (lb >= beta) {
-            return {INF_INT, p.answers[0]};
+        if (2*nh-1 >= beta) {
+            return {2*nh-1, p.answers[0]};
         }
 
         const auto [key, cacheVal] = getCacheKeyAndValue(p, remDepth);
@@ -326,7 +324,7 @@ private:
                 int c = (++count[patternInt]);
                 auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
                 innerLb += lbVal;
-                lbCacheEntry[patternInt] += lbVal;
+                lbCacheEntry[patternInt] += patternInt == NUM_PATTERNS-1 ? 0 : lbVal;
                 s2 += 2*c - 1;
             }
             innerLb -= count[NUM_PATTERNS - 1];

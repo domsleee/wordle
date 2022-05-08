@@ -1,8 +1,9 @@
 maxWrong: 0
 maxTotalGuesses: 500000
 word,numWrong,numTries
-lares,100000000,5447
-tares,100000000,4181
-rales,100000000,5448
-reais,100000000,3781
-rates,100000000,4181
+raise,0,8014
+salet,0,7920
+raile,0,8005
+roate,0,8000
+slate,0,7928
+reast,0,7923

@@ -26,7 +26,7 @@ struct RunnerUtil {
 
         DEBUG("=============");
         DEBUG("maxTries    : " << (int)solver.maxTries);
-        DEBUG("maxWrong: " << (int)GlobalArgs.maxWrong);
+        DEBUG("maxWrong    : " << (int)GlobalArgs.maxWrong);
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxWrong << ")");
         DEBUG("totalSum:   : " << totalSum);
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
