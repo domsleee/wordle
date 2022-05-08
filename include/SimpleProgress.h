@@ -4,7 +4,6 @@
 
 struct SimpleProgress {
     const std::string prefix;
-    std::mutex mutex;
     std::string lastSuffix = "";
     int64_t maxA = 0;
     const int64_t total;
@@ -14,11 +13,10 @@ struct SimpleProgress {
     : prefix(prefix),
       total(total),
       bar(getBar(isPrecompute)) {
-          updateStatus(", loading...");
+        updateStatus(", loading...");
       }
 
     void incrementAndUpdateStatus(const std::string &suffix = "") {
-        const std::lock_guard<std::mutex> lock(mutex);
         ++maxA;
         if (suffix.size() == 0) {
             updateStatusInner(lastSuffix);
@@ -29,7 +27,6 @@ struct SimpleProgress {
     }
 
     void updateStatus(const std::string &suffix) {
-        const std::lock_guard<std::mutex> lock(mutex);
         updateStatusInner(suffix);
     }
 
@@ -50,7 +47,8 @@ private:
     }
 
     void updateStatusInner(const std::string &suffix) {
-        bar.set_progress(getIntegerPerc(maxA, total));
         bar.set_option(indicators::option::PostfixText{prefix + " " + getFrac(maxA, total) + suffix});
+        bar.set_progress(getIntegerPerc(maxA, total));
+        if (maxA != total) bar.print_progress();
     }
 };
