@@ -20,7 +20,7 @@ struct UnorderedVector {
         maxSize(size),
         vec(std::vector<T>(size*2)),
         deletedStackIndex(size),
-        sortVec(size),
+        sortVec(GlobalState.allGuesses.size()),
         sortedStackVec(10, std::vector<T>(size)) {}
     
     UnorderedVector(const std::vector<T> &inputVec)
