@@ -26,7 +26,7 @@
 
 using IndexType = uint16_t;
 using PatternType = uint8_t;
-using TriesRemainingType = uint8_t;
+using RemDepthType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
 static const int NUM_WORDS = 12992;
@@ -36,7 +36,7 @@ static const int MAX_LETTER_LIMIT_MAX = 10;
 const int WORD_LENGTH = 5;
 using MinLetterType = std::array<int8_t, 26>;
 
-static constexpr TriesRemainingType TRIES_FAILED = std::numeric_limits<TriesRemainingType>::max();
+static constexpr RemDepthType TRIES_FAILED = std::numeric_limits<RemDepthType>::max();
 static constexpr std::size_t MAX_SIZE_VAL = std::numeric_limits<std::size_t>::max();
 static constexpr IndexType MAX_INDEX_TYPE = std::numeric_limits<IndexType>::max();
 static constexpr uint32_t MAX_UINT32_T = std::numeric_limits<uint32_t>::max();

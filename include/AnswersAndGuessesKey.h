@@ -7,11 +7,11 @@
 struct StateWithGuesses {
     const WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
-    const TriesRemainingType triesRemaining;
-    StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
-        : wsAnswers(wsAnswers), wsGuesses(wsGuesses), triesRemaining(triesRemaining) {}
+    const RemDepthType remDepth;
+    StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
+        : wsAnswers(wsAnswers), wsGuesses(wsGuesses), remDepth(remDepth) {}
     friend bool operator==(const StateWithGuesses &a, const StateWithGuesses &b) {
-        return a.triesRemaining == b.triesRemaining
+        return a.remDepth == b.remDepth
             && a.wsAnswers == b.wsAnswers
             && a.wsGuesses == b.wsGuesses;
     }
@@ -19,11 +19,11 @@ struct StateWithGuesses {
 
 struct StateNoGuesses {
     const WordSetAnswers wsAnswers;
-    const TriesRemainingType triesRemaining;
-    StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
-        : wsAnswers(wsAnswers), triesRemaining(triesRemaining) {}
+    const RemDepthType remDepth;
+    StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
+        : wsAnswers(wsAnswers), remDepth(remDepth) {}
     friend bool operator==(const StateNoGuesses &a, const StateNoGuesses &b) {
-        return a.triesRemaining == b.triesRemaining
+        return a.remDepth == b.remDepth
             && a.wsAnswers == b.wsAnswers;
     }
 };
@@ -32,23 +32,23 @@ template<bool isEasyMode>
 struct AnswersAndGuessesKey {
     using State = std::conditional_t<isEasyMode, StateNoGuesses, StateWithGuesses>;
 
-    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, TriesRemainingType triesRemaining)
-        : state(wsAnswers, wsGuesses, triesRemaining) {}
+    AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
+        : state(wsAnswers, wsGuesses, remDepth) {}
 
     template<typename T>
-    AnswersAndGuessesKey(const T& answers, const T& guesses, TriesRemainingType triesRemaining)
+    AnswersAndGuessesKey(const T& answers, const T& guesses, RemDepthType remDepth)
         : AnswersAndGuessesKey(
             WordSetHelpers::buildAnswersWordSet(answers),
             WordSetHelpers::buildGuessesWordSet(guesses),
-            triesRemaining
+            remDepth
         ) {}
     
     template<typename T>
-    AnswersAndGuessesKey(const T& answers, TriesRemainingType triesRemaining)
+    AnswersAndGuessesKey(const T& answers, RemDepthType remDepth)
         : AnswersAndGuessesKey(
             WordSetHelpers::buildAnswersWordSet(answers),
             defaultWordSetGuesses,
-            triesRemaining
+            remDepth
         ) {}
     
     constexpr static WordSetGuesses defaultWordSetGuesses = WordSetGuesses();
@@ -72,7 +72,7 @@ struct std::hash<AnswersAndGuessesKey<isEasyMode>> {
         if constexpr (!isEasyMode) {
             res = res * 31 + hash<WordSetGuesses>()( k.state.wsGuesses );
         }
-        res = res * 31 + hash<uint8_t>()( k.state.triesRemaining );
+        res = res * 31 + hash<uint8_t>()( k.state.remDepth );
         return res;
     }
 };

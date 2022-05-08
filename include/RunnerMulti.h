@@ -13,7 +13,7 @@
 #include <type_traits>
 
 struct RunnerMultiResultPair {
-    TriesRemainingType numTries;
+    RemDepthType numTries;
     IndexType wordIndex;
 };
 

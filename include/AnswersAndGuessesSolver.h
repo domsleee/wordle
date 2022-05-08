@@ -29,11 +29,11 @@ static constexpr double INF_DOUBLE = 1e8;
 
 template <bool isEasyMode, bool isGetLowestAverage=false>
 struct AnswersAndGuessesSolver {
-    AnswersAndGuessesSolver(TriesRemainingType maxTries)
+    AnswersAndGuessesSolver(RemDepthType maxTries)
         : maxTries(maxTries)
         {}
 
-    const TriesRemainingType maxTries;
+    const RemDepthType maxTries;
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, BestWordResult> getGuessCache = {};
     long long cacheMiss = 0, cacheHit = 0;
@@ -162,34 +162,34 @@ private:
     template <typename T>
     inline BestWordResult getGuessFunctionDecider(
         AnswerGuessesIndexesPair<T> &p,
-        const TriesRemainingType triesRemaining,
+        const RemDepthType remDepth,
         const int beta) {
         if constexpr (std::is_same<T, std::vector<IndexType>>::value) {
             return getDefaultBestWordResult();
         } else {
             if constexpr (isGetLowestAverage) {
-                return getGuessForLowestAverage(p, triesRemaining, beta);
+                return getGuessForLowestAverage(p, remDepth, beta);
             } else {
-                return getGuessForLeastWrong(p, triesRemaining, beta);
+                return getGuessForLeastWrong(p, remDepth, beta);
             }
         }
     }
 
     template <typename T>
-    BestWordResult getGuessForLeastWrong(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining, int beta) {
-        assertm(triesRemaining != 0, "no tries remaining");
+    BestWordResult getGuessForLeastWrong(AnswerGuessesIndexesPair<T> &p, const RemDepthType remDepth, int beta) {
+        assertm(remDepth != 0, "no tries remaining");
         if (p.answers.size() == 0) return {0, 0};
         // assumes its sorted
-        //if (triesRemaining >= p.answers.size()) return {0, p.answers[std::min(triesRemaining-1, static_cast<int>(p.answers.size())-1)]};
+        //if (remDepth >= p.answers.size()) return {0, p.answers[std::min(remDepth-1, static_cast<int>(p.answers.size())-1)]};
 
-        if (triesRemaining == 1) { // we can't use info from last guess
+        if (remDepth == 1) { // we can't use info from last guess
             return {
                 (int)p.answers.size()-1,
                 *std::min_element(p.answers.begin(), p.answers.end())
             };
         }
 
-        const auto [key, cacheVal] = getCacheKeyAndValue(p, triesRemaining);
+        const auto [key, cacheVal] = getCacheKeyAndValue(p, remDepth);
         if (cacheVal.wordIndex != MAX_INDEX_TYPE) {
             return cacheVal;
         }
@@ -211,19 +211,19 @@ private:
 
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(p, equiv);
 
-        if (minNumWrongFor2.numWrong == 0 || triesRemaining <= 2) {
+        if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
             p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return setCacheVal(key, minNumWrongFor2);
         }
 
         if (shouldSort) p.guesses.sortBySortVec();   
 
-        // full search for triesRemaining >= 3
+        // full search for remDepth >= 3
         const int initBeta = beta;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             patternSeen.fill(false);
             const auto &possibleGuess = p.guesses[myInd];
-            if (triesRemaining == maxTries) DEBUG(GlobalState.reverseIndexLookup[possibleGuess] << ": " << triesRemaining << ": " << getPerc(myInd, p.guesses.size()));
+            if (remDepth == maxTries) DEBUG(GlobalState.reverseIndexLookup[possibleGuess] << ": " << remDepth << ": " << getPerc(myInd, p.guesses.size()));
             int numWrongForThisGuess = 0;
             for (std::size_t i = 0; i < p.answers.size(); ++i) {
                 const auto &actualWordIndex = p.answers[i];
@@ -231,7 +231,7 @@ private:
                 if (patternSeen[patternInt]) continue;
                 patternSeen[patternInt] = true;
 
-                const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining, initBeta - numWrongForThisGuess);
+                const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, remDepth, initBeta - numWrongForThisGuess);
                 const auto expNumWrongForSubtree = pr.numWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
                 if (numWrongForThisGuess >= beta) { numWrongForThisGuess = INF_INT; break; }
@@ -262,12 +262,12 @@ private:
         }
     }
 
-    BestWordResult getGuessForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const TriesRemainingType triesRemaining, int beta) {
-        assertm(triesRemaining != 0, "no tries remaining");
+    BestWordResult getGuessForLowestAverage(AnswerGuessesIndexesPair<UnorderedVec> &p, const RemDepthType remDepth, int beta) {
+        assertm(remDepth != 0, "no tries remaining");
 
         if (p.answers.size() == 0) return {0, 0};
         if (p.answers.size() == 1) return {1, p.answers[0]};
-        if (triesRemaining == 1) { // we can't use info from last guess
+        if (remDepth == 1) { // we can't use info from last guess
             return {
                 INF_INT,
                 p.answers[0]
@@ -281,7 +281,7 @@ private:
             return {INF_INT, p.answers[0]};
         }
 
-        const auto [key, cacheVal] = getCacheKeyAndValue(p, triesRemaining);
+        const auto [key, cacheVal] = getCacheKeyAndValue(p, remDepth);
         if (cacheVal.wordIndex != MAX_INDEX_TYPE) {
             return cacheVal;
         }
@@ -309,13 +309,13 @@ private:
             }
             if (bad == 1) good = guessIndex;
         }
-        if (good != MAX_INDEX_TYPE && triesRemaining >= 3) {
+        if (good != MAX_INDEX_TYPE && remDepth >= 3) {
             p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return setCacheVal(key, {2*nh, good});
         }
 
         for (const auto guessIndex: p.guesses) {
-            auto &lbCacheEntry = lbCache3d[triesRemaining][guessIndex];
+            auto &lbCacheEntry = lbCache3d[remDepth][guessIndex];
             std::array<int, NUM_PATTERNS> &count = equiv;
             count.fill(0);
             lbCacheEntry.fill(0);
@@ -339,20 +339,20 @@ private:
         }
 
         // no split into singletons --> infinity
-        if (triesRemaining <= 2) {
+        if (remDepth <= 2) {
             p.guesses.restoreValues(guessesRemovedByClearGuesses);
             return setCacheVal(key, {INF_INT, p.answers[0]});
         }
 
         p.guesses.sortBySortVec();
 
-        // begin exact for triesRemaining >= 3
+        // begin exact for remDepth >= 3
         BestWordResult res = getDefaultBestWordResult();
         res.wordIndex = p.answers[0];
 
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = p.guesses[myInd];
-            const auto &lbCacheEntry = lbCache3d[triesRemaining][possibleGuess];
+            const auto &lbCacheEntry = lbCache3d[remDepth][possibleGuess];
 
             equiv.fill(0);
             int lbCacheSum = nh;
@@ -375,7 +375,7 @@ private:
                 lbCacheSum -= lbCacheEntry[patternInt];
 
                 const auto bestLb = std::max(0, lbCacheSum);
-                const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, triesRemaining, beta - bestLb);
+                const auto pr = makeGuessAndRestoreAfter(p, possibleGuess, actualWordIndex, remDepth, beta - bestLb);
 
                 const auto numWrong = pr.numWrong;
 
@@ -399,7 +399,7 @@ private:
         AnswerGuessesIndexesPair<UnorderedVec> &p,
         const IndexType possibleGuess,
         const IndexType actualWordIndex,
-        const TriesRemainingType triesRemaining,
+        const RemDepthType remDepth,
         const int beta)
     {
         const auto getter = PatternGetterCached(actualWordIndex);
@@ -408,10 +408,10 @@ private:
         auto numAnswersRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, p.answers);
         BestWordResult pr;
         if constexpr (isEasyMode) {
-            pr = getGuessFunctionDecider(p, triesRemaining-1, beta);
+            pr = getGuessFunctionDecider(p, remDepth-1, beta);
         } else {
             auto numGuessesRemoved = state.guessWordAndRemoveUnmatched(possibleGuess, p.guesses);
-            pr = getGuessFunctionDecider(p, triesRemaining-1, beta);
+            pr = getGuessFunctionDecider(p, remDepth-1, beta);
             p.guesses.restoreValues(numGuessesRemoved);
         }
         p.answers.restoreValues(numAnswersRemoved);
@@ -424,8 +424,8 @@ private:
     }
 
     template<typename T>
-    std::pair<AnswersAndGuessesKey<isEasyMode>, const BestWordResult> getCacheKeyAndValue(const AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining) {
-        auto key = getCacheKey(p, triesRemaining);
+    std::pair<AnswersAndGuessesKey<isEasyMode>, const BestWordResult> getCacheKeyAndValue(const AnswerGuessesIndexesPair<T> &p, const RemDepthType remDepth) {
+        auto key = getCacheKey(p, remDepth);
         auto it = getGuessCache.find(key);
         if (it == getGuessCache.end()) {
             cacheMiss++;
@@ -436,11 +436,11 @@ private:
     }
 
     template<typename T>
-    static AnswersAndGuessesKey<isEasyMode> getCacheKey(const AnswerGuessesIndexesPair<T> &p, TriesRemainingType triesRemaining) {
+    static AnswersAndGuessesKey<isEasyMode> getCacheKey(const AnswerGuessesIndexesPair<T> &p, RemDepthType remDepth) {
         if constexpr (isEasyMode) {
-            return AnswersAndGuessesKey<isEasyMode>(p.answers, triesRemaining);
+            return AnswersAndGuessesKey<isEasyMode>(p.answers, remDepth);
         } else {
-            return AnswersAndGuessesKey<isEasyMode>(p.answers, p.guesses, triesRemaining);
+            return AnswersAndGuessesKey<isEasyMode>(p.answers, p.guesses, remDepth);
         }
     }
 
