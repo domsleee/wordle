@@ -25,6 +25,7 @@
 #define GUESSESSOLVER_DEBUG(x) 
 
 static constexpr int INF_INT = (int)1e8;
+static constexpr double INF_DOUBLE = 1e8;
 
 template <bool isEasyMode, bool isGetLowestAverage=false>
 struct AnswersAndGuessesSolver {
@@ -178,7 +179,8 @@ private:
     BestWordResult getGuessForLeastWrong(AnswerGuessesIndexesPair<T> &p, const TriesRemainingType triesRemaining, int beta) {
         assertm(triesRemaining != 0, "no tries remaining");
         if (p.answers.size() == 0) return {0, 0};
-        if (triesRemaining >= p.answers.size()) return {0, *std::min_element(p.answers.begin(), p.answers.end())};
+        // assumes its sorted
+        //if (triesRemaining >= p.answers.size()) return {0, p.answers[std::min(triesRemaining-1, static_cast<int>(p.answers.size())-1)]};
 
         if (triesRemaining == 1) { // we can't use info from last guess
             return {

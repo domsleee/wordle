@@ -46,8 +46,8 @@ struct RunnerMulti {
 
     template <bool isEasyMode, bool isGetLowestAverage>
     int runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
-        int completed = 0, minWrong = (int)GlobalState.allAnswers.size();
-        double minAvg = 500;
+        int completed = 0, minWrong = INF_INT;
+        double minAvg = INF_DOUBLE;
 
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
@@ -96,6 +96,7 @@ struct RunnerMulti {
                     int incorrect = 0, numTries = 0;
                     for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
                         if (incorrect > GlobalArgs.maxIncorrect) {
+                            incorrect = INF_INT; // invalid
                             continue;
                         }
                         auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
@@ -109,7 +110,9 @@ struct RunnerMulti {
                         if (incorrect < minWrong) {
                             minWrong = incorrect;
                         }
-                        double avg = safeDivide(numTries, GlobalState.allAnswers.size() - incorrect);
+                        double avg = incorrect == INF_INT
+                            ? INF_DOUBLE
+                            : safeDivide(numTries, GlobalState.allAnswers.size() - incorrect);
                         if (avg < minAvg) {
                             minAvg = avg;
                         }
@@ -120,8 +123,8 @@ struct RunnerMulti {
 
                     auto s = FROM_SS(
                         ", " << firstWord << ", " << getFrac(completed, guessIndexesToCheck.size())
-                        << ", minWrong: " << minWrong
-                        << ", minAvg: " << minAvg);
+                        << ", minWrong: " << (minWrong == INF_INT ? "inf" : std::to_string(minWrong))
+                        << ", minAvg: " << (minAvg == INF_DOUBLE ? "inf" : std::to_string(minAvg)));
                     if (i == firstWordBatch.size() - 1) {
                         bar.incrementAndUpdateStatus(s);
                     } else {
@@ -244,11 +247,8 @@ struct RunnerMulti {
         RunnerUtil::printInfo(nothingSolver, answerIndexToResult);
 
         JsonConverter::toFile(solutionModel, "./models/model.json");
-        if (incorrect == 0) {
-            Verifier::verifyModel(solutionModel, nothingSolver);
-        } else {
-            DEBUG("skip verification... " << incorrect);
-        }
+        Verifier::verifyModel(solutionModel, nothingSolver, incorrect);
+
         return 0;
     }
 
