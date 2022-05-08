@@ -58,9 +58,9 @@ struct RunnerMulti {
 
         auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
         std::ofstream fout("./models/out.res");
-        fout << "maxIncorrect: " << GlobalArgs.maxIncorrect << "\n";
+        fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
-        fout << "word,incorrect,numTries\n";
+        fout << "word,numWrong,numTries\n";
 
         std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
         std::transform(
@@ -93,31 +93,31 @@ struct RunnerMulti {
                     const auto &firstWord = guesses[firstWordIndex];
                     solver.startingWord = firstWord;
 
-                    int incorrect = 0, numTries = 0;
+                    int numWrong = 0, numTries = 0;
                     for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
-                        if (incorrect > GlobalArgs.maxIncorrect) {
-                            incorrect = INF_INT; // invalid
+                        if (numWrong > GlobalArgs.maxWrong) {
+                            numWrong = INF_INT; // invalid
                             continue;
                         }
                         auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
                         auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, p);
-                        incorrect += solverRes.tries == TRIES_FAILED;
+                        numWrong += solverRes.tries == TRIES_FAILED;
                         numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
                     }
 
                     {
                         std::lock_guard g(lock);
-                        if (incorrect < minWrong) {
-                            minWrong = incorrect;
+                        if (numWrong < minWrong) {
+                            minWrong = numWrong;
                         }
-                        double avg = incorrect == INF_INT
+                        double avg = numWrong == INF_INT
                             ? INF_DOUBLE
-                            : safeDivide(numTries, GlobalState.allAnswers.size() - incorrect);
+                            : safeDivide(numTries, GlobalState.allAnswers.size() - numWrong);
                         if (avg < minAvg) {
                             minAvg = avg;
                         }
                         completed++;
-                        fout << firstWord << "," << incorrect << "," << numTries << '\n';
+                        fout << firstWord << "," << numWrong << "," << numTries << '\n';
                     }
                     fout.flush();
 
@@ -130,7 +130,7 @@ struct RunnerMulti {
                     } else {
                         bar.updateStatus(s);
                     }
-                    results[i] = {answers.size() - incorrect, firstWordIndex};
+                    results[i] = {answers.size() - numWrong, firstWordIndex};
                 }
                 
                 return results;
@@ -176,7 +176,7 @@ struct RunnerMulti {
     // since the first guess is fixed, partitioning by pattern reduces the amount of work
     template <bool isEasyMode, bool isGetLowestAverage>
     int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
-        std::atomic<int> completed = 0, incorrect = 0, totalSum = 0, batches = 0;
+        std::atomic<int> completed = 0, numWrong = 0, totalSum = 0, batches = 0;
 
         auto answerIndexesToCheck = getVector(GlobalState.allAnswers.size(), 0);
         auto batchesOfAnswerIndexes = getBatchesByPattern(nothingSolver, answerIndexesToCheck);
@@ -192,7 +192,7 @@ struct RunnerMulti {
             transformResults.begin(),
             [
                 &completed,
-                &incorrect,
+                &numWrong,
                 &totalSum,
                 &batches,
                 &bar,
@@ -214,12 +214,12 @@ struct RunnerMulti {
                     auto r = solver.solveWord(actualAnswer, result.solutionModel);
                     //if (i == 0) DEBUG("FIRST IN BATCH: " << actualAnswer << ", numWrong: " << r.firstGuessResult.numWrong);
                     completed++;
-                    incorrect += r.tries == TRIES_FAILED;
+                    numWrong += r.tries == TRIES_FAILED;
                     totalSum += r.tries != TRIES_FAILED ? r.tries : 0;
                     std::string s = FROM_SS(
                             ", " << actualAnswer << ", " << getFrac(completed.load(), answerIndexesToCheck.size())
-                            << " (avg: " << getDivided(totalSum.load(), completed.load() - incorrect.load())
-                            << ", incorrect: " << incorrect.load() << ")");
+                            << " (avg: " << getDivided(totalSum.load(), completed.load() - numWrong.load())
+                            << ", numWrong: " << numWrong.load() << ")");
                     
                     if (i == answerIndexBatch.size() - 1) {
                         bar.incrementAndUpdateStatus(s);
@@ -247,7 +247,7 @@ struct RunnerMulti {
         RunnerUtil::printInfo(nothingSolver, answerIndexToResult);
 
         JsonConverter::toFile(solutionModel, "./models/model.json");
-        Verifier::verifyModel(solutionModel, nothingSolver, incorrect);
+        Verifier::verifyModel(solutionModel, nothingSolver, numWrong);
 
         return 0;
     }

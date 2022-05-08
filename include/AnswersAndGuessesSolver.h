@@ -258,7 +258,7 @@ private:
         if constexpr (isGetLowestAverage) {
             return GlobalArgs.maxTotalGuesses + 1;
         } else {
-            return GlobalArgs.maxIncorrect + 1;
+            return GlobalArgs.maxWrong + 1;
         }
     }
 

@@ -22,12 +22,12 @@ struct RunnerUtil {
         double avg = (double)totalSum / correct;
 
         int numIncorrect = GlobalState.allAnswers.size() - correct;
-        std::string valid = getBoolVal(numIncorrect <= GlobalArgs.maxIncorrect);
+        std::string valid = getBoolVal(numIncorrect <= GlobalArgs.maxWrong);
 
         DEBUG("=============");
         DEBUG("maxTries    : " << (int)solver.maxTries);
-        DEBUG("maxIncorrect: " << (int)GlobalArgs.maxIncorrect);
-        DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxIncorrect << ")");
+        DEBUG("maxWrong: " << (int)GlobalArgs.maxWrong);
+        DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxWrong << ")");
         DEBUG("totalSum:   : " << totalSum);
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
         DEBUG("isLowAverage: " << getBoolVal(GlobalArgs.isGetLowestAverage));

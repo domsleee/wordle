@@ -12,7 +12,7 @@ struct Verifier {
         auto answerIndexes = getVector(GlobalState.allAnswers.size(), 0);
         std::vector<int64_t> results(answerIndexes.size());
         auto solver = nothingSolver;
-        std::vector<std::string> incorrectVec = {};
+        std::vector<std::string> wrongVec = {};
         for (auto answerIndex: answerIndexes) {
             auto localModel = model;
             auto answer = GlobalState.reverseIndexLookup[answerIndex];
@@ -48,17 +48,17 @@ struct Verifier {
 
             if (i == solver.maxTries+1) {
                 results[answerIndex] = TRIES_FAILED;
-                incorrectVec.push_back(answer);
+                wrongVec.push_back(answer);
             }
         }
 
         long above4 = 0;
         for (auto r: results) above4 += r > 4;
         DEBUG("above4: " << above4);
-        DEBUG("incorrect");
-        for (auto &s: incorrectVec) DEBUG(s);
-        if (static_cast<int>(incorrectVec.size()) != numIncorrect) {
-            DEBUG("error numIncorrect: expected " << numIncorrect << ", actual: " << incorrectVec.size());
+        DEBUG("numWrong");
+        for (auto &s: wrongVec) DEBUG(s);
+        if (static_cast<int>(wrongVec.size()) != numIncorrect) {
+            DEBUG("error numIncorrect: expected " << numIncorrect << ", actual: " << wrongVec.size());
             exit(1);
         }
 
