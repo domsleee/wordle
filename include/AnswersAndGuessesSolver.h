@@ -72,8 +72,8 @@ struct AnswersAndGuessesSolver {
         auto state = AttemptStateToUse(getter);
         auto currentModel = res.solutionModel;
 
-        //clearGuesses(p.guesses, p.answers);
-        //removeGuessesWhichHaveBetterGuess(p, true);
+        //RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers);
+        //RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p, true);
         
         int guessIndex = firstWordIndex;
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
@@ -448,8 +448,6 @@ private:
         static BestWordResult defaultBestWordResult = {INF_INT, MAX_INDEX_TYPE};
         return defaultBestWordResult;
     }
-
-private:
 
     void restoreSort(AnswerGuessesIndexesPair<UnorderedVec> &p) {
         if constexpr (!isEasyMode) {

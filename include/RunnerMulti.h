@@ -24,7 +24,6 @@ struct RunnerMultiResult {
 
 template <bool parallel>
 struct RunnerMulti {
-    using P = std::pair<int,int>;
     using ExecutionPolicy = std::conditional<parallel, decltype(std::execution::par_unseq), decltype(std::execution::seq)>::type;
     static constexpr ExecutionPolicy executionPolicy{};
 
@@ -62,7 +61,7 @@ struct RunnerMulti {
         fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,numWrong,numTries\n";
 
-        std::vector<std::vector<P>> transformResults(batchesOfFirstWords.size());
+        std::vector<int> transformResults(batchesOfFirstWords.size());
         std::transform(
             executionPolicy,
             batchesOfFirstWords.begin(),
@@ -78,14 +77,13 @@ struct RunnerMulti {
                 &nothingSolver=std::as_const(nothingSolver),
                 &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
             ]
-                (const std::vector<IndexType> &firstWordBatch) -> std::vector<P>
+                (const std::vector<IndexType> &firstWordBatch) -> int
             {
                 //DEBUG("batch size " << firstWordBatch.size());
                 
                 const auto &answers = GlobalState.allAnswers;
                 const auto &guesses = GlobalState.allGuesses;
                 
-                std::vector<P> results(firstWordBatch.size());
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
@@ -130,10 +128,9 @@ struct RunnerMulti {
                     } else {
                         bar.updateStatus(s);
                     }
-                    results[i] = {answers.size() - numWrong, firstWordIndex};
                 }
                 
-                return results;
+                return 0;
             }
         );
         fout.close();
