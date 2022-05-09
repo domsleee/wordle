@@ -38,6 +38,6 @@ struct PatternGetterCached {
         return answerIndex * reverseIndexLookupSize + guessIndex;
     }
 
-  private:
+  public:
     const IndexType answerIndex;
 };

@@ -20,7 +20,7 @@
 #include <stack>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x) DEBUG(x)
+#define GUESSESSOLVER_DEBUG(x) 
 
 static constexpr int INF_INT = (int)1e8;
 static constexpr double INF_DOUBLE = 1e8;
@@ -82,7 +82,7 @@ struct AnswersAndGuessesSolver {
         //RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers);
         //RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p, true);
         
-        int guessIndex = firstWordIndex;
+        IndexType guessIndex = firstWordIndex;
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
             currentModel->guess = GlobalState.reverseIndexLookup[guessIndex];
             if (currentModel->guess == "") {
@@ -96,6 +96,11 @@ struct AnswersAndGuessesSolver {
             if (res.tries == maxTries) break;
 
             makeGuess(answers, guesses, state, guessIndex);
+            /*auto it = std::find(answers.begin(), answers.end(), answerIndex);
+            if (it == answers.end()) {
+                DEBUG("the actual answer " << answerIndex << " was removed from answers after guess " << guessIndex << "!"); exit(1);
+            }*/
+            //DEBUG("result:")
 
             if constexpr (isEasyMode) {
                 //RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers);
@@ -103,9 +108,10 @@ struct AnswersAndGuessesSolver {
 
             auto pr = getGuessFunctionDecider(answers, guesses, maxTries-res.tries, getDefaultBeta());
             if (res.tries == 1) res.firstGuessResult = pr;
-            GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] << ", numWrong: " << pr.numWrong << " numAnswers: " << answers.size());
-
             const auto patternInt = getter.getPatternIntCached(guessIndex);
+
+            GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] <<  ",patternInt: " << patternInt << ", numWrong: " << pr.numWrong << " numAnswers: " << answers.size());
+
             const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
             currentModel = currentModel->getOrCreateNext(patternStr);
 
@@ -118,6 +124,10 @@ struct AnswersAndGuessesSolver {
 
     void makeGuess(AnswersVec &answers, GuessesVec &guesses, const AttemptStateToUse &state, IndexType guessIndex) const {
         const auto myGuessPatternInt = state.patternGetter.getPatternIntCached(guessIndex);
+        std::erase_if(answers, [&](const auto answerIndex) {
+            return PatternGetterCached::getPatternIntCached(answerIndex, guessIndex) != myGuessPatternInt;
+        });
+        /*
         std::size_t ind = 0;
         for (auto answerIndex: answers) {
             const auto patternInt = state.patternGetter.getPatternIntCached(answerIndex);
@@ -125,7 +135,7 @@ struct AnswersAndGuessesSolver {
                 answers[ind++] = answerIndex;
             }
         }
-        answers.resize(ind);        
+        answers.resize(ind);*/
         if constexpr (!isEasyMode) {
             for (std::size_t i = 0; i < answers.size(); ++i) guesses[i] = answers[i];
             guesses.resize(answers.size());
@@ -171,7 +181,7 @@ struct AnswersAndGuessesSolver {
 private:
     inline BestWordResult getGuessFunctionDecider(
         const AnswersVec &answers,
-        GuessesVec &guesses,
+        const GuessesVec &guesses,
         const RemDepthType remDepth,
         const int beta) {
         if constexpr (isGetLowestAverage) {
@@ -181,7 +191,7 @@ private:
         }
     }
 
-    BestWordResult getGuessForLeastWrong(const AnswersVec &answers, GuessesVec &guesses, const RemDepthType remDepth, int beta) {
+    BestWordResult getGuessForLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, int beta) {
         assertm(remDepth != 0, "no tries remaining");
         
         if (answers.size() == 0) return {0, 0};
@@ -213,28 +223,29 @@ private:
         }
 
         const bool shouldSort = true;
-        if (shouldSort) std::sort(guesses.begin(), guesses.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });   
+        auto guessesCopy = guesses;
+        if (shouldSort) std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
         // full search for remDepth >= 3
-        std::array<AnswersVec, NUM_PATTERNS>& myEquiv = myEquivCache[remDepth];
+        std::array<AnswersVec, NUM_PATTERNS> &myEquiv = myEquivCache[remDepth];
         BestWordResult res = getDefaultBestWordResult();
         res.wordIndex = answers[0];
 
-        std::size_t numGuessIndexesToCheck = std::min(guesses.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
+        std::size_t numGuessIndexesToCheck = std::min(guessesCopy.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
         const int initBeta = beta;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
-            const auto possibleGuess = guesses[myInd];
+            const auto possibleGuess = guessesCopy[myInd];
             int numWrongForThisGuess = 0;
             
             for (std::size_t i = 0; i < NUM_PATTERNS; ++i) myEquiv[i].resize(0);
-            for (auto answerIndex: answers) {
+            for (const auto answerIndex: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, possibleGuess);
                 myEquiv[patternInt].push_back(answerIndex);
             }
 
             for (std::size_t i = 0; i < NUM_PATTERNS-1; ++i) {
                 if (myEquiv[i].size() == 0) continue;
-                const auto pr = makeGuessAndRestoreAfter(myEquiv[i], guesses, remDepth, initBeta - numWrongForThisGuess);
+                const auto pr = makeGuessAndRestoreAfter(myEquiv[i], guessesCopy, remDepth, initBeta - numWrongForThisGuess);
                 const auto expNumWrongForSubtree = pr.numWrong;
                 numWrongForThisGuess += expNumWrongForSubtree;
                 if (numWrongForThisGuess >= beta) { numWrongForThisGuess = INF_INT; break; }
@@ -245,6 +256,8 @@ private:
                 res = newRes;
                 beta = std::min(beta, res.numWrong);
                 if (res.numWrong == 0) {
+                    //if (remDepth == 4) DEBUG("chosen at 4 " << res.wordIndex << " " << GlobalState.reverseIndexLookup[res.wordIndex] << " index: " << getFrac(myInd, numGuessIndexesToCheck) << " 118: " << myEquiv[118].size() << " considering #answers: " << answers.size());
+                    //if (remDepth >= 4) DEBUG("chosen at " << (int)remDepth << ": " << GlobalState.reverseIndexLookup[res.wordIndex] << " " << getFrac(myInd, numGuessIndexesToCheck));
                     return setCacheVal(key, res);
                 }
             }
@@ -393,7 +406,7 @@ private:
 
     inline BestWordResult makeGuessAndRestoreAfter(
         const AnswersVec &answers,
-        GuessesVec &guesses,
+        const GuessesVec &guesses,
         const RemDepthType remDepth,
         const int beta)
     {

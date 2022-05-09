@@ -1,1 +1,5050 @@
-"salet"
+{
+  "guess": "salet",
+  "next": {
+    "+++?_": "cigar",
+    "+++_?": "cigar",
+    "+++__": {
+      "guess": "naval",
+      "next": {
+        "?+__?": "cigar",
+        "_+?_?": "cigar",
+        "_+_+?": "cigar",
+        "_+_??": "cigar",
+        "_+__?": "cigar"
+      }
+    },
+    "++?__": "cigar",
+    "++_+_": {
+      "guess": "focal",
+      "next": {
+        "?__?_": "cigar",
+        "___?_": "cigar"
+      }
+    },
+    "++_??": "cigar",
+    "++_?_": "cigar",
+    "++__+": "cigar",
+    "++__?": {
+      "guess": "cigar",
+      "next": {
+        "_?_?_": "cigar",
+        "___?+": "cigar"
+      }
+    },
+    "++___": {
+      "guess": "copsy",
+      "next": {
+        "?__?+": "copsy",
+        "_?_?+": "copsy",
+        "_?_?_": "copsy",
+        "__+?+": "copsy",
+        "___++": "copsy",
+        "___?+": {
+          "guess": "poncy",
+          "next": {
+            "__+_+": "cigar",
+            "____+": "cigar"
+          }
+        },
+        "___?_": "copsy"
+      }
+    },
+    "+?+_+": "cigar",
+    "+?+__": "cigar",
+    "+????": {
+      "guess": "heath",
+      "next": {
+        "_?++_": "cigar",
+        "_?+?_": "cigar",
+        "_???_": "cigar"
+      }
+    },
+    "+???_": {
+      "guess": "blush",
+      "next": {
+        "_+_?_": "cigar",
+        "_?_??": "cigar",
+        "_?_?_": "cigar"
+      }
+    },
+    "+??_+": {
+      "guess": "humph",
+      "next": {
+        "?____": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "+??_?": {
+      "guess": "awake",
+      "next": {
+        "__+?_": "cigar",
+        "__+__": "cigar"
+      }
+    },
+    "+??__": {
+      "guess": "chill",
+      "next": {
+        "?__+_": {
+          "guess": "idyll",
+          "next": {
+            "_?_+_": "cigar",
+            "__?+_": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "?__?_": "chill",
+        "_+_++": "chill",
+        "_+__+": {
+          "guess": "clown",
+          "next": {
+            "_?+__": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "_?_?_": "chill",
+        "__??_": "chill",
+        "__?_+": "chill",
+        "___++": "chill",
+        "___?_": "chill",
+        "____+": "chill"
+      }
+    },
+    "+?_?+": "cigar",
+    "+?_??": {
+      "guess": "grike",
+      "next": {
+        "?___+": "grike",
+        "_?__+": "grike",
+        "___++": "grike",
+        "___?+": "grike",
+        "___??": "grike",
+        "____+": {
+          "guess": "skate",
+          "next": {
+            "+_+++": "cigar",
+            "+_+?+": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "drake",
+          "next": {
+            "?_?_?": "cigar",
+            "__?_?": "cigar"
+          }
+        }
+      }
+    },
+    "+?_?_": {
+      "guess": "pharm",
+      "next": {
+        "?++__": "pharm",
+        "?_++_": "pharm",
+        "?_+__": {
+          "guess": "drupe",
+          "next": {
+            "?__?+": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "?_??_": "pharm",
+        "?_?__": {
+          "guess": "hepar",
+          "next": {
+            "_++?_": "cigar",
+            "_??+_": "cigar"
+          }
+        },
+        "_+++_": "pharm",
+        "_++_?": "pharm",
+        "_++__": {
+          "guess": "dhikr",
+          "next": {
+            "?+___": "cigar",
+            "_+_+_": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_+??_": "pharm",
+        "__++_": {
+          "guess": "upran",
+          "next": {
+            "__???": "cigar",
+            "__??_": "cigar"
+          }
+        },
+        "__+__": {
+          "guess": "prahu",
+          "next": {
+            "__+_?": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "__???": "pharm",
+        "__??_": "pharm",
+        "__?__": {
+          "guess": "hepar",
+          "next": {
+            "_+_+_": "cigar",
+            "_?_+_": "cigar"
+          }
+        }
+      }
+    },
+    "+?__+": {
+      "guess": "champ",
+      "next": {
+        "?_+__": "cigar",
+        "_++__": "cigar",
+        "__+?_": "cigar",
+        "__+__": "cigar",
+        "__?__": "cigar"
+      }
+    },
+    "+?__?": {
+      "guess": "prink",
+      "next": {
+        "??___": "prink",
+        "?____": "prink",
+        "_??__": "prink",
+        "_?__+": "prink",
+        "_?___": {
+          "guess": "drawn",
+          "next": {
+            "_???_": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "__??_": "prink",
+        "__?__": "prink",
+        "___++": "prink",
+        "___+_": "prink",
+        "____+": "prink",
+        "_____": {
+          "guess": "frisk",
+          "next": {
+            "?__?_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        }
+      }
+    },
+    "+?___": {
+      "guess": "cramp",
+      "next": {
+        "??+__": {
+          "guess": "nymph",
+          "next": {
+            "_?___": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "????_": "cramp",
+        "???_+": "cramp",
+        "?_+++": "cramp",
+        "?_+?_": "cramp",
+        "?_+__": {
+          "guess": "charm",
+          "next": {
+            "?++__": "cigar",
+            "?_+__": "cigar"
+          }
+        },
+        "?_??_": "cramp",
+        "?_?__": "cramp",
+        "_?+?_": "cramp",
+        "_?+_+": "cramp",
+        "_?+_?": "cramp",
+        "_?+__": {
+          "guess": "chark",
+          "next": {
+            "_++++": "cigar",
+            "_+++_": "cigar"
+          }
+        },
+        "_??_?": "cramp",
+        "_??__": {
+          "guess": "crump",
+          "next": {
+            "_??__": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__+++": "cramp",
+        "__++_": "cramp",
+        "__+??": "cramp",
+        "__+?_": "cramp",
+        "__+_?": {
+          "guess": "churn",
+          "next": {
+            "____+": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "__+__": {
+          "guess": "chark",
+          "next": {
+            "_++_+": "cigar",
+            "_++_?": "cigar",
+            "_++__": "cigar",
+            "_?+__": "cigar",
+            "__+_?": "cigar"
+          }
+        },
+        "__?+_": "cramp",
+        "__?__": "cramp"
+      }
+    },
+    "+_+?_": "cigar",
+    "+_+_+": "cigar",
+    "+_+__": {
+      "guess": "moult",
+      "next": {
+        "_+_?_": "cigar",
+        "__?+_": "cigar",
+        "__??_": "cigar",
+        "___+_": "cigar",
+        "___?_": "cigar"
+      }
+    },
+    "+_?++": "cigar",
+    "+_?+?": "cigar",
+    "+_?+_": {
+      "guess": "stink",
+      "next": {
+        "+_+__": "cigar",
+        "+___+": "cigar",
+        "+____": "cigar"
+      }
+    },
+    "+_??+": {
+      "guess": "humph",
+      "next": {
+        "__?__": "cigar",
+        "___+_": "cigar",
+        "___?_": "cigar"
+      }
+    },
+    "+_???": {
+      "guess": "sissy",
+      "next": {
+        "+___?": "cigar",
+        "+____": "cigar"
+      }
+    },
+    "+_??_": {
+      "guess": "chime",
+      "next": {
+        "?_+_+": "chime",
+        "_+__?": {
+          "guess": "impel",
+          "next": {
+            "___?+": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "__+++": "chime",
+        "__+?+": "chime",
+        "__+_+": "chime",
+        "___??": "chime",
+        "____+": "chime",
+        "____?": {
+          "guess": "impel",
+          "next": {
+            "__??+": "cigar",
+            "___?+": "cigar"
+          }
+        }
+      }
+    },
+    "+_?_+": {
+      "guess": "humph",
+      "next": {
+        "___?_": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "+_?_?": {
+      "guess": "focal",
+      "next": {
+        "_?__+": "cigar",
+        "_?__?": "cigar",
+        "____+": "cigar"
+      }
+    },
+    "+_?__": {
+      "guess": "plink",
+      "next": {
+        "?+___": {
+          "guess": "knurl",
+          "next": {
+            "__++?": "cigar",
+            "__+_?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "??+__": "plink",
+        "???__": "plink",
+        "??___": "plink",
+        "_++++": "plink",
+        "_+++_": "plink",
+        "_++_+": "plink",
+        "_++__": "plink",
+        "_+_++": "plink",
+        "_+_+_": "plink",
+        "_+___": {
+          "guess": "plouk",
+          "next": {
+            "_++__": "cigar",
+            "_+_?_": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_?+_?": "plink",
+        "_?+__": {
+          "guess": "prink",
+          "next": {
+            "_?+__": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "_?__+": "plink",
+        "_?__?": "plink",
+        "_?___": {
+          "guess": "chill",
+          "next": {
+            "?__+_": "cigar",
+            "?___+": "cigar",
+            "_+_+_": "cigar",
+            "___+_": "cigar"
+          }
+        }
+      }
+    },
+    "+__++": {
+      "guess": "humph",
+      "next": {
+        "?____": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "+__+?": {
+      "guess": "dwarf",
+      "next": {
+        "?____": "cigar",
+        "___?_": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "+__+_": {
+      "guess": "hewer",
+      "next": {
+        "??_++": "hewer",
+        "??_+_": {
+          "guess": "pheer",
+          "next": {
+            "?+++_": "cigar",
+            "_+++_": "cigar"
+          }
+        },
+        "?_?+?": "hewer",
+        "?__+_": "hewer",
+        "_++++": "hewer",
+        "_+_++": "hewer",
+        "_+_+_": {
+          "guess": "nerve",
+          "next": {
+            "?+_??": "cigar",
+            "?+__?": "cigar"
+          }
+        },
+        "_??+_": "hewer",
+        "_?_++": "hewer",
+        "_?_+?": {
+          "guess": "pheer",
+          "next": {
+            "?_?+?": "cigar",
+            "__?+?": "cigar"
+          }
+        },
+        "_?_+_": "hewer",
+        "__+++": "hewer",
+        "__?+?": "hewer",
+        "__?+_": "hewer",
+        "___++": {
+          "guess": "thrip",
+          "next": {
+            "__+__": "cigar",
+            "__??_": "cigar",
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "___+?": "hewer",
+        "___+_": "hewer"
+      }
+    },
+    "+__?+": {
+      "guess": "humph",
+      "next": {
+        "___+_": "cigar",
+        "___?_": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "+__??": {
+      "guess": "mourn",
+      "next": {
+        "??___": "mourn",
+        "?____": "mourn",
+        "_?_+_": "mourn",
+        "_?__?": "mourn",
+        "_?___": {
+          "guess": "korun",
+          "next": {
+            "??___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "minor",
+          "next": {
+            "_?___": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "___++": "mourn",
+        "____+": "mourn",
+        "_____": "mourn"
+      }
+    },
+    "+__?_": {
+      "guess": "prink",
+      "next": {
+        "??+__": "prink",
+        "??___": {
+          "guess": "crine",
+          "next": {
+            "_?__+": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "?_++_": "prink",
+        "?_+?_": "prink",
+        "?_+_?": "prink",
+        "?_+__": "prink",
+        "?__+_": "prink",
+        "?___+": "prink",
+        "?___?": "prink",
+        "?____": "prink",
+        "_?+__": "prink",
+        "_??__": "prink",
+        "_?_?_": "prink",
+        "_?___": {
+          "guess": "chere",
+          "next": {
+            "?__++": "cigar",
+            "_+_++": "cigar",
+            "__??+": "cigar",
+            "__??_": "cigar",
+            "___++": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "__++_": {
+          "guess": "rhino",
+          "next": {
+            "_+++_": "cigar",
+            "__++_": "cigar"
+          }
+        },
+        "__+?_": "prink",
+        "__+__": "prink",
+        "__??_": {
+          "guess": "crine",
+          "next": {
+            "?_??+": "cigar",
+            "__??+": "cigar"
+          }
+        },
+        "__?_+": "prink",
+        "__?__": {
+          "guess": "oping",
+          "next": {
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "___+_": {
+          "guess": "rhino",
+          "next": {
+            "_+_+?": "cigar",
+            "___+?": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "___?_": "prink",
+        "____?": "prink",
+        "_____": {
+          "guess": "oping",
+          "next": {
+            "?____": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "+___+": {
+      "guess": "churn",
+      "next": {
+        "?_?__": "churn",
+        "_++_?": "churn",
+        "_+?__": "churn",
+        "_+_+_": {
+          "guess": "rhino",
+          "next": {
+            "?++__": "cigar",
+            "?+__?": "cigar"
+          }
+        },
+        "_+___": {
+          "guess": "rhino",
+          "next": {
+            "_++__": "cigar",
+            "_+__?": "cigar"
+          }
+        },
+        "_?___": "churn",
+        "__++_": "churn",
+        "__+_?": "churn",
+        "__??_": "churn",
+        "__?_?": "churn",
+        "__?__": {
+          "guess": "prion",
+          "next": {
+            "?__?_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "___+?": "churn",
+        "___+_": {
+          "guess": "rhino",
+          "next": {
+            "?_+__": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "____?": "churn",
+        "_____": "churn"
+      }
+    },
+    "+___?": {
+      "guess": "yoick",
+      "next": {
+        "?+___": "yoick",
+        "??___": {
+          "guess": "korun",
+          "next": {
+            "_??__": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "?_?__": "yoick",
+        "?____": "yoick",
+        "_+___": {
+          "guess": "korun",
+          "next": {
+            "_+_?_": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_???_": "yoick",
+        "_?_++": "yoick",
+        "_?__+": "yoick",
+        "_?___": {
+          "guess": "yupon",
+          "next": {
+            "__?+_": "cigar",
+            "__??_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "__+++": "yoick",
+        "__+_+": "yoick",
+        "__+__": {
+          "guess": "goyim",
+          "next": {
+            "?__?_": "cigar",
+            "___??": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "goyim",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "___++": "yoick",
+        "____+": "yoick",
+        "_____": {
+          "guess": "goyim",
+          "next": {
+            "?____": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "+____": {
+      "guess": "unrip",
+      "next": {
+        "?+___": {
+          "guess": "pronk",
+          "next": {
+            "___?+": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "???_?": "unrip",
+        "??_?_": "unrip",
+        "??__?": "unrip",
+        "??___": {
+          "guess": "choky",
+          "next": {
+            "__?__": "cigar",
+            "___?_": "cigar",
+            "____+": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "?_+_+": "unrip",
+        "?_+__": {
+          "guess": "bronc",
+          "next": {
+            "??__?": "cigar",
+            "??___": "cigar",
+            "_?__?": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "?_?__": "unrip",
+        "?__+_": "unrip",
+        "?__?_": "unrip",
+        "?____": {
+          "guess": "pronk",
+          "next": {
+            "____+": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_+_?_": "unrip",
+        "_+__+": "unrip",
+        "_+___": "unrip",
+        "_??__": {
+          "guess": "whiny",
+          "next": {
+            "?__?_": "cigar",
+            "_+_?_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "_?_+_": "unrip",
+        "_?_??": "unrip",
+        "_?_?_": {
+          "guess": "horny",
+          "next": {
+            "?__++": "cigar",
+            "_?_?_": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "_?__?": "unrip",
+        "_?___": {
+          "guess": "horny",
+          "next": {
+            "??_?_": "cigar",
+            "_?_??": "cigar",
+            "_?_?_": "cigar"
+          }
+        },
+        "__++?": "unrip",
+        "__+__": "unrip",
+        "__??_": {
+          "guess": "unhip",
+          "next": {
+            "__??_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "__?__": "unrip",
+        "___?+": "unrip",
+        "___??": {
+          "guess": "pronk",
+          "next": {
+            "?___?": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "horny",
+          "next": {
+            "?____": "cigar",
+            "____+": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "corny",
+          "next": {
+            "??___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "pronk",
+          "next": {
+            "?_+_+": "cigar",
+            "?_+__": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "choky",
+          "next": {
+            "?++?_": "cigar",
+            "?_+?_": "cigar",
+            "?_+__": "cigar",
+            "_++?_": "cigar",
+            "_++_+": "cigar",
+            "__+++": "cigar",
+            "__?_+": "cigar"
+          }
+        }
+      }
+    },
+    "?++?_": "cigar",
+    "?++__": "cigar",
+    "?+?+_": "cigar",
+    "?+??_": "cigar",
+    "?+?__": {
+      "guess": "naval",
+      "next": {
+        "++_++": "cigar",
+        "_+_++": "cigar",
+        "_+__+": "cigar",
+        "_+__?": "cigar"
+      }
+    },
+    "?+_??": {
+      "guess": "bench",
+      "next": {
+        "+?___": "bench",
+        "_?_?_": "bench",
+        "_?__?": "bench",
+        "_?___": {
+          "guess": "whelp",
+          "next": {
+            "+_?__": "cigar",
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        }
+      }
+    },
+    "?+_?_": {
+      "guess": "humph",
+      "next": {
+        "_?_?_": "cigar",
+        "_?___": "cigar",
+        "__?__": "cigar",
+        "___?_": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "?+__+": "cigar",
+    "?+__?": {
+      "guess": "pithy",
+      "next": {
+        "+_+_+": "pithy",
+        "+_?_+": "pithy",
+        "+_?__": "pithy",
+        "__??+": "pithy",
+        "__?_+": {
+          "guess": "nymph",
+          "next": {
+            "+?___": "cigar",
+            "_?___": "cigar"
+          }
+        }
+      }
+    },
+    "?+___": {
+      "guess": "crimp",
+      "next": {
+        "?_?__": "crimp",
+        "_?_?_": "crimp",
+        "_?__?": "crimp",
+        "_?___": "crimp",
+        "__+__": "crimp",
+        "__?__": {
+          "guess": "missy",
+          "next": {
+            "_?+?_": "cigar",
+            "_?+__": "cigar"
+          }
+        },
+        "___?_": "crimp",
+        "____?": "crimp",
+        "_____": "crimp"
+      }
+    },
+    "????+": "cigar",
+    "????_": {
+      "guess": "awake",
+      "next": {
+        "+___+": "cigar",
+        "__+_+": "cigar",
+        "__+_?": "cigar"
+      }
+    },
+    "???_+": "cigar",
+    "???__": {
+      "guess": "chals",
+      "next": {
+        "+?+??": "cigar",
+        "+_+?+": "cigar",
+        "+_+??": "cigar",
+        "_?+??": "cigar",
+        "__++?": "cigar",
+        "__+?+": "cigar",
+        "__+??": "cigar",
+        "__???": "cigar"
+      }
+    },
+    "??_++": "cigar",
+    "??_+_": {
+      "guess": "humph",
+      "next": {
+        "?____": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "??_?+": {
+      "guess": "batty",
+      "next": {
+        "+??__": "cigar",
+        "_??_?": "cigar",
+        "_??__": "cigar"
+      }
+    },
+    "??_??": "cigar",
+    "??_?_": {
+      "guess": "crash",
+      "next": {
+        "+_++?": "crash",
+        "+_++_": "crash",
+        "_+++_": "crash",
+        "_+?+_": {
+          "guess": "acari",
+          "next": {
+            "+__??": "cigar",
+            "+__?_": "cigar"
+          }
+        },
+        "__++?": "crash",
+        "__++_": "crash",
+        "__+?_": "crash",
+        "__?+_": {
+          "guess": "brash",
+          "next": {
+            "?_?+_": "cigar",
+            "__?+_": "cigar"
+          }
+        },
+        "__??_": {
+          "guess": "acari",
+          "next": {
+            "+___?": "cigar",
+            "?____": "cigar"
+          }
+        }
+      }
+    },
+    "??__+": {
+      "guess": "trace",
+      "next": {
+        "+_+__": "cigar",
+        "??+__": "cigar",
+        "?_+?_": "cigar",
+        "?_+__": "cigar",
+        "?_??_": "cigar",
+        "?_?__": "cigar"
+      }
+    },
+    "??__?": {
+      "guess": "sissy",
+      "next": {
+        "_++__": "cigar",
+        "___++": "cigar",
+        "___+_": "cigar"
+      }
+    },
+    "??___": {
+      "guess": "crags",
+      "next": {
+        "+++_+": "crags",
+        "+++_?": "crags",
+        "+_+_+": "crags",
+        "+_+_?": "crags",
+        "_++?+": "crags",
+        "_++??": "crags",
+        "_++_+": "crags",
+        "_++_?": "crags",
+        "_+?_?": "crags",
+        "__+??": "crags",
+        "__+_+": "crags",
+        "__+_?": {
+          "guess": "brush",
+          "next": {
+            "__?++": "cigar",
+            "__?+_": "cigar",
+            "___++": "cigar"
+          }
+        },
+        "__?_+": {
+          "guess": "crabs",
+          "next": {
+            "__??+": "cigar",
+            "__?_+": "cigar"
+          }
+        },
+        "__?_?": "crags"
+      }
+    },
+    "?_+++": "cigar",
+    "?_+?_": {
+      "guess": "rebut",
+      "next": {
+        "_+___": "cigar",
+        "_?_?_": "cigar"
+      }
+    },
+    "?_?+_": "cigar",
+    "?_??_": {
+      "guess": "blush",
+      "next": {
+        "++_+_": "cigar",
+        "_+_++": "cigar",
+        "_+_+_": "cigar",
+        "_?++_": "cigar",
+        "_?_+_": "cigar"
+      }
+    },
+    "?_?_?": "cigar",
+    "?_?__": {
+      "guess": "boeuf",
+      "next": {
+        "+__?_": "cigar",
+        "+____": "cigar",
+        "_+_+_": "cigar",
+        "_+_?_": "cigar",
+        "_?__?": "cigar",
+        "_?___": "cigar",
+        "___+_": "cigar",
+        "___??": "cigar",
+        "___?_": "cigar"
+      }
+    },
+    "?__++": {
+      "guess": "round",
+      "next": {
+        "+____": "cigar",
+        "_?_?_": "cigar",
+        "__??_": "cigar",
+        "__?__": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "?__+?": "cigar",
+    "?__+_": {
+      "guess": "rumor",
+      "next": {
+        "+___+": "cigar",
+        "+____": "cigar",
+        "_+___": "cigar",
+        "_?__+": "cigar",
+        "__?_+": "cigar",
+        "___?+": "cigar",
+        "___?_": "cigar",
+        "____+": "cigar"
+      }
+    },
+    "?__?+": {
+      "guess": "quich",
+      "next": {
+        "++___": "cigar",
+        "_+___": "cigar",
+        "__+_?": "cigar",
+        "__+__": "cigar",
+        "___??": "cigar",
+        "___?_": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "?__??": {
+      "guess": "troth",
+      "next": {
+        "+?___": "cigar",
+        "+_+_?": "cigar",
+        "+__+_": "cigar",
+        "+___?": "cigar",
+        "+____": "cigar",
+        "?_?_?": "cigar",
+        "?____": "cigar",
+        "__?+_": "cigar",
+        "___+_": "cigar"
+      }
+    },
+    "?__?_": {
+      "guess": "rhone",
+      "next": {
+        "+_?_+": "rhone",
+        "+__?+": "rhone",
+        "+__??": "rhone",
+        "+___+": "rhone",
+        "+___?": "rhone",
+        "???_+": "rhone",
+        "??__?": "rhone",
+        "?_+_+": "rhone",
+        "?_?_+": "rhone",
+        "?_?_?": "rhone",
+        "?__?+": "rhone",
+        "?___+": {
+          "guess": "cornu",
+          "next": {
+            "+_+_?": "cigar",
+            "__+_?": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "?___?": {
+          "guess": "croup",
+          "next": {
+            "++___": "cigar",
+            "_+__?": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_++_+": {
+          "guess": "cornu",
+          "next": {
+            "+?___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "_+__?": "rhone",
+        "_??_+": "rhone",
+        "__+?+": "rhone",
+        "__+_+": {
+          "guess": "rogue",
+          "next": {
+            "_+?_+": "cigar",
+            "_+__+": "cigar"
+          }
+        },
+        "__??+": "rhone",
+        "__?_+": {
+          "guess": "porin",
+          "next": {
+            "++_?_": "cigar",
+            "++___": "cigar",
+            "?+___": "cigar",
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__?_?": "rhone",
+        "___?+": {
+          "guess": "cornu",
+          "next": {
+            "___??": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "croup",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "cornu",
+          "next": {
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "?___+": {
+      "guess": "moria",
+      "next": {
+        "++_?_": "moria",
+        "+__?_": "moria",
+        "_++__": "moria",
+        "_+?__": "moria",
+        "_+_+_": "moria",
+        "_+_?_": {
+          "guess": "frosh",
+          "next": {
+            "+_?+_": "cigar",
+            "__?+?": "cigar",
+            "__?+_": "cigar"
+          }
+        },
+        "_+___": {
+          "guess": "boric",
+          "next": {
+            "++___": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_??__": "moria",
+        "_?___": "moria",
+        "__+?_": "moria",
+        "__+__": "moria",
+        "__??_": "moria",
+        "__?__": {
+          "guess": "curio",
+          "next": {
+            "+??__": "cigar",
+            "_??__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "___+_": "moria",
+        "___?_": "moria"
+      }
+    },
+    "?___?": {
+      "guess": "gourd",
+      "next": {
+        "+??__": "cigar",
+        "+_?__": "cigar",
+        "_+??_": "cigar",
+        "_+_?_": "cigar",
+        "__+?_": "cigar",
+        "__??_": "cigar",
+        "__?_?": "cigar",
+        "__?__": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "?____": {
+      "guess": "micro",
+      "next": {
+        "++___": {
+          "guess": "mucho",
+          "next": {
+            "+?___": "cigar",
+            "+____": "cigar"
+          }
+        },
+        "+??__": "micro",
+        "+_+__": "micro",
+        "+___?": "micro",
+        "+____": {
+          "guess": "mucho",
+          "next": {
+            "++_+_": "cigar",
+            "++___": "cigar"
+          }
+        },
+        "??_?_": "micro",
+        "?___?": "micro",
+        "?____": "micro",
+        "_++__": "micro",
+        "_+?_+": "micro",
+        "_+_??": "micro",
+        "_+_?_": {
+          "guess": "mucho",
+          "next": {
+            "_?___": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_+__?": {
+          "guess": "mucor",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "_+___": {
+          "guess": "hissy",
+          "next": {
+            "?++_+": "cigar",
+            "_++_+": "cigar",
+            "_+_++": "cigar"
+          }
+        },
+        "_???_": "micro",
+        "_?_?_": {
+          "guess": "bisom",
+          "next": {
+            "+??__": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "_?__?": "micro",
+        "_?___": {
+          "guess": "mucho",
+          "next": {
+            "_?___": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "__+_?": "micro",
+        "__???": "micro",
+        "__??_": "micro",
+        "___+_": "micro",
+        "___??": {
+          "guess": "misgo",
+          "next": {
+            "__???": "cigar",
+            "__?_?": "cigar"
+          }
+        },
+        "___?_": "micro",
+        "____?": {
+          "guess": "mucho",
+          "next": {
+            "_?__?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "kophs",
+          "next": {
+            "?__??": "cigar",
+            "?___?": "cigar",
+            "__+_?": "cigar",
+            "__?+?": "cigar",
+            "___+?": "cigar",
+            "___??": "cigar",
+            "____?": "cigar"
+          }
+        }
+      }
+    },
+    "_++++": "cigar",
+    "_+++_": {
+      "guess": "rebut",
+      "next": {
+        "???__": "cigar",
+        "??___": "cigar"
+      }
+    },
+    "_++?_": {
+      "guess": "humph",
+      "next": {
+        "+____": "cigar",
+        "_?___": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "_++_?": {
+      "guess": "batty",
+      "next": {
+        "_+?_+": "cigar",
+        "_+?__": "cigar",
+        "_+_+_": "cigar"
+      }
+    },
+    "_++__": {
+      "guess": "dowry",
+      "next": {
+        "+___+": "cigar",
+        "?____": "cigar",
+        "_?_?_": "cigar",
+        "___?+": "cigar",
+        "___?_": "cigar",
+        "____+": "cigar"
+      }
+    },
+    "_+?+?": "cigar",
+    "_+?+_": {
+      "guess": "lingy",
+      "next": {
+        "+_?__": "lingy",
+        "+__?_": "lingy",
+        "+___?": "lingy",
+        "+____": {
+          "guess": "nymph",
+          "next": {
+            "___?_": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "?_+__": "lingy",
+        "?_?__": "lingy",
+        "?__?_": {
+          "guess": "ghyll",
+          "next": {
+            "+___+": "cigar",
+            "?___+": "cigar"
+          }
+        },
+        "?____": {
+          "guess": "lynch",
+          "next": {
+            "?__?_": "cigar",
+            "?___?": "cigar"
+          }
+        }
+      }
+    },
+    "_+???": {
+      "guess": "blush",
+      "next": {
+        "??___": "cigar",
+        "_?__?": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "_+??_": {
+      "guess": "creme",
+      "next": {
+        "+___+": "creme",
+        "?___+": "creme",
+        "_??__": "creme",
+        "_?__+": "creme",
+        "__?_+": "creme",
+        "___?+": "creme",
+        "____+": {
+          "guess": "cadge",
+          "next": {
+            "_++_+": "cigar",
+            "_+__+": "cigar"
+          }
+        }
+      }
+    },
+    "_+?_+": {
+      "guess": "focal",
+      "next": {
+        "+__??": "cigar",
+        "___??": "cigar"
+      }
+    },
+    "_+?_?": {
+      "guess": "focal",
+      "next": {
+        "+__++": "cigar",
+        "__???": "cigar",
+        "___++": "cigar"
+      }
+    },
+    "_+?__": {
+      "guess": "bingy",
+      "next": {
+        "+_+__": "bingy",
+        "+___+": "bingy",
+        "?____": {
+          "guess": "linac",
+          "next": {
+            "+__?_": "cigar",
+            "?__+?": "cigar"
+          }
+        },
+        "_?_?+": "bingy",
+        "_?__+": "bingy",
+        "_?___": "bingy",
+        "__+_+": {
+          "guess": "linac",
+          "next": {
+            "+_+?_": "cigar",
+            "?_+?_": "cigar"
+          }
+        },
+        "__+__": "bingy",
+        "__?__": "bingy",
+        "___+_": "bingy",
+        "___?+": "bingy",
+        "____+": "bingy",
+        "_____": {
+          "guess": "nicol",
+          "next": {
+            "__?++": "cigar",
+            "__?_?": "cigar",
+            "____+": "cigar",
+            "____?": "cigar"
+          }
+        }
+      }
+    },
+    "_+_++": {
+      "guess": "cigar",
+      "next": {
+        "+__?_": "cigar",
+        "?__?_": "cigar"
+      }
+    },
+    "_+_+?": {
+      "guess": "there",
+      "next": {
+        "+_??_": {
+          "guess": "tramp",
+          "next": {
+            "+???_": "cigar",
+            "+??_?": "cigar",
+            "+??__": "cigar"
+          }
+        },
+        "+_?__": "there",
+        "????_": "there",
+        "?_???": "there",
+        "?_??_": {
+          "guess": "terce",
+          "next": {
+            "????_": "cigar",
+            "???__": "cigar"
+          }
+        },
+        "?_?_?": "there",
+        "?_?__": "there"
+      }
+    },
+    "_+_+_": {
+      "guess": "gormy",
+      "next": {
+        "+_??_": "gormy",
+        "+_?_?": "gormy",
+        "+_?__": "gormy",
+        "?_?__": {
+          "guess": "wormy",
+          "next": {
+            "+_?__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "?___+": "gormy",
+        "_?_?_": "gormy",
+        "_?___": "gormy",
+        "__+?_": "gormy",
+        "__+__": {
+          "guess": "rumpy",
+          "next": {
+            "+____": "cigar",
+            "?__?_": "cigar"
+          }
+        },
+        "__??_": {
+          "guess": "rumpy",
+          "next": {
+            "+_+__": "cigar",
+            "?_?__": "cigar"
+          }
+        },
+        "__?_?": "gormy",
+        "__?__": {
+          "guess": "caper",
+          "next": {
+            "+++++": "caper",
+            "?+_++": "caper",
+            "_++++": "caper",
+            "_+_++": {
+              "guess": "vocab",
+              "next": {
+                "?__?_": "cigar",
+                "___??": "cigar",
+                "___?_": "cigar"
+              }
+            },
+            "_+_+?": "caper"
+          }
+        },
+        "____?": "gormy",
+        "_____": {
+          "guess": "wormy",
+          "next": {
+            "+____": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "_+_??": {
+      "guess": "rebut",
+      "next": {
+        "??__?": "cigar",
+        "_??_?": "cigar",
+        "_?_??": "cigar"
+      }
+    },
+    "_+_?_": {
+      "guess": "crumb",
+      "next": {
+        "+?___": "crumb",
+        "+____": {
+          "guess": "cumin",
+          "next": {
+            "+___?": "cigar",
+            "+____": "cigar"
+          }
+        },
+        "??___": "crumb",
+        "?____": "crumb",
+        "_?__?": "crumb",
+        "_?___": "crumb",
+        "__+?_": "crumb",
+        "__+__": {
+          "guess": "brugh",
+          "next": {
+            "__++_": "cigar",
+            "__+?_": "cigar"
+          }
+        },
+        "__?__": "crumb",
+        "___??": "crumb",
+        "___?_": {
+          "guess": "cumin",
+          "next": {
+            "__??_": "cigar",
+            "__?_?": "cigar"
+          }
+        },
+        "____?": "crumb",
+        "_____": {
+          "guess": "cumin",
+          "next": {
+            "___??": "cigar",
+            "___?_": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "_+__+": {
+      "guess": "thing",
+      "next": {
+        "+_++_": "thing",
+        "+_?__": "thing",
+        "+__+_": "thing",
+        "+____": "thing",
+        "???__": "thing",
+        "??_+_": "thing",
+        "??___": "thing",
+        "?_++_": {
+          "guess": "thrip",
+          "next": {
+            "?__??": "cigar",
+            "?__?_": "cigar"
+          }
+        },
+        "?__+?": "thing",
+        "?__+_": {
+          "guess": "divan",
+          "next": {
+            "+__??": "cigar",
+            "__???": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "?___?": "thing",
+        "?____": {
+          "guess": "touch",
+          "next": {
+            "?_??_": "cigar",
+            "?__?_": "cigar"
+          }
+        }
+      }
+    },
+    "_+__?": {
+      "guess": "corby",
+      "next": {
+        "+___+": "corby",
+        "+____": {
+          "guess": "borty",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?__?_": "corby",
+        "?___+": "corby",
+        "?____": {
+          "guess": "whomp",
+          "next": {
+            "+?___": "cigar",
+            "_?_?_": "cigar",
+            "_?__?": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "_??__": "corby",
+        "_?_?_": {
+          "guess": "borty",
+          "next": {
+            "+?_?_": "cigar",
+            "??_?_": "cigar"
+          }
+        },
+        "_?___": {
+          "guess": "tutor",
+          "next": {
+            "+__?_": "cigar",
+            "__+?_": "cigar"
+          }
+        },
+        "__+_+": {
+          "guess": "throw",
+          "next": {
+            "+_+__": "cigar",
+            "?_+_?": "cigar",
+            "?_+__": "cigar"
+          }
+        },
+        "__?_+": "corby",
+        "__?__": "corby",
+        "___++": "corby",
+        "___?+": "corby",
+        "____+": {
+          "guess": "feign",
+          "next": {
+            "+____": "feign",
+            "?____": "feign",
+            "___+?": "feign",
+            "____?": "feign",
+            "_____": {
+              "guess": "pinto",
+              "next": {
+                "+__+_": "cigar",
+                "___+_": "cigar"
+              }
+            }
+          }
+        },
+        "_____": {
+          "guess": "borty",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        }
+      }
+    },
+    "_+___": {
+      "guess": "corny",
+      "next": {
+        "+?+__": "corny",
+        "+?_?_": "corny",
+        "+?___": "corny",
+        "+_+_+": "corny",
+        "+_??_": "corny",
+        "+__++": "corny",
+        "+__?+": "corny",
+        "+__?_": "corny",
+        "+___+": {
+          "guess": "dormy",
+          "next": {
+            "?___+": "cigar",
+            "____+": "cigar"
+          }
+        },
+        "???__": "corny",
+        "??_?_": "corny",
+        "??___": {
+          "guess": "gyron",
+          "next": {
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?_+__": "corny",
+        "?_??_": "corny",
+        "?__?+": "corny",
+        "?__?_": {
+          "guess": "porny",
+          "next": {
+            "+__?_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?___+": "corny",
+        "?____": {
+          "guess": "corni",
+          "next": {
+            "?___?": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "_?+?_": "corny",
+        "_????": "corny",
+        "_???_": "corny",
+        "_??_?": "corny",
+        "_??__": {
+          "guess": "rumpo",
+          "next": {
+            "+___+": "cigar",
+            "+___?": "cigar",
+            "?_?_?": "cigar",
+            "?__??": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "_?_?_": {
+          "guess": "gyron",
+          "next": {
+            "?__++": "cigar",
+            "?__??": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "_?__?": "corny",
+        "_?___": "corny",
+        "__+_+": {
+          "guess": "impro",
+          "next": {
+            "_?_+_": "cigar",
+            "__?+_": "cigar",
+            "__??_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "__+__": {
+          "guess": "porny",
+          "next": {
+            "+_+__": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "__?++": "corny",
+        "__??+": "corny",
+        "__??_": "corny",
+        "__?_+": {
+          "guess": "chynd",
+          "next": {
+            "_??__": "cigar",
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "bidon",
+          "next": {
+            "???__": "cigar",
+            "??___": "cigar",
+            "_?+__": "cigar",
+            "_??__": "cigar",
+            "__+__": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "___++": {
+          "guess": "nomic",
+          "next": {
+            "+____": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "___+_": "corny",
+        "___?+": {
+          "guess": "dormy",
+          "next": {
+            "+___+": "cigar",
+            "?___+": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "gyron",
+          "next": {
+            "?___+": "cigar",
+            "?___?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "pudgy",
+          "next": {
+            "+_+_+": "pudgy",
+            "?___+": "pudgy",
+            "_???+": "pudgy",
+            "__+_+": "pudgy",
+            "__?_+": "pudgy",
+            "___++": "pudgy",
+            "___?+": "pudgy",
+            "____+": {
+              "guess": "midge",
+              "next": {
+                "+____": "cigar",
+                "_____": "cigar"
+              }
+            }
+          }
+        },
+        "____?": "corny",
+        "_____": {
+          "guess": "goyim",
+          "next": {
+            "+___?": "cigar",
+            "?___?": "cigar",
+            "___++": "cigar",
+            "___+?": "cigar",
+            "___+_": "cigar",
+            "____+": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "_?++_": {
+      "guess": "rebut",
+      "next": {
+        "_??__": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "_?+?+": "cigar",
+    "_?+??": "cigar",
+    "_?+?_": {
+      "guess": "marry",
+      "next": {
+        "_??_+": "cigar",
+        "_??__": "cigar",
+        "_?__+": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "_?+_+": "cigar",
+    "_?+__": {
+      "guess": "allay",
+      "next": {
+        "+++++": "allay",
+        "+++_+": "allay",
+        "+++__": "allay",
+        "+_+__": "allay",
+        "??+__": "allay",
+        "?_+__": "allay",
+        "_?++_": "allay",
+        "__+++": "allay",
+        "__++?": "allay",
+        "__++_": {
+          "guess": "molly",
+          "next": {
+            "+++__": "cigar",
+            "_++__": "cigar"
+          }
+        }
+      }
+    },
+    "_??+?": "cigar",
+    "_??+_": {
+      "guess": "cigar",
+      "next": {
+        "_?_?_": "cigar",
+        "__+?_": "cigar"
+      }
+    },
+    "_???+": {
+      "guess": "recap",
+      "next": {
+        "??_?_": "recap",
+        "_+_??": "recap",
+        "_+_?_": {
+          "guess": "reply",
+          "next": {
+            "_+_+_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "_??+_": "recap",
+        "_?_+?": "recap",
+        "_?_+_": "recap",
+        "_?_?_": "recap"
+      }
+    },
+    "_????": {
+      "guess": "champ",
+      "next": {
+        "__+_?": "cigar",
+        "__+__": "cigar",
+        "__??_": "cigar",
+        "__?_?": "cigar",
+        "__?__": "cigar"
+      }
+    },
+    "_???_": {
+      "guess": "gnarl",
+      "next": {
+        "+??_?": "gnarl",
+        "+_++?": "gnarl",
+        "+_+_?": {
+          "guess": "gland",
+          "next": {
+            "+++_?": "cigar",
+            "+++__": "cigar"
+          }
+        },
+        "+_?_?": "gnarl",
+        "?+?_?": "gnarl",
+        "?_??+": "gnarl",
+        "?_?_+": "gnarl",
+        "?_?_?": {
+          "guess": "glare",
+          "next": {
+            "?+?_+": "cigar",
+            "???_+": "cigar"
+          }
+        },
+        "_+?_?": "gnarl",
+        "_?++?": "gnarl",
+        "_?+_?": "gnarl",
+        "_???+": "gnarl",
+        "_??_+": "gnarl",
+        "_??_?": {
+          "guess": "glare",
+          "next": {
+            "_+?_+": "cigar",
+            "_+?_?": "cigar"
+          }
+        },
+        "__+++": "gnarl",
+        "__++?": {
+          "guess": "flare",
+          "next": {
+            "+++++": "flare",
+            "_++++": "cigar"
+          }
+        },
+        "__+??": "gnarl",
+        "__+_+": "gnarl",
+        "__+_?": {
+          "guess": "fehme",
+          "next": {
+            "+__++": "fehme",
+            "+___+": "fehme",
+            "?+___": "fehme",
+            "_+?__": "fehme",
+            "_+_?_": "fehme",
+            "_+__+": "fehme",
+            "_+___": "fehme",
+            "__?_+": "fehme",
+            "___++": "fehme",
+            "____+": {
+              "guess": "medic",
+              "next": {
+                "_??__": "cigar",
+                "_?__?": "cigar",
+                "_?___": "cigar"
+              }
+            }
+          }
+        },
+        "__??+": "gnarl",
+        "__???": "gnarl",
+        "__?_+": {
+          "guess": "deman",
+          "next": {
+            "++_+_": "cigar",
+            "?+?+_": "cigar",
+            "?+_+_": "cigar",
+            "??_+_": "cigar",
+            "_+_+_": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "__?_?": {
+          "guess": "spike",
+          "next": {
+            "_+__+": "cigar",
+            "_?__+": "cigar",
+            "_?__?": "cigar",
+            "__+++": "cigar",
+            "__+_+": "cigar",
+            "___??": "cigar",
+            "____+": "cigar"
+          }
+        }
+      }
+    },
+    "_??_+": {
+      "guess": "fling",
+      "next": {
+        "++___": "cigar",
+        "?+___": "cigar",
+        "_+?__": "cigar",
+        "_+_+_": "cigar",
+        "_+__?": "cigar",
+        "_+___": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "_??_?": {
+      "guess": "douar",
+      "next": {
+        "?__+_": "douar",
+        "_+_+_": {
+          "guess": "iotas",
+          "next": {
+            "_+++_": "cigar",
+            "_+?+_": "cigar"
+          }
+        },
+        "_+_?_": "douar",
+        "_?_+_": "douar",
+        "_?_?_": "douar",
+        "__?+_": "douar",
+        "__???": "douar",
+        "___++": "douar",
+        "___+?": "douar",
+        "___+_": "douar",
+        "___??": {
+          "guess": "iotas",
+          "next": {
+            "?_??_": "cigar",
+            "__??_": "cigar"
+          }
+        },
+        "___?_": "douar"
+      }
+    },
+    "_??__": {
+      "guess": "corni",
+      "next": {
+        "+++__": "corni",
+        "+?___": "corni",
+        "+_?__": "corni",
+        "+__+_": {
+          "guess": "corgi",
+          "next": {
+            "+__?_": "cigar",
+            "+____": "cigar"
+          }
+        },
+        "+___?": "corni",
+        "+____": {
+          "guess": "claim",
+          "next": {
+            "+++_?": "cigar",
+            "+++__": "cigar",
+            "+?+__": "cigar"
+          }
+        },
+        "?+___": {
+          "guess": "flail",
+          "next": {
+            "+_?_+": "cigar",
+            "_??_+": "cigar",
+            "__?_+": "cigar"
+          }
+        },
+        "?___?": "corni",
+        "?____": {
+          "guess": "robin",
+          "next": {
+            "__?__": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_++__": "corni",
+        "_+?__": "corni",
+        "_+_?_": "corni",
+        "_+__?": "corni",
+        "_+___": {
+          "guess": "claim",
+          "next": {
+            "_?+_?": "cigar",
+            "_?+__": "cigar",
+            "_??_?": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "_??__": "corni",
+        "_?_+_": "corni",
+        "_?__?": "corni",
+        "_?___": {
+          "guess": "final",
+          "next": {
+            "?__++": "cigar",
+            "?__?+": "cigar",
+            "?__??": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "__+_?": "corni",
+        "__+__": {
+          "guess": "robin",
+          "next": {
+            "+____": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "__??_": "corni",
+        "__?_?": {
+          "guess": "flair",
+          "next": {
+            "+++++": "flair",
+            "+?++?": "cigar",
+            "_?++?": "cigar",
+            "_????": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "frond",
+          "next": {
+            "_+__?": "cigar",
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "___+_": {
+          "guess": "bipod",
+          "next": {
+            "+___+": "cigar",
+            "+____": "cigar",
+            "__?__": "cigar",
+            "____+": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "___??": {
+          "guess": "orcin",
+          "next": {
+            "___++": "cigar",
+            "___+?": "cigar",
+            "___?+": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "___?_": "corni",
+        "____+": "corni",
+        "____?": {
+          "guess": "aland",
+          "next": {
+            "+?+__": "cigar",
+            "+??__": "cigar",
+            "_++_+": "cigar",
+            "_++__": "cigar",
+            "_?+__": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "praam",
+          "next": {
+            "+_+?_": "cigar",
+            "+__+_": "cigar",
+            "?_??_": "cigar",
+            "?_?_?": "cigar",
+            "?_?__": "cigar",
+            "__+??": "cigar",
+            "__+_+": "cigar",
+            "__+__": "cigar",
+            "__?_+": "cigar",
+            "__?__": "cigar"
+          }
+        }
+      }
+    },
+    "_?_+?": "cigar",
+    "_?_+_": {
+      "guess": "inter",
+      "next": {
+        "?__++": "cigar",
+        "_+_++": "cigar",
+        "_+_+_": "cigar",
+        "_?_+_": "cigar",
+        "___++": "cigar",
+        "___+?": "cigar",
+        "___+_": "cigar"
+      }
+    },
+    "_?_?+": {
+      "guess": "recap",
+      "next": {
+        "++??_": "recap",
+        "?+_?_": "recap",
+        "??_+_": {
+          "guess": "grand",
+          "next": {
+            "++?__": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "??_?_": "recap",
+        "_+_+_": "recap",
+        "_+_?_": "recap",
+        "_??+_": "recap",
+        "_???_": {
+          "guess": "grand",
+          "next": {
+            "__+?_": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "_?_+_": "recap",
+        "_?_??": "recap",
+        "_?_?_": "recap"
+      }
+    },
+    "_?_??": {
+      "guess": "grate",
+      "next": {
+        "+++++": "grate",
+        "?_+++": "grate",
+        "_++++": {
+          "guess": "crate",
+          "next": {
+            "+++++": "crate",
+            "_++++": "cigar"
+          }
+        },
+        "_++?+": {
+          "guess": "crate",
+          "next": {
+            "?++?+": "cigar",
+            "_++?+": "cigar"
+          }
+        },
+        "_+???": "grate",
+        "_?+??": "grate",
+        "_????": {
+          "guess": "trace",
+          "next": {
+            "+??_?": "cigar",
+            "???_?": "cigar"
+          }
+        },
+        "__+++": {
+          "guess": "orach",
+          "next": {
+            "+_+__": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "__++?": {
+          "guess": "chard",
+          "next": {
+            "_?+_?": "cigar",
+            "_?+__": "cigar",
+            "__+__": "cigar"
+          }
+        },
+        "__+??": "grate",
+        "__?++": "grate",
+        "__?+?": "grate",
+        "__??+": "grate",
+        "__???": "grate"
+      }
+    },
+    "_?_?_": {
+      "guess": "beard",
+      "next": {
+        "+++++": "beard",
+        "+++_?": "beard",
+        "+++__": "beard",
+        "++?__": "beard",
+        "+?+?_": {
+          "guess": "drack",
+          "next": {
+            "_+++_": "cigar",
+            "_++_?": "cigar",
+            "_++__": "cigar"
+          }
+        },
+        "+???+": "beard",
+        "+???_": "beard",
+        "?+?+_": "beard",
+        "?+???": "beard",
+        "?+??_": {
+          "guess": "heard",
+          "next": {
+            "?+??_": "cigar",
+            "_+??_": "cigar"
+          }
+        },
+        "?+?__": "beard",
+        "???_?": {
+          "guess": "bride",
+          "next": {
+            "?_+++": "cigar",
+            "?__++": "cigar",
+            "?__?+": "cigar"
+          }
+        },
+        "???__": "beard",
+        "_++++": "beard",
+        "_+++_": {
+          "guess": "deary",
+          "next": {
+            "_++++": "cigar",
+            "_+++?": "cigar",
+            "_+++_": "cigar"
+          }
+        },
+        "_++??": "beard",
+        "_++?_": "beard",
+        "_++_?": "beard",
+        "_++__": {
+          "guess": "chere",
+          "next": {
+            "???__": "cigar",
+            "?_?_+": "cigar",
+            "_??_+": "cigar",
+            "_??__": "cigar",
+            "__?_+": "cigar"
+          }
+        },
+        "_+???": "beard",
+        "_+??_": {
+          "guess": "drack",
+          "next": {
+            "_???_": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "_+?_?": {
+          "guess": "dearn",
+          "next": {
+            "++?__": "cigar",
+            "?+?__": "cigar"
+          }
+        },
+        "_+?__": {
+          "guess": "drack",
+          "next": {
+            "__?+_": "cigar",
+            "__??_": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "_?++_": "beard",
+        "_?+??": {
+          "guess": "drack",
+          "next": {
+            "+++_?": "cigar",
+            "+++__": "cigar",
+            "?++__": "cigar"
+          }
+        },
+        "_?+?_": {
+          "guess": "cezve",
+          "next": {
+            "+_?_+": "cezve",
+            "+__++": "cezve",
+            "+___+": "cezve",
+            "?___+": "cezve",
+            "__?_+": "cezve",
+            "___++": "cezve",
+            "____+": {
+              "guess": "capiz",
+              "next": {
+                "_??__": "cigar",
+                "_?___": "cigar"
+              }
+            }
+          }
+        },
+        "_?+_?": {
+          "guess": "brede",
+          "next": {
+            "__?++": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "_?+__": {
+          "guess": "amuck",
+          "next": {
+            "++___": "cigar",
+            "+___?": "cigar",
+            "+____": "cigar",
+            "?+___": "cigar",
+            "?_?_?": "cigar",
+            "?__?_": "cigar",
+            "?___?": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "_??+?": "beard",
+        "_??+_": {
+          "guess": "bride",
+          "next": {
+            "_?+_+": "cigar",
+            "_?__+": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "_???+": "beard",
+        "_????": "beard",
+        "_???_": {
+          "guess": "wreck",
+          "next": {
+            "+++_+": "cigar",
+            "_++?+": "cigar",
+            "_++?_": "cigar",
+            "_++_+": "cigar",
+            "_++__": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "_??_+": {
+          "guess": "brand",
+          "next": {
+            "__?++": "cigar",
+            "__??+": "cigar",
+            "__?_+": "cigar"
+          }
+        },
+        "_??_?": "beard",
+        "_??__": {
+          "guess": "crane",
+          "next": {
+            "+_?_?": "cigar",
+            "?_???": "cigar",
+            "__?+?": "cigar",
+            "__??+": "cigar",
+            "__???": "cigar",
+            "__?_+": "cigar",
+            "__?_?": "cigar"
+          }
+        }
+      }
+    },
+    "_?__+": {
+      "guess": "courd",
+      "next": {
+        "+__+_": "courd",
+        "+__?_": "courd",
+        "+____": "courd",
+        "?__?_": "courd",
+        "_??__": "courd",
+        "_?_+_": "courd",
+        "_?__?": "courd",
+        "_?___": {
+          "guess": "fiord",
+          "next": {
+            "?_+__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "__?+_": "courd",
+        "__?_?": "courd",
+        "___+_": "courd",
+        "___??": "courd",
+        "___?_": {
+          "guess": "fiord",
+          "next": {
+            "?__?_": "cigar",
+            "_?_?_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "fiord",
+          "next": {
+            "_?__?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "fiord",
+          "next": {
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        }
+      }
+    },
+    "_?__?": {
+      "guess": "tonic",
+      "next": {
+        "+++__": "tonic",
+        "++___": {
+          "guess": "yonic",
+          "next": {
+            "?+___": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "+_?+_": "tonic",
+        "+_??_": "tonic",
+        "+_?__": {
+          "guess": "again",
+          "next": {
+            "_?+_?": "cigar",
+            "__+_?": "cigar"
+          }
+        },
+        "+__+_": "tonic",
+        "+__?_": {
+          "guess": "conia",
+          "next": {
+            "___?+": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "+___?": "tonic",
+        "+____": "tonic",
+        "?+___": "tonic",
+        "??__?": "tonic",
+        "??___": "tonic",
+        "?_+__": {
+          "guess": "conia",
+          "next": {
+            "__+_+": "cigar",
+            "__+_?": "cigar"
+          }
+        },
+        "?_?++": "tonic",
+        "?__++": "tonic",
+        "?__?_": "tonic",
+        "?____": "tonic"
+      }
+    },
+    "_?___": {
+      "guess": "brond",
+      "next": {
+        "+++_+": "brond",
+        "++?__": "brond",
+        "++_++": "brond",
+        "++_?_": {
+          "guess": "grind",
+          "next": {
+            "_+??_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "++__+": "brond",
+        "++___": "brond",
+        "+??_+": "brond",
+        "+??__": "brond",
+        "?+?__": "brond",
+        "?+_?_": "brond",
+        "???__": {
+          "guess": "giron",
+          "next": {
+            "__?+_": "cigar",
+            "__??_": "cigar"
+          }
+        },
+        "??___": {
+          "guess": "adorn",
+          "next": {
+            "?__+_": "cigar",
+            "?__?_": "cigar"
+          }
+        },
+        "?____": "brond",
+        "_++?_": "brond",
+        "_++__": {
+          "guess": "adorn",
+          "next": {
+            "+_+?_": "cigar",
+            "?_+?_": "cigar"
+          }
+        },
+        "_+??_": "brond",
+        "_+?_?": "brond",
+        "_+?__": {
+          "guess": "drown",
+          "next": {
+            "_+??_": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "_+_++": "brond",
+        "_+_+?": "brond",
+        "_+_+_": {
+          "guess": "copra",
+          "next": {
+            "+__??": "cigar",
+            "__???": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "_+_??": {
+          "guess": "grind",
+          "next": {
+            "_+???": "cigar",
+            "_+_??": "cigar"
+          }
+        },
+        "_+_?_": {
+          "guess": "grind",
+          "next": {
+            "++??_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "_+__+": "brond",
+        "_+__?": "brond",
+        "_+___": {
+          "guess": "crapy",
+          "next": {
+            "+++?_": "cigar",
+            "+++_+": "cigar",
+            "+++__": "cigar",
+            "?++__": "cigar",
+            "_+++_": "cigar",
+            "_++_+": "cigar",
+            "_+?_+": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "_?+??": "brond",
+        "_?+?_": "brond",
+        "_?+__": "brond",
+        "_???_": "brond",
+        "_??_+": "brond",
+        "_??__": {
+          "guess": "acorn",
+          "next": {
+            "????_": "cigar",
+            "?_?+_": "cigar",
+            "?_??_": "cigar"
+          }
+        },
+        "_?_?_": "brond",
+        "_?__+": {
+          "guess": "acorn",
+          "next": {
+            "++_?_": "cigar",
+            "+__+_": "cigar",
+            "??_+_": "cigar",
+            "?__+_": "cigar"
+          }
+        },
+        "_?__?": {
+          "guess": "grind",
+          "next": {
+            "_??_?": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "_?___": {
+          "guess": "choir",
+          "next": {
+            "++_++": "cigar",
+            "++__?": "cigar",
+            "+__?+": "cigar",
+            "+__??": "cigar",
+            "?__?+": "cigar",
+            "_+__?": "cigar",
+            "____+": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "__++_": {
+          "guess": "crony",
+          "next": {
+            "__+++": "cigar",
+            "__++_": "cigar"
+          }
+        },
+        "__+_+": "brond",
+        "__?+_": "brond",
+        "__??+": {
+          "guess": "grind",
+          "next": {
+            "+__?+": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "__??_": {
+          "guess": "groin",
+          "next": {
+            "__??+": "cigar",
+            "__?_+": "cigar",
+            "__?_?": "cigar"
+          }
+        },
+        "__?_?": {
+          "guess": "grind",
+          "next": {
+            "?___?": "cigar",
+            "__?_?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "micro",
+          "next": {
+            "+_+_?": "cigar",
+            "??__?": "cigar",
+            "?_?_?": "cigar",
+            "?___?": "cigar",
+            "__+_?": "cigar",
+            "__?_?": "cigar"
+          }
+        },
+        "___+_": {
+          "guess": "prong",
+          "next": {
+            "?__++": "cigar",
+            "___++": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "___??": "brond",
+        "___?_": {
+          "guess": "groin",
+          "next": {
+            "?__++": "cigar",
+            "___++": "cigar",
+            "___?+": "cigar",
+            "___??": "cigar",
+            "____+": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "____+": "brond",
+        "_____": {
+          "guess": "chirp",
+          "next": {
+            "++__+": "cigar",
+            "++___": "cigar",
+            "?+___": "cigar",
+            "?____": "cigar",
+            "_+?__": "cigar",
+            "__?_?": "cigar",
+            "__?__": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "__+++": {
+      "guess": "cigar",
+      "next": {
+        "_+___": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "__++_": {
+      "guess": "cigar",
+      "next": {
+        "_+__+": "cigar",
+        "_?__+": "cigar",
+        "__?__": "cigar",
+        "____+": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "__+??": {
+      "guess": "cigar",
+      "next": {
+        "_+___": "cigar",
+        "_____": "cigar"
+      }
+    },
+    "__+?_": {
+      "guess": "himbo",
+      "next": {
+        "+?___": "himbo",
+        "+___+": "himbo",
+        "?__?_": "himbo",
+        "?____": "himbo",
+        "_+_?_": "himbo",
+        "_?_?_": "himbo",
+        "_?___": "himbo",
+        "__?_?": "himbo",
+        "___??": "himbo",
+        "___?_": {
+          "guess": "coble",
+          "next": {
+            "__?++": "cigar",
+            "__?+?": "cigar",
+            "__??+": "cigar"
+          }
+        },
+        "____+": "himbo",
+        "____?": "himbo",
+        "_____": {
+          "guess": "coble",
+          "next": {
+            "___+?": "cigar",
+            "___?+": "cigar"
+          }
+        }
+      }
+    },
+    "__+_+": {
+      "guess": "cigar",
+      "next": {
+        "_+___": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "__+_?": {
+      "guess": "cigar",
+      "next": {
+        "_+___": "cigar",
+        "_?___": "cigar"
+      }
+    },
+    "__+__": {
+      "guess": "doily",
+      "next": {
+        "++_++": "doily",
+        "+_?++": "doily",
+        "+__++": "doily",
+        "?+_?+": "doily",
+        "_+??_": "doily",
+        "_+_++": {
+          "guess": "fight",
+          "next": {
+            "+____": "cigar",
+            "__?__": "cigar",
+            "___?_": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_+_??": "doily",
+        "_+_?_": {
+          "guess": "nould",
+          "next": {
+            "?+_?_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "_???_": "doily",
+        "_?_??": "doily",
+        "__?++": {
+          "guess": "whoof",
+          "next": {
+            "+____": "cigar",
+            "_?___": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "__??+": {
+          "guess": "fugly",
+          "next": {
+            "+__?+": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "___++": {
+          "guess": "fugly",
+          "next": {
+            "++_++": "cigar",
+            "_+?++": "cigar",
+            "_+_++": "cigar"
+          }
+        },
+        "___?+": {
+          "guess": "bodhi",
+          "next": {
+            "+____": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "fugly",
+          "next": {
+            "_+??_": "cigar",
+            "_+_?_": "cigar"
+          }
+        }
+      }
+    },
+    "__?++": "cigar",
+    "__?+?": {
+      "guess": "totem",
+      "next": {
+        "++_+_": "cigar",
+        "_+++?": "cigar",
+        "_+++_": "cigar",
+        "__++_": "cigar"
+      }
+    },
+    "__?+_": {
+      "guess": "livor",
+      "next": {
+        "+++_+": "livor",
+        "++__+": "livor",
+        "++___": {
+          "guess": "minor",
+          "next": {
+            "_++__": "cigar",
+            "_+?__": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "+_+?+": "livor",
+        "+_+_+": "livor",
+        "+_+__": "livor",
+        "+__?+": "livor",
+        "+___+": "livor",
+        "+____": "livor",
+        "?+___": "livor",
+        "??__+": {
+          "guess": "orpin",
+          "next": {
+            "_???_": "cigar",
+            "_?_?_": "cigar"
+          }
+        },
+        "??___": {
+          "guess": "nidor",
+          "next": {
+            "_??__": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "?_+?_": {
+          "guess": "nidor",
+          "next": {
+            "+__?_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?_+_?": "livor",
+        "?_+__": "livor",
+        "?_??_": "livor",
+        "?__?+": "livor",
+        "?__?_": {
+          "guess": "nidor",
+          "next": {
+            "?_+?_": "cigar",
+            "__+?_": "cigar",
+            "__??_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?___+": {
+          "guess": "bourd",
+          "next": {
+            "+_+?_": "cigar",
+            "__??_": "cigar",
+            "___??": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?___?": {
+          "guess": "bronc",
+          "next": {
+            "??___": "cigar",
+            "_+__?": "cigar",
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "?____": {
+          "guess": "beech",
+          "next": {
+            "++?__": "beech",
+            "+?+__": {
+              "guess": "becap",
+              "next": {
+                "+?__+": "cigar",
+                "+?___": "cigar"
+              }
+            },
+            "_+?__": "beech",
+            "_?+_?": "beech",
+            "_?+__": "beech",
+            "_???_": "beech",
+            "_??__": "beech",
+            "_?_?_": "beech"
+          }
+        }
+      }
+    },
+    "__??+": {
+      "guess": "unfed",
+      "next": {
+        "?__?_": "cigar",
+        "_+_?_": "cigar",
+        "__??_": "cigar",
+        "___??": "cigar",
+        "___?_": "cigar"
+      }
+    },
+    "__???": {
+      "guess": "field",
+      "next": {
+        "+_??_": "cigar",
+        "?_??_": "cigar",
+        "_+?+_": "cigar",
+        "_+??_": "cigar",
+        "_??+_": "cigar",
+        "_???_": "cigar",
+        "__??_": "cigar"
+      }
+    },
+    "__??_": {
+      "guess": "beige",
+      "next": {
+        "+?___": "beige",
+        "+_?_+": "beige",
+        "+__?+": "beige",
+        "+___+": {
+          "guess": "edile",
+          "next": {
+            "___++": "cigar",
+            "___?+": "cigar"
+          }
+        },
+        "??___": "beige",
+        "?__?+": "beige",
+        "?___+": "beige",
+        "_+?__": {
+          "guess": "deice",
+          "next": {
+            "++?__": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "_+_++": "beige",
+        "_+_+_": "beige",
+        "_+__?": {
+          "guess": "deice",
+          "next": {
+            "_+_+?": "cigar",
+            "_+__?": "cigar"
+          }
+        },
+        "_+___": {
+          "guess": "gerle",
+          "next": {
+            "_+?+_": "cigar",
+            "_+??_": "cigar",
+            "_+_+_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "_?+_+": {
+          "guess": "deice",
+          "next": {
+            "??+_+": "cigar",
+            "_?+_+": "cigar"
+          }
+        },
+        "_??++": "beige",
+        "_??__": {
+          "guess": "yowie",
+          "next": {
+            "+__??": "cigar",
+            "__???": "cigar",
+            "___+?": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "_?_+?": "beige",
+        "_?__+": {
+          "guess": "deice",
+          "next": {
+            "??__+": "cigar",
+            "_?__+": "cigar"
+          }
+        },
+        "_?___": {
+          "guess": "deuce",
+          "next": {
+            "+?___": "cigar",
+            "_??__": "cigar",
+            "_?_+_": "cigar",
+            "_?_?_": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__+?+": {
+          "guess": "deice",
+          "next": {
+            "?_+_+": "cigar",
+            "__+_+": "cigar"
+          }
+        },
+        "__+_+": {
+          "guess": "edile",
+          "next": {
+            "__+++": "cigar",
+            "__+?+": "cigar"
+          }
+        },
+        "__?_+": "beige",
+        "___++": {
+          "guess": "deice",
+          "next": {
+            "?___+": "cigar",
+            "____+": "cigar"
+          }
+        },
+        "___?+": "beige",
+        "____+": {
+          "guess": "plonk",
+          "next": {
+            "++___": "cigar",
+            "_+++_": "cigar",
+            "_++__": "cigar",
+            "_+__?": "cigar",
+            "_+___": "cigar",
+            "_?+__": "cigar",
+            "_?_?_": "cigar",
+            "_?___": "cigar"
+          }
+        }
+      }
+    },
+    "__?_+": {
+      "guess": "clung",
+      "next": {
+        "++?__": "clung",
+        "_+++_": "clung",
+        "_++__": "clung",
+        "_+?__": "clung",
+        "_+_+?": "clung",
+        "_+_+_": "clung",
+        "_+___": "clung",
+        "_?+__": "clung",
+        "_??_?": "clung",
+        "_??__": {
+          "guess": "bling",
+          "next": {
+            "+?+__": "cigar",
+            "_?+__": "cigar"
+          }
+        },
+        "_?__?": "clung",
+        "_?___": "clung"
+      }
+    },
+    "__?_?": {
+      "guess": "front",
+      "next": {
+        "?_?_?": "cigar",
+        "_++_?": "cigar",
+        "_+__?": "cigar",
+        "_?__?": "cigar",
+        "__+_?": "cigar",
+        "__?_?": "cigar",
+        "___??": "cigar",
+        "____?": "cigar"
+      }
+    },
+    "__?__": {
+      "guess": "courd",
+      "next": {
+        "+++_+": "courd",
+        "++___": "courd",
+        "+??_+": "courd",
+        "+?___": {
+          "guess": "crony",
+          "next": {
+            "+_+?_": "cigar",
+            "+_+__": "cigar"
+          }
+        },
+        "+_+__": {
+          "guess": "pricy",
+          "next": {
+            "?__?_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "+_??_": "courd",
+        "+___+": "courd",
+        "+____": {
+          "guess": "knoll",
+          "next": {
+            "??_?_": "knoll",
+            "?__?_": "knoll",
+            "_?_?_": "knoll",
+            "___++": "knoll",
+            "___+_": "knoll",
+            "___?_": {
+              "guess": "blink",
+              "next": {
+                "?++__": "cigar",
+                "_++__": "cigar"
+              }
+            },
+            "____+": "knoll"
+          }
+        },
+        "?+___": "courd",
+        "??___": {
+          "guess": "courb",
+          "next": {
+            "??__?": "cigar",
+            "??___": "cigar"
+          }
+        },
+        "?_+__": "courd",
+        "?_??_": "courd",
+        "?_?_+": "courd",
+        "?_?__": {
+          "guess": "crony",
+          "next": {
+            "?__?_": "cigar",
+            "?___+": "cigar"
+          }
+        },
+        "?__?_": "courd",
+        "?____": {
+          "guess": "crony",
+          "next": {
+            "?__??": "cigar",
+            "?___+": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "_++_+": "courd",
+        "_+?__": "courd",
+        "_+_+_": "courd",
+        "_+_?+": "courd",
+        "_+__?": "courd",
+        "_+___": {
+          "guess": "crown",
+          "next": {
+            "__+?_": "cigar",
+            "__+__": "cigar",
+            "__??_": "cigar",
+            "__?_+": "cigar",
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "_???_": "courd",
+        "_??__": "courd",
+        "_?_+_": "courd",
+        "_?_??": {
+          "guess": "could",
+          "next": {
+            "_?_+?": "cigar",
+            "_?_??": "cigar"
+          }
+        },
+        "_?_?_": {
+          "guess": "pricy",
+          "next": {
+            "++___": "cigar",
+            "_+?__": "cigar",
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "_?__+": {
+          "guess": "briny",
+          "next": {
+            "+__+_": "cigar",
+            "+____": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_?__?": "courd",
+        "_?___": {
+          "guess": "burin",
+          "next": {
+            "+___+": "cigar",
+            "+____": "cigar",
+            "?__?_": "cigar",
+            "___??": "cigar",
+            "____+": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "__++_": "courd",
+        "__+_+": "courd",
+        "__+__": {
+          "guess": "flunk",
+          "next": {
+            "+++++": "flunk",
+            "++++_": "flunk",
+            "+++__": "flunk",
+            "?++__": "flunk",
+            "_++++": "flunk",
+            "_++__": {
+              "guess": "bumfs",
+              "next": {
+                "???__": "cigar",
+                "_??__": "cigar"
+              }
+            }
+          }
+        },
+        "__??+": "courd",
+        "__??_": "courd",
+        "__?_+": {
+          "guess": "courb",
+          "next": {
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "cuing",
+          "next": {
+            "_++__": "cigar",
+            "_+?__": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "___+_": "courd",
+        "___??": {
+          "guess": "crony",
+          "next": {
+            "_+__+": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "gucky",
+          "next": {
+            "+___+": "cigar",
+            "+____": "cigar",
+            "___?_": "cigar",
+            "____+": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "pricy",
+          "next": {
+            "?_?__": "cigar",
+            "__+__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "crony",
+          "next": {
+            "____+": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "cling",
+          "next": {
+            "_++++": "cigar",
+            "_+++_": "cigar",
+            "_++__": "cigar",
+            "_+__?": "cigar",
+            "_?+++": "cigar",
+            "_???_": "cigar",
+            "_??_?": "cigar",
+            "_??__": "cigar",
+            "_?___": "cigar"
+          }
+        }
+      }
+    },
+    "___++": {
+      "guess": "cerne",
+      "next": {
+        "+?___": {
+          "guess": "creme",
+          "next": {
+            "+_??_": "cigar",
+            "+_?__": "cigar"
+          }
+        },
+        "??___": "cerne",
+        "_++_?": "cerne",
+        "_+_??": "cerne",
+        "_+__?": "cerne",
+        "_?+_?": "cerne",
+        "_??_?": "cerne",
+        "_??__": "cerne",
+        "_?_?_": "cerne",
+        "_?__?": "cerne",
+        "_?___": {
+          "guess": "cered",
+          "next": {
+            "___+?": "cigar",
+            "___+_": "cigar"
+          }
+        }
+      }
+    },
+    "___+?": {
+      "guess": "mohur",
+      "next": {
+        "+___+": "mohur",
+        "?+___": "mohur",
+        "?___+": "mohur",
+        "_+__+": {
+          "guess": "tutor",
+          "next": {
+            "+__?+": "cigar",
+            "__+?+": "cigar"
+          }
+        },
+        "_+___": "mohur",
+        "_?+_+": "mohur",
+        "_?_?+": "mohur",
+        "_?__+": "mohur",
+        "_?___": "mohur",
+        "__+_+": "mohur",
+        "__?_?": {
+          "guess": "outre",
+          "next": {
+            "__??+": "cigar",
+            "__???": "cigar"
+          }
+        },
+        "__?__": "mohur",
+        "___?+": {
+          "guess": "tutor",
+          "next": {
+            "++__+": "cigar",
+            "+?__+": "cigar",
+            "??+_+": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "meter",
+          "next": {
+            "_++++": "cigar",
+            "_?+++": "cigar",
+            "__+++": "cigar",
+            "__?++": "cigar"
+          }
+        },
+        "____?": "mohur",
+        "_____": {
+          "guess": "outre",
+          "next": {
+            "__?_+": "cigar",
+            "__?_?": "cigar"
+          }
+        }
+      }
+    },
+    "___+_": {
+      "guess": "nidor",
+      "next": {
+        "++__+": "nidor",
+        "+___+": {
+          "guess": "drown",
+          "next": {
+            "_?_??": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "?++__": "nidor",
+        "?+?_+": "nidor",
+        "?+__+": {
+          "guess": "frond",
+          "next": {
+            "+?_?_": "cigar",
+            "_?_?_": "cigar"
+          }
+        },
+        "?+__?": "nidor",
+        "?+___": {
+          "guess": "dingo",
+          "next": {
+            "_++__": "cigar",
+            "_+??_": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "??+__": "nidor",
+        "??__+": {
+          "guess": "frond",
+          "next": {
+            "??_?_": "cigar",
+            "_?_?_": "cigar"
+          }
+        },
+        "?_+_+": "nidor",
+        "?_??_": "nidor",
+        "?_?__": {
+          "guess": "frown",
+          "next": {
+            "?___?": "cigar",
+            "___??": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "?__?+": {
+          "guess": "drown",
+          "next": {
+            "_????": "cigar",
+            "_??_?": "cigar"
+          }
+        },
+        "?__?_": {
+          "guess": "mucky",
+          "next": {
+            "+___+": "mucky",
+            "?____": "mucky",
+            "__?__": "mucky",
+            "___?_": "mucky",
+            "____+": {
+              "guess": "munch",
+              "next": {
+                "__+_?": "cigar",
+                "__+__": "cigar"
+              }
+            },
+            "_____": "mucky"
+          }
+        },
+        "?___?": {
+          "guess": "proin",
+          "next": {
+            "++__+": "cigar",
+            "_+__+": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "?____": {
+          "guess": "rindy",
+          "next": {
+            "__?_?": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "_++?_": "nidor",
+        "_++_+": {
+          "guess": "rownd",
+          "next": {
+            "+___?": "cigar",
+            "?_?_?": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "_+?_+": "nidor",
+        "_+?__": "nidor",
+        "_+__+": {
+          "guess": "river",
+          "next": {
+            "+++++": "river",
+            "++_++": "river",
+            "_++++": "river",
+            "_+?++": "river",
+            "_+_++": {
+              "guess": "rebop",
+              "next": {
+                "??+__": "cigar",
+                "??__?": "cigar",
+                "??___": "cigar"
+              }
+            }
+          }
+        },
+        "_+___": "nidor",
+        "_??_+": "nidor",
+        "_??_?": {
+          "guess": "decaf",
+          "next": {
+            "+?___": "cigar",
+            "???__": "cigar",
+            "??__?": "cigar",
+            "??___": "cigar"
+          }
+        },
+        "_?__+": "nidor",
+        "_?__?": {
+          "guess": "bidon",
+          "next": {
+            "+?___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "_?___": "nidor",
+        "__+?+": {
+          "guess": "frond",
+          "next": {
+            "_+?_?": "cigar",
+            "_??_?": "cigar"
+          }
+        },
+        "__+??": "nidor",
+        "__+?_": "nidor",
+        "__+_+": {
+          "guess": "rindy",
+          "next": {
+            "+__?_": "cigar",
+            "?__?_": "cigar"
+          }
+        },
+        "__??_": "nidor",
+        "__?_+": {
+          "guess": "frond",
+          "next": {
+            "??__?": "cigar",
+            "_+__?": "cigar"
+          }
+        },
+        "__?_?": {
+          "guess": "befog",
+          "next": {
+            "+?___": "cigar",
+            "_??__": "cigar",
+            "_?__?": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__?__": "nidor",
+        "___?+": {
+          "guess": "womby",
+          "next": {
+            "++___": "womby",
+            "?+?__": "womby",
+            "?+___": {
+              "guess": "cowps",
+              "next": {
+                "+++__": "cigar",
+                "_++?_": "cigar",
+                "_++__": "cigar"
+              }
+            },
+            "_++__": "womby",
+            "_+?__": "womby",
+            "_+_?_": "womby",
+            "_+__?": "womby",
+            "_+___": {
+              "guess": "rover",
+              "next": {
+                "+++++": "rover",
+                "++_++": "rover",
+                "?+_++": "rover",
+                "_++++": {
+                  "guess": "charr",
+                  "next": {
+                    "+___+": "cover",
+                    "_?__+": "hover"
+                  }
+                },
+                "_+_++": {
+                  "guess": "perch",
+                  "next": {
+                    "+??__": "poker",
+                    "_??__": "joker"
+                  }
+                }
+              }
+            },
+            "_?___": "womby"
+          }
+        },
+        "___?_": {
+          "guess": "frond",
+          "next": {
+            "__+__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "furry",
+          "next": {
+            "+_??_": "furry",
+            "+_?__": {
+              "guess": "bevue",
+              "next": {
+                "_++_?": "cigar",
+                "_+__?": "cigar"
+              }
+            },
+            "?_??_": "furry",
+            "_++?_": "furry",
+            "_+?_?": "furry",
+            "_+?__": "furry",
+            "_??__": "furry",
+            "__?_?": {
+              "guess": "bevue",
+              "next": {
+                "??___": "cigar",
+                "_?___": "cigar"
+              }
+            },
+            "__?__": {
+              "guess": "bevue",
+              "next": {
+                "??__?": "cigar",
+                "_?__?": "cigar"
+              }
+            }
+          }
+        },
+        "____?": {
+          "guess": "proin",
+          "next": {
+            "+?___": "cigar",
+            "?+___": "cigar",
+            "??___": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "minor",
+          "next": {
+            "?____": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "___?+": {
+      "guess": "curio",
+      "next": {
+        "+_?__": "curio",
+        "???__": "curio",
+        "?_?__": "curio",
+        "?__?_": {
+          "guess": "ridic",
+          "next": {
+            "_??_?": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "?____": "curio",
+        "_??__": {
+          "guess": "runic",
+          "next": {
+            "+?___": "cigar",
+            "??___": "cigar"
+          }
+        },
+        "_?___": "curio",
+        "__++_": "curio",
+        "__?+_": {
+          "guess": "preif",
+          "next": {
+            "_??+?": "cigar",
+            "_??+_": "cigar"
+          }
+        },
+        "__??_": "curio",
+        "__?_?": "curio",
+        "__?__": "curio",
+        "___+_": {
+          "guess": "preif",
+          "next": {
+            "__?+?": "cigar",
+            "__?+_": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "runic",
+          "next": {
+            "__??_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "____?": "curio",
+        "_____": {
+          "guess": "runic",
+          "next": {
+            "__?__": "cigar",
+            "_____": "cigar"
+          }
+        }
+      }
+    },
+    "___??": {
+      "guess": "trite",
+      "next": {
+        "+++++": "trite",
+        "+++_+": {
+          "guess": "price",
+          "next": {
+            "?++_+": "cigar",
+            "_++++": "cigar",
+            "_++_+": "cigar"
+          }
+        },
+        "++__+": {
+          "guess": "price",
+          "next": {
+            "?+__+": "cigar",
+            "_+_++": "cigar",
+            "_+__+": "cigar"
+          }
+        },
+        "++__?": "trite",
+        "+??_?": "trite",
+        "+?__+": "trite",
+        "+?__?": "trite",
+        "+_+_+": {
+          "guess": "trice",
+          "next": {
+            "+_+++": "cigar",
+            "+_+_+": "cigar"
+          }
+        },
+        "+_??+": "trite",
+        "+_?_?": "trite",
+        "+__+?": {
+          "guess": "rhino",
+          "next": {
+            "_?_?_": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "+___+": {
+          "guess": "yirth",
+          "next": {
+            "?__??": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "+___?": {
+          "guess": "thrip",
+          "next": {
+            "+___?": "cigar",
+            "+____": "cigar"
+          }
+        },
+        "??__?": {
+          "guess": "rhino",
+          "next": {
+            "+?___": "cigar",
+            "+___+": "cigar",
+            "+____": "cigar",
+            "?__?_": "cigar",
+            "?___+": "cigar"
+          }
+        },
+        "?_?_+": {
+          "guess": "trice",
+          "next": {
+            "?_??+": "cigar",
+            "?_?_+": "cigar"
+          }
+        },
+        "?_?_?": {
+          "guess": "trice",
+          "next": {
+            "?_???": "cigar",
+            "?_?_?": "cigar"
+          }
+        },
+        "?__++": "trite",
+        "?__+?": {
+          "guess": "thrip",
+          "next": {
+            "?___?": "cigar",
+            "?____": "cigar"
+          }
+        },
+        "?___+": "trite",
+        "?___?": {
+          "guess": "trice",
+          "next": {
+            "?__+?": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "_++++": "trite",
+        "_+_++": {
+          "guess": "truth",
+          "next": {
+            "_+++_": "cigar",
+            "_+_+_": "cigar"
+          }
+        },
+        "_?_++": {
+          "guess": "truth",
+          "next": {
+            "_?++_": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "_?_+?": "trite",
+        "__+++": {
+          "guess": "urite",
+          "next": {
+            "+_+++": "cigar",
+            "?_+++": "cigar",
+            "__+++": "cigar"
+          }
+        },
+        "__++?": "trite",
+        "__?+?": "trite",
+        "___++": {
+          "guess": "trice",
+          "next": {
+            "?__?+": "cigar",
+            "?___+": "cigar"
+          }
+        },
+        "___+?": {
+          "guess": "crith",
+          "next": {
+            "___++": "cigar",
+            "___+?": "cigar",
+            "___+_": "cigar"
+          }
+        }
+      }
+    },
+    "___?_": {
+      "guess": "drone",
+      "next": {
+        "+++++": "drone",
+        "+++_+": "drone",
+        "++__+": "drone",
+        "+??_?": "drone",
+        "+?__+": "drone",
+        "+?__?": {
+          "guess": "doric",
+          "next": {
+            "+_+__": "cigar",
+            "+_?_?": "cigar",
+            "+_?__": "cigar"
+          }
+        },
+        "+_+_+": "drone",
+        "+_???": "drone",
+        "+_?_+": "drone",
+        "+_?_?": "drone",
+        "+__?+": "drone",
+        "+__??": {
+          "guess": "drice",
+          "next": {
+            "+_+_?": "cigar",
+            "+_?_?": "cigar"
+          }
+        },
+        "+___+": "drone",
+        "+___?": "drone",
+        "?++_+": "drone",
+        "?+?_?": "drone",
+        "?+__+": {
+          "guess": "porin",
+          "next": {
+            "+_??_": "cigar",
+            "+_?__": "cigar",
+            "__??_": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "???_+": "drone",
+        "??_??": "drone",
+        "??__+": "drone",
+        "??__?": {
+          "guess": "drice",
+          "next": {
+            "??+_?": "cigar",
+            "??__?": "cigar"
+          }
+        },
+        "?_???": "drone",
+        "?_?_+": "drone",
+        "?__+?": "drone",
+        "?__?+": {
+          "guess": "giron",
+          "next": {
+            "?___?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "?__??": "drone",
+        "?___+": {
+          "guess": "whiff",
+          "next": {
+            "+____": "whiff",
+            "_++__": "whiff",
+            "_?___": "whiff",
+            "__+__": "whiff",
+            "__?__": "whiff",
+            "___?_": "whiff",
+            "_____": {
+              "guess": "bijou",
+              "next": {
+                "+___?": "cigar",
+                "__?_?": "cigar"
+              }
+            }
+          }
+        },
+        "?___?": {
+          "guess": "drice",
+          "next": {
+            "?_+_?": "cigar",
+            "?_???": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "_++++": {
+          "guess": "drice",
+          "next": {
+            "_+_?+": "cigar",
+            "_+__+": "cigar"
+          }
+        },
+        "_++_+": {
+          "guess": "prove",
+          "next": {
+            "+++++": "prove",
+            "+++_+": "prove",
+            "?++_+": "prove",
+            "_++++": "prove",
+            "_++_+": {
+              "guess": "probe",
+              "next": {
+                "_++?+": "cigar",
+                "_++_+": "cigar"
+              }
+            }
+          }
+        },
+        "_+?_?": "drone",
+        "_+_++": {
+          "guess": "crudo",
+          "next": {
+            "_++__": "cigar",
+            "_+?__": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_+__+": {
+          "guess": "campi",
+          "next": {
+            "+_?_?": "cigar",
+            "+_?__": "cigar",
+            "+__+_": "cigar",
+            "?__??": "cigar",
+            "__???": "cigar",
+            "__?_?": "cigar",
+            "___+?": "cigar",
+            "___??": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "_+__?": "drone",
+        "_?+_+": "drone",
+        "_??++": "drone",
+        "_????": "drone",
+        "_??_+": {
+          "guess": "gourd",
+          "next": {
+            "++_?_": "cigar",
+            "?++?_": "cigar",
+            "?+??_": "cigar",
+            "?+_?_": "cigar",
+            "_+_?_": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "_?_?+": {
+          "guess": "giron",
+          "next": {
+            "+_?_?": "cigar",
+            "__+_?": "cigar"
+          }
+        },
+        "_?_??": {
+          "guess": "drice",
+          "next": {
+            "_?+_?": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "_?__+": {
+          "guess": "reive",
+          "next": {
+            "++_?+": "cigar",
+            "+___+": "cigar",
+            "?+?_+": "cigar",
+            "?+_++": "cigar",
+            "?+_?+": "cigar",
+            "?+__+": "cigar",
+            "??__+": "cigar",
+            "?_?_+": "cigar",
+            "?__++": "cigar",
+            "?___+": "cigar"
+          }
+        },
+        "_?__?": {
+          "guess": "murry",
+          "next": {
+            "+_+++": "murry",
+            "+_+_+": "murry",
+            "???__": "murry",
+            "_+_++": "murry",
+            "_???_": "murry",
+            "__+++": {
+              "guess": "furry",
+              "next": {
+                "+_+++": "cigar",
+                "__+++": "cigar"
+              }
+            },
+            "__+_+": {
+              "guess": "pubic",
+              "next": {
+                "+____": "cigar",
+                "_____": "cigar"
+              }
+            },
+            "__+__": "murry",
+            "___++": {
+              "guess": "furry",
+              "next": {
+                "+__++": "cigar",
+                "___++": "cigar"
+              }
+            }
+          }
+        },
+        "__+++": {
+          "guess": "orcin",
+          "next": {
+            "+___?": "cigar",
+            "?___?": "cigar"
+          }
+        },
+        "__++?": "drone",
+        "__+?+": "drone",
+        "__+_+": {
+          "guess": "doric",
+          "next": {
+            "_+___": "cigar",
+            "_?_?_": "cigar",
+            "_?__?": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__+_?": {
+          "guess": "drice",
+          "next": {
+            "___+?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "__?++": {
+          "guess": "porin",
+          "next": {
+            "??_??": "cigar",
+            "_?_??": "cigar"
+          }
+        },
+        "__??+": "drone",
+        "__???": {
+          "guess": "neive",
+          "next": {
+            "?+_?_": "cigar",
+            "??_?_": "cigar",
+            "??___": "cigar"
+          }
+        },
+        "__?_+": {
+          "guess": "crudo",
+          "next": {
+            "+_+_?": "cigar",
+            "?___?": "cigar",
+            "__+_?": "cigar",
+            "__?_?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "__?_?": "drone",
+        "___++": {
+          "guess": "drice",
+          "next": {
+            "__+_+": "cigar",
+            "____+": "cigar"
+          }
+        },
+        "___+?": {
+          "guess": "derny",
+          "next": {
+            "_+_++": "cigar",
+            "_+_+_": "cigar",
+            "_?_+?": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "___?+": {
+          "guess": "winch",
+          "next": {
+            "++++_": "winch",
+            "_+++_": "winch",
+            "_++_?": "winch",
+            "_++__": "winch",
+            "_+?+_": "winch",
+            "_+???": "winch",
+            "_?+__": "winch",
+            "_??__": "winch",
+            "__++?": "winch",
+            "__++_": {
+              "guess": "finch",
+              "next": {
+                "+_++_": "cigar",
+                "__++_": "cigar"
+              }
+            },
+            "__+__": "winch"
+          }
+        },
+        "___??": {
+          "guess": "begin",
+          "next": {
+            "+++++": "begin",
+            "+++_+": "cigar",
+            "++__?": "cigar",
+            "_+??+": "cigar",
+            "_+???": "cigar",
+            "_+__?": "cigar",
+            "_?_??": "cigar",
+            "_?__?": "cigar"
+          }
+        },
+        "____+": {
+          "guess": "coqui",
+          "next": {
+            "+___?": "cigar",
+            "?__??": "cigar",
+            "?___?": "cigar",
+            "__++?": "cigar",
+            "__?+_": "cigar",
+            "___+?": "cigar",
+            "___+_": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "____?": {
+          "guess": "cerge",
+          "next": {
+            "+?___": "cigar",
+            "?+__?": "cigar",
+            "_+_+_": "cigar",
+            "_+_??": "cigar",
+            "_+__?": "cigar",
+            "_?___": "cigar"
+          }
+        }
+      }
+    },
+    "____+": {
+      "guess": "groin",
+      "next": {
+        "+++__": "groin",
+        "++__?": "groin",
+        "??_?_": "groin",
+        "?_???": "groin",
+        "?_??_": "groin",
+        "?_?__": "groin",
+        "?__+_": "groin",
+        "?__??": "groin",
+        "?__?_": {
+          "guess": "dwarf",
+          "next": {
+            "_?___": "dwarf",
+            "____?": "dwarf",
+            "_____": {
+              "guess": "trawl",
+              "next": {
+                "+____": "cigar",
+                "?____": "cigar"
+              }
+            }
+          }
+        },
+        "_+++_": "groin",
+        "_++_?": "groin",
+        "_++__": "groin",
+        "_+?+_": "groin",
+        "_+_+_": "groin",
+        "_+_??": "groin",
+        "_+_?_": "groin",
+        "_+__?": "groin",
+        "_+___": "groin",
+        "_??__": {
+          "guess": "nidor",
+          "next": {
+            "___+?": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "_?__?": "groin",
+        "__?+_": "groin",
+        "__???": {
+          "guess": "orpin",
+          "next": {
+            "?_???": "cigar",
+            "?__??": "cigar"
+          }
+        },
+        "__??_": {
+          "guess": "nidor",
+          "next": {
+            "_+_+_": "cigar",
+            "_??+_": "cigar"
+          }
+        },
+        "__?_?": {
+          "guess": "onium",
+          "next": {
+            "??_+_": "cigar",
+            "??_??": "cigar",
+            "??_?_": "cigar"
+          }
+        },
+        "__?__": "groin",
+        "___+?": "groin",
+        "___??": "groin",
+        "___?_": "groin",
+        "____?": "groin"
+      }
+    },
+    "____?": {
+      "guess": "north",
+      "next": {
+        "+++++": "north",
+        "++_?+": "north",
+        "+__++": "north",
+        "+__+_": "north",
+        "?+_++": "north",
+        "?+_?_": {
+          "guess": "torch",
+          "next": {
+            "++_?_": "cigar",
+            "++___": "cigar"
+          }
+        },
+        "?????": "north",
+        "????_": "north",
+        "??_+_": {
+          "guess": "porch",
+          "next": {
+            "+?___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "??_??": "north",
+        "?_??_": "north",
+        "?__+_": {
+          "guess": "routh",
+          "next": {
+            "__?+_": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "?__??": {
+          "guess": "gouch",
+          "next": {
+            "?___?": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "?__?_": {
+          "guess": "torch",
+          "next": {
+            "+__?_": "cigar",
+            "+____": "cigar"
+          }
+        },
+        "_++++": {
+          "guess": "worth",
+          "next": {
+            "+++++": "worth",
+            "_++++": "cigar"
+          }
+        },
+        "_+++_": "north",
+        "_++?+": "north",
+        "_+??_": {
+          "guess": "routh",
+          "next": {
+            "++_?_": "cigar",
+            "?+_?_": "cigar"
+          }
+        },
+        "_+_++": {
+          "guess": "rhomb",
+          "next": {
+            "_?+_?": "cigar",
+            "_?+__": "cigar",
+            "_???_": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "_+_+_": {
+          "guess": "morph",
+          "next": {
+            "++___": "cigar",
+            "_+_?_": "cigar",
+            "_+___": "cigar"
+          }
+        },
+        "_+_?+": {
+          "guess": "torch",
+          "next": {
+            "++_++": "cigar",
+            "++__+": "cigar",
+            "?+_++": "cigar"
+          }
+        },
+        "_+_?_": {
+          "guess": "thrip",
+          "next": {
+            "+__+?": "cigar",
+            "+__+_": "cigar",
+            "+____": "cigar",
+            "?__+_": "cigar"
+          }
+        },
+        "_?+??": {
+          "guess": "brith",
+          "next": {
+            "??_??": "cigar",
+            "_?_??": "cigar"
+          }
+        },
+        "_?+?_": "north",
+        "_??++": {
+          "guess": "brith",
+          "next": {
+            "++_++": "cigar",
+            "_+_++": "cigar"
+          }
+        },
+        "_???_": {
+          "guess": "morph",
+          "next": {
+            "???__": "cigar",
+            "_???_": "cigar",
+            "_??__": "cigar"
+          }
+        },
+        "_?_++": "north",
+        "_?_+?": "north",
+        "_?_+_": "north",
+        "_?_?_": {
+          "guess": "hound",
+          "next": {
+            "_??_?": "cigar",
+            "_??__": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "__+++": {
+          "guess": "bough",
+          "next": {
+            "+___+": "cigar",
+            "___?+": "cigar",
+            "____+": "cigar"
+          }
+        },
+        "__++_": "north",
+        "__+??": "north",
+        "__?++": "north",
+        "__?+_": "north",
+        "__???": "north",
+        "__??_": {
+          "guess": "touch",
+          "next": {
+            "+_++_": "cigar",
+            "+_+__": "cigar",
+            "+__+_": "cigar"
+          }
+        },
+        "___++": {
+          "guess": "worth",
+          "next": {
+            "+__++": "cigar",
+            "___++": "cigar"
+          }
+        },
+        "___+_": {
+          "guess": "batik",
+          "next": {
+            "+_+?_": "batik",
+            "__+??": "batik",
+            "__+?_": {
+              "guess": "betid",
+              "next": {
+                "__+??": "cigar",
+                "__+?_": "cigar"
+              }
+            },
+            "__+__": "batik",
+            "__??_": "batik"
+          }
+        },
+        "___?+": {
+          "guess": "biped",
+          "next": {
+            "+____": "biped",
+            "_+?__": "biped",
+            "_+__?": "biped",
+            "_+___": {
+              "guess": "heids",
+              "next": {
+                "+_?__": "cigar",
+                "?_?__": "cigar"
+              }
+            },
+            "_?___": "biped",
+            "____?": "biped",
+            "_____": "biped"
+          }
+        },
+        "___??": {
+          "guess": "porch",
+          "next": {
+            "+___?": "cigar",
+            "?___?": "cigar",
+            "___+?": "cigar",
+            "___??": "cigar",
+            "____?": "cigar"
+          }
+        },
+        "___?_": "north"
+      }
+    },
+    "_____": {
+      "guess": "round",
+      "next": {
+        "+++++": "round",
+        "+++__": "round",
+        "++_?_": "round",
+        "++__?": "round",
+        "++___": {
+          "guess": "cornu",
+          "next": {
+            "?+?__": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "+??__": "round",
+        "+?_+_": "round",
+        "+?___": "round",
+        "+_?_?": "round",
+        "+_?__": "round",
+        "+___+": "round",
+        "?++?_": "round",
+        "?++_+": "round",
+        "?+?__": "round",
+        "?+_+_": {
+          "guess": "cornu",
+          "next": {
+            "++++_": "cigar",
+            "_+++_": "cigar"
+          }
+        },
+        "?+_??": "round",
+        "?+_?_": {
+          "guess": "cornu",
+          "next": {
+            "_++?_": "cigar",
+            "_+??_": "cigar"
+          }
+        },
+        "?+__?": {
+          "guess": "cornu",
+          "next": {
+            "_++__": "cigar",
+            "_+?__": "cigar"
+          }
+        },
+        "?+___": {
+          "guess": "piony",
+          "next": {
+            "+_?__": "cigar",
+            "?_?__": "cigar",
+            "__?_+": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "???_+": "round",
+        "???__": {
+          "guess": "choof",
+          "next": {
+            "+_+__": "cigar",
+            "+_?__": "cigar",
+            "?_?__": "cigar",
+            "_?_+_": "cigar",
+            "__+__": "cigar",
+            "___+?": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "??_++": "round",
+        "??_+_": {
+          "guess": "piony",
+          "next": {
+            "+_++_": "cigar",
+            "_?+++": "cigar",
+            "__+++": "cigar",
+            "__++_": "cigar"
+          }
+        },
+        "??_??": "round",
+        "??_?_": {
+          "guess": "cigar",
+          "next": {
+            "+___?": "cigar",
+            "_+__+": "cigar",
+            "_??_?": "cigar",
+            "__?_?": "cigar",
+            "____?": {
+              "guess": "feign",
+              "next": {
+                "+___+": "cigar",
+                "____+": "cigar"
+              }
+            }
+          }
+        },
+        "??__+": {
+          "guess": "courd",
+          "next": {
+            "+?_++": "cigar",
+            "+?_?+": "cigar",
+            "_?_++": "cigar",
+            "_?_?+": "cigar"
+          }
+        },
+        "??__?": {
+          "guess": "drony",
+          "next": {
+            "+++__": "cigar",
+            "???_?": "cigar"
+          }
+        },
+        "??___": {
+          "guess": "crook",
+          "next": {
+            "+++++": "crook",
+            "+++_+": "crook",
+            "+?+__": "crook",
+            "?++_+": "crook",
+            "???__": "crook",
+            "_++++": "crook",
+            "_+++_": {
+              "guess": "cromb",
+              "next": {
+                "_++??": "cigar",
+                "_++?_": "cigar",
+                "_++__": "cigar"
+              }
+            },
+            "_++__": "crook",
+            "_+?__": "crook",
+            "_+_+_": "crook",
+            "_?+__": "crook",
+            "_?_+_": "crook"
+          }
+        },
+        "?_++?": "round",
+        "?_++_": "round",
+        "?_+?_": "round",
+        "?_+_+": "round",
+        "?_+__": {
+          "guess": "croup",
+          "next": {
+            "++_?+": "cigar",
+            "++_?_": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "?_??_": "round",
+        "?_?__": {
+          "guess": "chiro",
+          "next": {
+            "+__+_": "cigar",
+            "+__?_": "cigar",
+            "_?_+_": "cigar",
+            "__++_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "?__++": "round",
+        "?__+?": "round",
+        "?__+_": {
+          "guess": "bingy",
+          "next": {
+            "+???_": "cigar",
+            "+??_+": "cigar",
+            "+??__": "cigar",
+            "_???_": "cigar"
+          }
+        },
+        "?____": {
+          "guess": "croup",
+          "next": {
+            "++__+": "cigar",
+            "++___": "cigar",
+            "+?__+": "cigar",
+            "?+__?": "cigar",
+            "?+___": "cigar",
+            "??___": "cigar",
+            "_+__?": "cigar",
+            "_+___": "cigar",
+            "_?___": "cigar"
+          }
+        },
+        "_++++": {
+          "guess": "bumph",
+          "next": {
+            "+?___": "bumph",
+            "_??__": "bumph",
+            "_?_?_": "bumph",
+            "_?__?": "bumph",
+            "_?___": {
+              "guess": "whomp",
+              "next": {
+                "+_?__": "cigar",
+                "__?__": "cigar"
+              }
+            }
+          }
+        },
+        "_+++_": "round",
+        "_++_?": "round",
+        "_++__": {
+          "guess": "piccy",
+          "next": {
+            "+__+_": "cigar",
+            "__?+_": "cigar",
+            "__?__": "cigar",
+            "___+_": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "_+_+?": {
+          "guess": "drony",
+          "next": {
+            "+_?++": "cigar",
+            "+_?+_": "cigar"
+          }
+        },
+        "_+_+_": "round",
+        "_+_??": "round",
+        "_+_?_": {
+          "guess": "corni",
+          "next": {
+            "++_??": "cigar",
+            "++_?_": "cigar",
+            "?+_??": "cigar",
+            "_+_?_": "cigar"
+          }
+        },
+        "_+__?": {
+          "guess": "whomp",
+          "next": {
+            "+_+__": "cigar",
+            "???__": "cigar",
+            "?_?__": "cigar",
+            "__+?_": "cigar",
+            "__+__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "_+___": {
+          "guess": "boofy",
+          "next": {
+            "+++_+": {
+              "guess": "boozy",
+              "next": {
+                "+++++": "boozy",
+                "+++_+": "cigar"
+              }
+            },
+            "++__+": "boofy",
+            "?+__+": "boofy",
+            "_++++": "boofy",
+            "_++_+": "boofy",
+            "_++__": "boofy",
+            "_+_++": "boofy",
+            "_+_?+": "boofy",
+            "_+__+": "boofy",
+            "_+___": "boofy"
+          }
+        },
+        "_???_": "round",
+        "_??__": {
+          "guess": "giron",
+          "next": {
+            "+__?_": "cigar",
+            "_?_?_": "cigar",
+            "___+_": "cigar",
+            "___?_": "cigar"
+          }
+        },
+        "_?_+_": {
+          "guess": "drony",
+          "next": {
+            "__+++": "cigar",
+            "__?+_": "cigar"
+          }
+        },
+        "_?_??": "round",
+        "_?_?_": {
+          "guess": "prion",
+          "next": {
+            "__+++": "cigar",
+            "__?+?": "cigar",
+            "__???": "cigar",
+            "___?+": "cigar",
+            "___??": "cigar"
+          }
+        },
+        "_?__+": "round",
+        "_?__?": {
+          "guess": "prion",
+          "next": {
+            "__++_": "cigar",
+            "__?+_": "cigar"
+          }
+        },
+        "_?___": {
+          "guess": "crony",
+          "next": {
+            "+_+__": "cigar",
+            "__+__": "cigar",
+            "__?__": "cigar"
+          }
+        },
+        "__++_": "round",
+        "__+__": {
+          "guess": "prion",
+          "next": {
+            "?____": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "__?+_": {
+          "guess": "brond",
+          "next": {
+            "+__+_": "cigar",
+            "___+_": "cigar"
+          }
+        },
+        "__??+": "round",
+        "__??_": {
+          "guess": "humpy",
+          "next": {
+            "++__+": "cigar",
+            "++___": "cigar",
+            "?+?__": "cigar",
+            "?+_?_": "cigar",
+            "?+___": "cigar",
+            "_++__": "cigar",
+            "_+__+": "cigar",
+            "_+___": "cigar",
+            "_?_?_": "cigar",
+            "_?__+": "cigar"
+          }
+        },
+        "__?_+": "round",
+        "__?_?": {
+          "guess": "crimp",
+          "next": {
+            "?____": "cigar",
+            "___+_": "cigar",
+            "___??": "cigar",
+            "___?_": "cigar",
+            "____?": "cigar",
+            "_____": "cigar"
+          }
+        },
+        "__?__": {
+          "guess": "gimpy",
+          "next": {
+            "+_+_+": "gimpy",
+            "+__++": "gimpy",
+            "?___+": "gimpy",
+            "_?_?_": "gimpy",
+            "_?__+": "gimpy",
+            "_?___": {
+              "guess": "bumpy",
+              "next": {
+                "?+___": "cigar",
+                "_+___": "cigar"
+              }
+            },
+            "__+++": "gimpy",
+            "__++_": "gimpy",
+            "__+_+": "gimpy",
+            "__?_+": "gimpy",
+            "___++": "gimpy",
+            "___?+": "gimpy",
+            "____+": "gimpy"
+          }
+        },
+        "___+?": "round",
+        "___+_": {
+          "guess": "piony",
+          "next": {
+            "_+_++": "cigar",
+            "_?_++": "cigar",
+            "_?_+?": "cigar",
+            "_?_+_": "cigar"
+          }
+        },
+        "___??": {
+          "guess": "drony",
+          "next": {
+            "+__?+": "cigar",
+            "?__?+": "cigar"
+          }
+        },
+        "___?_": {
+          "guess": "champ",
+          "next": {
+            "+?___": "champ",
+            "+____": "champ",
+            "??__?": "champ",
+            "??___": {
+              "guess": "wimpy",
+              "next": {
+                "++___": "cigar",
+                "_+___": "cigar"
+              }
+            },
+            "_?_??": "champ",
+            "___?_": "champ",
+            "____?": "champ",
+            "_____": "champ"
+          }
+        },
+        "____+": "round",
+        "____?": {
+          "guess": "doing",
+          "next": {
+            "+_?__": "cigar",
+            "?_?_?": "cigar",
+            "?_?__": "cigar"
+          }
+        },
+        "_____": {
+          "guess": "champ",
+          "next": {
+            "++___": "champ",
+            "+____": "champ",
+            "?+___": "champ",
+            "?__?_": "champ",
+            "?___?": "champ",
+            "_+___": "champ",
+            "_?__?": "champ",
+            "___+?": "champ",
+            "___??": "champ",
+            "____?": "champ",
+            "_____": {
+              "guess": "comfy",
+              "next": {
+                "___++": "cigar",
+                "___?+": "cigar"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
