@@ -21,7 +21,9 @@ struct Verifier {
 
             auto getterCached = PatternGetterCached(answerIndex);
             auto state = AttemptStateToUse(getterCached);
-            auto p = AnswerGuessesIndexesPair<TypeToUse>(GlobalState.allAnswers.size(), GlobalState.allGuesses.size());
+
+            auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+            auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
 
             int i = 0;
             for (i = 1; i <= solver.maxTries; ++i) {
@@ -31,10 +33,10 @@ struct Verifier {
                     results[answerIndex] = i;
                     break;
                 }
-                checkMatches(localModel, p);
+                checkMatches(localModel, answers, guesses);
                 auto patternStr = getter.getPatternFromWord(localModel.guess);
                 //DEBUG(answer << " guess with " << localModel.guess << " " << patternStr);
-                solver.makeGuess(p, state, guessIndex);  
+                solver.makeGuess(answers, guesses, state, guessIndex);  
 
                 if (localModel.next.contains(patternStr)) {
                     localModel = *localModel.next[patternStr];
@@ -81,12 +83,12 @@ struct Verifier {
         //exit(1);
     }
 
-    static void checkMatches(const SolutionModel &model, const AnswerGuessesIndexesPair<TypeToUse> &p) {
+    static void checkMatches(const SolutionModel &model, const AnswersVec &answers, const GuessesVec &guesses) {
         return; // skip for now
         auto subtreeGuesses = SolutionModel::getAllGuessesFromNext(model);
         std::set<std::string> answersFromPair = {};
-        for (std::size_t i = 0; i < p.answers.size(); ++i) {
-            answersFromPair.insert(GlobalState.reverseIndexLookup[p.answers[i]]);
+        for (std::size_t i = 0; i < answers.size(); ++i) {
+            answersFromPair.insert(GlobalState.reverseIndexLookup[answers[i]]);
         }
 
         if (answersFromPair != subtreeGuesses) {

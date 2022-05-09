@@ -47,8 +47,9 @@ private:
     }
 
     void updateStatusInner(const std::string &suffix) {
-        bar.set_option(indicators::option::PostfixText{prefix + " " + getFrac(maxA, total) + suffix});
-        bar.set_progress(getIntegerPerc(maxA, total));
-        if (maxA != total) bar.print_progress();
+        DEBUG("update status..." << suffix);
+        //bar.set_option(indicators::option::PostfixText{prefix + " " + getFrac(maxA, total) + suffix});
+        //bar.set_progress(getIntegerPerc(maxA, total));
+        //if (maxA != total) bar.print_progress();
     }
 };

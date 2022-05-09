@@ -3,7 +3,6 @@
 #include "../include/Util.h"
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
-#include "../include/RemoveGuessesBetterGuess.h"
 #include "../include/Verifier.h"
 
 

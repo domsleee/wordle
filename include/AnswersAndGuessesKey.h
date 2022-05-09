@@ -35,8 +35,8 @@ struct AnswersAndGuessesKey {
     AnswersAndGuessesKey(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
         : state(wsAnswers, wsGuesses, remDepth) {}
 
-    template<typename T>
-    AnswersAndGuessesKey(const T& answers, const T& guesses, RemDepthType remDepth)
+    template<class T, class U>
+    AnswersAndGuessesKey(const T& answers, const U& guesses, RemDepthType remDepth)
         : AnswersAndGuessesKey(
             WordSetHelpers::buildAnswersWordSet(answers),
             WordSetHelpers::buildGuessesWordSet(guesses),

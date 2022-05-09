@@ -29,7 +29,7 @@ using PatternType = uint8_t;
 using RemDepthType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
-static const int NUM_WORDS = 2368;
+static const int NUM_WORDS = 12992;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
@@ -60,7 +60,7 @@ static T safeMultiply(T a, T b) {
 }
 
 template <typename Vec = std::vector<IndexType>>
-inline Vec getVector(std::size_t size, std::size_t offset) {
+inline Vec getVector(std::size_t size, std::size_t offset = 0) {
     Vec res(size);
     for (std::size_t i = 0; i < size; ++i) {
         res[i] = i + offset;

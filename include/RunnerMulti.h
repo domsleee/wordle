@@ -81,24 +81,25 @@ struct RunnerMulti {
             {
                 //DEBUG("batch size " << firstWordBatch.size());
                 
-                const auto &answers = GlobalState.allAnswers;
-                const auto &guesses = GlobalState.allGuesses;
+                const auto &allAnswers = GlobalState.allAnswers;
+                const auto &allGuesses = GlobalState.allGuesses;
                 
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
                     auto firstWordIndex = firstWordBatch[i];
-                    const auto &firstWord = guesses[firstWordIndex];
+                    const auto &firstWord = allGuesses[firstWordIndex];
                     solver.startingWord = firstWord;
 
                     int numWrong = 0, numTries = 0;
-                    for (std::size_t answerIndex = 0; answerIndex < answers.size(); ++answerIndex) {
+                    for (std::size_t answerIndex = 0; answerIndex < allAnswers.size(); ++answerIndex) {
                         if (numWrong > GlobalArgs.maxWrong) {
                             numWrong = INF_INT; // invalid
                             continue;
                         }
-                        auto p = AnswerGuessesIndexesPair<TypeToUse>(answers.size(), guesses.size());
-                        auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, p);
+                        auto answers = getVector<AnswersVec>(allAnswers.size());
+                        auto guesses = getVector<GuessesVec>(allGuesses.size());
+                        auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, answers, guesses);
                         numWrong += solverRes.tries == TRIES_FAILED;
                         numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
                     }
@@ -142,7 +143,7 @@ struct RunnerMulti {
 
     template<bool isEasyMode, bool isGetLowestAverage>
     std::vector<IndexType> getGuessIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
-        auto guessIndexes = getVector(GlobalState.allGuesses.size(), 0);
+        auto guessIndexes = getVector<GuessesVec>(GlobalState.allGuesses.size(), 0);
         auto prevSize = guessIndexes.size();
         if (GlobalArgs.guessesToSkip != "") {
             auto guessWordsToSkip = readFromFile(GlobalArgs.guessesToSkip);
@@ -157,15 +158,14 @@ struct RunnerMulti {
             for (const auto &w: guessWordsToCheck) guessIndexes.push_back(getIndex(GlobalState.allGuesses, w));
         }
         std::array<int, NUM_PATTERNS> equiv;
-        const auto &answerVec = getVector<UnorderedVec>(GlobalState.allAnswers.size(), 0);
-        AnswerGuessesIndexesPair<UnorderedVec> p(answerVec, UnorderedVec(guessIndexes));
-        nothingSolver.calcSortVectorAndGetMinNumWrongFor2(p, equiv);
-        p.guesses.sortBySortVec();
-        guessIndexes = {p.guesses.begin(), p.guesses.end()};
+        const auto &answerVec = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        std::array<int64_t, MAX_NUM_GUESSES> sortVec = {};
+        nothingSolver.calcSortVectorAndGetMinNumWrongFor2(answerVec, guessIndexes, equiv, sortVec);
+        std::sort(guessIndexes.begin(), guessIndexes.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
         if (GlobalArgs.topLevelGuesses < static_cast<int>(guessIndexes.size())) {
-            auto sizeOfRes = std::min(static_cast<int>(p.guesses.size()), GlobalArgs.topLevelGuesses);
-            guessIndexes = {p.guesses.begin(), p.guesses.begin() + sizeOfRes};
+            auto sizeOfRes = GlobalArgs.topLevelGuesses;
+            guessIndexes.resize(sizeOfRes);
         }
         return guessIndexes;
     }
@@ -271,18 +271,12 @@ struct RunnerMulti {
         std::map<IndexType, int> indexKeys;
         std::vector<IndexType> sortedIndexes = indexes;
 
-        auto p = AnswerGuessesIndexesPair<UnorderedVector<IndexType>>(GlobalState.allAnswers.size(), GlobalState.allGuesses.size());
         auto guessIndex = GlobalState.getIndexForWord(nothingSolver.startingWord);
-
-        DEBUG("start: " << p.answers.size() << ", " << p.guesses.size());
 
         for (auto answerIndex: indexes) {
             auto getter = PatternGetterCached(answerIndex);
             auto patternInt = getter.getPatternIntCached(guessIndex);
-
             indexKeys.emplace(answerIndex, patternInt);
-            p.answers.restoreAllValues();
-            p.guesses.restoreAllValues();
         }
 
         std::vector<std::vector<IndexType>> groups = {};

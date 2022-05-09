@@ -4,7 +4,7 @@
 struct RemoveGuessesWithNoLetterInAnswers {
     inline static std::vector<int> letterCountLookup = {};
 
-    static std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
+    /*static std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
         int answerLetterMask = 0;
         for (auto &answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
@@ -13,6 +13,22 @@ struct RemoveGuessesWithNoLetterInAnswers {
             return (answerLetterMask & letterCountLookup[guessIndex]) == 0;
         });
         return guesses;
+    }&*/
+
+    static void clearGuesses(GuessesVec &guesses, const AnswersVec &answers) {
+        int answerLetterMask = 0;
+        for (auto answerIndex: answers) {
+            answerLetterMask |= letterCountLookup[answerIndex];
+        }
+        std::size_t deleted = 0;
+        for (std::size_t i = 0; i < guesses.size() - deleted; ++i) {
+            if ((answerLetterMask & letterCountLookup[guesses[i]]) == 0) {
+                std::swap(guesses[i], guesses[guesses.size()-1]);
+                deleted++;
+                --i;
+            }
+        }
+        guesses.resize(guesses.size() - deleted);
     }
 
     static std::size_t clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {
