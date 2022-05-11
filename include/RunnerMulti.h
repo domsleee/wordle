@@ -160,7 +160,9 @@ struct RunnerMulti {
         std::array<int, NUM_PATTERNS> equiv;
         const auto &answerVec = getVector<AnswersVec>(GlobalState.allAnswers.size());
         std::array<int64_t, MAX_NUM_GUESSES> sortVec = {};
-        nothingSolver.calcSortVectorAndGetMinNumWrongFor2(answerVec, guessIndexes, equiv, sortVec);
+        for (auto guessIndex: guessIndexes) {
+            sortVec[guessIndex] = nothingSolver.calcSortVectorAndGetMinNumWrongFor2(guessIndex, answerVec, equiv).second;
+        }
         std::sort(guessIndexes.begin(), guessIndexes.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
         if (GlobalArgs.topLevelGuesses < static_cast<int>(guessIndexes.size())) {

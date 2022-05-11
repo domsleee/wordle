@@ -31,6 +31,9 @@ struct RemoveGuessesWithNoLetterInAnswers {
         guesses.resize(guesses.size() - deleted);
     }
 
+    // clear guesses with equal or better guess...
+    // looking at answerLetterMask
+
     static std::size_t clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {
         std::size_t guessesRemoved = 0;
         int answerLetterMask = 0;

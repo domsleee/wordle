@@ -142,40 +142,66 @@ struct AnswersAndGuessesSolver {
         }
     }
 
-    static BestWordResult calcSortVectorAndGetMinNumWrongFor2(
+    using P = std::pair<int, int64_t>;
+    std::unordered_map<WordSetAnswers, std::unordered_map<IndexType, P>> minNumWrongFor2Cache = {};
+
+    BestWordResult calcSortVectorAndGetMinNumWrongFor2(
         const AnswersVec &answers,
         const GuessesVec &guesses,
+        const AnswersAndGuessesKey<isEasyMode> &cacheKey,
         std::array<int, NUM_PATTERNS> &equiv,
         std::array<int64_t, MAX_NUM_GUESSES> &sortVec)
     {
         BestWordResult minNumWrongFor2 = {INF_INT, 0};
-        const int nh = answers.size();
+        auto &cacheEntry = minNumWrongFor2Cache.try_emplace(cacheKey.state.wsAnswers, std::unordered_map<IndexType, P>()).first->second;
 
         for (const auto guessIndex: guesses) {
             std::array<int, NUM_PATTERNS> &count = equiv;
-            count.fill(0);
+            int numWrongFor2 = 0;
+            int64_t sortVal = 0;
 
-            int s2 = 0, innerLb = 0, numWrongFor2 = 0;
-            for (const auto answerIndex: answers) {
-                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
-                int c = (++count[patternInt]);
-                auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
-                innerLb += lbVal;
-                s2 += 2*c - 1;
-                numWrongFor2 += c > 1;
+            auto it = cacheEntry.find(guessIndex);
+            if (it != cacheEntry.end()) {
+                numWrongFor2 = it->second.first;
+                sortVal = it->second.second;
+            } else {
+                auto p = calcSortVectorAndGetMinNumWrongFor2(guessIndex, answers, count);
+                numWrongFor2 = p.first;
+                sortVal = p.second;
+                cacheEntry[guessIndex] = p;
             }
+
             if (numWrongFor2 < minNumWrongFor2.numWrong) {
                 minNumWrongFor2 = {numWrongFor2, guessIndex};
             }
-            innerLb -= count[NUM_PATTERNS - 1];
             if (numWrongFor2 == 0) {
                 return {0, guessIndex};
             }
-            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
             sortVec[guessIndex] = sortVal;
         }
 
         return minNumWrongFor2;
+    }
+
+    static P calcSortVectorAndGetMinNumWrongFor2(
+        const IndexType guessIndex,
+        const AnswersVec &answers,
+        std::array<int, NUM_PATTERNS> &count)
+    {
+        int numWrongFor2 = 0, innerLb = 0, s2 = 0;
+        int nh = answers.size();
+        count.fill(0);
+        for (const auto answerIndex: answers) {
+            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+            int c = (++count[patternInt]);
+            auto lbVal = 2 - (c == 1); // Assumes remdepth>=3
+            innerLb += lbVal;
+            s2 += 2*c - 1;
+            numWrongFor2 += c > 1;
+        }
+        innerLb -= count[NUM_PATTERNS - 1];
+        auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
+        return {numWrongFor2, sortVal};
     }
 
 private:
@@ -217,7 +243,7 @@ private:
 
         std::array<int, NUM_PATTERNS> equiv;
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
-        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guesses, equiv, sortVec);
+        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guesses, key, equiv, sortVec);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
             return setCacheVal(key, minNumWrongFor2);
         }
