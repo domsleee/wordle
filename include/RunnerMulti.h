@@ -143,6 +143,10 @@ struct RunnerMulti {
 
     template<bool isEasyMode, bool isGetLowestAverage>
     std::vector<IndexType> getGuessIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+        if (GlobalArgs.firstWord != "") {
+            return {(IndexType)getIndex(GlobalState.allGuesses, GlobalArgs.firstWord)};
+        }
+        
         auto guessIndexes = getVector<GuessesVec>(GlobalState.allGuesses.size(), 0);
         auto prevSize = guessIndexes.size();
         if (GlobalArgs.guessesToSkip != "") {
@@ -178,7 +182,7 @@ struct RunnerMulti {
         std::atomic<int> completed = 0, numWrong = 0, totalSum = 0, batches = 0;
 
         auto answerIndexesToCheck = getVector(GlobalState.allAnswers.size(), 0);
-        auto batchesOfAnswerIndexes = getBatchesByPattern(nothingSolver, answerIndexesToCheck);
+        auto batchesOfAnswerIndexes = getBatches(answerIndexesToCheck, 10000);// getBatchesByPattern(nothingSolver, answerIndexesToCheck);
         const auto numBatches = batchesOfAnswerIndexes.size();
 
         auto bar = SimpleProgress(FROM_SS("BY_ANSWER " << nothingSolver.startingWord), numBatches);

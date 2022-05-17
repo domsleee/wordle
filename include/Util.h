@@ -27,6 +27,7 @@
 using IndexType = uint16_t;
 using PatternType = uint8_t;
 using RemDepthType = uint8_t;
+using FastModeType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
 static const int NUM_WORDS = 12992;
