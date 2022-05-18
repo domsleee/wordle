@@ -5,7 +5,7 @@
 #include "Util.h"
 
 struct StateWithGuesses {
-    const WordSetAnswers wsAnswers;
+    WordSetAnswers wsAnswers;
     const WordSetGuesses wsGuesses;
     const RemDepthType remDepth;
     StateWithGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
@@ -18,7 +18,7 @@ struct StateWithGuesses {
 };
 
 struct StateNoGuesses {
-    const WordSetAnswers wsAnswers;
+    WordSetAnswers wsAnswers;
     const RemDepthType remDepth;
     StateNoGuesses(const WordSetAnswers &wsAnswers, const WordSetGuesses &wsGuesses, RemDepthType remDepth)
         : wsAnswers(wsAnswers), remDepth(remDepth) {}
@@ -58,7 +58,7 @@ struct AnswersAndGuessesKey {
         : AnswersAndGuessesKey({}, {}, 0) {}
     
 
-    const State state;
+    State state;
 
     friend bool operator==(const AnswersAndGuessesKey<isEasyMode> &a, const AnswersAndGuessesKey<isEasyMode> &b) = default;
 };

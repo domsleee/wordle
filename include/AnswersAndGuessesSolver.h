@@ -213,18 +213,21 @@ private:
 
     BestWordResult minOverWordsLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, FastModeType fastMode, int beta) {
         assertm(remDepth != 0, "no tries remaining");
+        //stats.entryStats[remDepth][0]++;
 
         if (answers.size() == 0) return {0, 0};
         if (answers.size() == 1) return {0, answers[0]};
+        if (remDepth >= answers.size()) {
+            auto m = *std::min_element(answers.begin(), answers.end());
+            return {0, m};
+        }
         if (remDepth == 1) {
             // no info from last guess
             auto m = *std::min_element(answers.begin(), answers.end());
             return {static_cast<int>(answers.size())-1, m};
         }
-        if (remDepth >= answers.size()) {
-            auto m = *std::min_element(answers.begin(), answers.end());
-            return {0, m};
-        }
+
+        //stats.entryStats[remDepth][1]++;
         if (fastMode == 1) return {-1, 0};
 
         const auto [key, cacheVal] = getCacheKeyAndValue(answers, guesses, remDepth);
@@ -236,20 +239,20 @@ private:
         auto &count = equiv;
         count.fill(0);
         for (const auto answerIndexForGuess: answers) {
-            int numWrongFor2 = 0, maxC = 0;
+            int maxC = 0;
             for (const auto actualAnswer: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(actualAnswer, answerIndexForGuess);
                 int c = (++count[patternInt]);
-                numWrongFor2 += c > 1;
                 maxC = std::max(maxC, c);
             }
-            if (numWrongFor2 == 0) {
+            if (maxC == 1) {
                 return setCacheVal(key, {0, answerIndexForGuess});
             }
             if (maxC <= 2 && remDepth >= 3) return setCacheVal(key, {0, answerIndexForGuess});
             if (maxC <= 3 && remDepth >= 4) return setCacheVal(key, {0, answerIndexForGuess});
         }
         
+        //stats.entryStats[remDepth][2]++;
         if (fastMode == 2) return {-1, 0};
 
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
@@ -280,9 +283,7 @@ private:
         bool isLb = res.numWrong < INF_INT;
 
         if (isExact) setCacheVal(key, res);
-
         if (isLb) setLbCacheVal(key, res.numWrong);
-
         return res;
     }
 
@@ -343,15 +344,33 @@ private:
             if (totalWrongForGuess >= beta) return totalWrongForGuess;
         }
 
-        for (int i = 0; i < m; ++i) {
+        n = m;
+        for (int i = 0; i < n; ++i) {
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];
             const auto pr = minOverWordsLeastWrong(myEquiv[s], guesses, remDepth, 0, beta - totalWrongForGuess);
             totalWrongForGuess = std::min(totalWrongForGuess + pr.numWrong, INF_INT);
-            if (totalWrongForGuess >= beta) return totalWrongForGuess;
+            if (totalWrongForGuess >= beta) {
+                someLbHack(guesses, remDepth, lb, s, myEquiv);
+                return totalWrongForGuess;
+            }
         }
 
         return totalWrongForGuess;
+    }
+
+    void someLbHack(const GuessesVec &guesses, RemDepthType remDepth, const int *lb, PatternType s, const std::array<AnswersVec, NUM_PATTERNS> &equiv) {
+        static int mm[] = {1,3,9,27,81,243};
+        for (int j = 0; j < 5; j++){
+            int s0 = s - ((s/mm[j])%3)*mm[j];
+            int v = 0;
+            for (int a = 0; a < 3; a++) v = std::min(v + lb[s0+mm[j]*a], INF_INT);
+            if (v == 0) continue;
+            auto cacheKey = getCacheKey(equiv[s0], guesses, remDepth-1);
+            for (auto v: equiv[s0+mm[j]]) cacheKey.state.wsAnswers[v] = true;
+            for (auto v: equiv[s0+2*mm[j]]) cacheKey.state.wsAnswers[v] = true;
+            setLbCacheVal(cacheKey, v);
+        }
     }
 
     BestWordResult getGuessForLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, int beta) {
@@ -585,13 +604,17 @@ private:
         const GuessesVec &guesses,
         const RemDepthType remDepth) {
         auto key = getCacheKey(answers, guesses, remDepth);
+        return {key, getCache(key)};
+    }
+
+    BestWordResult getCache(const AnswersAndGuessesKey<isEasyMode> &key) {
         auto it = getGuessCache.find(key);
         if (it == getGuessCache.end()) {
             cacheMiss++;
-            return {key, getDefaultBestWordResult()};
+            return getDefaultBestWordResult();
         }
         cacheHit++;
-        return {key, it->second};
+        return it->second;
     }
 
     int getLbCache(const AnswersAndGuessesKey<isEasyMode> &key) {
@@ -600,7 +623,7 @@ private:
             lbCacheMiss++;
             return 0;
         }
-        lbCacheMiss++;
+        lbCacheHit++;
         return it->second;
     }   
 
@@ -608,7 +631,7 @@ private:
         if (v == 0) return;
         auto r = lbGuessCache.try_emplace(key, v);
         if (!r.second) {
-            if (v < r.first->second) {
+            if (v > r.first->second) {
                 lbGuessCache[key] = v;
             }
         }
