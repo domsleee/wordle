@@ -269,9 +269,13 @@ private:
         BestWordResult res = getDefaultBestWordResult();
         res.wordIndex = answers[0];
         std::size_t numGuessIndexesToCheck = std::min(guessesCopy.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
+        bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
             auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
+            if (r < beta) {
+                exact = true;
+            }
             if (r < res.numWrong) {
                 res = {r, possibleGuess};
                 beta = std::min(r, beta);
@@ -279,11 +283,8 @@ private:
             if (r == 0) break;
         }
 
-        bool isExact = res.numWrong < beta;
-        bool isLb = res.numWrong < INF_INT;
-
-        if (isExact) setCacheVal(key, res);
-        if (isLb) setLbCacheVal(key, res.numWrong);
+        if (exact) setCacheVal(key, res);
+        else setLbCacheVal(key, res.numWrong);
         return res;
     }
 
