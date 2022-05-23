@@ -20,6 +20,7 @@ struct RunnerMultiResultPair {
 struct RunnerMultiResult {
     std::vector<RunnerMultiResultPair> pairs = {};
     std::shared_ptr<SolutionModel> solutionModel = std::make_shared<SolutionModel>();
+    PerfStats stats;
 };
 
 template <bool parallel>
@@ -35,7 +36,7 @@ struct RunnerMulti {
             exit(1);
         }
 
-        auto r = nothingSolver.startingWord != ""
+        auto r = false && nothingSolver.startingWord != ""
             ? runPartitionedByActualAnswer(nothingSolver)
             : runPartitonedByFirstGuess(nothingSolver);
 
@@ -50,7 +51,7 @@ struct RunnerMulti {
 
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 8);
+        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 32);
         DEBUG("#batches: " << batchesOfFirstWords.size());
 
         std::mutex lock;
@@ -61,7 +62,7 @@ struct RunnerMulti {
         fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,numWrong,numTries\n";
 
-        std::vector<int> transformResults(batchesOfFirstWords.size());
+        std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size());
         std::transform(
             executionPolicy,
             batchesOfFirstWords.begin(),
@@ -77,13 +78,12 @@ struct RunnerMulti {
                 &nothingSolver=std::as_const(nothingSolver),
                 &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
             ]
-                (const std::vector<IndexType> &firstWordBatch) -> int
-            {
-                //DEBUG("batch size " << firstWordBatch.size());
-                
+                (const std::vector<IndexType> &firstWordBatch) -> RunnerMultiResult
+            {                
                 const auto &allAnswers = GlobalState.allAnswers;
                 const auto &allGuesses = GlobalState.allGuesses;
                 
+                RunnerMultiResult result;
                 auto solver = nothingSolver;
 
                 for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
@@ -103,6 +103,10 @@ struct RunnerMulti {
                         numWrong += solverRes.tries == TRIES_FAILED;
                         numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
                     }
+                    //auto answers = getVector<AnswersVec>(allAnswers.size());
+                    //auto guesses = getVector<GuessesVec>(allGuesses.size());
+                    //numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong);
+                    //DEBUG("numWrong?? " << numWrong);
 
                     {
                         std::lock_guard g(lock);
@@ -131,12 +135,16 @@ struct RunnerMulti {
                     }
                 }
                 
-                return 0;
+                result.stats = solver.stats;
+                return result;
             }
         );
         fout.close();
 
-        RunnerUtil::printInfo(nothingSolver, {});
+        PerfStats stats = {};
+        for (auto &res: transformResults) stats.combine(res.stats);
+
+        RunnerUtil::printInfo(nothingSolver, {}, stats);
         //DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
         return 0;
     }
@@ -161,7 +169,7 @@ struct RunnerMulti {
             guessIndexes.clear();
             for (const auto &w: guessWordsToCheck) guessIndexes.push_back(getIndex(GlobalState.allGuesses, w));
         }
-        std::array<int, NUM_PATTERNS> equiv;
+        std::array<IndexType, NUM_PATTERNS> equiv;
         const auto &answerVec = getVector<AnswersVec>(GlobalState.allAnswers.size());
         std::array<int64_t, MAX_NUM_GUESSES> sortVec = {};
         for (auto guessIndex: guessIndexes) {

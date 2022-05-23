@@ -21354,9 +21354,18 @@
           }
         },
         "___+_": {
-          "guess": "fudgy",
+          "guess": "befog",
           "next": {
-            "++__+": {
+            "+____": {
+              "guess": "bully",
+              "next": {
+                "+++++": {
+                  "guess": "bully",
+                  "next": {}
+                }
+              }
+            },
+            "__?__": {
               "guess": "fully",
               "next": {
                 "+++++": {
@@ -21365,16 +21374,7 @@
                 }
               }
             },
-            "_+?_+": {
-              "guess": "dully",
-              "next": {
-                "+++++": {
-                  "guess": "dully",
-                  "next": {}
-                }
-              }
-            },
-            "_+_?+": {
+            "____?": {
               "guess": "gully",
               "next": {
                 "+++++": {
@@ -21383,11 +21383,11 @@
                 }
               }
             },
-            "_+__+": {
-              "guess": "bully",
+            "_____": {
+              "guess": "dully",
               "next": {
                 "+++++": {
-                  "guess": "bully",
+                  "guess": "dully",
                   "next": {}
                 }
               }

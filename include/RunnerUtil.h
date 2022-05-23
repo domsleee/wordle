@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Util.h"
+#include "PerfStats.h"
 #include <algorithm>
 #include <numeric>
 
@@ -14,6 +15,11 @@ void printSolverInformation(const T& solver) {
 struct RunnerUtil {
     template <typename T>
     static void printInfo(const T& solver, const std::vector<int64_t> &answerIndexToResult) {
+        printInfo(solver, answerIndexToResult, PerfStats());
+    }
+
+    template <typename T>
+    static void printInfo(const T& solver, const std::vector<int64_t> &answerIndexToResult, const PerfStats &stats) {
         const auto &wordsToSolve = GlobalState.allAnswers;
         const auto &guesses = GlobalState.allGuesses;
         auto correct = 0;
@@ -36,6 +42,7 @@ struct RunnerUtil {
         DEBUG("firstWord   : " << GlobalArgs.firstWord);
         //DEBUG("heuristcC   : " << getPerc(solver.heuristicCacheHit, solver.heuristicTotal));
         DEBUG("average     : " << avg);
+        DEBUG(stats);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);
     }

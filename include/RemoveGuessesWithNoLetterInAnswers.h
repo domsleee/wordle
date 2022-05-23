@@ -16,19 +16,33 @@ struct RemoveGuessesWithNoLetterInAnswers {
     }&*/
 
     static void clearGuesses(GuessesVec &guesses, const AnswersVec &answers) {
+        auto ratio = (double)guesses.size() / answers.size();
+        
+        if (ratio <= 2.00) {
+            //DEBUG("skipping...");
+            return;
+        }
+        static int call = 0;
+        //DEBUG("call " << ++call);
         int answerLetterMask = 0;
         for (auto answerIndex: answers) {
             answerLetterMask |= letterCountLookup[answerIndex];
         }
+        if (__builtin_popcount(answerLetterMask) >= 21) {
+            static int hmm = 0;
+            //DEBUG("HMM" << (++hmm));
+            return;
+        }
         std::size_t deleted = 0;
         for (std::size_t i = 0; i < guesses.size() - deleted; ++i) {
             if ((answerLetterMask & letterCountLookup[guesses[i]]) == 0) {
-                std::swap(guesses[i], guesses[guesses.size()-1]);
+                std::swap(guesses[i], guesses[guesses.size()-1-deleted]);
                 deleted++;
                 --i;
             }
         }
         guesses.resize(guesses.size() - deleted);
+        //DEBUG("sending... " << ratio << " #guesses: " << guesses.size() << ", #answers: " << answers.size() << ", removed: " << deleted);
     }
 
     // clear guesses with equal or better guess...

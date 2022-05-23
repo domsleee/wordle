@@ -11,6 +11,8 @@
 #include "Defs.h"
 #include "UnorderedVector.h"
 #include "RemoveGuessesWithNoLetterInAnswers.h"
+#include "EndGameAnalysis.h"
+#include "PerfStats.h"
 
 #include <algorithm>
 #include <map>
@@ -38,6 +40,7 @@ struct AnswersAndGuessesSolver {
     long long cacheMiss = 0, cacheHit = 0, lbCacheMiss = 0, lbCacheHit = 0;
     std::vector<std::array<std::array<int, NUM_PATTERNS>, MAX_NUM_GUESSES>> lbCache3d;
     std::vector<std::array<AnswersVec, NUM_PATTERNS>> myEquivCache;
+    PerfStats stats;
 
     static const int isEasyModeVar = isEasyMode;
 
@@ -80,7 +83,7 @@ struct AnswersAndGuessesSolver {
         auto state = AttemptStateToUse(getter);
         auto currentModel = res.solutionModel;
 
-        //RemoveGuessesWithNoLetterInAnswers::clearGuesses(p.guesses, p.answers);
+        //RemoveGuessesWithNoLetterInAnswers::clearGuesses(guesses, answers);
         //RemoveGuessesBetterGuess::removeGuessesWhichHaveBetterGuess(p, true);
         
         IndexType guessIndex = firstWordIndex;
@@ -149,24 +152,42 @@ struct AnswersAndGuessesSolver {
     BestWordResult calcSortVectorAndGetMinNumWrongFor2(
         const AnswersVec &answers,
         const GuessesVec &guesses,
-        std::array<int, NUM_PATTERNS> &equiv,
-        std::array<int64_t, MAX_NUM_GUESSES> &sortVec)
+        std::array<IndexType, NUM_PATTERNS> &equiv,
+        std::array<int64_t, MAX_NUM_GUESSES> &sortVec,
+        const RemDepthType remDepth)
     {
         BestWordResult minNumWrongFor2 = {INF_INT, 0};
         //auto &cacheEntry = minNumWrongFor2Cache.try_emplace(cacheKey.state.wsAnswers, std::unordered_map<IndexType, P>()).first->second;
+        auto &count = equiv;
+        int nh = answers.size();
+
+        if (remDepth >= 5) {
+            return {(int)answers.size(), 0};
+        }
 
         for (const auto guessIndex: guesses) {
-            std::array<int, NUM_PATTERNS> &count = equiv;
-            int numWrongFor2 = 0;
-            int64_t sortVal = 0;
+            // const auto [numWrongFor2, sortVal] = calcSortVectorAndGetMinNumWrongFor2(guessIndex, answers, count, remDepth);
+            int numWrongFor2 = 0, innerLb = 0, s2 = 0;
+            int maxC = 0;
+            count.fill(0);
+            for (const auto answerIndex: answers) {
+                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+                auto &c = count[patternInt];
+                ++c;
+                innerLb += 2 - (c == 1); // Assumes remdepth>=3
+                s2 += 2*c - 1;
+                numWrongFor2 += c > 1;
+                if (c > maxC) maxC = c;
+            }
+            
+            innerLb -= count[NUM_PATTERNS - 1];
+            //if (remDepth > 2 && remDepth > maxC) return {0, guessIndex};
+            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
 
-            auto p = calcSortVectorAndGetMinNumWrongFor2(guessIndex, answers, count);
-            numWrongFor2 = p.first;
-            sortVal = p.second;
-
-            if (numWrongFor2 < minNumWrongFor2.numWrong) {
+            if (remDepth == 2 && numWrongFor2 < minNumWrongFor2.numWrong) {
                 minNumWrongFor2 = {numWrongFor2, guessIndex};
             }
+            
             if (numWrongFor2 == 0) {
                 return {0, guessIndex};
             }
@@ -179,10 +200,11 @@ struct AnswersAndGuessesSolver {
     static P calcSortVectorAndGetMinNumWrongFor2(
         const IndexType guessIndex,
         const AnswersVec &answers,
-        std::array<int, NUM_PATTERNS> &count)
+        std::array<IndexType, NUM_PATTERNS> &count,
+        const RemDepthType remDepth=6)
     {
         int numWrongFor2 = 0, innerLb = 0, s2 = 0;
-        int nh = answers.size();
+        int nh = answers.size(), maxC = 0;
         count.fill(0);
         for (const auto answerIndex: answers) {
             const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
@@ -191,13 +213,16 @@ struct AnswersAndGuessesSolver {
             innerLb += lbVal;
             s2 += 2*c - 1;
             numWrongFor2 += c > 1;
+            if (c > maxC) maxC = c;
         }
+        
         innerLb -= count[NUM_PATTERNS - 1];
         auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
+        //if (remDepth > maxC) return {0, sortVal};
         return {numWrongFor2, sortVal};
     }
 
-private:
+// private:
     inline BestWordResult getGuessFunctionDecider(
         const AnswersVec &answers,
         const GuessesVec &guesses,
@@ -213,7 +238,7 @@ private:
 
     BestWordResult minOverWordsLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, FastModeType fastMode, int beta) {
         assertm(remDepth != 0, "no tries remaining");
-        //stats.entryStats[remDepth][0]++;
+        stats.entryStats[remDepth][0]++;
 
         if (answers.size() == 0) return {0, 0};
         if (answers.size() == 1) return {0, answers[0]};
@@ -227,7 +252,7 @@ private:
             return {static_cast<int>(answers.size())-1, m};
         }
 
-        //stats.entryStats[remDepth][1]++;
+        stats.entryStats[remDepth][1]++;
         if (fastMode == 1) return {-1, 0};
 
         const auto [key, cacheVal] = getCacheKeyAndValue(answers, guesses, remDepth);
@@ -235,7 +260,7 @@ private:
             return cacheVal;
         }
 
-        std::array<int, NUM_PATTERNS> equiv;
+        std::array<IndexType, NUM_PATTERNS> equiv;
         auto &count = equiv;
         count.fill(0);
         for (const auto answerIndexForGuess: answers) {
@@ -245,28 +270,31 @@ private:
                 int c = (++count[patternInt]);
                 maxC = std::max(maxC, c);
             }
-            if (maxC == 1) {
-                return setCacheVal(key, {0, answerIndexForGuess});
-            }
-            if (maxC <= 2 && remDepth >= 3) return setCacheVal(key, {0, answerIndexForGuess});
-            if (maxC <= 3 && remDepth >= 4) return setCacheVal(key, {0, answerIndexForGuess});
+            if (maxC < remDepth) return setCacheVal(key, {0, answerIndexForGuess});
         }
         
-        //stats.entryStats[remDepth][2]++;
+        stats.entryStats[remDepth][2]++;
         if (fastMode == 2) return {-1, 0};
 
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
-        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guesses, equiv, sortVec);
+        auto guessesCopy = guesses;
+        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guessesCopy, equiv, sortVec, remDepth);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
             return setCacheVal(key, minNumWrongFor2);
         }
 
+        stats.entryStats[remDepth][3]++;
+
         const bool shouldSort = true;
-        auto guessesCopy = guesses;
+        RemoveGuessesWithNoLetterInAnswers::clearGuesses(guessesCopy, answers);
         if (shouldSort) std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
         // full search for remDepth >= 3
         BestWordResult res = getDefaultBestWordResult();
+        int endGameLb = endGameAnalysis(answers, guessesCopy, key, remDepth, beta);
+        if (endGameLb >= beta) {
+            return {beta, answers[0]};
+        }
         res.wordIndex = answers[0];
         std::size_t numGuessIndexesToCheck = std::min(guessesCopy.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
         bool exact = false;
@@ -299,11 +327,10 @@ private:
         assertm(remDepth != 0, "no tries remaining");
         if (answers.size() == 0) return 0;
 
-        int lb[NUM_PATTERNS], n = 0;
+        int lb[NUM_PATTERNS] = {0}, n = 0;
         PatternType indexToPattern[NUM_PATTERNS];
-        std::array<AnswersVec, NUM_PATTERNS> myEquiv;
+        std::array<AnswersVec, NUM_PATTERNS> myEquiv{};
 
-        for (std::size_t i = 0; i < NUM_PATTERNS; ++i) myEquiv[i].resize(0);
         for (const auto answerIndex: answers) {
             const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
             myEquiv[patternInt].push_back(answerIndex);
@@ -346,13 +373,22 @@ private:
         }
 
         n = m;
+
+        int score[243];
+        for (int i = 0; i < n; ++i) {
+            int s = indexToPattern[i];
+            score[s] = myEquiv[s].size();
+        }
+        std::sort(indexToPattern, indexToPattern+n, [&score](auto s0, auto s1) -> bool { return score[s0] < score[s1];});
+
         for (int i = 0; i < n; ++i) {
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];
             const auto pr = minOverWordsLeastWrong(myEquiv[s], guesses, remDepth, 0, beta - totalWrongForGuess);
             totalWrongForGuess = std::min(totalWrongForGuess + pr.numWrong, INF_INT);
             if (totalWrongForGuess >= beta) {
-                someLbHack(guesses, remDepth, lb, s, myEquiv);
+                someLbHack(guesses, guessIndex, remDepth, lb, s, myEquiv);
+                someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
                 return totalWrongForGuess;
             }
         }
@@ -360,18 +396,112 @@ private:
         return totalWrongForGuess;
     }
 
-    void someLbHack(const GuessesVec &guesses, RemDepthType remDepth, const int *lb, PatternType s, const std::array<AnswersVec, NUM_PATTERNS> &equiv) {
-        static int mm[] = {1,3,9,27,81,243};
+    int endGameAnalysis(
+        const AnswersVec &answers,
+        const GuessesVec &guesses,
+        const AnswersAndGuessesKey<isEasyMode> &cacheKey,
+        RemDepthType remDepth,
+        int beta
+    )
+    {
+        std::vector<int> endCount(EndGameAnalysis::numEndGames, 0);
+        int e, biggestendgame = -1, mx = 0;
+
+        for (auto answerIndex: answers) for (auto e: EndGameAnalysis::wordNum2EndGame[answerIndex]) endCount[e]++;
+        for (e = 0; e < EndGameAnalysis::numEndGames; e++) {
+            if (endCount[e] > mx) {
+                mx = endCount[e];
+                biggestendgame = e;
+            }
+        }
+        if (biggestendgame >= 0 && remDepth >= 1 && mx-1 > remDepth-1) {
+            // DEBUG("checking end game...");
+            AnswersVec liveEndGame = {};
+            for(auto answerIndex: answers) {
+                for (auto e: EndGameAnalysis::wordNum2EndGame[answerIndex]) {
+                    if (e == biggestendgame) liveEndGame.push_back(answerIndex);
+                }
+            }
+            int mult[6]={0};
+            std::pair<int, IndexType> indexThatAchievesLb = {0, 0};
+            for(auto guessIndex: guesses){
+                std::vector<int> seen(243, 0);
+                int n = 0;
+                for(auto answerIndex: liveEndGame) {
+                    auto s = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+                    n += (seen[s] == 0);
+                    seen[s] = 1;
+                }
+                assert(n >= 1 && n <= 6); mult[n-1]++;
+                if (n > indexThatAchievesLb.first) {
+                    indexThatAchievesLb = {n, guessIndex};
+                }
+            }
+            int n, r = remDepth - 1;
+            int sum = 0;
+            for (n = 5; n > 0 && r > 0; n--) {
+                int r1 = std::min(r, mult[n]);
+                sum += r1*n;
+                r -= r1;
+            }
+            auto minNumWrong = mx - 1 - sum;
+            if (minNumWrong > 0) setLbCacheVal(cacheKey, minNumWrong, indexThatAchievesLb.second);
+            if (minNumWrong >= beta) {
+                static int endGameHit = 0;
+                DEBUG("end game hit..." << ++endGameHit);
+                return beta;
+            }
+
+            /*if (liveEndGame.size() < answers.size()) {
+                auto v = minOverWordsLeastWrong(liveEndGame, guesses, remDepth, 0, beta);
+                if(v.numWrong >= beta) {
+                    DEBUG("end sub lookup hit...");
+                    setLbCacheVal(cacheKey, v.numWrong, v.wordIndex);
+                    return v.numWrong;
+                }
+            }*/
+        }
+        return 0;
+    }
+
+    void someLbHack(const GuessesVec &guesses, const IndexType guessIndex, RemDepthType remDepth, const int *lb, PatternType s, const std::array<AnswersVec, NUM_PATTERNS> &equiv) {
+        // The point is that eval(H0 u H1) >= eval(H0) + eval(H1)
+        static int mm[] = {1,3,9,27,81};
         for (int j = 0; j < 5; j++){
             int s0 = s - ((s/mm[j])%3)*mm[j];
             int v = 0;
             for (int a = 0; a < 3; a++) v = std::min(v + lb[s0+mm[j]*a], INF_INT);
-            if (v == 0) continue;
             auto cacheKey = getCacheKey(equiv[s0], guesses, remDepth-1);
-            for (auto v: equiv[s0+mm[j]]) cacheKey.state.wsAnswers[v] = true;
-            for (auto v: equiv[s0+2*mm[j]]) cacheKey.state.wsAnswers[v] = true;
-            setLbCacheVal(cacheKey, v);
+            for (auto ind: equiv[s0+mm[j]]) cacheKey.state.wsAnswers[ind] = true;
+            for (auto ind: equiv[s0+2*mm[j]]) cacheKey.state.wsAnswers[ind] = true;
+            setLbCacheVal(cacheKey, v, guessIndex);
         }
+    }
+
+    void someLbHack2(const GuessesVec &guesses, const IndexType guessIndex, RemDepthType remDepth, int numWrong, PatternType s, const std::array<AnswersVec, NUM_PATTERNS> &equiv) {
+        static int mm[] = {1,3,9,27,81};
+
+        // The useful case to apply this to is "when a new letter scores 'B', at least it's better than wasting a letter (by reusing a known non-letter)"
+        for(int i=0;i<5;i++)if( (s/mm[i])%3==0 && (equiv[s+mm[i]].size()>0||equiv[s+2*mm[i]].size()>0) ){
+            auto cacheKey = getCacheKey(equiv[s], guesses, remDepth-1);
+            for (auto ind: equiv[s + mm[i]]) cacheKey.state.wsAnswers[ind] = true;
+            for (auto ind: equiv[s + 2*mm[i]]) cacheKey.state.wsAnswers[ind] = true;
+            setLbCacheVal(cacheKey, numWrong, guessIndex);
+          }
+          for(int i=0;i<4;i++)if((s/mm[i])%3==0)for(int j=i+1;j<5;j++)if((s/mm[j])%3==0){
+            int a,b,t=0;
+            for(a=0;a<3;a++)for(b=0;b<3;b++)t+=equiv[s+a*mm[i]+b*mm[j]].size();
+
+            if(t>int(equiv[s].size())){
+                auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
+                for(a=0;a<3;a++)for(b=0;b<3;b++){
+                    auto &e=equiv[s+a*mm[i]+b*mm[j]];
+                    for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
+                }
+                setLbCacheVal(cacheKey, numWrong, guessIndex);
+                //writelboundcache(depth+1,filtered[s],u,inc-u.size());
+            }
+          }
     }
 
     BestWordResult getGuessForLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, int beta) {
@@ -393,7 +523,7 @@ private:
             return cacheVal;
         }
 
-        std::array<int, NUM_PATTERNS> equiv;
+        std::array<IndexType, NUM_PATTERNS> equiv;
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guesses, equiv, sortVec);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
@@ -596,7 +726,7 @@ private:
 
 
     inline BestWordResult setCacheVal(const AnswersAndGuessesKey<isEasyMode> &key, BestWordResult res) {
-        setLbCacheVal(key, res.numWrong);
+        if (res.numWrong != 0) setLbCacheVal(key, res.numWrong);
         return getGuessCache[key] = res;
     }
 
@@ -628,12 +758,24 @@ private:
         return it->second;
     }   
 
-    void setLbCacheVal(const AnswersAndGuessesKey<isEasyMode> &key, int v) {
+    inline static int potential = 0, realised = 0;
+    void setLbCacheVal(const AnswersAndGuessesKey<isEasyMode> &key, int v, IndexType guessIndex = MAX_INDEX_TYPE) {
         if (v == 0) return;
+        if (v < 0) {
+            DEBUG("OK, WHAT. given: " << v);
+            exit(1);
+        }
+        if (v >= GlobalArgs.maxWrong) {
+            realised += guessIndex != MAX_INDEX_TYPE;
+            //DEBUG("POTENTIAL" << (++potential) << " / " << realised);
+            if (guessIndex != MAX_INDEX_TYPE) {
+                setCacheVal(key, {v, guessIndex});
+            }
+        }
         auto r = lbGuessCache.try_emplace(key, v);
         if (!r.second) {
             if (v > r.first->second) {
-                lbGuessCache[key] = v;
+                lbGuessCache.emplace(key, v);
             }
         }
     } 

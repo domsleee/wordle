@@ -4,6 +4,7 @@
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
 #include "../include/Verifier.h"
+#include "../include/EndGameAnalysis.h"
 
 
 int Runner::run() {
@@ -24,6 +25,7 @@ int Runner::run() {
         START_TIMER(precompute);
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         PatternGetterCached::buildCache();
+        EndGameAnalysis::init();
 
         //return 0;
         END_TIMER(precompute);

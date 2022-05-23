@@ -4786,12 +4786,12 @@
           }
         },
         "___+_": {
-          "guess": "fudgy",
+          "guess": "befog",
           "next": {
-            "++__+": "fully",
-            "_+?_+": "dully",
-            "_+_?+": "gully",
-            "_+__+": "bully"
+            "+____": "bully",
+            "__?__": "fully",
+            "____?": "gully",
+            "_____": "dully"
           }
         },
         "___?+": "lupus",
