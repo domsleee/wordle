@@ -148,13 +148,12 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth,
         int beta)
     {
-        //DEBUG("called depth: " << GlobalArgs.maxTries - remDepth);
+        if (remDepth == 2) {
+            return calcSortVectorAndGetMinNumWrongFor2RemDepth2(answers, guesses, beta);
+        }
         BestWordResult minNumWrongFor2 = {INF_INT, 0};
-        //auto &cacheEntry = minNumWrongFor2Cache.try_emplace(cacheKey.state.wsAnswers, std::unordered_map<IndexType, P>()).first->second;
         auto &count = equiv;
         int nh = answers.size();
-
-        //if (remDepth == 2) DEBUG(guesses.size() << "," << answers.size());
 
         for (const auto guessIndex: guesses) {
             // const auto [numWrongFor2, sortVal] = calcSortVectorAndGetMinNumWrongFor2(guessIndex, answers, count, remDepth);
@@ -168,16 +167,7 @@ struct AnswersAndGuessesSolver {
                 innerLb += 2 - (c == 1); // Assumes remdepth>=3
                 s2 += 2*c - 1;
                 numWrongFor2 += c > 1;
-                if (remDepth == 2 && numWrongFor2 >= beta) break;
                 if (c > maxC) maxC = c;
-            }
-
-            if (remDepth == 2 && numWrongFor2 < minNumWrongFor2.numWrong) {
-                minNumWrongFor2 = {numWrongFor2, guessIndex};
-                //assert(numWrongFor2 < beta);
-                if (numWrongFor2 < beta) {
-                    beta = numWrongFor2;
-                }
             }
             
             if (numWrongFor2 == 0) {
@@ -189,6 +179,39 @@ struct AnswersAndGuessesSolver {
                 innerLb -= count[NUM_PATTERNS - 1];
                 auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
                 sortVec[guessIndex] = sortVal;
+            }
+        }
+
+        return minNumWrongFor2;
+    }
+
+    BestWordResult calcSortVectorAndGetMinNumWrongFor2RemDepth2(
+        const AnswersVec &answers,
+        const GuessesVec &guesses,
+        int beta)
+    {
+        BestWordResult minNumWrongFor2 = {INF_INT, 0};
+        std::array<bool, 256> seen;
+        for (const auto guessIndex: guesses) {
+            seen.fill(0);
+            int numWrongFor2 = 0;
+            for (const auto answerIndex: answers) {
+                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+                auto &seenVal = seen[patternInt];
+                numWrongFor2 += seenVal;
+                seenVal = 1;
+                if (numWrongFor2 >= beta) break;
+            }
+
+            if (numWrongFor2 < minNumWrongFor2.numWrong) {
+                minNumWrongFor2 = {numWrongFor2, guessIndex};
+                if (numWrongFor2 < beta) {
+                    beta = numWrongFor2;
+                }
+            }
+            
+            if (numWrongFor2 == 0) {
+                return {0, guessIndex};
             }
         }
 
