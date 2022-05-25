@@ -92,21 +92,21 @@ struct RunnerMulti {
                     solver.startingWord = firstWord;
 
                     int numWrong = 0, numTries = 0;
-                    for (std::size_t answerIndex = 0; answerIndex < allAnswers.size(); ++answerIndex) {
-                        if (numWrong > GlobalArgs.maxWrong) {
-                            numWrong = INF_INT; // invalid
-                            continue;
-                        }
-                        auto answers = getVector<AnswersVec>(allAnswers.size());
-                        auto guesses = getVector<GuessesVec>(allGuesses.size());
-                        auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, answers, guesses);
-                        numWrong += solverRes.tries == TRIES_FAILED;
-                        numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
-                    }
-                    //auto answers = getVector<AnswersVec>(allAnswers.size());
-                    //auto guesses = getVector<GuessesVec>(allGuesses.size());
-                    //numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong);
-                    //DEBUG("numWrong?? " << numWrong);
+                    // for (std::size_t answerIndex = 0; answerIndex < allAnswers.size(); ++answerIndex) {
+                    //     if (numWrong > GlobalArgs.maxWrong) {
+                    //         numWrong = INF_INT; // invalid
+                    //         continue;
+                    //     }
+                    //     auto answers = getVector<AnswersVec>(allAnswers.size());
+                    //     auto guesses = getVector<GuessesVec>(allGuesses.size());
+                    //     auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, answers, guesses);
+                    //     numWrong += solverRes.tries == TRIES_FAILED;
+                    //     numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
+                    // }
+                    auto answers = getVector<AnswersVec>(allAnswers.size());
+                    auto guesses = getVector<GuessesVec>(allGuesses.size());
+                    numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
+                    DEBUG("numWrong?? " << numWrong);
 
                     {
                         std::lock_guard g(lock);
@@ -190,7 +190,7 @@ struct RunnerMulti {
         std::atomic<int> completed = 0, numWrong = 0, totalSum = 0, batches = 0;
 
         auto answerIndexesToCheck = getVector(GlobalState.allAnswers.size(), 0);
-        auto batchesOfAnswerIndexes = getBatches(answerIndexesToCheck, 10000);// getBatchesByPattern(nothingSolver, answerIndexesToCheck);
+        auto batchesOfAnswerIndexes = getBatches(answerIndexesToCheck, 20000);// getBatchesByPattern(nothingSolver, answerIndexesToCheck);
         const auto numBatches = batchesOfAnswerIndexes.size();
 
         auto bar = SimpleProgress(FROM_SS("BY_ANSWER " << nothingSolver.startingWord), numBatches);

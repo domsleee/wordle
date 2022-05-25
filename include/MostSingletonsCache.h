@@ -55,7 +55,7 @@ struct MostSingletonsCache {
         }
     }
 
-    // if (getMaxGroupsFrom2Guesses(numAnswers) > numAnswers) return INF;
+    // if (getMaxGroupsFrom2Guesses(numAnswers) > numAnswers) return INF;   
     std::size_t getMaxGroupsFrom2Guesses(int numAnswers) {
         return cache[numAnswers];
     }

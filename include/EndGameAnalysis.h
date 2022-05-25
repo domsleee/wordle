@@ -8,11 +8,11 @@
 struct EndGameAnalysis {
     static inline std::vector<GuessesVec> wordNum2EndGame = {};
     static inline int numEndGames = 0;
-    static const int minEndGameCount = 200;
+    static const int minEndGameCount = 4;
 
     static void init() {
         int i,j,nh=GlobalState.allAnswers.size();
-        std::map<std::string, uint> wcount;// Map from wildcarded string, e.g. ".arks", to number of occurrences
+        std::map<std::string, unsigned int> wcount;// Map from wildcarded string, e.g. ".arks", to number of occurrences
         std::map<std::string, int> w2e;    // Map from wildcarded string, e.g. ".arks", to endgame number
         
         for (std::string &s: GlobalState.allAnswers){

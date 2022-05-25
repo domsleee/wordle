@@ -222,13 +222,13 @@
       }
     },
     "+?__+": {
-      "guess": "guimp",
+      "guess": "humph",
       "next": {
-        "?_?__": {
-          "guess": "tiger",
+        "?____": {
+          "guess": "their",
           "next": {
             "+++++": {
-              "guess": "tiger",
+              "guess": "their",
               "next": {}
             }
           }
@@ -251,34 +251,25 @@
             }
           }
         },
-        "__??_": {
-          "guess": "timer",
-          "next": {
-            "+++++": {
-              "guess": "timer",
-              "next": {}
-            }
-          }
-        },
-        "__?__": {
-          "guess": "their",
-          "next": {
-            "+++++": {
-              "guess": "their",
-              "next": {}
-            }
-          }
-        },
-        "___?_": {
+        "__+__": {
           "guess": "tamer",
           "next": {
             "+++++": {
               "guess": "tamer",
               "next": {}
+            },
+            "+_+++": {
+              "guess": "timer",
+              "next": {
+                "+++++": {
+                  "guess": "timer",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "____?": {
+        "___?_": {
           "guess": "taper",
           "next": {
             "+++++": {
@@ -288,74 +279,65 @@
           }
         },
         "_____": {
-          "guess": "taker",
+          "guess": "tiger",
           "next": {
             "+++++": {
-              "guess": "taker",
+              "guess": "tiger",
               "next": {}
+            },
+            "+__++": {
+              "guess": "taker",
+              "next": {
+                "+++++": {
+                  "guess": "taker",
+                  "next": {}
+                }
+              }
             }
           }
         }
       }
     },
     "+?__?": {
-      "guess": "piece",
+      "guess": "crate",
       "next": {
-        "??__+": {
-          "guess": "tripe",
+        "?++?+": {
+          "guess": "trace",
           "next": {
             "+++++": {
-              "guess": "tripe",
+              "guess": "trace",
               "next": {}
             }
           }
         },
-        "_??__": {
-          "guess": "tried",
-          "next": {
-            "+++++": {
-              "guess": "tried",
-              "next": {}
-            }
-          }
-        },
-        "_?_++": {
+        "?+_?+": {
           "guess": "trice",
           "next": {
             "+++++": {
               "guess": "trice",
               "next": {}
-            }
-          }
-        },
-        "_?__+": {
-          "guess": "trite",
-          "next": {
-            "+++++": {
-              "guess": "trite",
-              "next": {}
             },
-            "+++_+": {
-              "guess": "tribe",
+            "++_++": {
+              "guess": "truce",
               "next": {
                 "+++++": {
-                  "guess": "tribe",
+                  "guess": "truce",
                   "next": {}
                 }
               }
             }
           }
         },
-        "__+_+": {
-          "guess": "there",
+        "_++?+": {
+          "guess": "trade",
           "next": {
             "+++++": {
-              "guess": "there",
+              "guess": "trade",
               "next": {}
             }
           }
         },
-        "__+__": {
+        "_+???": {
           "guess": "treat",
           "next": {
             "+++++": {
@@ -373,16 +355,61 @@
             }
           }
         },
-        "__?_+": {
-          "guess": "three",
+        "_+_++": {
+          "guess": "trite",
           "next": {
             "+++++": {
-              "guess": "three",
+              "guess": "trite",
               "next": {}
             }
           }
         },
-        "__?__": {
+        "_+_?+": {
+          "guess": "tribe",
+          "next": {
+            "+++++": {
+              "guess": "tribe",
+              "next": {}
+            },
+            "+++_+": {
+              "guess": "tripe",
+              "next": {
+                "+++++": {
+                  "guess": "tripe",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_+_??": {
+          "guess": "tried",
+          "next": {
+            "+++++": {
+              "guess": "tried",
+              "next": {}
+            }
+          }
+        },
+        "_?_?+": {
+          "guess": "there",
+          "next": {
+            "+++++": {
+              "guess": "there",
+              "next": {}
+            },
+            "++??+": {
+              "guess": "three",
+              "next": {
+                "+++++": {
+                  "guess": "three",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_?_??": {
           "guess": "threw",
           "next": {
             "+++++": {
@@ -390,49 +417,13 @@
               "next": {}
             }
           }
-        },
-        "___++": {
-          "guess": "trace",
-          "next": {
-            "+++++": {
-              "guess": "trace",
-              "next": {}
-            },
-            "++_++": {
-              "guess": "truce",
-              "next": {
-                "+++++": {
-                  "guess": "truce",
-                  "next": {}
-                }
-              }
-            }
-          }
-        },
-        "____+": {
-          "guess": "trade",
-          "next": {
-            "+++++": {
-              "guess": "trade",
-              "next": {}
-            }
-          }
         }
       }
     },
     "+?___": {
-      "guess": "hails",
+      "guess": "elite",
       "next": {
-        "??___": {
-          "guess": "theta",
-          "next": {
-            "+++++": {
-              "guess": "theta",
-              "next": {}
-            }
-          }
-        },
-        "?_+__": {
+        "?_+?_": {
           "guess": "thief",
           "next": {
             "+++++": {
@@ -441,115 +432,34 @@
             }
           }
         },
-        "?_?__": {
-          "guess": "tithe",
+        "?__+_": {
+          "guess": "theta",
           "next": {
             "+++++": {
-              "guess": "tithe",
+              "guess": "theta",
               "next": {}
             }
           }
         },
-        "?___?": {
-          "guess": "these",
-          "next": {
-            "+++++": {
-              "guess": "these",
-              "next": {}
-            }
-          }
-        },
-        "?____": {
+        "?__?+": {
           "guess": "theme",
           "next": {
             "+++++": {
               "guess": "theme",
               "next": {}
             },
-            "+++__": {
-              "guess": "theft",
+            "+++_+": {
+              "guess": "these",
               "next": {
                 "+++++": {
-                  "guess": "theft",
-                  "next": {}
-                }
-              }
-            },
-            "++_++": {
-              "guess": "thyme",
-              "next": {
-                "+++++": {
-                  "guess": "thyme",
+                  "guess": "these",
                   "next": {}
                 }
               }
             }
           }
         },
-        "_+_+_": {
-          "guess": "table",
-          "next": {
-            "+++++": {
-              "guess": "table",
-              "next": {}
-            }
-          }
-        },
-        "_+__?": {
-          "guess": "taste",
-          "next": {
-            "+++++": {
-              "guess": "taste",
-              "next": {}
-            }
-          }
-        },
-        "_?___": {
-          "guess": "tweak",
-          "next": {
-            "+++++": {
-              "guess": "tweak",
-              "next": {}
-            }
-          }
-        },
-        "__+__": {
-          "guess": "twice",
-          "next": {
-            "+++++": {
-              "guess": "twice",
-              "next": {}
-            }
-          }
-        },
-        "__?+_": {
-          "guess": "title",
-          "next": {
-            "+++++": {
-              "guess": "title",
-              "next": {}
-            }
-          }
-        },
-        "__??_": {
-          "guess": "tilde",
-          "next": {
-            "+++++": {
-              "guess": "tilde",
-              "next": {}
-            }
-          }
-        },
-        "___+_": {
-          "guess": "tulle",
-          "next": {
-            "+++++": {
-              "guess": "tulle",
-              "next": {}
-            }
-          }
-        },
-        "_____": {
+        "?__??": {
           "guess": "tweed",
           "next": {
             "+++++": {
@@ -564,6 +474,96 @@
                   "next": {}
                 }
               }
+            }
+          }
+        },
+        "?__?_": {
+          "guess": "tweak",
+          "next": {
+            "+++++": {
+              "guess": "tweak",
+              "next": {}
+            },
+            "+_+__": {
+              "guess": "theft",
+              "next": {
+                "+++++": {
+                  "guess": "theft",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_???+": {
+          "guess": "tilde",
+          "next": {
+            "+++++": {
+              "guess": "tilde",
+              "next": {}
+            },
+            "++?_+": {
+              "guess": "title",
+              "next": {
+                "+++++": {
+                  "guess": "title",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_?_?+": {
+          "guess": "table",
+          "next": {
+            "+++++": {
+              "guess": "table",
+              "next": {}
+            },
+            "+__++": {
+              "guess": "tulle",
+              "next": {
+                "+++++": {
+                  "guess": "tulle",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__+?+": {
+          "guess": "twice",
+          "next": {
+            "+++++": {
+              "guess": "twice",
+              "next": {}
+            }
+          }
+        },
+        "__??+": {
+          "guess": "tithe",
+          "next": {
+            "+++++": {
+              "guess": "tithe",
+              "next": {}
+            }
+          }
+        },
+        "___++": {
+          "guess": "taste",
+          "next": {
+            "+++++": {
+              "guess": "taste",
+              "next": {}
+            }
+          }
+        },
+        "___?+": {
+          "guess": "thyme",
+          "next": {
+            "+++++": {
+              "guess": "thyme",
+              "next": {}
             }
           }
         }
@@ -822,9 +822,9 @@
       }
     },
     "+__??": {
-      "guess": "blush",
+      "guess": "humph",
       "next": {
-        "?_?__": {
+        "_+___": {
           "guess": "turbo",
           "next": {
             "+++++": {
@@ -834,38 +834,20 @@
           }
         },
         "_?___": {
-          "guess": "troll",
-          "next": {
-            "+++++": {
-              "guess": "troll",
-              "next": {}
-            }
-          }
-        },
-        "__??_": {
-          "guess": "torus",
-          "next": {
-            "+++++": {
-              "guess": "torus",
-              "next": {}
-            }
-          }
-        },
-        "__?__": {
           "guess": "trout",
           "next": {
             "+++++": {
               "guess": "trout",
               "next": {}
-            }
-          }
-        },
-        "___+_": {
-          "guess": "torso",
-          "next": {
-            "+++++": {
-              "guess": "torso",
-              "next": {}
+            },
+            "+??+_": {
+              "guess": "torus",
+              "next": {
+                "+++++": {
+                  "guess": "torus",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -877,13 +859,31 @@
               "next": {}
             }
           }
+        },
+        "_____": {
+          "guess": "troll",
+          "next": {
+            "+++++": {
+              "guess": "troll",
+              "next": {}
+            },
+            "+??__": {
+              "guess": "torso",
+              "next": {
+                "+++++": {
+                  "guess": "torso",
+                  "next": {}
+                }
+              }
+            }
+          }
         }
       }
     },
     "+__?_": {
-      "guess": "ducal",
+      "guess": "death",
       "next": {
-        "?__+_": {
+        "?_??_": {
           "guess": "today",
           "next": {
             "+++++": {
@@ -892,7 +892,7 @@
             }
           }
         },
-        "?____": {
+        "?__?_": {
           "guess": "toddy",
           "next": {
             "+++++": {
@@ -901,25 +901,61 @@
             }
           }
         },
-        "_??__": {
-          "guess": "touch",
+        "__+?_": {
+          "guess": "toast",
           "next": {
             "+++++": {
-              "guess": "touch",
+              "guess": "toast",
               "next": {}
             }
           }
         },
-        "_?___": {
+        "__??_": {
+          "guess": "total",
+          "next": {
+            "+++++": {
+              "guess": "total",
+              "next": {}
+            },
+            "++_+_": {
+              "guess": "topaz",
+              "next": {
+                "+++++": {
+                  "guess": "topaz",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "___++": {
+          "guess": "tooth",
+          "next": {
+            "+++++": {
+              "guess": "tooth",
+              "next": {}
+            }
+          }
+        },
+        "___?+": {
           "guess": "tough",
           "next": {
             "+++++": {
               "guess": "tough",
               "next": {}
+            },
+            "+++_+": {
+              "guess": "touch",
+              "next": {
+                "+++++": {
+                  "guess": "touch",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "__?__": {
+        "___?_": {
           "guess": "topic",
           "next": {
             "+++++": {
@@ -936,42 +972,6 @@
               }
             }
           }
-        },
-        "___++": {
-          "guess": "total",
-          "next": {
-            "+++++": {
-              "guess": "total",
-              "next": {}
-            }
-          }
-        },
-        "___+_": {
-          "guess": "topaz",
-          "next": {
-            "+++++": {
-              "guess": "topaz",
-              "next": {}
-            }
-          }
-        },
-        "___?_": {
-          "guess": "toast",
-          "next": {
-            "+++++": {
-              "guess": "toast",
-              "next": {}
-            }
-          }
-        },
-        "_____": {
-          "guess": "tooth",
-          "next": {
-            "+++++": {
-              "guess": "tooth",
-              "next": {}
-            }
-          }
         }
       }
     },
@@ -985,7 +985,7 @@
       }
     },
     "+___?": {
-      "guess": "claim",
+      "guess": "chais",
       "next": {
         "?_+__": {
           "guess": "track",
@@ -1023,47 +1023,38 @@
             }
           }
         },
-        "_?++_": {
-          "guess": "trail",
+        "_+_?_": {
+          "guess": "third",
           "next": {
             "+++++": {
-              "guess": "trail",
+              "guess": "third",
               "next": {}
             }
           }
         },
-        "_?+__": {
-          "guess": "trawl",
+        "_+___": {
+          "guess": "thrum",
           "next": {
             "+++++": {
-              "guess": "trawl",
+              "guess": "thrum",
               "next": {}
             }
           }
         },
-        "_???_": {
-          "guess": "trial",
+        "_?+_?": {
+          "guess": "trash",
           "next": {
             "+++++": {
-              "guess": "trial",
-              "next": {}
-            }
-          }
-        },
-        "_?_?_": {
-          "guess": "twirl",
-          "next": {
-            "+++++": {
-              "guess": "twirl",
+              "guess": "trash",
               "next": {}
             }
           }
         },
         "_?___": {
-          "guess": "truly",
+          "guess": "truth",
           "next": {
             "+++++": {
-              "guess": "truly",
+              "guess": "truth",
               "next": {}
             }
           }
@@ -1074,6 +1065,15 @@
             "+++++": {
               "guess": "trait",
               "next": {}
+            },
+            "++++_": {
+              "guess": "trail",
+              "next": {
+                "+++++": {
+                  "guess": "trail",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -1086,21 +1086,21 @@
             }
           }
         },
-        "__+_?": {
-          "guess": "tramp",
-          "next": {
-            "+++++": {
-              "guess": "tramp",
-              "next": {}
-            }
-          }
-        },
         "__+__": {
-          "guess": "trash",
+          "guess": "trawl",
           "next": {
             "+++++": {
-              "guess": "trash",
+              "guess": "trawl",
               "next": {}
+            },
+            "+++__": {
+              "guess": "tramp",
+              "next": {
+                "+++++": {
+                  "guess": "tramp",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -1110,6 +1110,15 @@
             "+++++": {
               "guess": "triad",
               "next": {}
+            },
+            "++++_": {
+              "guess": "trial",
+              "next": {
+                "+++++": {
+                  "guess": "trial",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -1123,40 +1132,31 @@
           }
         },
         "___?_": {
-          "guess": "third",
+          "guess": "twirl",
           "next": {
             "+++++": {
-              "guess": "third",
+              "guess": "twirl",
               "next": {}
             }
           }
         },
         "____+": {
-          "guess": "thrum",
-          "next": {
-            "+++++": {
-              "guess": "thrum",
-              "next": {}
-            }
-          }
-        },
-        "____?": {
-          "guess": "trump",
-          "next": {
-            "+++++": {
-              "guess": "trump",
-              "next": {}
-            }
-          }
-        },
-        "_____": {
           "guess": "truss",
           "next": {
             "+++++": {
               "guess": "truss",
               "next": {}
+            }
+          }
+        },
+        "____?": {
+          "guess": "tryst",
+          "next": {
+            "+++++": {
+              "guess": "tryst",
+              "next": {}
             },
-            "++++_": {
+            "++_++": {
               "guess": "trust",
               "next": {
                 "+++++": {
@@ -1164,21 +1164,21 @@
                   "next": {}
                 }
               }
+            }
+          }
+        },
+        "_____": {
+          "guess": "truly",
+          "next": {
+            "+++++": {
+              "guess": "truly",
+              "next": {}
             },
             "+++__": {
-              "guess": "truth",
+              "guess": "trump",
               "next": {
                 "+++++": {
-                  "guess": "truth",
-                  "next": {}
-                }
-              }
-            },
-            "++_+_": {
-              "guess": "tryst",
-              "next": {
-                "+++++": {
-                  "guess": "tryst",
+                  "guess": "trump",
                   "next": {}
                 }
               }
@@ -1459,63 +1459,9 @@
       }
     },
     "?+__?": {
-      "guess": "birch",
+      "guess": "chief",
       "next": {
-        "+_+_+": {
-          "guess": "berth",
-          "next": {
-            "+++++": {
-              "guess": "berth",
-              "next": {}
-            }
-          }
-        },
-        "+_+__": {
-          "guess": "beret",
-          "next": {
-            "+++++": {
-              "guess": "beret",
-              "next": {}
-            }
-          }
-        },
-        "?_?__": {
-          "guess": "rebut",
-          "next": {
-            "+++++": {
-              "guess": "rebut",
-              "next": {}
-            }
-          }
-        },
-        "_?+__": {
-          "guess": "merit",
-          "next": {
-            "+++++": {
-              "guess": "merit",
-              "next": {}
-            }
-          }
-        },
-        "_??__": {
-          "guess": "remit",
-          "next": {
-            "+++++": {
-              "guess": "remit",
-              "next": {}
-            },
-            "++_++": {
-              "guess": "refit",
-              "next": {
-                "+++++": {
-                  "guess": "refit",
-                  "next": {}
-                }
-              }
-            }
-          }
-        },
-        "__?++": {
+        "??_?_": {
           "guess": "retch",
           "next": {
             "+++++": {
@@ -1524,38 +1470,92 @@
             }
           }
         },
-        "__?+_": {
+        "?__?_": {
           "guess": "react",
           "next": {
             "+++++": {
               "guess": "react",
               "next": {}
+            },
+            "++_?+": {
+              "guess": "recut",
+              "next": {
+                "+++++": {
+                  "guess": "recut",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_?_?_": {
+          "guess": "berth",
+          "next": {
+            "+++++": {
+              "guess": "berth",
+              "next": {}
+            },
+            "_+???": {
+              "guess": "heart",
+              "next": {
+                "+++++": {
+                  "guess": "heart",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__???": {
+          "guess": "refit",
+          "next": {
+            "+++++": {
+              "guess": "refit",
+              "next": {}
             }
           }
         },
         "__??_": {
-          "guess": "recut",
+          "guess": "merit",
           "next": {
             "+++++": {
-              "guess": "recut",
+              "guess": "merit",
               "next": {}
+            },
+            "?+?++": {
+              "guess": "remit",
+              "next": {
+                "+++++": {
+                  "guess": "remit",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "__?_?": {
-          "guess": "heart",
-          "next": {
-            "+++++": {
-              "guess": "heart",
-              "next": {}
-            }
-          }
-        },
-        "__?__": {
+        "___+_": {
           "guess": "reset",
           "next": {
             "+++++": {
               "guess": "reset",
+              "next": {}
+            },
+            "?+_++": {
+              "guess": "beret",
+              "next": {
+                "+++++": {
+                  "guess": "beret",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "___?_": {
+          "guess": "rebut",
+          "next": {
+            "+++++": {
+              "guess": "rebut",
               "next": {}
             },
             "++__?": {
@@ -1956,99 +1956,9 @@
       }
     },
     "???__": {
-      "guess": "anils",
+      "guess": "siege",
       "next": {
-        "+?___": {
-          "guess": "agent",
-          "next": {
-            "+++++": {
-              "guess": "agent",
-              "next": {}
-            }
-          }
-        },
-        "?+___": {
-          "guess": "enact",
-          "next": {
-            "+++++": {
-              "guess": "enact",
-              "next": {}
-            }
-          }
-        },
-        "??___": {
-          "guess": "eaten",
-          "next": {
-            "+++++": {
-              "guess": "eaten",
-              "next": {}
-            }
-          }
-        },
-        "_++__": {
-          "guess": "unite",
-          "next": {
-            "+++++": {
-              "guess": "unite",
-              "next": {}
-            }
-          }
-        },
-        "_+??_": {
-          "guess": "inlet",
-          "next": {
-            "+++++": {
-              "guess": "inlet",
-              "next": {}
-            }
-          }
-        },
-        "_+?__": {
-          "guess": "inept",
-          "next": {
-            "+++++": {
-              "guess": "inept",
-              "next": {}
-            },
-            "?+?_?": {
-              "guess": "untie",
-              "next": {
-                "+++++": {
-                  "guess": "untie",
-                  "next": {}
-                }
-              }
-            }
-          }
-        },
-        "_+_+_": {
-          "guess": "knelt",
-          "next": {
-            "+++++": {
-              "guess": "knelt",
-              "next": {}
-            }
-          }
-        },
-        "_+__?": {
-          "guess": "unset",
-          "next": {
-            "+++++": {
-              "guess": "unset",
-              "next": {}
-            }
-          }
-        },
-        "_+___": {
-          "guess": "unmet",
-          "next": {
-            "+++++": {
-              "guess": "unmet",
-              "next": {}
-            }
-          }
-        },
-        "_??_?": {
+        "+?+__": {
           "guess": "stein",
           "next": {
             "+++++": {
@@ -2057,7 +1967,7 @@
             }
           }
         },
-        "_?__?": {
+        "+_+__": {
           "guess": "scent",
           "next": {
             "+++++": {
@@ -2075,12 +1985,102 @@
             }
           }
         },
-        "_?___": {
+        "?_?__": {
+          "guess": "unset",
+          "next": {
+            "+++++": {
+              "guess": "unset",
+              "next": {}
+            }
+          }
+        },
+        "_?+__": {
+          "guess": "inept",
+          "next": {
+            "+++++": {
+              "guess": "inept",
+              "next": {}
+            }
+          }
+        },
+        "_??__": {
+          "guess": "inlet",
+          "next": {
+            "+++++": {
+              "guess": "inlet",
+              "next": {}
+            }
+          }
+        },
+        "_?__+": {
+          "guess": "unite",
+          "next": {
+            "+++++": {
+              "guess": "unite",
+              "next": {}
+            },
+            "++??+": {
+              "guess": "untie",
+              "next": {
+                "+++++": {
+                  "guess": "untie",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__+?_": {
+          "guess": "agent",
+          "next": {
+            "+++++": {
+              "guess": "agent",
+              "next": {}
+            }
+          }
+        },
+        "__+_?": {
           "guess": "event",
           "next": {
             "+++++": {
               "guess": "event",
               "next": {}
+            }
+          }
+        },
+        "__+__": {
+          "guess": "knelt",
+          "next": {
+            "+++++": {
+              "guess": "knelt",
+              "next": {}
+            }
+          }
+        },
+        "__?_?": {
+          "guess": "eaten",
+          "next": {
+            "+++++": {
+              "guess": "eaten",
+              "next": {}
+            }
+          }
+        },
+        "__?__": {
+          "guess": "unmet",
+          "next": {
+            "+++++": {
+              "guess": "unmet",
+              "next": {}
+            },
+            "_+_?+": {
+              "guess": "enact",
+              "next": {
+                "+++++": {
+                  "guess": "enact",
+                  "next": {}
+                }
+              }
             }
           }
         }
@@ -2186,27 +2186,72 @@
       }
     },
     "??_?_": {
-      "guess": "mvule",
+      "guess": "solve",
       "next": {
-        "+__??": {
-          "guess": "motel",
+        "+??_+": {
+          "guess": "stole",
           "next": {
             "+++++": {
-              "guess": "motel",
+              "guess": "stole",
               "next": {}
             }
           }
         },
-        "?___+": {
-          "guess": "smote",
+        "+?_++": {
+          "guess": "stove",
           "next": {
             "+++++": {
+              "guess": "stove",
+              "next": {}
+            }
+          }
+        },
+        "+?__+": {
+          "guess": "stoke",
+          "next": {
+            "+++++": {
+              "guess": "stoke",
+              "next": {}
+            },
+            "+?+_+": {
               "guess": "smote",
+              "next": {
+                "+++++": {
+                  "guess": "smote",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_+?_?": {
+          "guess": "hotel",
+          "next": {
+            "+++++": {
+              "guess": "hotel",
+              "next": {}
+            },
+            "_++++": {
+              "guess": "motel",
+              "next": {
+                "+++++": {
+                  "guess": "motel",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_+_??": {
+          "guess": "covet",
+          "next": {
+            "+++++": {
+              "guess": "covet",
               "next": {}
             }
           }
         },
-        "?___?": {
+        "_+__?": {
           "guess": "comet",
           "next": {
             "+++++": {
@@ -2215,7 +2260,7 @@
             }
           }
         },
-        "_+__+": {
+        "_?_?+": {
           "guess": "ovate",
           "next": {
             "+++++": {
@@ -2225,24 +2270,6 @@
           }
         },
         "_?__+": {
-          "guess": "stove",
-          "next": {
-            "+++++": {
-              "guess": "stove",
-              "next": {}
-            }
-          }
-        },
-        "_?__?": {
-          "guess": "covet",
-          "next": {
-            "+++++": {
-              "guess": "covet",
-              "next": {}
-            }
-          }
-        },
-        "__?_+": {
           "guess": "quote",
           "next": {
             "+++++": {
@@ -2251,34 +2278,7 @@
             }
           }
         },
-        "___++": {
-          "guess": "stole",
-          "next": {
-            "+++++": {
-              "guess": "stole",
-              "next": {}
-            }
-          }
-        },
-        "___??": {
-          "guess": "hotel",
-          "next": {
-            "+++++": {
-              "guess": "hotel",
-              "next": {}
-            }
-          }
-        },
-        "____+": {
-          "guess": "stoke",
-          "next": {
-            "+++++": {
-              "guess": "stoke",
-              "next": {}
-            }
-          }
-        },
-        "____?": {
+        "_?__?": {
           "guess": "octet",
           "next": {
             "+++++": {
@@ -2290,22 +2290,13 @@
       }
     },
     "??__+": {
-      "guess": "latch",
+      "guess": "watch",
       "next": {
         "+++__": {
-          "guess": "later",
+          "guess": "water",
           "next": {
             "+++++": {
-              "guess": "later",
-              "next": {}
-            }
-          }
-        },
-        "??+__": {
-          "guess": "alter",
-          "next": {
-            "+++++": {
-              "guess": "alter",
+              "guess": "water",
               "next": {}
             }
           }
@@ -2336,10 +2327,10 @@
               "next": {}
             },
             "_++++": {
-              "guess": "water",
+              "guess": "later",
               "next": {
                 "+++++": {
-                  "guess": "water",
+                  "guess": "later",
                   "next": {}
                 }
               }
@@ -2352,6 +2343,15 @@
             "+++++": {
               "guess": "after",
               "next": {}
+            },
+            "+_+++": {
+              "guess": "alter",
+              "next": {
+                "+++++": {
+                  "guess": "alter",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -4039,72 +4039,9 @@
       }
     },
     "?__+_": {
-      "guess": "spilt",
+      "guess": "islet",
       "next": {
-        "+?__?": {
-          "guess": "stoop",
-          "next": {
-            "+++++": {
-              "guess": "stoop",
-              "next": {}
-            }
-          }
-        },
-        "+__??": {
-          "guess": "stool",
-          "next": {
-            "+++++": {
-              "guess": "stool",
-              "next": {}
-            }
-          }
-        },
         "+___+": {
-          "guess": "shoot",
-          "next": {
-            "+++++": {
-              "guess": "shoot",
-              "next": {}
-            }
-          }
-        },
-        "+___?": {
-          "guess": "stood",
-          "next": {
-            "+++++": {
-              "guess": "stood",
-              "next": {}
-            }
-          }
-        },
-        "?___+": {
-          "guess": "ascot",
-          "next": {
-            "+++++": {
-              "guess": "ascot",
-              "next": {}
-            }
-          }
-        },
-        "_???+": {
-          "guess": "pilot",
-          "next": {
-            "+++++": {
-              "guess": "pilot",
-              "next": {}
-            }
-          }
-        },
-        "_??_+": {
-          "guess": "pivot",
-          "next": {
-            "+++++": {
-              "guess": "pivot",
-              "next": {}
-            }
-          }
-        },
-        "__+_+": {
           "guess": "idiot",
           "next": {
             "+++++": {
@@ -4113,16 +4050,79 @@
             }
           }
         },
-        "__?_+": {
-          "guess": "bigot",
+        "?_+_+": {
+          "guess": "pilot",
           "next": {
             "+++++": {
-              "guess": "bigot",
+              "guess": "pilot",
               "next": {}
             }
           }
         },
-        "___?+": {
+        "?___+": {
+          "guess": "pivot",
+          "next": {
+            "+++++": {
+              "guess": "pivot",
+              "next": {}
+            },
+            "_+_++": {
+              "guess": "bigot",
+              "next": {
+                "+++++": {
+                  "guess": "bigot",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_+__+": {
+          "guess": "ascot",
+          "next": {
+            "+++++": {
+              "guess": "ascot",
+              "next": {}
+            }
+          }
+        },
+        "_??_?": {
+          "guess": "stool",
+          "next": {
+            "+++++": {
+              "guess": "stool",
+              "next": {}
+            }
+          }
+        },
+        "_?__+": {
+          "guess": "shoot",
+          "next": {
+            "+++++": {
+              "guess": "shoot",
+              "next": {}
+            }
+          }
+        },
+        "_?__?": {
+          "guess": "stood",
+          "next": {
+            "+++++": {
+              "guess": "stood",
+              "next": {}
+            },
+            "++++_": {
+              "guess": "stoop",
+              "next": {
+                "+++++": {
+                  "guess": "stoop",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__+_+": {
           "guess": "allot",
           "next": {
             "+++++": {
@@ -6267,7 +6267,7 @@
       }
     },
     "_++__": {
-      "guess": "space",
+      "guess": "scope",
       "next": {
         "+___+": {
           "guess": "sense",
@@ -6287,16 +6287,7 @@
             }
           }
         },
-        "_??_?": {
-          "guess": "penal",
-          "next": {
-            "+++++": {
-              "guess": "penal",
-              "next": {}
-            }
-          }
-        },
-        "_?_++": {
+        "_?_?+": {
           "guess": "pence",
           "next": {
             "+++++": {
@@ -6306,24 +6297,6 @@
           }
         },
         "_?__+": {
-          "guess": "penne",
-          "next": {
-            "+++++": {
-              "guess": "penne",
-              "next": {}
-            }
-          }
-        },
-        "_?__?": {
-          "guess": "penny",
-          "next": {
-            "+++++": {
-              "guess": "penny",
-              "next": {}
-            }
-          }
-        },
-        "___++": {
           "guess": "fence",
           "next": {
             "+++++": {
@@ -6341,7 +6314,7 @@
             }
           }
         },
-        "___+?": {
+        "_?__?": {
           "guess": "bench",
           "next": {
             "+++++": {
@@ -6353,6 +6326,33 @@
               "next": {
                 "+++++": {
                   "guess": "wench",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "___?+": {
+          "guess": "penne",
+          "next": {
+            "+++++": {
+              "guess": "penne",
+              "next": {}
+            }
+          }
+        },
+        "___??": {
+          "guess": "penal",
+          "next": {
+            "+++++": {
+              "guess": "penal",
+              "next": {}
+            },
+            "+++__": {
+              "guess": "penny",
+              "next": {
+                "+++++": {
+                  "guess": "penny",
                   "next": {}
                 }
               }
@@ -6452,45 +6452,9 @@
       }
     },
     "_+?_?": {
-      "guess": "valid",
+      "guess": "grade",
       "next": {
-        "?____": {
-          "guess": "nerve",
-          "next": {
-            "+++++": {
-              "guess": "nerve",
-              "next": {}
-            }
-          }
-        },
-        "_??__": {
-          "guess": "learn",
-          "next": {
-            "+++++": {
-              "guess": "learn",
-              "next": {}
-            }
-          }
-        },
-        "_?___": {
-          "guess": "yearn",
-          "next": {
-            "+++++": {
-              "guess": "yearn",
-              "next": {}
-            }
-          }
-        },
-        "___+_": {
-          "guess": "resin",
-          "next": {
-            "+++++": {
-              "guess": "resin",
-              "next": {}
-            }
-          }
-        },
-        "___?_": {
+        "??__?": {
           "guess": "reign",
           "next": {
             "+++++": {
@@ -6499,7 +6463,25 @@
             }
           }
         },
-        "____?": {
+        "_?+_?": {
+          "guess": "yearn",
+          "next": {
+            "+++++": {
+              "guess": "yearn",
+              "next": {}
+            },
+            "_++++": {
+              "guess": "learn",
+              "next": {
+                "+++++": {
+                  "guess": "learn",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_?_+?": {
           "guess": "nerdy",
           "next": {
             "+++++": {
@@ -6508,77 +6490,59 @@
             }
           }
         },
-        "_____": {
-          "guess": "rerun",
+        "_?__+": {
+          "guess": "nerve",
           "next": {
             "+++++": {
-              "guess": "rerun",
+              "guess": "nerve",
               "next": {}
+            }
+          }
+        },
+        "_?__?": {
+          "guess": "resin",
+          "next": {
+            "+++++": {
+              "guess": "resin",
+              "next": {}
+            },
+            "++__+": {
+              "guess": "rerun",
+              "next": {
+                "+++++": {
+                  "guess": "rerun",
+                  "next": {}
+                }
+              }
             }
           }
         }
       }
     },
     "_+?__": {
-      "guess": "bavin",
+      "guess": "pagan",
       "next": {
-        "+?__+": {
+        "+__++": {
+          "guess": "pecan",
+          "next": {
+            "+++++": {
+              "guess": "pecan",
+              "next": {}
+            }
+          }
+        },
+        "__+++": {
           "guess": "began",
           "next": {
             "+++++": {
               "guess": "began",
               "next": {}
-            }
-          }
-        },
-        "+__++": {
-          "guess": "begin",
-          "next": {
-            "+++++": {
-              "guess": "begin",
-              "next": {}
-            }
-          }
-        },
-        "+__??": {
-          "guess": "being",
-          "next": {
-            "+++++": {
-              "guess": "being",
-              "next": {}
-            }
-          }
-        },
-        "+___+": {
-          "guess": "begun",
-          "next": {
-            "+++++": {
-              "guess": "begun",
-              "next": {}
-            }
-          }
-        },
-        "_??_+": {
-          "guess": "vegan",
-          "next": {
-            "+++++": {
-              "guess": "vegan",
-              "next": {}
-            }
-          }
-        },
-        "_?__+": {
-          "guess": "sedan",
-          "next": {
-            "+++++": {
-              "guess": "sedan",
-              "next": {}
             },
-            "_+_++": {
-              "guess": "pecan",
+            "_++++": {
+              "guess": "vegan",
               "next": {
                 "+++++": {
-                  "guess": "pecan",
+                  "guess": "vegan",
                   "next": {}
                 }
               }
@@ -6586,15 +6550,24 @@
           }
         },
         "__+_+": {
-          "guess": "seven",
+          "guess": "begun",
           "next": {
             "+++++": {
-              "guess": "seven",
+              "guess": "begun",
               "next": {}
+            },
+            "+++_+": {
+              "guess": "begin",
+              "next": {
+                "+++++": {
+                  "guess": "begin",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "___?+": {
+        "__?_+": {
           "guess": "feign",
           "next": {
             "+++++": {
@@ -6612,21 +6585,48 @@
             }
           }
         },
-        "___??": {
-          "guess": "neigh",
+        "__?_?": {
+          "guess": "being",
           "next": {
             "+++++": {
+              "guess": "being",
+              "next": {}
+            },
+            "_++??": {
               "guess": "neigh",
+              "next": {
+                "+++++": {
+                  "guess": "neigh",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "___++": {
+          "guess": "sedan",
+          "next": {
+            "+++++": {
+              "guess": "sedan",
               "next": {}
             }
           }
         },
         "____+": {
-          "guess": "semen",
+          "guess": "seven",
           "next": {
             "+++++": {
-              "guess": "semen",
+              "guess": "seven",
               "next": {}
+            },
+            "++_++": {
+              "guess": "semen",
+              "next": {
+                "+++++": {
+                  "guess": "semen",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -6714,9 +6714,63 @@
       }
     },
     "_+__+": {
-      "guess": "fades",
+      "guess": "cafes",
       "next": {
-        "+__+_": {
+        "+?_?_": {
+          "guess": "cedar",
+          "next": {
+            "+++++": {
+              "guess": "cedar",
+              "next": {}
+            }
+          }
+        },
+        "?__?_": {
+          "guess": "recur",
+          "next": {
+            "+++++": {
+              "guess": "recur",
+              "next": {}
+            }
+          }
+        },
+        "_?_?_": {
+          "guess": "rebar",
+          "next": {
+            "+++++": {
+              "guess": "rebar",
+              "next": {}
+            },
+            "_++++": {
+              "guess": "debar",
+              "next": {
+                "+++++": {
+                  "guess": "debar",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__++_": {
+          "guess": "defer",
+          "next": {
+            "+++++": {
+              "guess": "defer",
+              "next": {}
+            },
+            "_++++": {
+              "guess": "refer",
+              "next": {
+                "+++++": {
+                  "guess": "refer",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__?+_": {
           "guess": "fewer",
           "next": {
             "+++++": {
@@ -6734,65 +6788,11 @@
             }
           }
         },
-        "+__?_": {
+        "__??_": {
           "guess": "femur",
           "next": {
             "+++++": {
               "guess": "femur",
-              "next": {}
-            }
-          }
-        },
-        "?_?+_": {
-          "guess": "defer",
-          "next": {
-            "+++++": {
-              "guess": "defer",
-              "next": {}
-            }
-          }
-        },
-        "?__+_": {
-          "guess": "refer",
-          "next": {
-            "+++++": {
-              "guess": "refer",
-              "next": {}
-            }
-          }
-        },
-        "_?+?_": {
-          "guess": "cedar",
-          "next": {
-            "+++++": {
-              "guess": "cedar",
-              "next": {}
-            }
-          }
-        },
-        "_???_": {
-          "guess": "debar",
-          "next": {
-            "+++++": {
-              "guess": "debar",
-              "next": {}
-            }
-          }
-        },
-        "_?_?_": {
-          "guess": "rebar",
-          "next": {
-            "+++++": {
-              "guess": "rebar",
-              "next": {}
-            }
-          }
-        },
-        "__??_": {
-          "guess": "demur",
-          "next": {
-            "+++++": {
-              "guess": "demur",
               "next": {}
             }
           }
@@ -6834,17 +6834,17 @@
           }
         },
         "___?_": {
-          "guess": "lemur",
+          "guess": "demur",
           "next": {
             "+++++": {
-              "guess": "lemur",
+              "guess": "demur",
               "next": {}
             },
-            "_+_++": {
-              "guess": "recur",
+            "_++++": {
+              "guess": "lemur",
               "next": {
                 "+++++": {
-                  "guess": "recur",
+                  "guess": "lemur",
                   "next": {}
                 }
               }
@@ -7920,18 +7920,9 @@
       }
     },
     "_?+_+": {
-      "guess": "field",
+      "guess": "tilde",
       "next": {
-        "++?__": {
-          "guess": "finer",
-          "next": {
-            "+++++": {
-              "guess": "finer",
-              "next": {}
-            }
-          }
-        },
-        "_+??_": {
+        "_+?_?": {
           "guess": "liner",
           "next": {
             "+++++": {
@@ -7940,7 +7931,7 @@
             }
           }
         },
-        "_+?_?": {
+        "_+_??": {
           "guess": "diner",
           "next": {
             "+++++": {
@@ -7949,16 +7940,25 @@
             }
           }
         },
-        "_+?__": {
-          "guess": "miner",
+        "_+__?": {
+          "guess": "finer",
           "next": {
             "+++++": {
-              "guess": "miner",
+              "guess": "finer",
               "next": {}
+            },
+            "_++++": {
+              "guess": "miner",
+              "next": {
+                "+++++": {
+                  "guess": "miner",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "_??__": {
+        "_?__?": {
           "guess": "inner",
           "next": {
             "+++++": {
@@ -7967,7 +7967,7 @@
             }
           }
         },
-        "__?__": {
+        "____?": {
           "guess": "saner",
           "next": {
             "+++++": {
@@ -8467,18 +8467,9 @@
       }
     },
     "_??_+": {
-      "guess": "digit",
+      "guess": "cigar",
       "next": {
-        "?____": {
-          "guess": "under",
-          "next": {
-            "+++++": {
-              "guess": "under",
-              "next": {}
-            }
-          }
-        },
-        "_+___": {
+        "?+__+": {
           "guess": "nicer",
           "next": {
             "+++++": {
@@ -8487,7 +8478,7 @@
             }
           }
         },
-        "_?___": {
+        "_?__+": {
           "guess": "infer",
           "next": {
             "+++++": {
@@ -8496,7 +8487,7 @@
             }
           }
         },
-        "__+__": {
+        "__+?+": {
           "guess": "anger",
           "next": {
             "+++++": {
@@ -8505,21 +8496,30 @@
             }
           }
         },
-        "_____": {
+        "____+": {
           "guess": "sneer",
           "next": {
             "+++++": {
               "guess": "sneer",
               "next": {}
+            },
+            "_+_++": {
+              "guess": "under",
+              "next": {
+                "+++++": {
+                  "guess": "under",
+                  "next": {}
+                }
+              }
             }
           }
         }
       }
     },
     "_??_?": {
-      "guess": "pause",
+      "guess": "pride",
       "next": {
-        "+_+_+": {
+        "++__+": {
           "guess": "prune",
           "next": {
             "+++++": {
@@ -8528,7 +8528,7 @@
             }
           }
         },
-        "+___?": {
+        "++__?": {
           "guess": "preen",
           "next": {
             "+++++": {
@@ -8537,7 +8537,7 @@
             }
           }
         },
-        "?___?": {
+        "???_?": {
           "guess": "ripen",
           "next": {
             "+++++": {
@@ -8546,34 +8546,25 @@
             }
           }
         },
-        "_+__?": {
-          "guess": "ramen",
+        "_++_+": {
+          "guess": "brine",
           "next": {
             "+++++": {
-              "guess": "ramen",
+              "guess": "brine",
               "next": {}
             },
-            "++_++": {
-              "guess": "raven",
+            "_++++": {
+              "guess": "urine",
               "next": {
                 "+++++": {
-                  "guess": "raven",
+                  "guess": "urine",
                   "next": {}
                 }
               }
             }
           }
         },
-        "_?_?+": {
-          "guess": "snare",
-          "next": {
-            "+++++": {
-              "guess": "snare",
-              "next": {}
-            }
-          }
-        },
-        "_?__+": {
+        "_+__+": {
           "guess": "crane",
           "next": {
             "+++++": {
@@ -8582,34 +8573,25 @@
             }
           }
         },
-        "_?__?": {
+        "_+__?": {
           "guess": "arena",
           "next": {
             "+++++": {
               "guess": "arena",
               "next": {}
+            },
+            "_++?_": {
+              "guess": "green",
+              "next": {
+                "+++++": {
+                  "guess": "green",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "__?++": {
-          "guess": "nurse",
-          "next": {
-            "+++++": {
-              "guess": "nurse",
-              "next": {}
-            }
-          }
-        },
-        "__?_+": {
-          "guess": "urine",
-          "next": {
-            "+++++": {
-              "guess": "urine",
-              "next": {}
-            }
-          }
-        },
-        "___??": {
+        "_??_?": {
           "guess": "risen",
           "next": {
             "+++++": {
@@ -8627,21 +8609,39 @@
             }
           }
         },
-        "____+": {
-          "guess": "brine",
+        "_?__+": {
+          "guess": "snare",
           "next": {
             "+++++": {
-              "guess": "brine",
+              "guess": "snare",
               "next": {}
+            },
+            "??_?+": {
+              "guess": "nurse",
+              "next": {
+                "+++++": {
+                  "guess": "nurse",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "____?": {
-          "guess": "green",
+        "_?__?": {
+          "guess": "ramen",
           "next": {
             "+++++": {
-              "guess": "green",
+              "guess": "ramen",
               "next": {}
+            },
+            "++_++": {
+              "guess": "raven",
+              "next": {
+                "+++++": {
+                  "guess": "raven",
+                  "next": {}
+                }
+              }
             }
           }
         }
@@ -13613,7 +13613,7 @@
       }
     },
     "__+?_": {
-      "guess": "basil",
+      "guess": "basic",
       "next": {
         "++___": {
           "guess": "banjo",
@@ -13660,25 +13660,25 @@
             }
           }
         },
-        "_?__+": {
-          "guess": "zonal",
-          "next": {
-            "+++++": {
-              "guess": "zonal",
-              "next": {}
-            }
-          }
-        },
         "_?___": {
           "guess": "gonad",
           "next": {
             "+++++": {
               "guess": "gonad",
               "next": {}
+            },
+            "_+++_": {
+              "guess": "zonal",
+              "next": {
+                "+++++": {
+                  "guess": "zonal",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "__?+_": {
+        "__?++": {
           "guess": "sonic",
           "next": {
             "+++++": {
@@ -13687,7 +13687,7 @@
             }
           }
         },
-        "___+_": {
+        "___++": {
           "guess": "conic",
           "next": {
             "+++++": {
@@ -13705,25 +13705,25 @@
             }
           }
         },
-        "___??": {
-          "guess": "lingo",
-          "next": {
-            "+++++": {
-              "guess": "lingo",
-              "next": {}
-            }
-          }
-        },
         "___?_": {
           "guess": "dingo",
           "next": {
             "+++++": {
               "guess": "dingo",
               "next": {}
+            },
+            "_++++": {
+              "guess": "lingo",
+              "next": {
+                "+++++": {
+                  "guess": "lingo",
+                  "next": {}
+                }
+              }
             }
           }
         },
-        "_____": {
+        "____?": {
           "guess": "conch",
           "next": {
             "+++++": {
@@ -14260,54 +14260,18 @@
       }
     },
     "__?+_": {
-      "guess": "spica",
+      "guess": "basin",
       "next": {
-        "++___": {
-          "guess": "spoon",
+        "++__+": {
+          "guess": "bacon",
           "next": {
             "+++++": {
-              "guess": "spoon",
+              "guess": "bacon",
               "next": {}
             }
           }
         },
-        "+?___": {
-          "guess": "snoop",
-          "next": {
-            "+++++": {
-              "guess": "snoop",
-              "next": {}
-            }
-          }
-        },
-        "+_+?_": {
-          "guess": "scion",
-          "next": {
-            "+++++": {
-              "guess": "scion",
-              "next": {}
-            }
-          }
-        },
-        "+___?": {
-          "guess": "salon",
-          "next": {
-            "+++++": {
-              "guess": "salon",
-              "next": {}
-            }
-          }
-        },
-        "+____": {
-          "guess": "swoon",
-          "next": {
-            "+++++": {
-              "guess": "swoon",
-              "next": {}
-            }
-          }
-        },
-        "?_?__": {
+        "+_+?+": {
           "guess": "bison",
           "next": {
             "+++++": {
@@ -14316,7 +14280,16 @@
             }
           }
         },
-        "?___?": {
+        "?__??": {
+          "guess": "inbox",
+          "next": {
+            "+++++": {
+              "guess": "inbox",
+              "next": {}
+            }
+          }
+        },
+        "_++_+": {
           "guess": "mason",
           "next": {
             "+++++": {
@@ -14325,7 +14298,25 @@
             }
           }
         },
-        "__+_?": {
+        "_+?_+": {
+          "guess": "salon",
+          "next": {
+            "+++++": {
+              "guess": "salon",
+              "next": {}
+            }
+          }
+        },
+        "_+__+": {
+          "guess": "wagon",
+          "next": {
+            "+++++": {
+              "guess": "wagon",
+              "next": {}
+            }
+          }
+        },
+        "_?_?+": {
           "guess": "axion",
           "next": {
             "+++++": {
@@ -14334,7 +14325,43 @@
             }
           }
         },
-        "__+__": {
+        "__??+": {
+          "guess": "scion",
+          "next": {
+            "+++++": {
+              "guess": "scion",
+              "next": {}
+            }
+          }
+        },
+        "__?_+": {
+          "guess": "swoon",
+          "next": {
+            "+++++": {
+              "guess": "swoon",
+              "next": {}
+            },
+            "+_+++": {
+              "guess": "spoon",
+              "next": {
+                "+++++": {
+                  "guess": "spoon",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "__?_?": {
+          "guess": "snoop",
+          "next": {
+            "+++++": {
+              "guess": "snoop",
+              "next": {}
+            }
+          }
+        },
+        "___?+": {
           "guess": "onion",
           "next": {
             "+++++": {
@@ -14352,48 +14379,21 @@
             }
           }
         },
-        "__?__": {
-          "guess": "inbox",
-          "next": {
-            "+++++": {
-              "guess": "inbox",
-              "next": {}
-            }
-          }
-        },
-        "___??": {
-          "guess": "bacon",
-          "next": {
-            "+++++": {
-              "guess": "bacon",
-              "next": {}
-            }
-          }
-        },
-        "___?_": {
+        "____+": {
           "guess": "colon",
           "next": {
             "+++++": {
               "guess": "colon",
               "next": {}
-            }
-          }
-        },
-        "____?": {
-          "guess": "wagon",
-          "next": {
-            "+++++": {
-              "guess": "wagon",
-              "next": {}
-            }
-          }
-        },
-        "_____": {
-          "guess": "nylon",
-          "next": {
-            "+++++": {
+            },
+            "__+++": {
               "guess": "nylon",
-              "next": {}
+              "next": {
+                "+++++": {
+                  "guess": "nylon",
+                  "next": {}
+                }
+              }
             }
           }
         }
@@ -16073,9 +16073,36 @@
       }
     },
     "___+?": {
-      "guess": "clamp",
+      "guess": "badge",
       "next": {
-        "+??__": {
+        "+_?__": {
+          "guess": "brood",
+          "next": {
+            "+++++": {
+              "guess": "brood",
+              "next": {}
+            }
+          }
+        },
+        "+____": {
+          "guess": "broom",
+          "next": {
+            "+++++": {
+              "guess": "broom",
+              "next": {}
+            },
+            "++++_": {
+              "guess": "brook",
+              "next": {
+                "+++++": {
+                  "guess": "brook",
+                  "next": {}
+                }
+              }
+            }
+          }
+        },
+        "_+___": {
           "guess": "carol",
           "next": {
             "+++++": {
@@ -16084,30 +16111,30 @@
             }
           }
         },
-        "+____": {
-          "guess": "crook",
-          "next": {
-            "+++++": {
-              "guess": "crook",
-              "next": {}
-            }
-          }
-        },
         "_?___": {
-          "guess": "drool",
-          "next": {
-            "+++++": {
-              "guess": "drool",
-              "next": {}
-            }
-          }
-        },
-        "__?__": {
           "guess": "arrow",
           "next": {
             "+++++": {
               "guess": "arrow",
               "next": {}
+            }
+          }
+        },
+        "__?__": {
+          "guess": "droop",
+          "next": {
+            "+++++": {
+              "guess": "droop",
+              "next": {}
+            },
+            "++++_": {
+              "guess": "drool",
+              "next": {
+                "+++++": {
+                  "guess": "drool",
+                  "next": {}
+                }
+              }
             }
           }
         },
@@ -16117,48 +16144,21 @@
             "+++++": {
               "guess": "groom",
               "next": {}
-            },
-            "_++++": {
-              "guess": "broom",
-              "next": {
-                "+++++": {
-                  "guess": "broom",
-                  "next": {}
-                }
-              }
-            }
-          }
-        },
-        "____+": {
-          "guess": "droop",
-          "next": {
-            "+++++": {
-              "guess": "droop",
-              "next": {}
-            }
-          }
-        },
-        "____?": {
-          "guess": "proof",
-          "next": {
-            "+++++": {
-              "guess": "proof",
-              "next": {}
             }
           }
         },
         "_____": {
-          "guess": "brood",
+          "guess": "crook",
           "next": {
             "+++++": {
-              "guess": "brood",
+              "guess": "crook",
               "next": {}
             },
-            "++++_": {
-              "guess": "brook",
+            "_+++_": {
+              "guess": "proof",
               "next": {
                 "+++++": {
-                  "guess": "brook",
+                  "guess": "proof",
                   "next": {}
                 }
               }
@@ -21354,18 +21354,9 @@
           }
         },
         "___+_": {
-          "guess": "befog",
+          "guess": "fudgy",
           "next": {
-            "+____": {
-              "guess": "bully",
-              "next": {
-                "+++++": {
-                  "guess": "bully",
-                  "next": {}
-                }
-              }
-            },
-            "__?__": {
+            "++__+": {
               "guess": "fully",
               "next": {
                 "+++++": {
@@ -21374,7 +21365,16 @@
                 }
               }
             },
-            "____?": {
+            "_+?_+": {
+              "guess": "dully",
+              "next": {
+                "+++++": {
+                  "guess": "dully",
+                  "next": {}
+                }
+              }
+            },
+            "_+_?+": {
               "guess": "gully",
               "next": {
                 "+++++": {
@@ -21383,11 +21383,11 @@
                 }
               }
             },
-            "_____": {
-              "guess": "dully",
+            "_+__+": {
+              "guess": "bully",
               "next": {
                 "+++++": {
-                  "guess": "dully",
+                  "guess": "bully",
                   "next": {}
                 }
               }

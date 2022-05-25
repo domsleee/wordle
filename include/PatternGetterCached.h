@@ -8,11 +8,11 @@
 struct PatternGetterCached {
     PatternGetterCached(IndexType answerIndex): answerIndex(answerIndex) {}
 
-    int getPatternIntCached(IndexType wordIndex) const {
+    PatternType getPatternIntCached(IndexType wordIndex) const {
         return cache[getIndex(answerIndex, wordIndex)];
     }
 
-    static int getPatternIntCached(IndexType _answerIndex, IndexType wordIndex) {
+    static PatternType getPatternIntCached(IndexType _answerIndex, IndexType wordIndex) {
         return cache[getIndex(_answerIndex, wordIndex)];
     }
 

@@ -30,7 +30,7 @@ using RemDepthType = uint8_t;
 using FastModeType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
-static const int NUM_WORDS = 2368;
+static const int NUM_WORDS = 12992;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 

@@ -5,6 +5,8 @@
 #include "../include/RunnerMulti.h"
 #include "../include/Verifier.h"
 #include "../include/EndGameAnalysis.h"
+#include "../include/SolveFor2Ideas.h"
+#include "../include/RemoveGuessesWithBetterGuessCache.h"
 
 
 int Runner::run() {
@@ -26,6 +28,8 @@ int Runner::run() {
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         PatternGetterCached::buildCache();
         EndGameAnalysis::init();
+        SolveFor2Ideas::init();
+        RemoveGuessesWithBetterGuessCache::init();
 
         //return 0;
         END_TIMER(precompute);

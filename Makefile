@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g -ffast-math
 else
-	CONDITIONAL_CXX = -O3 -DNDEBUG -g -ffast-math #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
+	CONDITIONAL_CXX = -O3 -g -ffast-math #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
 ifneq ($(UNAME), Darwin)
 	CONDITIONAL_CXX += #-fsanitize=address
 endif

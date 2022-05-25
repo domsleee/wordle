@@ -7,6 +7,7 @@
 struct _GlobalState {
     std::vector<std::string> allGuesses = {}, allAnswers = {};
     std::vector<std::string> reverseIndexLookup = {};
+    int maxAnswersSizeSolvedBy2 = 3; // not 2 ;)
 
     _GlobalState(){}
 
