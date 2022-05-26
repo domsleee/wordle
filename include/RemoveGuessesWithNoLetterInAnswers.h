@@ -210,7 +210,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
     static inline int specialMask = 0;
     // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
     // eartolsincuyhpdmgbkfwvxzqj
-    static inline std::string specialLetters = "eartols";//pdmgbkfwvxzqj";// fpln "abcdefghijklmnopqrstuvwxyz";
+    static inline std::string specialLetters = "eartolsincu";//pdmgbkfwvxzqj";// fpln "abcdefghijklmnopqrstuvwxyz";
 
     static void buildClearGuessesInfo() {
         if (letterCountLookup.size() > 0) return;
