@@ -43,6 +43,10 @@ struct RemoveGuessesWithBetterGuessCache
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
         stats.printEntry("yeet", 4444);
         stats.printEntry("yeet", 4666);
+        stats.printEntry("10", 10);
+        stats.printEntry("11", 11);
+        stats.printEntry("12", 12);
+        stats.printEntry("13", 13);
 
         END_TIMER(removeguessesbetterguesscache);
     }

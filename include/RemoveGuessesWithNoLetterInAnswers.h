@@ -96,6 +96,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
     }
 
     static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+        stats.tick(10);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
             int8_t r = 0;
@@ -107,21 +108,14 @@ struct RemoveGuessesWithNoLetterInAnswers {
             guessToNumNonLetters[guessIndex] = 2*r + isPossibleAnswer;
         }
         std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
+        stats.tock(10);
 
         std::vector<int> guessIndexToNodeId(GlobalState.allGuesses.size());
         std::vector<int> nodeIdToFirstSeen(NonLetterLookup::nodes.size(), -1);
         std::stack<int> nodeIdsToMark = {};
+        stats.tick(11);
         for (auto guessIndex: guesses) {
-            auto repString = GlobalState.reverseIndexLookup[guessIndex];
-            for (int i = 0; i < 5; ++i) {
-                char c = GlobalState.reverseIndexLookup[guessIndex][i];
-                bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
-                if (knownNonLetter) {
-                    repString[i] = '.';
-                }
-            }
-            assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
-            auto nodeId = NonLetterLookup::stringPatternToId[repString];
+            auto nodeId = getNodeId(guessIndex, nonLetterMask);
             guessIndexToNodeId[guessIndex] = nodeId;
 
             if (nodeIdToFirstSeen[nodeId] != -1) continue;
@@ -139,10 +133,26 @@ struct RemoveGuessesWithNoLetterInAnswers {
                 }
             }
         }
+        stats.tock(11);
 
+        stats.tick(13);
         std::erase_if(guesses, [&](auto guessIndex) {
             return nodeIdToFirstSeen[guessIndexToNodeId[guessIndex]] != guessIndex;
         });
+        stats.tock(13);
+    }
+
+    static int getNodeId(IndexType guessIndex, int nonLetterMask) {
+        auto repString = GlobalState.reverseIndexLookup[guessIndex];
+        for (int i = 0; i < 5; ++i) {
+            char c = GlobalState.reverseIndexLookup[guessIndex][i];
+            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+            if (knownNonLetter) {
+                repString[i] = '.';
+            }
+        }
+        assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
+        return NonLetterLookup::stringPatternToId[repString];
     }
 
     static inline std::vector<long long> guessToNumGroups = {};
