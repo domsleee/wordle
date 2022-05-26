@@ -2,6 +2,7 @@
 #include "RemoveGuessesWithNoLetterInAnswers.h"
 #include "WordSetHelpers.h"
 #include "PerfStats.h"
+#include "SimpleProgress.h"
 
 #include "Util.h"
 struct RemoveGuessesWithBetterGuessCache
@@ -12,7 +13,9 @@ struct RemoveGuessesWithBetterGuessCache
     static void init()
     {
         START_TIMER(removeguessesbetterguesscache);
-        DEBUG("building for expected " << (1 << (RemoveGuessesWithNoLetterInAnswers::specialLetters.size())));
+        auto expected = 1 << (RemoveGuessesWithNoLetterInAnswers::specialLetters.size());
+        auto bar = SimpleProgress("RemoveGuessesWithBetterGuessCache", expected, true);
+
         int max = (1 << 26);
         auto stats = PerfStats();
         const auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
@@ -24,7 +27,7 @@ struct RemoveGuessesWithBetterGuessCache
             auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
             auto guessesFast = guesses;
             const bool compareWithSlowMethod = false;
-            if (compareWithSlowMethod) RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuess(stats, guesses, nonLetterMask);
+            if (compareWithSlowMethod) RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
             RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFast(stats, guessesFast, nonLetterMask);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
@@ -34,8 +37,13 @@ struct RemoveGuessesWithBetterGuessCache
             totalSize += guessesFast.size();
             cache[nonLetterMask] = guessesFast;
             cacheWsGuesses[nonLetterMask] = WordSetHelpers::buildGuessesWordSet(guessesFast);
+            if (cacheWsGuesses.size()%100 == 0) bar.incrementAndUpdateStatus("", 100);
         }
+        bar.dispose();
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
+        stats.printEntry("yeet", 4444);
+        stats.printEntry("yeet", 4666);
+
         END_TIMER(removeguessesbetterguesscache);
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GlobalState.h"
 #include "PerfStats.h"
+#include "NonLetterLookup.h"
 
 struct RemoveGuessesWithNoLetterInAnswers {
     inline static std::vector<int> letterCountLookup = {};
@@ -90,8 +91,58 @@ struct RemoveGuessesWithNoLetterInAnswers {
             return stringToFirstSeen[indexToRepString[guessIndex]] != guessIndex;
         });
 
-        computeGuessToNumGroups();
+        // computeGuessToNumGroups();
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
+    }
+
+    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+        std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
+        for (auto guessIndex: guesses) {
+            int8_t r = 0;
+            for (char c: GlobalState.reverseIndexLookup[guessIndex]) {
+                bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+                r += knownNonLetter == true;
+            }
+            bool isPossibleAnswer = guessIndex < GlobalState.allAnswers.size();
+            guessToNumNonLetters[guessIndex] = 2*r + isPossibleAnswer;
+        }
+        std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
+
+        std::vector<int> guessIndexToNodeId(GlobalState.allGuesses.size());
+        std::vector<int> nodeIdToFirstSeen(NonLetterLookup::nodes.size(), -1);
+        std::stack<int> nodeIdsToMark = {};
+        for (auto guessIndex: guesses) {
+            auto repString = GlobalState.reverseIndexLookup[guessIndex];
+            for (int i = 0; i < 5; ++i) {
+                char c = GlobalState.reverseIndexLookup[guessIndex][i];
+                bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+                if (knownNonLetter) {
+                    repString[i] = '.';
+                }
+            }
+            assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
+            auto nodeId = NonLetterLookup::stringPatternToId[repString];
+            guessIndexToNodeId[guessIndex] = nodeId;
+
+            if (nodeIdToFirstSeen[nodeId] != -1) continue;
+            nodeIdToFirstSeen[nodeId] = guessIndex;
+
+            //DEBUG("go: " << repString);
+            nodeIdsToMark.push(nodeId);
+            while (!nodeIdsToMark.empty()) {
+                auto t = nodeIdsToMark.top(); nodeIdsToMark.pop();
+                //DEBUG("child: " << NonLetterLookup::idToStringPattern[t] << ": (t: " << t << ") #childreN: " << NonLetterLookup::nodes[t].childIds.size());
+                for (auto childId: NonLetterLookup::nodes[t].childIds) {
+                    if (nodeIdToFirstSeen[childId] != -1) continue;
+                    nodeIdToFirstSeen[childId] = guessIndex;
+                    nodeIdsToMark.push(childId);
+                }
+            }
+        }
+
+        std::erase_if(guesses, [&](auto guessIndex) {
+            return nodeIdToFirstSeen[guessIndexToNodeId[guessIndex]] != guessIndex;
+        });
     }
 
     static inline std::vector<long long> guessToNumGroups = {};
@@ -157,7 +208,9 @@ struct RemoveGuessesWithNoLetterInAnswers {
     }
 
     static inline int specialMask = 0;
-    static inline std::string specialLetters = "aeioufp";//lnmdg";// fpln "abcdefghijklmnopqrstuvwxyz";
+    // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
+    // eartolsincuyhpdmgbkfwvxzqj
+    static inline std::string specialLetters = "eartols";//pdmgbkfwvxzqj";// fpln "abcdefghijklmnopqrstuvwxyz";
 
     static void buildClearGuessesInfo() {
         if (letterCountLookup.size() > 0) return;

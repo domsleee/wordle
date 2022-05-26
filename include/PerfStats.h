@@ -65,6 +65,10 @@ struct PerfStats {
         return out;
     }
 
+    void printEntry(std::string label, int i) const {
+        DEBUG(i << " (" << label << ")" << ":" << ncpu[i] << "," << tcpu[i])
+    }
+
     void tick(int i){if(GlobalArgs.timings)lcpu[i]=cpu();}
     void tock(int i){if(GlobalArgs.timings){ncpu[i]+=1;tcpu[i]+=cpu()-lcpu[i];}}
     double cpu(){return clock()/double(CLOCKS_PER_SEC);}

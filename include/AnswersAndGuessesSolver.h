@@ -191,16 +191,20 @@ struct AnswersAndGuessesSolver {
         int beta)
     {
         BestWordResult minNumWrongFor2 = {INF_INT, 0};
-        std::array<bool, 256> seen;
+        std::array<uint8_t, 256> seen;
+        uint8_t mVal = 0, MVal = 255;
         for (const auto guessIndex: guesses) {
-            seen.fill(0);
+            seen.fill(0);//std::fill(seen.begin() + mVal, seen.begin() + MVal, 0);
+            mVal = 255, MVal = 0;
             int numWrongFor2 = 0;
             for (const auto answerIndex: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
                 auto &seenVal = seen[patternInt];
                 numWrongFor2 += seenVal;
-                seenVal = 1;
                 if (numWrongFor2 >= beta) break;
+                seenVal = 1;
+                mVal = std::min(mVal, patternInt);
+                MVal = std::max(MVal, patternInt);
             }
 
             if (numWrongFor2 < minNumWrongFor2.numWrong) {

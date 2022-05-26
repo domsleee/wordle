@@ -16,8 +16,8 @@ struct SimpleProgress {
         updateStatus(", loading...");
       }
 
-    void incrementAndUpdateStatus(const std::string &suffix = "") {
-        ++maxA;
+    void incrementAndUpdateStatus(const std::string &suffix = "", int amount = 1) {
+        maxA += amount;
         if (suffix.size() == 0) {
             updateStatusInner(lastSuffix);
         } else {
@@ -28,6 +28,10 @@ struct SimpleProgress {
 
     void updateStatus(const std::string &suffix) {
         updateStatusInner(suffix);
+    }
+    
+    void dispose() {
+        bar.set_progress(100);
     }
 
 private:

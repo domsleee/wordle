@@ -7,7 +7,7 @@
 #include "../include/EndGameAnalysis.h"
 #include "../include/SolveFor2Ideas.h"
 #include "../include/RemoveGuessesWithBetterGuessCache.h"
-
+#include "../include/NonLetterLookup.h"
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
@@ -25,6 +25,7 @@ int Runner::run() {
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries);
 
         START_TIMER(precompute);
+        NonLetterLookup::build();
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         PatternGetterCached::buildCache();
         EndGameAnalysis::init();
