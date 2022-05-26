@@ -27,10 +27,9 @@ int Runner::run() {
         START_TIMER(precompute);
         NonLetterLookup::build();
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
-        PatternGetterCached::buildCache();
-        EndGameAnalysis::init();
-        SolveFor2Ideas::init();
         RemoveGuessesWithBetterGuessCache::init();
+        EndGameAnalysis::init();
+        PatternGetterCached::buildCache();
 
         //return 0;
         END_TIMER(precompute);

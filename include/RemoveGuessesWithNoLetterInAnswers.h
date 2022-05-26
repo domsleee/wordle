@@ -99,16 +99,10 @@ struct RemoveGuessesWithNoLetterInAnswers {
         stats.tick(10);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
-            int8_t r = 0;
-            for (char c: GlobalState.reverseIndexLookup[guessIndex]) {
-                bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
-                r += knownNonLetter == true;
-            }
-            bool isPossibleAnswer = guessIndex < GlobalState.allAnswers.size();
-            guessToNumNonLetters[guessIndex] = 2*r + isPossibleAnswer;
+            guessToNumNonLetters[guessIndex] = getNumNonLetters(guessIndex, nonLetterMask);
         }
-        std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
         stats.tock(10);
+        std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
 
         std::vector<int> guessIndexToNodeId(GlobalState.allGuesses.size());
         std::vector<int> nodeIdToFirstSeen(NonLetterLookup::nodes.size(), -1);
@@ -142,7 +136,39 @@ struct RemoveGuessesWithNoLetterInAnswers {
         stats.tock(13);
     }
 
+    static int8_t getNumNonLetters(IndexType guessIndex, int nonLetterMask) {
+        //static std::unordered_map<int, int8_t> cache = {};
+        //int myMask = nonLetterMask & letterCountLookup[guessIndex];
+        //auto it = cache.find(myMask);
+        //if (it != cache.end()) return it->second;
+
+        int8_t r = 0;
+        for (char c: GlobalState.reverseIndexLookup[guessIndex]) {
+            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+            r += knownNonLetter == true;
+        }
+        bool isPossibleAnswer = guessIndex < GlobalState.allAnswers.size();
+        return 2*r + isPossibleAnswer;
+    }
+
     static int getNodeId(IndexType guessIndex, int nonLetterMask) {
+        // using MyPair = std::pair<IndexType, int>;
+        // static std::map<MyPair, int> cache = {};
+        // int myMask = nonLetterMask & letterCountLookup[guessIndex];
+        // MyPair key = {guessIndex, myMask};
+        // auto it = cache.find(key);
+        // if (it != cache.end()) return it->second;
+
+        int trieId = guessIndex;
+        for (int i = 0; i < 5; ++i) {
+            char c = GlobalState.reverseIndexLookup[guessIndex][i];
+            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+            if (knownNonLetter) {
+                trieId = NonLetterLookup::trieNodes[trieId].childByLetter[i*27 + NonLetterLookup::letterToInd(c)];
+            }
+        }
+        return trieId;
+
         auto repString = GlobalState.reverseIndexLookup[guessIndex];
         for (int i = 0; i < 5; ++i) {
             char c = GlobalState.reverseIndexLookup[guessIndex][i];
@@ -151,7 +177,11 @@ struct RemoveGuessesWithNoLetterInAnswers {
                 repString[i] = '.';
             }
         }
-        assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
+        //assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
+        auto actual = NonLetterLookup::idToStringPattern[trieId];
+        if (actual != repString) {
+            DEBUG("HELLO??  orig: " << GlobalState.reverseIndexLookup[guessIndex] << ", expected: " << repString << ", actual: " << actual << ", trieId: " << trieId); exit(1);
+        }
         return NonLetterLookup::stringPatternToId[repString];
     }
 
@@ -218,10 +248,6 @@ struct RemoveGuessesWithNoLetterInAnswers {
     }
 
     static inline int specialMask = 0;
-    // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
-    // eartolsincuyhpdmgbkfwvxzqj
-    static inline std::string specialLetters = "eartolsincu";//pdmgbkfwvxzqj";// fpln "abcdefghijklmnopqrstuvwxyz";
-
     static void buildClearGuessesInfo() {
         if (letterCountLookup.size() > 0) return;
         letterCountLookup.resize(GlobalState.reverseIndexLookup.size());
@@ -231,7 +257,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
                 letterCountLookup[i] |= (1 << (c-'a'));
             }
         }
-        for (auto c: specialLetters) {
+        for (auto c: GlobalArgs.specialLetters) {
             specialMask |= (1 << (c-'a'));
         }
     }

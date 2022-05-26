@@ -13,7 +13,7 @@ struct RemoveGuessesWithBetterGuessCache
     static void init()
     {
         START_TIMER(removeguessesbetterguesscache);
-        auto expected = 1 << (RemoveGuessesWithNoLetterInAnswers::specialLetters.size());
+        auto expected = 1 << (GlobalArgs.specialLetters.size());
         auto bar = SimpleProgress("RemoveGuessesWithBetterGuessCache", expected, true);
 
         int max = (1 << 26);

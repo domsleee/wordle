@@ -42,6 +42,7 @@ struct RunnerUtil {
         DEBUG("firstWord   : " << GlobalArgs.firstWord);
         //DEBUG("heuristcC   : " << getPerc(solver.heuristicCacheHit, solver.heuristicTotal));
         DEBUG("average     : " << avg);
+        DEBUG("lettersUsed : " << GlobalArgs.specialLetters);
         DEBUG(stats);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);
