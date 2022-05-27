@@ -1,4 +1,4 @@
-maxWrong: 20
+maxWrong: 0
 maxTotalGuesses: 500000
 word,numWrong,numTries
-tenor,17,0
+lants,0,0

@@ -7,13 +7,13 @@ struct _GlobalArgs {
 
     // values
     static inline int numToRestrict, topLevelGuesses, maxTries, maxWrong, maxTotalGuesses, guessLimitPerNode;
-    static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters = "eartolsincuyhpdmgbkf";
+    static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters = "eartolsincuyh";
 
     // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
     // eartolsincuyhpdmgbkfwvxzqj
 
     // flags
-    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = false;
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = true;
 };
 
 static inline _GlobalArgs GlobalArgs;

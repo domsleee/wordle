@@ -174,12 +174,10 @@ struct AnswersAndGuessesSolver {
                 return {0, guessIndex};
             }
 
-            if (remDepth > 2) {
-                if (remDepth > maxC) return {0, guessIndex};
-                innerLb -= count[NUM_PATTERNS - 1];
-                auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
-                sortVec[guessIndex] = sortVal;
-            }
+            if (remDepth > maxC) return {0, guessIndex};
+            innerLb -= count[NUM_PATTERNS - 1];
+            auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
+            sortVec[guessIndex] = sortVal;
         }
 
         return minNumWrongFor2;
