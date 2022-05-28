@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
         ("v,verify", "Solution model to verify", cxxopts::value<std::string>()->default_value(""))
         ("guesses-to-skip", "Filename of words to skip", cxxopts::value<std::string>()->default_value(""))
         ("guesses-to-check", "Filename of guesses to check", cxxopts::value<std::string>()->default_value(""))
+        ("S,special-letters", "Special letters", cxxopts::value<std::string>()->default_value("eartolsincuyhpdmgbk"))
 
         // ints
         ("n,guess-limit-per-node", "Guess limit per node", cxxopts::value<int>()->default_value("1000000"))
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
     GlobalArgs.guessesToCheck = result["guesses-to-check"].as<std::string>();
+    GlobalArgs.specialLetters = result["special-letters"].as<std::string>();
 
     // flags
     GlobalArgs.parallel = result.count("parallel");

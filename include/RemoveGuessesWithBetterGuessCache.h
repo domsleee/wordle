@@ -61,11 +61,11 @@ struct RemoveGuessesWithBetterGuessCache
         return cacheWsGuesses[getNonLetterMask(answers)];
     }
 
-    static GuessesVec buildGuessesVecWithoutRemovingAnyAnswer(const GuessesVec &guesses, const AnswersVec &answers)
+    static GuessesVec buildGuessesVecWithoutRemovingAnyAnswer(const GuessesVec &guesses, const AnswersVec &answers, int nonLetterMask)
     {
         GuessesVec vec = guesses;
         auto wsAnswers = WordSetHelpers::buildAnswersWordSet(answers);
-        auto &wsGoodGuesses = getCachedGuessesWordSet(answers);
+        auto &wsGoodGuesses = cacheWsGuesses[nonLetterMask];
         std::erase_if(vec, [&](const auto guessIndex) -> bool {
             auto isAnAnswer = guessIndex < GlobalState.allAnswers.size() && wsAnswers[guessIndex];
             return !wsGoodGuesses[guessIndex] && !isAnAnswer;
@@ -75,12 +75,16 @@ struct RemoveGuessesWithBetterGuessCache
 
     static int getNonLetterMask(const AnswersVec &answers)
     {
+        return getNonLetterMaskNoSpecialMask(answers) & RemoveGuessesWithNoLetterInAnswers::specialMask;
+    }
+
+    static int getNonLetterMaskNoSpecialMask(const AnswersVec &answers) {
         int answerLetterMask = 0;
         for (auto answerIndex : answers)
         {
             answerLetterMask |= RemoveGuessesWithNoLetterInAnswers::letterCountLookup[answerIndex];
         }
         int nonLetterMask = ~answerLetterMask;
-        return nonLetterMask & RemoveGuessesWithNoLetterInAnswers::specialMask;
+        return nonLetterMask;
     }
 };
