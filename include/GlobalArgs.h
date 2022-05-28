@@ -13,7 +13,7 @@ struct _GlobalArgs {
     // eartolsincuyhpdmgbkfwvxzqj
 
     // flags
-    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = true;
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = false;
 };
 
 static inline _GlobalArgs GlobalArgs;

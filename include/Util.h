@@ -73,6 +73,11 @@ inline Vec getVector(std::size_t size, std::size_t offset = 0) {
 
 #define FROM_SS(x) static_cast<std::ostringstream &&>((std::ostringstream() << x)).str()
 
+
+inline std::string getBoolVal(bool v) {
+    return v ? "Yes" : "No";
+}
+
 inline std::string toLower(const std::string &s) {
     std::string ret = "";
     for (auto c: s) {

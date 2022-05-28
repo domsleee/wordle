@@ -3,6 +3,8 @@
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
 
+using namespace NonLetterLookupHelpers;
+
 struct RemoveGuessesWithNoLetterInAnswers {
     inline static std::vector<int> letterCountLookup = {};
 
@@ -95,7 +97,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
     }
 
-    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, std::vector<IndexType> &guesses, const int nonLetterMask) {
         stats.tick(10);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
@@ -164,7 +166,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
             char c = GlobalState.reverseIndexLookup[guessIndex][i];
             bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
             if (knownNonLetter) {
-                trieId = NonLetterLookup::trieNodes[trieId].childByLetter[i*27 + NonLetterLookup::letterToInd(c)];
+                trieId = NonLetterLookup::trieNodes[trieId].childByLetter[i*27 + letterToInd(c)];
             }
         }
         return trieId;

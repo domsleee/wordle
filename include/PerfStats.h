@@ -65,6 +65,7 @@ struct PerfStats {
             curr.printEntry(s, 23+i);
         }
         curr.printEntry("rem guesses", 33);
+        curr.printEntry("lb hacks", 34);
         DEBUG("Nodes used = " << curr.nodes);
 
 

@@ -47,9 +47,5 @@ struct RunnerUtil {
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
         printSolverInformation(solver);
     }
-
-    static std::string getBoolVal(bool v) {
-        return v ? "Yes" : "No";
-    }
 };
 

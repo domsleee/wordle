@@ -16,6 +16,14 @@ struct NonLetterTrieNode {
     }
 };
 
+namespace NonLetterLookupHelpers {
+    static int letterToInd(char letter) {
+        return letter == '.' ? 26 : (letter-'a');
+    }
+};
+using namespace NonLetterLookupHelpers;
+
+
 struct NonLetterLookup {
     inline static std::map<std::string, int> stringPatternToId = {};
     inline static std::unordered_map<int, std::string> idToStringPattern = {};
@@ -49,10 +57,6 @@ struct NonLetterLookup {
             s[i] = oldSi;
         }
         return id.second;
-    }
-
-    static int letterToInd(char letter) {
-        return letter == '.' ? 26 : (letter-'a');
     }
 
     static std::pair<bool, int> getIndex(const std::string &s) {
