@@ -12,6 +12,7 @@
 #include "SimpleProgress.h"
 #include <type_traits>
 
+
 struct RunnerMultiResultPair {
     RemDepthType numTries;
     IndexType wordIndex;
@@ -51,7 +52,7 @@ struct RunnerMulti {
 
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 32);
+        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
         DEBUG("#batches: " << batchesOfFirstWords.size());
 
         std::mutex lock;

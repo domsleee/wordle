@@ -51,9 +51,7 @@ struct AnswersAndGuessesSolver {
     const RemDepthType maxTries;
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, LookupCacheEntry> guessCache = {};
-    long long cacheMiss = 0, cacheHit = 0, lbCacheMiss = 0, lbCacheHit = 0;
-    std::vector<std::array<std::array<int, NUM_PATTERNS>, MAX_NUM_GUESSES>> lbCache3d;
-    std::vector<std::array<AnswersVec, NUM_PATTERNS>> myEquivCache;
+    long long cacheMiss = 0, cacheHit = 0;
     PerfStats stats;
 
     static const int isEasyModeVar = isEasyMode;
@@ -81,15 +79,6 @@ struct AnswersAndGuessesSolver {
     }
 
     AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswersVec &answers, GuessesVec &guesses) {
-        if (lbCache3d.size() == 0 && isGetLowestAverage) lbCache3d.resize(10);
-        if (myEquivCache.size() == 0) {
-            myEquivCache.assign(10, {});
-            for (int remDepth = 0; remDepth < 10; ++remDepth) {
-                for (std::size_t i = 0; i < NUM_PATTERNS; ++i) {
-                    myEquivCache[remDepth][i].reserve(NUM_WORDS);
-                }
-            }
-        }
         AnswersAndGuessesResult res = {};
         res.solutionModel = solutionModel;
 
@@ -190,7 +179,7 @@ struct AnswersAndGuessesSolver {
     BestWordResult calcSortVectorAndGetMinNumWrongFor2RemDepth2(
         const AnswersVec &answers,
         const GuessesVec &guesses,
-        int beta)
+        int beta) const
     {
         BestWordResult minNumWrongFor2 = {INF_INT, 0};
         std::array<uint8_t, 243> seen;

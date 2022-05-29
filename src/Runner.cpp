@@ -30,7 +30,7 @@ int Runner::run() {
         RemoveGuessesWithBetterGuessCache::init();
         EndGameAnalysis::init();
         PatternGetterCached::buildCache();
-        SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
+        // SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
 
         //return 0;
         END_TIMER(precompute);
