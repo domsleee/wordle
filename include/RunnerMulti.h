@@ -57,13 +57,15 @@ struct RunnerMulti {
 
         std::mutex lock;
 
+        DEBUG("sizeof perfstats: " << sizeof(PerfStats));
+
         auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
         std::ofstream fout("./models/out.res");
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,numWrong,numTries\n";
 
-        std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size());
+        std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size(), RunnerMultiResult());
         std::transform(
             executionPolicy,
             batchesOfFirstWords.begin(),
@@ -83,7 +85,6 @@ struct RunnerMulti {
             {                
                 const auto &allAnswers = GlobalState.allAnswers;
                 const auto &allGuesses = GlobalState.allGuesses;
-                
                 RunnerMultiResult result;
                 auto solver = nothingSolver;
 

@@ -3,9 +3,9 @@
 
 const int NUM_FAST_MODES = 4;
 const int MAX_DEPTH = 10;
-const int TOTAL_TIMINGS = 50010;
+const int TOTAL_TIMINGS = 100;
 
-#define TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth) (50000 + depth)
+#define TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth) (60 + depth)
 
 struct PerfStats {
     long long entryStats[MAX_DEPTH][NUM_FAST_MODES] = {0};
@@ -33,7 +33,7 @@ struct PerfStats {
     friend std::ostream& operator<< (std::ostream& out, const PerfStats &curr) {
         printf("%6s %12s %12s %12s %12s %12s\n", "depth", "mode0", "mode1", "mode2", "mode3", "#wrongFor2");
         for (int i = 1; i <= GlobalArgs.maxTries; ++i) {
-            printf("%6d %12lld %12lld %12lld %12lld %12lld %2f\n", i, curr.entryStats[i][0], curr.entryStats[i][1], curr.entryStats[i][2], curr.entryStats[i][3], curr.ncpu[200+i], curr.tcpu[200+i]);
+            printf("%6d %12lld %12lld %12lld %12lld %12lld %2f\n", i, curr.entryStats[i][0], curr.entryStats[i][1], curr.entryStats[i][2], curr.entryStats[i][3], curr.ncpu[50+i], curr.tcpu[50+i]);
         }
         // printf("numAnswers,calls,time\n");
         // for (int i = 0; i < 5000; ++i) {
@@ -49,13 +49,11 @@ struct PerfStats {
         //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
         // }
 
-        curr.printEntry("yeet", 4444);
-        curr.printEntry("answerLoop", 4445);
-        curr.printEntry("getCache", 4446);
-        curr.printEntry("getLbCache", 4447);
-        curr.printEntry("getCacheKey", 4448);
-        curr.printEntry("setCacheVal", 4449);
-        curr.printEntry("setLbCacheVal", 4450);
+        curr.printEntry("yeet", 44);
+        curr.printEntry("answerLoop", 45);
+        curr.printEntry("getCache", 46);
+        curr.printEntry("getCacheKey", 48);
+        curr.printEntry("setCacheVal", 49);
 
         curr.printEntry("sumOverPart1", 20);
         curr.printEntry("sumOverPart2", 21);
@@ -86,7 +84,7 @@ struct PerfStats {
     void tick(int i){if(GlobalArgs.timings && !ignoreTime(i))lcpu[i]=cpu();}
     void tock(int i){if(GlobalArgs.timings && !ignoreTime(i)){ncpu[i]+=1;tcpu[i]+=cpu()-lcpu[i];}}
     bool ignoreTime(int i) {
-        return 4446 <= i && i <= 4450;
+        return 46 <= i && i <= 4450;
     }
     double cpu(){return clock()/double(CLOCKS_PER_SEC);}
 

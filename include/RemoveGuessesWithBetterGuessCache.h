@@ -41,8 +41,7 @@ struct RemoveGuessesWithBetterGuessCache
         }
         bar.dispose();
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
-        stats.printEntry("yeet", 4444);
-        stats.printEntry("yeet", 4666);
+        stats.printEntry("removeSubs", 44);
         stats.printEntry("10", 10);
         stats.printEntry("11", 11);
         stats.printEntry("12", 12);

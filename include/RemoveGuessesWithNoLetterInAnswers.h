@@ -74,19 +74,19 @@ struct RemoveGuessesWithNoLetterInAnswers {
             auto res = stringToFirstSeen.try_emplace(repString, guessIndex);
             if (!res.second) continue;
 
-            std::function<void(std::string, int)> yeet = [&](std::string s, int toMutate) {
+            std::function<void(std::string, int)> removeSubs = [&](std::string s, int toMutate) {
                 if (toMutate == 5) return;
 
-                yeet(s, toMutate+1);
+                removeSubs(s, toMutate+1);
                 if (s[toMutate] != '.') {
                     s[toMutate] = '.';
                     stringToFirstSeen.emplace(s, guessIndex); //steamroll
-                    yeet(s, toMutate+1);
+                    removeSubs(s, toMutate+1);
                 }
             };
-            stats.tick(4444);
-            yeet(repString, 0);
-            stats.tock(4444);
+            stats.tick(44);
+            removeSubs(repString, 0);
+            stats.tock(44);
         }
 
         std::erase_if(guesses, [&](auto guessIndex) {

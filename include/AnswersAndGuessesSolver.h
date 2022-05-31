@@ -267,7 +267,7 @@ struct AnswersAndGuessesSolver {
 
         std::array<IndexType, NUM_PATTERNS> equiv;
         auto &count = equiv;
-        stats.tick(4445);
+        stats.tick(45);
         //auto perfectAnswerCandidates = answers;
         //auto nonLetterMaskNoSpecialMask2 = RemoveGuessesWithBetterGuessCache::getNonLetterMaskNoSpecialMask(answers);
         //RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, perfectAnswerCandidates, nonLetterMaskNoSpecialMask2); // removes a few more
@@ -281,13 +281,13 @@ struct AnswersAndGuessesSolver {
                 maxC = std::max(maxC, c);
             }
             if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) > maxC) {
-                stats.tock(4445);
+                stats.tock(45);
                 BestWordResult res = {0, answerIndexForGuess};
                 setOptCache(key, res);
                 return res;
             }
         }
-        stats.tock(4445);
+        stats.tock(45);
 
         if (fastMode == 2) return {-1, 0};
 
@@ -301,12 +301,10 @@ struct AnswersAndGuessesSolver {
         auto &guessesDisregardingAnswers = RemoveGuessesWithBetterGuessCache::cache[nonLetterMask];
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
-        stats.tick(depth*5000 + answers.size());
-        stats.tick(200 + depth);
-        //if (stats.ncpu[200+depth] >= 2000) return {0, answers[0]};
-        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, guessesDisregardingAnswers, equiv, sortVec, remDepth, beta);
-        stats.tock(200 + GlobalArgs.maxTries-remDepth);
-        stats.tock(depth*5000 + answers.size());
+        stats.tick(50 + depth);
+        auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() ? guessesDisregardingAnswers : guesses;
+        BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
+        stats.tock(50 + depth);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
             bool exact = remDepth > 2 || minNumWrongFor2.numWrong < beta;
             if (exact) setOptCache(key, minNumWrongFor2);
@@ -366,7 +364,7 @@ struct AnswersAndGuessesSolver {
         bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
-            auto r = sumOverPartitionsLeastWrong(answers, guesses, remDepth-1, possibleGuess, beta);
+            auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
             if (r < beta) {
                 exact = true;
             }
@@ -647,20 +645,20 @@ struct AnswersAndGuessesSolver {
     }
 
     LookupCacheEntry getCache(const AnswersAndGuessesKey<isEasyMode> &key) {
-        stats.tick(4446);
+        stats.tick(46);
         auto it = guessCache.find(key);
         if (it == guessCache.end()) {
-            cacheMiss++; stats.tock(4446);
+            cacheMiss++; stats.tock(46);
             return LookupCacheEntry(0, 0, 0, -1);
         }
-        cacheHit++; stats.tock(4446);
+        cacheHit++; stats.tock(46);
         return it->second;
     }
 
     AnswersAndGuessesKey<isEasyMode> getCacheKey(const AnswersVec &answers, const GuessesVec &guesses, RemDepthType remDepth) {
-        stats.tick(4448);
+        stats.tick(48);
         auto res = getCacheKeyInner(answers, guesses, remDepth);
-        stats.tock(4448);
+        stats.tock(48);
         return res;
     }
 
