@@ -2,6 +2,7 @@
 #include "GlobalState.h"
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
+#include "RemoveGuessesPartitions.h"
 
 using namespace NonLetterLookupHelpers;
 
@@ -97,7 +98,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
     }
 
-    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, std::vector<IndexType> &guesses, const int nonLetterMask) {
+    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask, const AnswersVec &answers) {
         stats.tick(10);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
@@ -132,7 +133,16 @@ struct RemoveGuessesWithNoLetterInAnswers {
         stats.tock(11);
 
         stats.tick(13);
+        auto partitions = RemoveGuessesPartitions::getPartitions(guesses, answers);
         std::erase_if(guesses, [&](auto guessIndex) {
+            if (guessIndexToNodeId[guessIndex] != guessIndex) {
+                auto g1 = guessIndexToNodeId[guessIndex];
+                auto g2 = guessIndex;
+                auto oth = RemoveGuessesPartitions::compare(partitions, g1, g2);
+                if (oth != CompareResult::BetterThanOrEqualTo) {
+                    DEBUG("oh no!"); exit(1);
+                }
+            }
             return nodeIdToFirstSeen[guessIndexToNodeId[guessIndex]] != guessIndex;
         });
         stats.tock(13);

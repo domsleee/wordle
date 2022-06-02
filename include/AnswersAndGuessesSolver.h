@@ -11,6 +11,7 @@
 #include "Defs.h"
 #include "UnorderedVector.h"
 #include "RemoveGuessesWithBetterGuessCache.h"
+#include "RemoveGuessesPartitions.h"
 
 #include "EndGameAnalysis.h"
 #include "PerfStats.h"
@@ -345,7 +346,18 @@ struct AnswersAndGuessesSolver {
                 nonLetterMaskNoSpecialMask |= (1 << (greenLetters[i] - 'a'));
             }
         }
-        RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+
+        //guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
+        
+        if (false && depth == 1) {
+            // both: 807011
+            // RemoveGuessesWithNoLetterInAnswers only: 952632
+            // RemoveGuessesPartitions only: 807017
+            // neither: 975400
+            //guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
+        } else {
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask, answers); // removes a few more
+        }
         stats.tock(33);
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);

@@ -28,7 +28,7 @@ struct RemoveGuessesWithBetterGuessCache
             auto guessesFast = guesses;
             const bool compareWithSlowMethod = false;
             if (compareWithSlowMethod) RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask);
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask, answers);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
                 DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size());
