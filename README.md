@@ -8,47 +8,21 @@ Produces model files `/models` in this structure:
 
 ## Usage
 
-See `./bin/solve -h`.
-
-```
-A solver for the wordle game.
-Usage:
-  WordleSolver [OPTION...] positional parameters
-
-  -H, --hard-mode              Solve the hard mode of wordle
-  -l, --lowest-average         Find a strategy for the lowest average score 
-                               (default is least wrong)
-  -p, --parallel               Use parallel processing
-  -r, --reduce-guesses         Use the answer dictionary as the guess 
-                               dictionary
-  -s, --force-sequential       No parallel when generating cache (for 
-                               profiling)
-  -w, --first-guess arg        First guess (default: "")
-  -v, --verify arg             Solution model to verify (default: "")
-      --guesses-to-skip arg    Filename of words to skip (default: "")
-      --guesses-to-check arg   Filename of guesses to check (default: "")
-  -t, --max-tries arg          Max tries (default: 6)
-  -I, --max-incorrect arg      Max incorrect for least wrong strategy 
-                               (default: 0)
-  -G, --max-total-guesses arg  Max total guesses for lowest average 
-                               strategy (default: 500000)
-      --num-to-restrict arg    Reduce the number of first guesses (default: 
-                               50000)
-  -h, --help                   Print usage
-```
+See `./bin/solve -h` for usage.
 
 ## Use cases
 
 Find _any_ strategy that solves all words (with a maximum of 0 incorrect), with first guess salet:
 ```
-./bin/solve -p -I0 -w salet ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -I0 -w salet ext/wordle-guesses.txt ext/wordle-answers.txt
 ```
 
-Find the strategy with the smallest expected number of guesses, with first word salet (note: slow):
+Find _any_ strategy that solves all words with 4 guesses and a maximum of 20 incorrect, using a special string lookup to remove inferior guesses at each node:
 ```
-./bin/solve -pl -w salet -G7950 ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -p -Seartolsinc -I20 -g4 ext/wordle-guesses.txt ext/wordle-answers.txt
 ```
-Note: `--max-total-guesses` here is based on the correct solution on 7920. It reduces the search space by filtering out trees that have a total greater than the value of the arg.
+
+Finding the lowest average is not supported, it can be done on [my fork of alex1770's repo](https://github.com/domsleee/wordle-1).
 
 ## Implementation Details
 
