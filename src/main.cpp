@@ -50,7 +50,6 @@ int main(int argc, char *argv[]) {
     GlobalArgs.numToRestrict = result["num-to-restrict"].as<int>();
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxWrong = result["max-numWrong"].as<int>();
-    GlobalArgs.maxTotalGuesses = result["max-total-guesses"].as<int>();
     GlobalArgs.firstWord = result["first-guess"].as<std::string>();
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();

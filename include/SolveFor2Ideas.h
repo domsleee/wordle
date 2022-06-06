@@ -39,7 +39,7 @@ struct SolveFor2Ideas {
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
-        auto solver = AnswersAndGuessesSolver<true, false>(2);
+        auto solver = AnswersAndGuessesSolver<true>(2);
         auto bar = SimpleProgress("canAny3BeSolvedIn2", answers.size());
 
         AnswersVec myAnswers = {0,0,0};
@@ -85,7 +85,7 @@ struct SolveFor2Ideas {
     // no good batty,patty,tatty,fatty
     // no good paper,racer,waver,wafer
     static void checkCanAny4BeSolvedIn2() {
-        auto solver = AnswersAndGuessesSolver<true, false>(2);
+        auto solver = AnswersAndGuessesSolver<true>(2);
         auto bar = SimpleProgress("canAny4BeSolvedIn2", GlobalState.allAnswers.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
@@ -109,7 +109,7 @@ struct SolveFor2Ideas {
         DEBUG("magnificient (4)"); exit(1);
     }
 
-    static void any4(const AnswersAndGuessesSolver<true, false> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
+    static void any4(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 

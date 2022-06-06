@@ -21,8 +21,8 @@ int Runner::run() {
 
     GlobalState = _GlobalState(guesses, answers);
 
-    auto lambda = [&]<bool isEasyMode, bool isGetLowestAverage>() -> bool {
-        auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries);
+    auto lambda = [&]<bool isEasyMode>() -> bool {
+        auto solver = AnswersAndGuessesSolver<isEasyMode>(GlobalArgs.maxTries);
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
@@ -51,14 +51,8 @@ int Runner::run() {
             : RunnerMulti<false>().run(solver);
     };
 
-    auto lambda2 = [&]<bool isEasyMode>() -> bool {
-        return GlobalArgs.isGetLowestAverage
-            ? lambda.template operator()<isEasyMode, true>()
-            : lambda.template operator()<isEasyMode, false>();
-    };
-
     return GlobalArgs.hardMode
-        ? lambda2.template operator()<false>()
-        : lambda2.template operator()<true>();
+        ? lambda.template operator()<false>()
+        : lambda.template operator()<true>();
 
 }

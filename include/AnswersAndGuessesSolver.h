@@ -43,7 +43,7 @@ struct LookupCacheEntry {
     LookupCacheEntry() {}
 };
 
-template <bool isEasyMode, bool isGetLowestAverage=false>
+template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(RemDepthType maxTries)
         : maxTries(maxTries)
@@ -635,11 +635,7 @@ struct AnswersAndGuessesSolver {
     }
 
     int getDefaultBeta() {
-        if constexpr (isGetLowestAverage) {
-            return GlobalArgs.maxTotalGuesses + 1;
-        } else {
-            return GlobalArgs.maxWrong + 1;
-        }
+        return GlobalArgs.maxWrong + 1;
     }
 
     inline void setOptCache(const AnswersAndGuessesKey<isEasyMode> &key, BestWordResult res) {

@@ -29,8 +29,8 @@ struct RunnerMulti {
     using ExecutionPolicy = std::conditional<parallel, decltype(std::execution::par_unseq), decltype(std::execution::seq)>::type;
     static constexpr ExecutionPolicy executionPolicy{};
 
-    template <bool isEasyMode, bool isGetLowestAverage>
-    int run(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+    template <bool isEasyMode>
+    int run(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         START_TIMER(total);
         if (!std::atomic<int>().is_lock_free()) {
             DEBUG("not lock free!");
@@ -45,8 +45,8 @@ struct RunnerMulti {
         return r;
     }
 
-    template <bool isEasyMode, bool isGetLowestAverage>
-    int runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+    template <bool isEasyMode>
+    int runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         int completed = 0, minWrong = INF_INT;
         double minAvg = INF_DOUBLE;
 
@@ -62,7 +62,6 @@ struct RunnerMulti {
         auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
         std::ofstream fout("./models/out.res");
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
-        fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,numWrong,numTries\n";
 
         // auto myAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
@@ -159,8 +158,8 @@ struct RunnerMulti {
         return 0;
     }
 
-    template<bool isEasyMode, bool isGetLowestAverage>
-    std::vector<IndexType> getGuessIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+    template<bool isEasyMode>
+    std::vector<IndexType> getGuessIndexesToCheck(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         if (GlobalArgs.firstWord != "") {
             return {(IndexType)getIndex(GlobalState.allGuesses, GlobalArgs.firstWord)};
         }
@@ -195,8 +194,8 @@ struct RunnerMulti {
     }
 
     // since the first guess is fixed, partitioning by pattern reduces the amount of work
-    template <bool isEasyMode, bool isGetLowestAverage>
-    int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver) {
+    template <bool isEasyMode>
+    int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         std::atomic<int> completed = 0, numWrong = 0, totalSum = 0, batches = 0;
 
         auto answerIndexesToCheck = getVector(GlobalState.allAnswers.size(), 0);
@@ -287,9 +286,9 @@ struct RunnerMulti {
         return res;
     }
     
-    template <bool isEasyMode, bool isGetLowestAverage>
+    template <bool isEasyMode>
     static std::vector<std::vector<IndexType>> getBatchesByPattern(
-        const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver,
+        const AnswersAndGuessesSolver<isEasyMode> &nothingSolver,
         const std::vector<IndexType> &indexes)
     {
         std::map<IndexType, int> indexKeys;

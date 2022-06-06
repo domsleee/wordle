@@ -5,9 +5,9 @@
 #include "AnswersAndGuessesSolver.h"
 
 struct Verifier {
-    template <bool isEasyMode, bool isGetLowestAverage>
+    template <bool isEasyMode>
     static std::vector<int64_t> verifyModel(const SolutionModel &model,
-        const AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage> &nothingSolver,
+        const AnswersAndGuessesSolver<isEasyMode> &nothingSolver,
         const int numIncorrect = 0) {
         auto answerIndexes = getVector(GlobalState.allAnswers.size(), 0);
         std::vector<int64_t> results(answerIndexes.size());
