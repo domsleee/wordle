@@ -29,8 +29,11 @@ OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 OBJ_FILES_NO_TEST := $(filter-out $(wildcard $(TEST_DIR)/*), $(OBJ_FILES))
 OBJ_FILES := $(patsubst $(TEST_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(OBJ_FILES))
 OBJ_FILES_NO_MAIN := $(filter-out $(OBJ_DIR)/main.o, $(OBJ_FILES))
+INCLUDES = $(wildcard include/*.h)
 
 LDFLAGS := $(LIBS)
+DEPS := $(OBJ_FILES_NO_TEST:.o=.d)
+TEST_DEPS := $(OBJ_FILES_NO_MAIN:.o=.d)
 
 $(BIN_DIR)/solve: $(OBJ_FILES_NO_TEST)
 	@mkdir -p $(BIN_DIR)
@@ -40,9 +43,12 @@ $(BIN_DIR)/test: $(OBJ_FILES_NO_MAIN)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
+-include $(DEPS)
+-include $(TEST_DEPS)
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $< $(LIBS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -MMD -MF $(patsubst %.o,%.d,$@) -o $@ $< $(LIBS)
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
@@ -52,3 +58,6 @@ clean:
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*
 
 all: $(BIN_DIR)/solve
+
+# debug:
+# 	@echo $(OBJ_FILES_NO_TEST)

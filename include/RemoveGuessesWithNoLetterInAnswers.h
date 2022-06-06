@@ -226,7 +226,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
     }
 
     static inline int specialMask = 0;
-    static void buildClearGuessesInfo() {
+    static void buildLetterLookup() {
         if (letterCountLookup.size() > 0) return;
         letterCountLookup.resize(GlobalState.reverseIndexLookup.size());
         for (std::size_t i = 0; i < GlobalState.reverseIndexLookup.size(); ++i) {

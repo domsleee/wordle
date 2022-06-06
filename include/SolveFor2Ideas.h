@@ -136,7 +136,7 @@ struct SolveFor2Ideas {
                         }
                     }
                 }
-            }
+            }//
         }
 
         // std::array<AnswersVec, 243> equiv{};

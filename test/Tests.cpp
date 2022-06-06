@@ -1,6 +1,8 @@
 #include "../include/AttemptState.h"
-#include "../include/AttemptStateFast.h"
+#include "../include/AttemptStateFaster.h"
 #include "../include/UnorderedVector.h"
+#include "../include/PatternGetter.h"
+#include "../include/PatternGetterCached.h"
 
 #include "../include/Util.h"
 #define CATCH_CONFIG_MAIN
@@ -32,14 +34,15 @@ TEST_CASE("attempt state") {
     auto vec = getVector(startWords.size(), 0);
     startWords.push_back("foehn");
 
-    auto words = answersState.guessWord((IndexType)startWords.size()-1, vec, startWords);
+    GlobalState.reverseIndexLookup = startWords;
+    auto words = answersState.guessWord((IndexType)startWords.size()-1, vec);
     INFO("num words " << words.size());
     for (auto w: words) INFO(w);
     REQUIRE_MESSAGE(words.size() == 1, "one word");
     REQUIRE_MESSAGE(startWords[words[0]] == "night", "correct word");
 }
 
-TEST_CASE("attempt state FAST") {
+TEST_CASE("attempt state FASTER") {
     std::vector<std::string> startWords = {
         "ought",
         "duchy",
@@ -57,12 +60,12 @@ TEST_CASE("attempt state FAST") {
     };
 
     auto getter = PatternGetter("night");
-    auto answersState = AttemptStateFast(getter);
+    auto answersState = AttemptState(getter);
     auto vec = getVector(startWords.size(), 0);
     startWords.push_back("foehn");
-    AttemptStateFast::buildForReverseIndexLookup(startWords);
+    GlobalState.reverseIndexLookup = startWords;
 
-    auto words = answersState.guessWord((IndexType)startWords.size()-1, vec, startWords);
+    auto words = answersState.guessWord((IndexType)startWords.size()-1, vec);
     INFO("num words " << words.size());
     for (auto w: words) INFO(w);
     REQUIRE_MESSAGE(words.size() == 1, "one word");

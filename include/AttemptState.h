@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 #include "PatternGetter.h"
+#include "PatternGetterCached.h"
+
 #include "GlobalState.h"
 #include "Util.h"
 #include "WordSetUtil.h"
