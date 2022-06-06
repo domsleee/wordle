@@ -1,0 +1,5550 @@
+{
+  "guess": "reais",
+  "next": {
+    "?_??_": {
+      "guess": "dicty",
+      "next": {
+        "_+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "cigar",
+            "circa"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "briar",
+            "friar"
+          ]
+        },
+        "??_?_": "triad",
+        "_+___": "viral",
+        "_?__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "hairy",
+            "fairy"
+          ]
+        },
+        "+?__+": "dairy",
+        "_?_?_": "trial",
+        "_??__": "cairn",
+        "_++__": "vicar"
+      }
+    },
+    "++___": {
+      "guess": "culty",
+      "next": {
+        "_?_?_": "rebut",
+        "?__?_": "retch",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "renew",
+            "refer"
+          ]
+        },
+        "___?_": "retro",
+        "??_?_": "recut",
+        "__?_+": "reply",
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "rebel",
+            "revel",
+            "repel"
+          ]
+        },
+        "??___": "recur",
+        "___?+": "retry",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "revue",
+            "rerun"
+          ]
+        },
+        "____+": "reedy"
+      }
+    },
+    "___??": {
+      "guess": "lofty",
+      "next": {
+        "____+": {
+          "guess": "pinch",
+          "next": {
+            "_+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "sissy",
+                "missy"
+              ]
+            },
+            "??_+_": "spicy",
+            "???__": "spiny",
+            "?+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "gipsy",
+                "wispy"
+              ]
+            },
+            "_??_?": "shiny",
+            "??___": "spiky"
+          }
+        },
+        "___?_": {
+          "guess": "aking",
+          "next": {
+            "_?++_": "stink",
+            "__?__": "midst",
+            "_?+__": "stick",
+            "__+++": "sting",
+            "__++_": "stint",
+            "__?_?": "sight",
+            "__+__": "twist"
+          }
+        },
+        "_____": {
+          "guess": "swung",
+          "next": {
+            "?_?++": "using",
+            "+____": "skimp",
+            "??___": "whisk",
+            "+_?__": "sushi",
+            "+_?++": "suing",
+            "++___": "swish",
+            "++_++": "swing"
+          }
+        },
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "moist",
+            "hoist",
+            "joist"
+          ]
+        },
+        "?____": {
+          "guess": "snowk",
+          "next": {
+            "+___?": "skill",
+            "+__?_": "swill",
+            "+____": "spill",
+            "+___+": "slick",
+            "+?___": "sling",
+            "+?__+": "slink"
+          }
+        },
+        "___?+": "tipsy",
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "spilt",
+            "still",
+            "stilt"
+          ]
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "swift",
+            "shift",
+            "stiff"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "scion",
+            "kiosk",
+            "disco",
+            "bison"
+          ]
+        },
+        "?___+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "silky",
+            "slimy",
+            "silly"
+          ]
+        },
+        "__?_+": "fishy",
+        "___+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sixth",
+            "smith"
+          ]
+        },
+        "_+__+": "noisy",
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "skiff",
+            "sniff"
+          ]
+        },
+        "_+??_": "foist",
+        "___++": "sixty"
+      }
+    },
+    "_____": {
+      "guess": "could",
+      "next": {
+        "__?__": {
+          "guess": "nymph",
+          "next": {
+            "__+++": "humph",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "buggy",
+                "fuzzy"
+              ]
+            },
+            "??__?": "hunky",
+            "_?+__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "mummy",
+                "gummy"
+              ]
+            },
+            "??___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "funny",
+                "bunny",
+                "funky"
+              ]
+            },
+            "_?_?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "putty",
+                "puffy"
+              ]
+            },
+            "_?_+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "puppy",
+                "guppy"
+              ]
+            },
+            "+?___": "nutty",
+            "_?++_": "jumpy"
+          }
+        },
+        "++_?_": "colon",
+        "_??_?": "outdo",
+        "+_+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "cluck",
+            "clung",
+            "clump"
+          ]
+        },
+        "_++_+": {
+          "guess": "flimp",
+          "next": {
+            "____?": "pound",
+            "+____": "found",
+            "___?_": "mound",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bound",
+                "wound",
+                "hound"
+              ]
+            }
+          }
+        },
+        "_+___": {
+          "guess": "bothy",
+          "next": {
+            "++__+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "booby",
+                "boozy",
+                "bobby"
+              ]
+            },
+            "_+??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "month",
+                "tooth"
+              ]
+            },
+            "_++__": "motto",
+            "_+__+": {
+              "guess": "gawps",
+              "next": {
+                "?____": "foggy",
+                "__?__": "woozy",
+                "___+_": "poppy",
+                "+____": "goofy"
+              }
+            },
+            "++___": "bongo",
+            "?+_?+": "hobby",
+            "++??_": "booth",
+            "++?_+": "booty"
+          }
+        },
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "loopy",
+            "lofty",
+            "lobby",
+            "polyp"
+          ]
+        },
+        "_+++_": "moult",
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "thumb",
+            "thump"
+          ]
+        },
+        "_??__": {
+          "guess": "bight",
+          "next": {
+            "__+++": "ought",
+            "__?_?": "outgo",
+            "+____": "buxom",
+            "____?": "junto",
+            "___??": "quoth",
+            "?____": "jumbo",
+            "?_?__": "gumbo"
+          }
+        },
+        "?_?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dutch",
+            "duchy"
+          ]
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "pulpy",
+            "lumpy",
+            "bulky"
+          ]
+        },
+        "+?_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "clock",
+            "cloth",
+            "clown"
+          ]
+        },
+        "?_+?_": "pluck",
+        "_?_+_": "knoll",
+        "_++__": {
+          "guess": "gothy",
+          "next": {
+            "_+?__": "mount",
+            "_+???": "youth",
+            "?+_?_": "bough",
+            "?+??_": "tough",
+            "?+__?": "young",
+            "_+?_+": "pouty",
+            "_+??_": "mouth"
+          }
+        },
+        "+++++": "could",
+        "?__?_": "lynch",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "nymph",
+            "pygmy"
+          ]
+        },
+        "_+_+_": {
+          "guess": "fowth",
+          "next": {
+            "_++__": "lowly",
+            "++___": "folly",
+            "_+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "jolly",
+                "nobly",
+                "golly"
+              ]
+            },
+            "_+_??": "hotly",
+            "_+__?": "holly",
+            "_+?__": "wooly"
+          }
+        },
+        "+_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "chunk",
+            "chump",
+            "chuck"
+          ]
+        },
+        "?_?__": {
+          "guess": "banty",
+          "next": {
+            "+__?_": "butch",
+            "___?_": "hutch",
+            "____+": "mucky",
+            "__+__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "hunch",
+                "munch",
+                "punch"
+              ]
+            },
+            "__??_": "uncut",
+            "+_+__": "bunch"
+          }
+        },
+        "?++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "vouch",
+            "pouch",
+            "touch"
+          ]
+        },
+        "_?_?_": {
+          "guess": "neemb",
+          "next": {
+            "___?_": "gloom",
+            "?___?": "blown",
+            "?____": "flown",
+            "___??": "bloom",
+            "+____": "nylon"
+          }
+        },
+        "_?_?+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flood",
+            "blond",
+            "blood"
+          ]
+        },
+        "__+?_": {
+          "guess": "fanks",
+          "next": {
+            "+____": "fluff",
+            "?____": "bluff",
+            "__?__": "blunt",
+            "__??_": "plunk",
+            "+_??_": "flunk",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "plumb",
+                "plump"
+              ]
+            },
+            "+_?__": "flung"
+          }
+        },
+        "??_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flock",
+            "block"
+          ]
+        },
+        "++_+_": "coyly",
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gully",
+            "bully",
+            "fully"
+          ]
+        },
+        "_?___": {
+          "guess": "phony",
+          "next": {
+            "?++__": "whoop",
+            "+++__": "photo",
+            "+++++": "phony",
+            "__+?_": "known",
+            "_+++_": "thong"
+          }
+        },
+        "_++_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "doubt",
+            "dough"
+          ]
+        },
+        "_+__?": {
+          "guess": "wight",
+          "next": {
+            "?__?_": "howdy",
+            "__?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "goody",
+                "dodgy"
+              ]
+            },
+            "?____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "dowdy",
+                "downy"
+              ]
+            },
+            "+____": "woody",
+            "_____": "moody",
+            "____?": "toddy"
+          }
+        },
+        "_???_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flout",
+            "ghoul"
+          ]
+        },
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "glyph",
+            "lymph"
+          ]
+        },
+        "?+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "pooch",
+            "notch",
+            "botch"
+          ]
+        },
+        "?_??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gulch",
+            "mulch",
+            "lunch",
+            "lucky"
+          ]
+        },
+        "_+_+?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "godly",
+            "dolly"
+          ]
+        },
+        "+++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "count",
+            "couch",
+            "cough"
+          ]
+        },
+        "__?_?": {
+          "guess": "abamp",
+          "next": {
+            "___?_": "muddy",
+            "___??": "dumpy",
+            "_?___": "buddy",
+            "____?": "pudgy",
+            "___+_": "dummy"
+          }
+        },
+        "_+_??": "moldy",
+        "_+?_?": "donut",
+        "_++++": "would",
+        "++___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "conch",
+            "comfy"
+          ]
+        },
+        "_+??_": "mogul",
+        "_?_+?": "oddly",
+        "+???_": "clout",
+        "+?___": "chock",
+        "+???+": "cloud",
+        "__?+?": "dully",
+        "??___": "knock",
+        "++__?": "condo"
+      }
+    },
+    "_?+__": {
+      "guess": "glift",
+      "next": {
+        "_____": {
+          "guess": "vodka",
+          "next": {
+            "___+?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "awake",
+                "quake"
+              ]
+            },
+            "?_?_?": "evade",
+            "____?": "amaze",
+            "?__??": "knave"
+          }
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "abate",
+            "ovate"
+          ]
+        },
+        "?___?": "agate",
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "agape",
+            "adage"
+          ]
+        },
+        "_?__+": "exalt",
+        "_+___": {
+          "guess": "becap",
+          "next": {
+            "_????": "place",
+            "_?_??": "plane",
+            "+?_?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "blaze",
+                "blade",
+                "blame"
+              ]
+            }
+          }
+        },
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "enact",
+            "exact"
+          ]
+        },
+        "_+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "plate",
+            "elate"
+          ]
+        },
+        "___+_": "chafe",
+        "_?___": "whale",
+        "++___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "glade",
+            "glaze"
+          ]
+        },
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flame",
+            "flake"
+          ]
+        }
+      }
+    },
+    "____?": {
+      "guess": "youth",
+      "next": {
+        "__+_+": {
+          "guess": "blips",
+          "next": {
+            "++__?": "blush",
+            "_+_??": "plush",
+            "_+__?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "slush",
+                "flush"
+              ]
+            },
+            "____?": "shush"
+          }
+        },
+        "_?_?_": {
+          "guess": "clomp",
+          "next": {
+            "_?+__": "stool",
+            "__+++": "stomp",
+            "__+__": "stood",
+            "?_+__": "stock",
+            "__+_+": "stoop"
+          }
+        },
+        "_???_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "stout",
+            "snout",
+            "spout",
+            "scout"
+          ]
+        },
+        "?_?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lusty",
+            "musty",
+            "gusty",
+            "dusty"
+          ]
+        },
+        "_+_?_": "boost",
+        "__+__": {
+          "guess": "plink",
+          "next": {
+            "?+___": "slump",
+            "_+_+_": "slung",
+            "___?+": "snuck",
+            "___?_": "snuff",
+            "_?__+": "skulk",
+            "___++": "skunk",
+            "_?__?": "skull",
+            "___+_": "swung",
+            "?__++": "spunk",
+            "_+_++": "slunk"
+          }
+        },
+        "_?__+": "slosh",
+        "_?__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shown",
+            "shock",
+            "shook"
+          ]
+        },
+        "??__?": "showy",
+        "_+_++": "sooth",
+        "?+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "soggy",
+            "bossy",
+            "mossy"
+          ]
+        },
+        "_?_++": "sloth",
+        "__+?_": {
+          "guess": "fanks",
+          "next": {
+            "___??": "stuck",
+            "__?_?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "stung",
+                "stunt"
+              ]
+            },
+            "____?": "stump",
+            "__???": "stunk",
+            "?___?": "stuff"
+          }
+        },
+        "?_+?_": "study",
+        "_??+_": "gusto",
+        "?_?__": {
+          "guess": "flank",
+          "next": {
+            "___+_": "sunny",
+            "____?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "musky",
+                "dusky"
+              ]
+            },
+            "_?__?": "sulky",
+            "+____": "fussy",
+            "_?___": "sully"
+          }
+        },
+        "?_?_?": {
+          "guess": "kemps",
+          "next": {
+            "___??": "pushy",
+            "?___?": "husky",
+            "____?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bushy",
+                "hussy"
+              ]
+            },
+            "__?_?": "mushy"
+          }
+        },
+        "_?_??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ghost",
+            "shoot"
+          ]
+        },
+        "_++__": "sound",
+        "__+??": "shunt",
+        "_+___": "bosom",
+        "??_?_": "stony",
+        "_?___": {
+          "guess": "clomp",
+          "next": {
+            "__+__": "swoon",
+            "__+_+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "snoop",
+                "swoop"
+              ]
+            },
+            "?_+?_": "smock",
+            "??+__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "scold",
+                "scowl"
+              ]
+            },
+            "__+_?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "spoof",
+                "spoon",
+                "spook"
+              ]
+            },
+            "_?+_?": "spool",
+            "?_+_+": "scoop",
+            "?_+__": "scoff",
+            "_++_+": "sloop"
+          }
+        },
+        "_++++": "south",
+        "_++?_": "joust",
+        "?___?": "shyly",
+        "__+_?": "shuck",
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "synod",
+            "smoky",
+            "snowy"
+          ]
+        },
+        "?+_+_": "sooty",
+        "?++__": "lousy",
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gypsy",
+            "slyly"
+          ]
+        },
+        "_????": "shout"
+      }
+    },
+    "__?__": {
+      "guess": "octyl",
+      "next": {
+        "??__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "focal",
+            "vocal",
+            "local"
+          ]
+        },
+        "____+": {
+          "guess": "noups",
+          "next": {
+            "+____": "naval",
+            "?____": "banal",
+            "__??_": "pupal",
+            "__?__": "awful",
+            "?_?__": "annul",
+            "___?_": "papal"
+          }
+        },
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "batty",
+            "patty",
+            "tatty",
+            "fatty"
+          ]
+        },
+        "+___+": "offal",
+        "_____": {
+          "guess": "punga",
+          "next": {
+            "___?+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "gamma",
+                "magma"
+              ]
+            },
+            "____?": "madam",
+            "+_???": "pagan",
+            "_+?_?": "human",
+            "__+++": "manga",
+            "?___+": "kappa",
+            "____+": "mamma",
+            "_??_+": "fauna"
+          }
+        },
+        "_?+__": {
+          "guess": "upbow",
+          "next": {
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "hatch",
+                "catch",
+                "match"
+              ]
+            },
+            "____?": "watch",
+            "_?___": "patch",
+            "__?__": "batch"
+          }
+        },
+        "__?__": {
+          "guess": "ganja",
+          "next": {
+            "_+??_": "jaunt",
+            "_+?__": {
+              "guess": "hived",
+              "next": {
+                "_____": "taunt",
+                "+____": "haunt",
+                "____?": "daunt",
+                "__?__": "vaunt"
+              }
+            },
+            "++?__": "gaunt",
+            "++___": "gamut",
+            "__+?+": "junta"
+          }
+        },
+        "___??": {
+          "guess": "bemad",
+          "next": {
+            "+__??": "badly",
+            "___?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "lanky",
+                "gayly",
+                "apply"
+              ]
+            },
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "amply",
+                "manly"
+              ]
+            },
+            "___??": "dally",
+            "+__+_": "bylaw",
+            "+_??_": "balmy",
+            "___+_": "allay",
+            "__???": "madly"
+          }
+        },
+        "___?_": {
+          "guess": "dungy",
+          "next": {
+            "??_?+": "gaudy",
+            "___?+": "gawky",
+            "+_+_+": "dandy",
+            "__+_+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "fanny",
+                "nanny"
+              ]
+            },
+            "+___+": "daddy",
+            "?_+_+": "handy",
+            "___++": "baggy",
+            "____+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "mammy",
+                "jazzy",
+                "happy"
+              ]
+            },
+            "?___+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bawdy",
+                "paddy"
+              ]
+            },
+            "____?": "kayak",
+            "__+++": "mangy"
+          }
+        },
+        "?____": {
+          "guess": "gamin",
+          "next": {
+            "_?___": "vodka",
+            "?+__+": "wagon",
+            "???_?": "among",
+            "+?__?": "gonad",
+            "???__": "dogma",
+            "_?+_?": "nomad",
+            "?+?_?": "mango",
+            "_++__": "mambo",
+            "_+__?": "banjo",
+            "_?+_+": "woman"
+          }
+        },
+        "?_+__": "baton",
+        "__??_": {
+          "guess": "brung",
+          "next": {
+            "___??": "tangy",
+            "__??_": "aunty",
+            "___+_": "tawny",
+            "?____": "tabby",
+            "_____": "taffy"
+          }
+        },
+        "?_?_?": {
+          "guess": "befog",
+          "next": {
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "aloft",
+                "float"
+              ]
+            },
+            "___??": "gloat",
+            "+__?_": "bloat",
+            "___+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "talon",
+                "allot"
+              ]
+            }
+          }
+        },
+        "_?__?": "caulk",
+        "?_??_": "today",
+        "?___?": {
+          "guess": "wrung",
+          "next": {
+            "?____": "allow",
+            "__?__": "aloud",
+            "___++": "along",
+            "?___?": "aglow",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "aloof",
+                "polka"
+              ]
+            }
+          }
+        },
+        "__+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "natal",
+            "fatal"
+          ]
+        },
+        "??___": {
+          "guess": "maneh",
+          "next": {
+            "??___": "comma",
+            "_+___": "cacao",
+            "+?__?": "mocha",
+            "_++__": "canon",
+            "_+__?": "havoc",
+            "_?___": "cocoa",
+            "++__?": "macho",
+            "_+?__": "bacon"
+          }
+        },
+        "_?_?_": {
+          "guess": "aband",
+          "next": {
+            "?__+_": "canny",
+            "?____": "wacky",
+            "?___?": "caddy",
+            "?__??": "candy",
+            "?__?_": "fancy",
+            "??___": "cabby"
+          }
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "album",
+            "alpha",
+            "laugh"
+          ]
+        },
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "bayou",
+            "agony",
+            "annoy"
+          ]
+        },
+        "?_?_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "atoll",
+            "tonal"
+          ]
+        },
+        "+++_+": "octal",
+        "__?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "fault",
+            "waltz",
+            "vault",
+            "adult"
+          ]
+        },
+        "__+??": "aptly",
+        "?_+_+": "total",
+        "?_?__": {
+          "guess": "bapus",
+          "next": {
+            "??_+_": "about",
+            "_?_?_": "quota",
+            "_??__": "adopt",
+            "_?+__": "topaz",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "afoot",
+                "tonga"
+              ]
+            },
+            "??___": "abbot",
+            "?+___": "taboo",
+            "_+___": "tango"
+          }
+        },
+        "_?___": "macaw",
+        "?___+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "modal",
+            "afoul",
+            "zonal"
+          ]
+        },
+        "__?_+": "tubal",
+        "__+__": "datum",
+        "?__?+": "loyal",
+        "_?+_?": "latch",
+        "_?__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "canal",
+            "cabal"
+          ]
+        },
+        "??__?": "cloak",
+        "_???_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tacky",
+            "yacht"
+          ]
+        },
+        "__???": "tally",
+        "_??__": "caput",
+        "?__??": "alloy",
+        "_?+?_": "catty"
+      }
+    },
+    "?+__?": {
+      "guess": "novum",
+      "next": {
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "serve",
+            "verse"
+          ]
+        },
+        "__+__": "sever",
+        "___++": "serum",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "terse",
+            "sewer"
+          ]
+        },
+        "_??__": "verso"
+      }
+    },
+    "_++__": {
+      "guess": "hotly",
+      "next": {
+        "+_?__": "heath",
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "death",
+            "teach"
+          ]
+        },
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "peach",
+            "beach"
+          ]
+        },
+        "____+": "beady",
+        "___?_": "leave",
+        "___?+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "leaky",
+            "leafy"
+          ]
+        },
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "weave",
+            "peace"
+          ]
+        },
+        "__?__": "meant",
+        "+___+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "heady",
+            "heavy"
+          ]
+        },
+        "__?_+": "meaty",
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "leant",
+            "leapt"
+          ]
+        },
+        "___++": "mealy",
+        "__?+_": "dealt",
+        "+____": "heave",
+        "?__?_": "leach"
+      }
+    },
+    "?_+__": {
+      "guess": "docht",
+      "next": {
+        "+____": {
+          "guess": "flawn",
+          "next": {
+            "?_+?_": "dwarf",
+            "_?++_": "drawl",
+            "__+_?": "drank",
+            "__+++": "drawn",
+            "__+__": "drama"
+          }
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "trawl",
+            "tramp"
+          ]
+        },
+        "__?__": {
+          "guess": "wanky",
+          "next": {
+            "_?__+": "crazy",
+            "_???_": "crank",
+            "_?___": "cramp",
+            "??___": "crawl",
+            "+?_?_": "wrack",
+            "_?_?_": "crack"
+          }
+        },
+        "?+_?_": "hoard",
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "quart",
+            "apart",
+            "grant",
+            "graft"
+          ]
+        },
+        "__??_": "charm",
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "wharf",
+            "graph"
+          ]
+        },
+        "?____": {
+          "guess": "wrung",
+          "next": {
+            "??___": "award",
+            "_+?__": "fraud",
+            "_+_+_": "brand",
+            "_+_+?": "grand",
+            "_??_?": "guard"
+          }
+        },
+        "_____": {
+          "guess": "wanky",
+          "next": {
+            "???__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "brawn",
+                "prawn"
+              ]
+            },
+            "_???_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "prank",
+                "frank"
+              ]
+            },
+            "_?__+": "gravy",
+            "_?_?_": "quark",
+            "_?___": "alarm",
+            "??___": "brawl"
+          }
+        },
+        "__?_?": "track",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ovary",
+            "bravo"
+          ]
+        },
+        "+___+": "draft",
+        "?_??_": "chard",
+        "__?_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "craft",
+            "tract"
+          ]
+        },
+        "__??+": "chart",
+        "?+___": "board",
+        "___??": "wrath"
+      }
+    },
+    "_?___": {
+      "guess": "nould",
+      "next": {
+        "_+_??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "model",
+            "dowel",
+            "lodge"
+          ]
+        },
+        "?_?_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unfed",
+            "unwed"
+          ]
+        },
+        "___+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "whelp",
+            "cycle"
+          ]
+        },
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unmet",
+            "queen"
+          ]
+        },
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flume",
+            "plume",
+            "fluke",
+            "flute"
+          ]
+        },
+        "___?+": "bleed",
+        "_+___": {
+          "guess": "comte",
+          "next": {
+            "_+???": "totem",
+            "+++??": "comet",
+            "_+__+": "booze",
+            "++_??": "covet",
+            "++__?": "covey",
+            "_+__?": "gooey"
+          }
+        },
+        "_+_?_": {
+          "guess": "amowt",
+          "next": {
+            "_??__": "golem",
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bowel",
+                "vowel"
+              ]
+            },
+            "__?__": "hovel",
+            "__???": "towel",
+            "__?_?": "hotel",
+            "_??_?": "motel"
+          }
+        },
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tweed",
+            "embed"
+          ]
+        },
+        "?+__?": "dozen",
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gouge",
+            "coupe"
+          ]
+        },
+        "__++_": "exult",
+        "_?___": {
+          "guess": "chapt",
+          "next": {
+            "??_?_": "epoch",
+            "++___": "choke",
+            "___?_": "epoxy",
+            "?___+": "octet",
+            "_____": "evoke"
+          }
+        },
+        "_+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dodge",
+            "modem",
+            "dopey"
+          ]
+        },
+        "_?_?_": {
+          "guess": "bewig",
+          "next": {
+            "+?___": "bloke",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "elope",
+                "clove",
+                "extol"
+              ]
+            },
+            "_?__?": "glove",
+            "??__?": "globe",
+            "???__": "elbow"
+          }
+        },
+        "_____": {
+          "guess": "micht",
+          "next": {
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "cheek",
+                "check"
+              ]
+            },
+            "?__??": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "theme",
+                "thyme"
+              ]
+            },
+            "?_+__": "emcee",
+            "____+": "tweet",
+            "?___?": "empty",
+            "___?+": "theft",
+            "__?_+": "eject"
+          }
+        },
+        "?+___": {
+          "guess": "mawky",
+          "next": {
+            "+___+": "money",
+            "__?__": "woven",
+            "____+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "honey",
+                "boney"
+              ]
+            },
+            "__??_": "woken",
+            "___?_": "token",
+            "?_?__": "women",
+            "_____": "coven"
+          }
+        },
+        "__+__": "chute",
+        "??___": {
+          "guess": "jaggy",
+          "next": {
+            "?___+": "enjoy",
+            "__?__": "gnome",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "ozone",
+                "often",
+                "phone"
+              ]
+            },
+            "____+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "envoy",
+                "ebony"
+              ]
+            }
+          }
+        },
+        "___?_": {
+          "guess": "chaft",
+          "next": {
+            "___?+": "fleet",
+            "?___+": "elect",
+            "?____": "excel",
+            "_+___": "wheel",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "elegy",
+                "expel",
+                "bleep"
+              ]
+            },
+            "+__++": "cleft",
+            "?__?_": "fleck"
+          }
+        },
+        "?_?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "undue",
+            "dunce"
+          ]
+        },
+        "__+??": "elude",
+        "_+++_": "boule",
+        "__?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "budge",
+            "duvet",
+            "fudge",
+            "judge"
+          ]
+        },
+        "?__?_": "kneel",
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "quell",
+            "bugle",
+            "tulle"
+          ]
+        },
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "queue",
+            "fugue",
+            "butte"
+          ]
+        },
+        "___+?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dwelt",
+            "dwell"
+          ]
+        },
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "event",
+            "hymen",
+            "enemy"
+          ]
+        },
+        "+_?_?": "nudge",
+        "__+?+": "clued",
+        "?_??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lunge",
+            "lumen"
+          ]
+        },
+        "?_?+_": "uncle",
+        "++_?_": "novel",
+        "++_+_": "noble",
+        "_?_+_": "whole",
+        "?__?+": "blend",
+        "??_??": "olden",
+        "_+?__": "vogue",
+        "?___+": "kneed",
+        "__??_": "bulge",
+        "???__": "ounce",
+        "?__+_": "knelt",
+        "_??__": "quote",
+        "__+_?": "etude",
+        "??__?": "endow",
+        "??_?_": "clone"
+      }
+    },
+    "?_?__": {
+      "guess": "cymol",
+      "next": {
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "karma",
+            "umbra"
+          ]
+        },
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "major",
+            "manor"
+          ]
+        },
+        "_??__": "marry",
+        "+__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "croak",
+            "cargo",
+            "cobra"
+          ]
+        },
+        "_?___": {
+          "guess": "depth",
+          "next": {
+            "__?__": "parry",
+            "____?": "harry",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "angry",
+                "array"
+              ]
+            },
+            "?___?": "hardy",
+            "__?+_": "party",
+            "?__?_": "tardy",
+            "___+_": "warty",
+            "__?_?": "harpy"
+          }
+        },
+        "___+?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "labor",
+            "valor"
+          ]
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "altar",
+            "ultra",
+            "larva",
+            "lunar"
+          ]
+        },
+        "___+_": {
+          "guess": "bavin",
+          "next": {
+            "_++__": "favor",
+            "_?__+": "apron",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "ardor",
+                "arrow"
+              ]
+            },
+            "_+?__": "vapor",
+            "??___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "arbor",
+                "abhor"
+              ]
+            },
+            "_+___": "tarot",
+            "++__+": "baron"
+          }
+        },
+        "___?_": {
+          "guess": "bogan",
+          "next": {
+            "_???_": "agora",
+            "_??++": "groan",
+            "++_+_": "borax",
+            "_?_?+": "adorn",
+            "??_?_": "abort",
+            "+?_+_": "broad",
+            "_?+++": "organ",
+            "_+_?_": "aorta"
+          }
+        },
+        "__??_": "aroma",
+        "_?_?_": "foray",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "augur",
+            "urban",
+            "parka"
+          ]
+        },
+        "+?___": "carry",
+        "?__?_": "acorn",
+        "__???": "molar",
+        "?_?__": "march",
+        "+__?+": "coral",
+        "_??+_": "mayor",
+        "+__++": "carol",
+        "___??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flora",
+            "polar"
+          ]
+        },
+        "?__+_": "actor",
+        "__++_": "armor",
+        "__?_+": "mural",
+        "__??+": "moral",
+        "?_??_": "macro",
+        "+____": "carat"
+      }
+    },
+    "??+__": {
+      "guess": "cadge",
+      "next": {
+        "_???+": "grade",
+        "+?__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "crate",
+            "craze",
+            "crave",
+            "crane"
+          ]
+        },
+        "??__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "trace",
+            "brace"
+          ]
+        },
+        "_?__+": {
+          "guess": "blaff",
+          "next": {
+            "+_+__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "brake",
+                "brave"
+              ]
+            },
+            "__+?_": "frame",
+            "__+__": "aware",
+            "+++__": "blare",
+            "_++?_": "flare"
+          }
+        },
+        "_?_?+": {
+          "guess": "pivot",
+          "next": {
+            "____?": "grate",
+            "__?__": "grave",
+            "?____": "grape",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "graze",
+                "glare"
+              ]
+            }
+          }
+        },
+        "??_?+": "grace",
+        "_??_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "trade",
+            "drake",
+            "drape"
+          ]
+        }
+      }
+    },
+    "_?_?_": {
+      "guess": "clint",
+      "next": {
+        "__+_+": "quiet",
+        "_???_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "linen",
+            "liken"
+          ]
+        },
+        "__?__": {
+          "guess": "dumbo",
+          "next": {
+            "__???": "biome",
+            "?_?__": "midge",
+            "_?___": "pique",
+            "+___?": "diode",
+            "_???_": "imbue",
+            "?___+": "video"
+          }
+        },
+        "_??_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tilde",
+            "title",
+            "lithe"
+          ]
+        },
+        "?_??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "wince",
+            "mince",
+            "niece",
+            "niche"
+          ]
+        },
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "oxide",
+            "edify",
+            "guide"
+          ]
+        },
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "olive",
+            "glide",
+            "elide",
+            "plied"
+          ]
+        },
+        "_??__": {
+          "guess": "gybed",
+          "next": {
+            "_?_?+": "yield",
+            "___?+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "field",
+                "wield"
+              ]
+            },
+            "?__?_": "liege",
+            "__++_": "libel",
+            "?_??_": "bilge",
+            "__+?_": "bible",
+            "___+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "pixel",
+                "impel"
+              ]
+            }
+          }
+        },
+        "__??_": {
+          "guess": "gyved",
+          "next": {
+            "?__?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "hinge",
+                "binge"
+              ]
+            },
+            "_?_+_": "piney",
+            "+_++_": "given",
+            "___+?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "index",
+                "widen"
+              ]
+            },
+            "___?_": "ennui",
+            "__?+_": "vixen"
+          }
+        },
+        "__?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "piety",
+            "tithe"
+          ]
+        },
+        "?_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "voice",
+            "juice"
+          ]
+        },
+        "?_+_?": "twice",
+        "+_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "chief",
+            "chide",
+            "chime"
+          ]
+        },
+        "__++?": "twine",
+        "__??+": "inept",
+        "__+??": "unite",
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "guile",
+            "exile",
+            "while"
+          ]
+        },
+        "_++_?": "elite",
+        "?_+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "edict",
+            "evict"
+          ]
+        },
+        "__?_+": "eight",
+        "_??_+": "filet",
+        "__+?_": "knife",
+        "_?+_?": "utile",
+        "__+_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "thief",
+            "quite",
+            "white"
+          ]
+        },
+        "__?+_": "fiend",
+        "__++_": {
+          "guess": "gopak",
+          "next": {
+            "_??__": "opine",
+            "_?___": "ovine",
+            "?___?": "eking",
+            "_____": "whine",
+            "?____": "eying"
+          }
+        },
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dicey",
+            "bicep",
+            "piece"
+          ]
+        },
+        "_???+": "inlet"
+      }
+    },
+    "_+___": {
+      "guess": "tolan",
+      "next": {
+        "____?": {
+          "guess": "psych",
+          "next": {
+            "___++": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bench",
+                "wench"
+              ]
+            },
+            "__?__": "needy",
+            "_____": "venue",
+            "+____": "penne",
+            "+__+_": "pence",
+            "___+_": "fence",
+            "+_?__": "penny",
+            "___+?": "hence"
+          }
+        },
+        "__+__": {
+          "guess": "comby",
+          "next": {
+            "___?+": "belly",
+            "?__?_": "belch",
+            "_____": "delve",
+            "__?__": "melee",
+            "____+": "jelly",
+            "___?_": "belle",
+            "?____": "welch"
+          }
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "depot",
+            "detox"
+          ]
+        },
+        "?____": {
+          "guess": "hyped",
+          "next": {
+            "?_+??": "depth",
+            "_?_?_": "jetty",
+            "___+_": "beget",
+            "?__?_": "fetch",
+            "+?_?_": "hefty",
+            "___??": "debut",
+            "_???_": "petty"
+          }
+        },
+        "_____": {
+          "guess": "gybed",
+          "next": {
+            "?__??": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "wedge",
+                "hedge"
+              ]
+            },
+            "__??_": "beech",
+            "+?_?_": "geeky",
+            "_???_": "beefy",
+            "___?_": "femme",
+            "_?_??": "weedy",
+            "?_+??": "debug",
+            "___??": "deuce"
+          }
+        },
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lefty",
+            "betel"
+          ]
+        },
+        "_?__?": "venom",
+        "+___?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tenet",
+            "tenth"
+          ]
+        },
+        "____+": "begun",
+        "__?__": {
+          "guess": "gyved",
+          "next": {
+            "__++_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "level",
+                "bevel"
+              ]
+            },
+            "___+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "jewel",
+                "bezel"
+              ]
+            },
+            "?__??": "ledge",
+            "??_?_": "leggy",
+            "___?_": "leech"
+          }
+        },
+        "+?___": "tempo",
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "below",
+            "cello",
+            "hello"
+          ]
+        },
+        "+____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "teeth",
+            "tepee",
+            "teddy"
+          ]
+        },
+        "_?__+": "demon",
+        "_?+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "melon",
+            "felon"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "decoy",
+            "gecko"
+          ]
+        },
+        "_??_+": "lemon",
+        "__?_?": "newly"
+      }
+    },
+    "_+_?_": {
+      "guess": "dungy",
+      "next": {
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "feign",
+            "neigh"
+          ]
+        },
+        "__??_": "being",
+        "+___+": "deity",
+        "+_?+_": "deign",
+        "___+_": "weigh"
+      }
+    },
+    "??__?": {
+      "guess": "pouch",
+      "next": {
+        "____+": "fresh",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sower",
+            "loser",
+            "sober",
+            "worse"
+          ]
+        },
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "surer",
+            "nurse",
+            "surge"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "store",
+            "swore",
+            "snore"
+          ]
+        },
+        "__?_?": "usher",
+        "_____": {
+          "guess": "stown",
+          "next": {
+            "??_?_": "wrest",
+            "+___?": "sneer",
+            "??___": "ester",
+            "++__+": "stern",
+            "++___": "steer"
+          }
+        },
+        "+_?__": "purse",
+        "+?___": "prose",
+        "_?_?_": "score",
+        "++___": "poser",
+        "??___": "spore",
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "crest",
+            "screw",
+            "scree"
+          ]
+        },
+        "?_?__": "super",
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shrew",
+            "sheer"
+          ]
+        },
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "spree",
+            "sperm"
+          ]
+        },
+        "__??_": "curse",
+        "_+__?": "horse",
+        "_?__?": "shore"
+      }
+    },
+    "?___?": {
+      "guess": "scout",
+      "next": {
+        "??_?+": "crust",
+        "+__+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shrub",
+            "shrug",
+            "syrup"
+          ]
+        },
+        "+_+_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "story",
+            "stork",
+            "storm"
+          ]
+        },
+        "++++_": "scour",
+        "?___+": "tryst",
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "usurp",
+            "brush"
+          ]
+        },
+        "+++__": "scorn",
+        "+_?__": "sorry",
+        "+_+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sport",
+            "short",
+            "snort"
+          ]
+        },
+        "?_?_+": "worst",
+        "+__++": "strut",
+        "+_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sworn",
+            "sword",
+            "shorn"
+          ]
+        },
+        "++_+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "scrub",
+            "scrum"
+          ]
+        },
+        "+__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "slurp",
+            "spurn",
+            "surly"
+          ]
+        },
+        "?__?+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "burst",
+            "trust"
+          ]
+        },
+        "+__?+": "spurt",
+        "?_+_+": "frost",
+        "??_?_": "crush",
+        "?_?_?": "torso"
+      }
+    },
+    "_?+_?": {
+      "guess": "thilk",
+      "next": {
+        "_____": {
+          "guess": "pubco",
+          "next": {
+            "__?__": "abase",
+            "?____": "spade",
+            "_?___": "usage",
+            "?__+_": "space",
+            "_+___": "suave"
+          }
+        },
+        "_+__?": "shake",
+        "___?_": "slave",
+        "_+___": {
+          "guess": "campi",
+          "next": {
+            "_??__": "shame",
+            "_?_?_": "phase",
+            "+?___": "chase",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "shade",
+                "shave"
+              ]
+            },
+            "_?_+_": "shape"
+          }
+        },
+        "?__+_": "stale",
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "stage",
+            "stave",
+            "state"
+          ]
+        },
+        "?__?_": "slate",
+        "?___?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "stake",
+            "skate"
+          ]
+        },
+        "_+_+_": "shale",
+        "____?": "snake",
+        "___+_": "scale"
+      }
+    },
+    "+++__": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "react",
+        "ready",
+        "realm",
+        "rearm",
+        "reach"
+      ]
+    },
+    "??_?_": {
+      "guess": "pwned",
+      "next": {
+        "+__??": "pride",
+        "___?_": {
+          "guess": "ambit",
+          "next": {
+            "__??_": "bribe",
+            "_?_?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "grime",
+                "crime"
+              ]
+            },
+            "__+?_": "fibre",
+            "___??": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "trite",
+                "trice"
+              ]
+            },
+            "___?_": "fiery",
+            "__???": "tribe"
+          }
+        },
+        "___+_": {
+          "guess": "glift",
+          "next": {
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "fixer",
+                "fiber"
+              ]
+            },
+            "?_?_?": "tiger",
+            "_??__": "liver",
+            "_++?_": "flier",
+            "+_+?_": "grief",
+            "__?_?": "timer",
+            "+_?__": "giver",
+            "__+?_": "brief",
+            "__+__": "crier",
+            "_???_": "filer"
+          }
+        },
+        "__++_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "finer",
+            "inner",
+            "liner",
+            "miner"
+          ]
+        },
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gripe",
+            "tripe"
+          ]
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "brine",
+            "inert",
+            "urine"
+          ]
+        },
+        "+__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "prize",
+            "price",
+            "prime"
+          ]
+        },
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "inter",
+            "nicer",
+            "infer"
+          ]
+        },
+        "__++?": "diner",
+        "_?_?_": "write",
+        "+__+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "plier",
+            "piper"
+          ]
+        },
+        "+__++": "pried",
+        "___+?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "diver",
+            "idler",
+            "cider",
+            "drier"
+          ]
+        },
+        "___??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dirge",
+            "bride",
+            "drive"
+          ]
+        },
+        "_?_+?": "wider",
+        "?__+_": "viper",
+        "___++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tried",
+            "fried",
+            "cried",
+            "dried"
+          ]
+        }
+      }
+    },
+    "____+": {
+      "guess": "cloff",
+      "next": {
+        "_++?_": "floss",
+        "?_??_": "focus",
+        "__?__": "bonus",
+        "???__": "locus",
+        "_____": "humus",
+        "_?___": "lupus",
+        "?____": "mucus",
+        "_++__": "gloss"
+      }
+    },
+    "_+_+_": {
+      "guess": "bundt",
+      "next": {
+        "_____": "helix",
+        "__+?_": "denim",
+        "___??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "fetid",
+            "tepid"
+          ]
+        },
+        "__+__": "genie",
+        "?__?+": "debit",
+        "+_?__": "begin",
+        "+___+": "befit",
+        "+____": "belie",
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "medic",
+            "devil"
+          ]
+        }
+      }
+    },
+    "__+_?": {
+      "guess": "cloth",
+      "next": {
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "staff",
+            "stand",
+            "stank",
+            "stamp"
+          ]
+        },
+        "+_??_": "coast",
+        "_?__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shall",
+            "shawl"
+          ]
+        },
+        "_?_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "stalk",
+            "stall"
+          ]
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "scald",
+            "scalp",
+            "scaly"
+          ]
+        },
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "blast",
+            "slant"
+          ]
+        },
+        "?+___": "slack",
+        "_____": {
+          "guess": "powny",
+          "next": {
+            "?_??_": "spawn",
+            "?_?__": "swamp",
+            "___?+": "snaky",
+            "?____": "spasm",
+            "?__+_": "spank"
+          }
+        },
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "stack",
+            "scant"
+          ]
+        },
+        "___??": "shaft",
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "smack",
+            "snack",
+            "scamp"
+          ]
+        },
+        "++___": "clasp",
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shady",
+            "shank",
+            "shaky"
+          ]
+        },
+        "_?_??": "shalt",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "psalm",
+            "small"
+          ]
+        },
+        "___++": "swath",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "slang",
+            "flask"
+          ]
+        },
+        "____+": {
+          "guess": "unmew",
+          "next": {
+            "__?__": "smash",
+            "____?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "awash",
+                "swash"
+              ]
+            },
+            "_+___": "gnash",
+            "?____": "quash"
+          }
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "toast",
+            "boast"
+          ]
+        },
+        "?___?": "shack",
+        "_+__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "slash",
+            "flash"
+          ]
+        },
+        "++__+": "clash",
+        "+___?": "chasm",
+        "__?__": "soapy",
+        "___?+": "stash"
+      }
+    },
+    "???__": {
+      "guess": "galut",
+      "next": {
+        "_+___": {
+          "guess": "pecky",
+          "next": {
+            "+?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "paper",
+                "parer"
+              ]
+            },
+            "_??__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "farce",
+                "carve"
+              ]
+            },
+            "+?__?": "payer",
+            "_?_?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "baker",
+                "maker"
+              ]
+            },
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "harem",
+                "waver",
+                "wafer"
+              ]
+            },
+            "???__": "caper"
+          }
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "agree",
+            "anger"
+          ]
+        },
+        "??_+_": "argue",
+        "+?__+": "great",
+        "_?___": {
+          "guess": "boked",
+          "next": {
+            "+_??_": "break",
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "creak",
+                "freak",
+                "wreak"
+              ]
+            },
+            "___??": "dream",
+            "___?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "cream",
+                "arena"
+              ]
+            },
+            "+__?+": "bread",
+            "_?_??": "adore",
+            "___?+": "dread",
+            "_?_?_": "opera",
+            "?__+_": "amber"
+          }
+        },
+        "_+__?": {
+          "guess": "chimp",
+          "next": {
+            "+____": "cater",
+            "___?_": "tamer",
+            "_?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "hater",
+                "earth"
+              ]
+            },
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "eater",
+                "water",
+                "taker"
+              ]
+            },
+            "____?": "taper"
+          }
+        },
+        "++___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gamer",
+            "gazer",
+            "gayer"
+          ]
+        },
+        "_?__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "treat",
+            "avert"
+          ]
+        },
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "paler",
+            "baler"
+          ]
+        },
+        "_+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "layer",
+            "early"
+          ]
+        },
+        "?+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "barge",
+            "wager",
+            "eager"
+          ]
+        },
+        "_?_?_": "azure",
+        "_+?_?": "later",
+        "_?__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tread",
+            "after",
+            "extra"
+          ]
+        },
+        "?+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "large",
+            "lager"
+          ]
+        },
+        "_??__": "clear",
+        "_??_?": "alter",
+        "_??_+": "alert"
+      }
+    },
+    "_??__": {
+      "guess": "talon",
+      "next": {
+        "_?_?_": {
+          "guess": "bawds",
+          "next": {
+            "??_?_": "adobe",
+            "_??__": "awoke",
+            "??_+_": "abode",
+            "_?___": "omega",
+            "??___": "above"
+          }
+        },
+        "_+?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "panel",
+            "lance",
+            "navel"
+          ]
+        },
+        "_+?__": {
+          "guess": "begem",
+          "next": {
+            "___+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "lapel",
+                "hazel"
+              ]
+            },
+            "?__+_": "label",
+            "_?+__": "eagle",
+            "__?+_": "gavel",
+            "_?__?": "maple",
+            "??___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "fable",
+                "cable"
+              ]
+            },
+            "+_++_": "bagel",
+            "_?___": "ladle",
+            "___+?": "camel"
+          }
+        },
+        "_????": "alone",
+        "_?__?": {
+          "guess": "admix",
+          "next": {
+            "?_?__": "enema",
+            "+??__": "amend",
+            "+___+": "annex",
+            "?____": "hyena",
+            "+____": "apnea",
+            "??___": "knead"
+          }
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "cheat",
+            "acute",
+            "adept",
+            "wheat"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "abbey",
+            "ahead",
+            "cheap"
+          ]
+        },
+        "???__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "pleat",
+            "bleat",
+            "cleat"
+          ]
+        },
+        "_??__": {
+          "guess": "plumb",
+          "next": {
+            "??_?_": "ample",
+            "_?+__": "equal",
+            "??___": "apple",
+            "_?_??": "amble",
+            "_+___": "algae",
+            "_+__?": "bleak",
+            "_+_?_": "gleam",
+            "++___": "plead"
+          }
+        },
+        "_+___": {
+          "guess": "gaucy",
+          "next": {
+            "?+___": "badge",
+            "+++__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "gauze",
+                "gauge"
+              ]
+            },
+            "++___": "gaffe",
+            "_+_?_": "cache",
+            "_+__?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "maybe",
+                "payee"
+              ]
+            },
+            "?+?__": "vague",
+            "_++__": "mauve",
+            "?+_?+": "cagey"
+          }
+        },
+        "??_??": "atone",
+        "_??_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "glean",
+            "clean"
+          ]
+        },
+        "??+__": "eclat",
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "valve",
+            "halve",
+            "value"
+          ]
+        },
+        "?++__": "valet",
+        "_+_+?": "canoe",
+        "_??_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "angle",
+            "ankle",
+            "angel"
+          ]
+        },
+        "_+?_+": "laden",
+        "?+__+": "eaten",
+        "?+___": {
+          "guess": "mochy",
+          "next": {
+            "+___+": "matey",
+            "___+_": "bathe",
+            "__+__": "facet",
+            "__?__": "cadet",
+            "___?_": "haute"
+          }
+        },
+        "_?_?+": "ocean",
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "alley",
+            "abled"
+          ]
+        },
+        "_+__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "haven",
+            "waxen"
+          ]
+        },
+        "+?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "theta",
+            "tweak"
+          ]
+        },
+        "_+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "mange",
+            "dance"
+          ]
+        },
+        "_+_?+": "oaken",
+        "++?__": "table",
+        "??__?": "agent",
+        "_+_?_": "cameo",
+        "++__+": "taken",
+        "_?_??": "anode",
+        "?+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lathe",
+            "latte"
+          ]
+        }
+      }
+    },
+    "++?__": {
+      "guess": "glyph",
+      "next": {
+        "__??_": "repay",
+        "___?_": "recap",
+        "_____": "rebar",
+        "____?": "rehab",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "relax",
+            "renal"
+          ]
+        },
+        "??___": "regal",
+        "_??__": "relay"
+      }
+    },
+    "___+_": {
+      "guess": "count",
+      "next": {
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "digit",
+            "limit"
+          ]
+        },
+        "?____": "mimic",
+        "+____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "civic",
+            "civil"
+          ]
+        },
+        "++_?_": "conic",
+        "+__?_": "cynic",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "vivid",
+            "vigil",
+            "lipid",
+            "livid"
+          ]
+        },
+        "__??+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unfit",
+            "unlit"
+          ]
+        },
+        "?+_?_": "ionic",
+        "_+__+": "vomit",
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "humid",
+            "pupil"
+          ]
+        },
+        "_+_??": "toxin",
+        "?_???": "tunic",
+        "__+__": "fluid",
+        "__?_?": "tulip",
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unzip",
+            "undid"
+          ]
+        },
+        "__???": "until",
+        "++___": "comic",
+        "_?___": "ovoid",
+        "_+__?": "motif",
+        "+_??_": "cumin",
+        "?+___": "logic",
+        "??__?": "optic",
+        "+_?__": "cubic",
+        "?+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "topic",
+            "toxic"
+          ]
+        },
+        "___?_": "minim",
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lucid",
+            "pubic"
+          ]
+        },
+        "?+_??": "tonic",
+        "____?": "timid",
+        "_+___": "folio",
+        "_+_?_": "login"
+      }
+    },
+    "_?_??": {
+      "guess": "pling",
+      "next": {
+        "?_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "spike",
+            "spite",
+            "spice",
+            "spied"
+          ]
+        },
+        "_??__": "islet",
+        "__?_?": "siege",
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "smite",
+            "exist",
+            "shied",
+            "suite"
+          ]
+        },
+        "??+__": "spiel",
+        "__++_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "swine",
+            "shine"
+          ]
+        },
+        "__???": "singe",
+        "_?+__": "smile",
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "slide",
+            "slime",
+            "slice"
+          ]
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "since",
+            "sinew"
+          ]
+        },
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sieve",
+            "issue"
+          ]
+        },
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "snide",
+            "noise"
+          ]
+        },
+        "+_+__": "poise",
+        "?_++_": "spine",
+        "?_+?_": "snipe",
+        "__+_?": "guise"
+      }
+    },
+    "__?+_": {
+      "guess": "datum",
+      "next": {
+        "_+__+": "maxim",
+        "????_": "audit",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "panic",
+            "cavil",
+            "cabin"
+          ]
+        },
+        "_+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tacit",
+            "habit"
+          ]
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "aphid",
+            "avoid"
+          ]
+        },
+        "_??__": "tibia",
+        "???_?": "admit",
+        "?+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "valid",
+            "vapid"
+          ]
+        },
+        "_++__": "patio",
+        "_+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "mania",
+            "magic",
+            "mafia",
+            "manic"
+          ]
+        },
+        "??_?_": "audio",
+        "??__?": "admin",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "affix",
+            "anvil"
+          ]
+        },
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "antic",
+            "attic"
+          ]
+        }
+      }
+    },
+    "_?__?": {
+      "guess": "poult",
+      "next": {
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flesh",
+            "sleek"
+          ]
+        },
+        "?____": {
+          "guess": "awned",
+          "next": {
+            "__??+": "spend",
+            "_+_+_": "sweep",
+            "___?_": "speck",
+            "___++": "speed",
+            "___+_": "sheep"
+          }
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "steed",
+            "these"
+          ]
+        },
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "solve",
+            "loose"
+          ]
+        },
+        "_?__?": {
+          "guess": "vehme",
+          "next": {
+            "__?_+": "those",
+            "?___+": "stove",
+            "____+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "stoke",
+                "stone"
+              ]
+            },
+            "___?+": "smote"
+          }
+        },
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sweet",
+            "chest",
+            "sheet",
+            "scent"
+          ]
+        },
+        "___++": "smelt",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "goose",
+            "noose",
+            "nosey",
+            "moose"
+          ]
+        },
+        "?_?_+": "upset",
+        "_?__+": "onset",
+        "__?_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unset",
+            "guest",
+            "quest"
+          ]
+        },
+        "?__+_": "spell",
+        "_++?_": "louse",
+        "_?___": {
+          "guess": "munch",
+          "next": {
+            "?____": "smoke",
+            "___??": "chose",
+            "____?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "shove",
+                "whose"
+              ]
+            },
+            "__??_": "scone",
+            "_____": "obese",
+            "__?_?": "shone"
+          }
+        },
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sheen",
+            "scene"
+          ]
+        },
+        "?__++": "spelt",
+        "?__?_": "sleep",
+        "___?+": "sleet",
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "house",
+            "mouse"
+          ]
+        },
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "scope",
+            "spoke"
+          ]
+        },
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ensue",
+            "bused"
+          ]
+        },
+        "___+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shell",
+            "smell",
+            "shelf",
+            "swell"
+          ]
+        },
+        "?+___": "copse",
+        "___??": "steel",
+        "_?_+?": "stole",
+        "?___?": "steep",
+        "++___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "poesy",
+            "posse"
+          ]
+        },
+        "??_?_": "slope",
+        "?___+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "swept",
+            "spent"
+          ]
+        },
+        "?__?+": "slept",
+        "_?_?_": "close",
+        "___+?": "style",
+        "+_??_": "pulse"
+      }
+    },
+    "?____": {
+      "guess": "donut",
+      "next": {
+        "_+__?": {
+          "guess": "fehme",
+          "next": {
+            "+_?__": "forth",
+            "___?_": "motor",
+            "__?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "worth",
+                "torch"
+              ]
+            },
+            "+____": "forty"
+          }
+        },
+        "_??_+": "front",
+        "_+?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "corny",
+            "moron",
+            "horny"
+          ]
+        },
+        "??___": {
+          "guess": "chaft",
+          "next": {
+            "___?_": "fjord",
+            "_?___": "hydro",
+            "++___": "chord",
+            "+____": "crowd",
+            "_____": "brood"
+          }
+        },
+        "++___": "dowry",
+        "_?___": {
+          "guess": "plack",
+          "next": {
+            "_?___": "growl",
+            "+____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "proxy",
+                "proof"
+              ]
+            },
+            "_+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "glory",
+                "floor"
+              ]
+            },
+            "___++": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "crock",
+                "frock"
+              ]
+            },
+            "___?+": "crook",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "groom",
+                "broom"
+              ]
+            },
+            "+?___": "prowl",
+            "____+": "brook"
+          }
+        },
+        "?+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "world",
+            "wordy"
+          ]
+        },
+        "___?+": "blurt",
+        "_?_+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "group",
+            "croup",
+            "flour",
+            "occur"
+          ]
+        },
+        "_?__?": {
+          "guess": "belah",
+          "next": {
+            "__?__": "troll",
+            "____+": "froth",
+            "____?": "throw",
+            "_____": "troop",
+            "?___?": "throb",
+            "+___+": "broth"
+          }
+        },
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "wrung",
+            "churn"
+          ]
+        },
+        "_?_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "humor",
+            "furor",
+            "juror"
+          ]
+        },
+        "_??_?": "thorn",
+        "_+??_": "mourn",
+        "_+___": {
+          "guess": "psych",
+          "next": {
+            "_____": "forgo",
+            "+__++": "porch",
+            "__?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "worry",
+                "lorry"
+              ]
+            },
+            "?___+": "morph",
+            "___?_": "color"
+          }
+        },
+        "+++__": "donor",
+        "+?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "droll",
+            "droop",
+            "drool"
+          ]
+        },
+        "_??__": {
+          "guess": "gawcy",
+          "next": {
+            "__?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "frown",
+                "brown"
+              ]
+            },
+            "__??_": "crown",
+            "?____": "prong",
+            "+_?__": "grown",
+            "?_?__": "wrong",
+            "___?+": "crony"
+          }
+        },
+        "___?_": {
+          "guess": "calmy",
+          "next": {
+            "?_?__": "lurch",
+            "____+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "furry",
+                "hurry"
+              ]
+            },
+            "+__+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "crump",
+                "crumb"
+              ]
+            },
+            "___?+": "murky",
+            "__?__": "blurb",
+            "_____": "gruff",
+            "+_?_+": "curly",
+            "__?_+": "burly",
+            "+___+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "curvy",
+                "curry"
+              ]
+            }
+          }
+        },
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "wryly",
+            "myrrh"
+          ]
+        },
+        "__??+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "burnt",
+            "grunt",
+            "brunt"
+          ]
+        },
+        "_?_++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "trout",
+            "grout"
+          ]
+        },
+        "_?_??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tutor",
+            "tumor",
+            "turbo"
+          ]
+        },
+        "+_??_": "drunk",
+        "???__": "frond",
+        "+____": "dryly",
+        "___??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "truly",
+            "trump",
+            "truck",
+            "truth"
+          ]
+        },
+        "____+": "crypt",
+        "__???": "trunk",
+        "_++__": "honor",
+        "??_+_": "proud",
+        "_+_?+": "court",
+        "_+?_?": "north",
+        "_+_+_": "forum",
+        "+??__": "drown",
+        "?+_?_": "gourd",
+        "___+?": "thrum"
+      }
+    },
+    "?__??": {
+      "guess": "kraft",
+      "next": {
+        "_?_?+": "first",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "swirl",
+            "visor"
+          ]
+        },
+        "?+___": "brisk",
+        "?+_?_": "frisk",
+        "_+__+": "wrist",
+        "??___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shirk",
+            "smirk"
+          ]
+        },
+        "_?__+": "shirt",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "prism",
+            "crisp"
+          ]
+        },
+        "??__+": "skirt"
+      }
+    },
+    "?__?_": {
+      "guess": "clint",
+      "next": {
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ivory",
+            "vigor"
+          ]
+        },
+        "__+++": "print",
+        "__++_": {
+          "guess": "gybed",
+          "next": {
+            "?_?__": "bring",
+            "____?": "drink",
+            "__?__": "brink",
+            "+___+": "grind",
+            "_??__": "briny",
+            "?____": "wring"
+          }
+        },
+        "?_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "prick",
+            "brick"
+          ]
+        },
+        "+_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "crimp",
+            "crick",
+            "chirp"
+          ]
+        },
+        "__?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "girth",
+            "birth",
+            "dirty",
+            "mirth"
+          ]
+        },
+        "__+__": {
+          "guess": "mopey",
+          "next": {
+            "???__": "primo",
+            "_____": "quirk",
+            "__?_+": "privy",
+            "_??__": "prior",
+            "?___+": "grimy"
+          }
+        },
+        "__?+_": "irony",
+        "?_??_": "incur",
+        "?_?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "birch",
+            "micro"
+          ]
+        },
+        "__+_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "fritz",
+            "third"
+          ]
+        },
+        "_?+_?": "twirl",
+        "__??_": "minor",
+        "?_+_?": "trick",
+        "_++_+": "flirt",
+        "_?+__": {
+          "guess": "kedge",
+          "next": {
+            "___?_": "grill",
+            "__?__": "drill",
+            "+____": "krill",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "frill",
+                "whirl"
+              ]
+            }
+          }
+        },
+        "__+_+": "drift",
+        "_??__": "girly",
+        "__???": "intro"
+      }
+    },
+    "_+__?": {
+      "guess": "punty",
+      "next": {
+        "____+": "seedy",
+        "___++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "zesty",
+            "testy"
+          ]
+        },
+        "___?_": "beset",
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "seven",
+            "semen"
+          ]
+        },
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dense",
+            "sense"
+          ]
+        },
+        "_?___": "segue",
+        "__+?_": "tense",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "welsh",
+            "geese"
+          ]
+        },
+        "+___+": "pesky",
+        "+__+_": "pesto",
+        "??_?_": "setup"
+      }
+    },
+    "?++__": {
+      "guess": "synth",
+      "next": {
+        "_??__": "yearn",
+        "_?___": "weary",
+        "___??": "heart",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "pearl",
+            "beard"
+          ]
+        },
+        "__?__": "learn",
+        "_?_?_": "teary",
+        "____?": "heard"
+      }
+    },
+    "?_++_": {
+      "guess": "blent",
+      "next": {
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "drain",
+            "grain"
+          ]
+        },
+        "_+___": "flair",
+        "___??": "train",
+        "____+": "trait",
+        "+__?_": "brain",
+        "+____": "braid",
+        "_____": "chair",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "frail",
+            "grail"
+          ]
+        },
+        "_?__?": "trail"
+      }
+    },
+    "?_+_+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "crass",
+        "brass",
+        "grass"
+      ]
+    },
+    "??___": {
+      "guess": "count",
+      "next": {
+        "_?___": {
+          "guess": "paved",
+          "next": {
+            "___?_": {
+              "guess": "kembo",
+              "next": {
+                "_?__?": {
+                  "guessesLeft": 2,
+                  "possibilities": [
+                    "error",
+                    "froze"
+                  ]
+                },
+                "_????": "ombre",
+                "??_??": "broke"
+              }
+            },
+            "___??": "erode",
+            "+_??_": "prove",
+            "__??_": "grove",
+            "___+_": "offer",
+            "__???": "drove",
+            "?__?_": "grope",
+            "+__?_": "probe",
+            "___+?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "order",
+                "older",
+                "odder"
+              ]
+            }
+          }
+        },
+        "_+___": {
+          "guess": "hewgh",
+          "next": {
+            "_??__": "wooer",
+            "_?_+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "forge",
+                "gorge"
+              ]
+            },
+            "_?___": {
+              "guess": "skivy",
+              "next": {
+                "____?": "foyer",
+                "_?___": {
+                  "guessesLeft": 2,
+                  "possibilities": [
+                    "poker",
+                    "joker"
+                  ]
+                },
+                "___?_": {
+                  "guessesLeft": 2,
+                  "possibilities": [
+                    "lover",
+                    "mover"
+                  ]
+                },
+                "_____": "boxer"
+              }
+            },
+            "+?___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "homer",
+                "horde",
+                "hover"
+              ]
+            },
+            "_?+__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "power",
+                "lower",
+                "mower"
+              ]
+            }
+          }
+        },
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "greet",
+            "egret",
+            "exert"
+          ]
+        },
+        "_+_?_": "goner",
+        "_____": {
+          "guess": "fudgy",
+          "next": {
+            "____?": "hyper",
+            "__+__": "elder",
+            "+____": "freer",
+            "+___?": "flyer",
+            "____+": "every",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "where",
+                "ember"
+              ]
+            },
+            "__?_?": "dryer",
+            "__?__": "breed",
+            "+_?__": "freed",
+            "__??_": "greed"
+          }
+        },
+        "_?__?": {
+          "guess": "wheep",
+          "next": {
+            "+_?__": "wrote",
+            "_?_+_": "other",
+            "__?__": "trove",
+            "__?_?": "trope",
+            "___+_": "otter"
+          }
+        },
+        "__?__": {
+          "guess": "pique",
+          "next": {
+            "__???": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "query",
+                "queer"
+              ]
+            },
+            "+__?+": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "purge",
+                "puree"
+              ]
+            },
+            "___??": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "udder",
+                "buyer"
+              ]
+            },
+            "?__??": "upper",
+            "+__??": "purer"
+          }
+        },
+        "?_?__": "ulcer",
+        "+___+": "crept",
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "gruel",
+            "bluer",
+            "prude"
+          ]
+        },
+        "____?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "there",
+            "threw",
+            "ether",
+            "three"
+          ]
+        },
+        "__+_+": "erupt",
+        "_?_+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "prone",
+            "drone"
+          ]
+        },
+        "+____": {
+          "guess": "piked",
+          "next": {
+            "__?+_": "creek",
+            "___++": "creed",
+            "?__+_": "creep",
+            "___+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "cyber",
+                "cheer"
+              ]
+            },
+            "___?_": "creme",
+            "?__?_": "crepe",
+            "__??_": "clerk"
+          }
+        },
+        "?_+_?": "truce",
+        "?____": "wreck",
+        "++___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "cover",
+            "cower",
+            "corer"
+          ]
+        },
+        "_??_?": "outer",
+        "___??": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "enter",
+            "entry"
+          ]
+        },
+        "__?_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "tuber",
+            "utter"
+          ]
+        },
+        "_?__+": "overt",
+        "+?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "credo",
+            "chore"
+          ]
+        },
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "preen",
+            "green"
+          ]
+        },
+        "_?_?_": "owner",
+        "+_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "cruel",
+            "crude"
+          ]
+        },
+        "?+___": "force",
+        "__??_": "under",
+        "__++_": "prune",
+        "_+__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "voter",
+            "tower",
+            "forte"
+          ]
+        },
+        "___+?": "trend",
+        "__+_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "truer",
+            "brute"
+          ]
+        },
+        "?___+": "erect",
+        "_+_+_": "borne",
+        "+_?__": "curve",
+        "+?_+_": "crone"
+      }
+    },
+    "_+?__": {
+      "guess": "yclad",
+      "next": {
+        "__+??": "delta",
+        "___+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "kebab",
+            "begat",
+            "began",
+            "vegan"
+          ]
+        },
+        "__+?_": "fella",
+        "__?+_": {
+          "guess": "nempt",
+          "next": {
+            "_+?_?": "metal",
+            "?+_?_": "penal",
+            "_+___": "legal",
+            "_+_??": "petal",
+            "_+__?": "fetal"
+          }
+        },
+        "??_+?": "decay",
+        "?_++?": "delay",
+        "_??+_": "fecal",
+        "__?+?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "medal",
+            "pedal"
+          ]
+        },
+        "_??+?": "decal",
+        "_?_+_": "pecan",
+        "_?_?_": "mecca"
+      }
+    },
+    "___?_": {
+      "guess": "linty",
+      "next": {
+        "??___": {
+          "guess": "chufa",
+          "next": {
+            "?__?_": "flick",
+            "__?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "guild",
+                "quill",
+                "build"
+              ]
+            },
+            "+____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "click",
+                "climb"
+              ]
+            },
+            "++___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "chill",
+                "child",
+                "chili"
+              ]
+            },
+            "+__+_": "cliff",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "blimp",
+                "igloo"
+              ]
+            }
+          }
+        },
+        "+??_?": "lying",
+        "?+_?_": "pilot",
+        "???__": {
+          "guess": "gecks",
+          "next": {
+            "?____": "fling",
+            "?_?__": "cling",
+            "___?_": "blink",
+            "__??_": "clink",
+            "_____": "blind"
+          }
+        },
+        "_+_?+": "pithy",
+        "_+__+": {
+          "guess": "pized",
+          "next": {
+            "++___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "picky",
+                "piggy"
+              ]
+            },
+            "?+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "hippy",
+                "wimpy"
+              ]
+            },
+            "_+___": "jiffy",
+            "_++_?": "dizzy",
+            "_+__?": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "giddy",
+                "biddy"
+              ]
+            },
+            "_++__": "fizzy"
+          }
+        },
+        "_??_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "unify",
+            "whiny"
+          ]
+        },
+        "_???_": {
+          "guess": "group",
+          "next": {
+            "__?_?": "point",
+            "___+?": "input",
+            "__?__": "joint",
+            "?_?__": "ingot",
+            "_____": "think",
+            "?____": "thing"
+          }
+        },
+        "++_?_": "light",
+        "_+++_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "pinto",
+            "ninth"
+          ]
+        },
+        "_+??_": "night",
+        "_++__": {
+          "guess": "chogs",
+          "next": {
+            "+?___": "cinch",
+            "??___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "winch",
+                "finch",
+                "pinch"
+              ]
+            },
+            "__?+_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "dingo",
+                "bingo"
+              ]
+            }
+          }
+        },
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "widow",
+            "hippo"
+          ]
+        },
+        "_?+__": "fungi",
+        "_?___": {
+          "guess": "mouch",
+          "next": {
+            "???__": "opium",
+            "__?+_": "quick",
+            "___++": "which",
+            "??___": "idiom",
+            "___+?": "chick",
+            "____?": "whiff"
+          }
+        },
+        "_++++": "minty",
+        "?+__+": {
+          "guess": "famed",
+          "next": {
+            "+_?__": "filmy",
+            "__+_?": "dimly",
+            "____?": "dilly",
+            "+____": "filly",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "billy",
+                "hilly",
+                "willy"
+              ]
+            },
+            "__?__": "milky"
+          }
+        },
+        "_+_+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ditto",
+            "width",
+            "fifth"
+          ]
+        },
+        "_??__": {
+          "guess": "cadge",
+          "next": {
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "onion",
+                "inbox",
+                "union"
+              ]
+            },
+            "?__?_": "icing",
+            "__??_": "doing",
+            "___?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "owing",
+                "going"
+              ]
+            }
+          }
+        },
+        "_?_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "idiot",
+            "thick",
+            "thigh",
+            "twixt"
+          ]
+        },
+        "??_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "built",
+            "quilt",
+            "guilt"
+          ]
+        },
+        "_+_?_": {
+          "guess": "chogs",
+          "next": {
+            "_?_?_": {
+              "guess": "amowt",
+              "next": {
+                "_?__+": "might",
+                "___?+": "wight",
+                "____+": {
+                  "guessesLeft": 2,
+                  "possibilities": [
+                    "fight",
+                    "tight"
+                  ]
+                }
+              }
+            },
+            "??___": {
+              "guess": "dowps",
+              "next": {
+                "___?_": "pitch",
+                "_____": "hitch",
+                "+____": "ditch",
+                "__?__": "witch"
+              }
+            },
+            "__?__": "pivot",
+            "__??_": "bigot"
+          }
+        },
+        "_+_++": {
+          "guess": "faked",
+          "next": {
+            "__?__": "kitty",
+            "____?": "ditty",
+            "_____": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "bitty",
+                "witty"
+              ]
+            },
+            "+____": "fifty"
+          }
+        },
+        "_?__+": "juicy",
+        "_??_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "dying",
+            "vying"
+          ]
+        },
+        "????_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "flint",
+            "glint"
+          ]
+        },
+        "??__?": "idyll",
+        "??__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "imply",
+            "icily"
+          ]
+        },
+        "?++_?": "vinyl",
+        "+++__": "lingo",
+        "??_+_": "blitz",
+        "_++_+": {
+          "guess": "kawed",
+          "next": {
+            "__?_?": "windy",
+            "_____": "ninny",
+            "____?": "dingy",
+            "?____": "pinky",
+            "+____": "kinky"
+          }
+        },
+        "_????": "tying",
+        "_??++": "unity",
+        "_?_?+": "itchy",
+        "++___": "limbo",
+        "?+_+_": "filth"
+      }
+    },
+    "?_+_?": {
+      "guess": "chapt",
+      "next": {
+        "__+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "start",
+            "smart"
+          ]
+        },
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "shard",
+            "shark"
+          ]
+        },
+        "_?+_?": "trash",
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "snarl",
+            "swarm"
+          ]
+        },
+        "+?+__": "crash",
+        "_?+__": "brash",
+        "_++?_": "sharp",
+        "?_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "scarf",
+            "scary"
+          ]
+        },
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "spark",
+            "grasp"
+          ]
+        },
+        "__+_?": "stark"
+      }
+    },
+    "+____": {
+      "guess": "bundy",
+      "next": {
+        "_???_": "round",
+        "?____": "robot",
+        "____+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "roomy",
+            "rocky"
+          ]
+        },
+        "?+__+": "rugby",
+        "___++": "rowdy",
+        "_+_++": "ruddy",
+        "_?___": "rough",
+        "_+___": "rumor",
+        "_____": "rotor"
+      }
+    },
+    "__?+?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "basic",
+        "basin",
+        "basil",
+        "satin"
+      ]
+    },
+    "__?_?": {
+      "guess": "lusty",
+      "next": {
+        "?_?__": {
+          "guess": "donah",
+          "next": {
+            "?__+_": "salad",
+            "_?_+?": "shoal",
+            "_???_": "salon",
+            "___?_": "salsa",
+            "_?_?_": "salvo"
+          }
+        },
+        "__+++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "nasty",
+            "hasty",
+            "tasty",
+            "pasty"
+          ]
+        },
+        "_??__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "squad",
+            "scuba",
+            "sauna"
+          ]
+        },
+        "?_?_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sadly",
+            "palsy",
+            "sally"
+          ]
+        },
+        "???__": "usual",
+        "__?_+": {
+          "guess": "pavan",
+          "next": {
+            "_++__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "savvy",
+                "savoy"
+              ]
+            },
+            "++__?": "pansy",
+            "?+___": "sappy",
+            "_+__?": "sandy"
+          }
+        },
+        "?_??_": "splat",
+        "__+__": "mason",
+        "__+_+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "assay",
+            "sassy",
+            "gassy"
+          ]
+        },
+        "_+?__": "sumac",
+        "__??_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "ascot",
+            "angst"
+          ]
+        },
+        "_???_": "squat",
+        "__??+": "patsy",
+        "_??_+": "saucy",
+        "+_+__": "lasso",
+        "?_?++": "salty",
+        "__++_": "pasta",
+        "?_+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "nasal",
+            "basal"
+          ]
+        }
+      }
+    },
+    "?_?_?": {
+      "guess": "potsy",
+      "next": {
+        "?__?+": "spray",
+        "_+_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "solar",
+            "sonar"
+          ]
+        },
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "sugar",
+            "scram"
+          ]
+        },
+        "?__?_": "scrap",
+        "___+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "marsh",
+            "harsh"
+          ]
+        },
+        "__??+": "stray",
+        "_?_?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "arson",
+            "savor"
+          ]
+        },
+        "__??_": "straw",
+        "?_??_": "strap",
+        "__+??": "satyr",
+        "__+++": "artsy"
+      }
+    },
+    "_??_?": {
+      "guess": "pluto",
+      "next": {
+        "_____": {
+          "guess": "manky",
+          "next": {
+            "_?__+": "essay",
+            "++___": "masse",
+            "_?_?_": "askew",
+            "_???_": "sneak",
+            "_??__": "ashen"
+          }
+        },
+        "+_+__": "pause",
+        "??___": "lapse",
+        "__++_": "saute",
+        "___?_": {
+          "guess": "ewked",
+          "next": {
+            "___+_": "asset",
+            "?___+": "stead",
+            "?+___": "sweat",
+            "?_?__": "steak",
+            "?____": "steam"
+          }
+        },
+        "___+_": {
+          "guess": "cahow",
+          "next": {
+            "_+__?": "waste",
+            "++___": "caste",
+            "_+?__": "haste",
+            "_+___": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "taste",
+                "baste"
+              ]
+            }
+          }
+        },
+        "+__+_": "paste",
+        "_?_?_": "steal",
+        "__+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "amuse",
+            "cause",
+            "abuse",
+            "sauce"
+          ]
+        },
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "false",
+            "easel",
+            "salve"
+          ]
+        },
+        "?____": "speak"
+      }
+    },
+    "__+__": {
+      "guess": "clonk",
+      "next": {
+        "?___+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "aback",
+            "whack",
+            "quack"
+          ]
+        },
+        "+____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "champ",
+            "chaff"
+          ]
+        },
+        "+__+_": "chant",
+        "?+__+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "black",
+            "flack"
+          ]
+        },
+        "_+_+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "plant",
+            "bland",
+            "gland"
+          ]
+        },
+        "___+_": "twang",
+        "+_?__": "coach",
+        "_??__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "loath",
+            "loamy"
+          ]
+        },
+        "_?___": "qualm",
+        "___++": "thank",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "llama",
+            "plaza"
+          ]
+        },
+        "_+_++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "blank",
+            "flank",
+            "plank"
+          ]
+        },
+        "_??_?": "koala",
+        "+?__+": "chalk",
+        "?__?+": "knack",
+        "++__+": "clack",
+        "++___": "clamp",
+        "__?__": "foamy",
+        "++_++": "clank",
+        "_+__?": "flaky",
+        "++_+_": "clang",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "guava",
+            "adapt"
+          ]
+        }
+      }
+    },
+    "__?_+": "abyss",
+    "?__+_": {
+      "guess": "cloud",
+      "next": {
+        "__+__": "groin",
+        "+_+__": "choir",
+        "_?_?+": "lurid",
+        "_?+__": "broil",
+        "??___": "lyric",
+        "__?__": "orbit",
+        "+_??_": "curio",
+        "___?_": "fruit",
+        "__+_?": "droit",
+        "___?+": "druid"
+      }
+    },
+    "+?___": {
+      "guess": "dough",
+      "next": {
+        "_+??_": "rogue",
+        "_+++_": "rouge",
+        "__?__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "rupee",
+            "ruler"
+          ]
+        },
+        "____?": "rhyme",
+        "?_?__": "ruder",
+        "_+___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "rover",
+            "rower"
+          ]
+        },
+        "_++__": "route",
+        "?+___": "rodeo",
+        "_+_?_": "roger"
+      }
+    },
+    "?+___": {
+      "guess": "money",
+      "next": {
+        "_???_": "heron",
+        "___?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "perch",
+            "berth",
+            "verve",
+            "verge"
+          ]
+        },
+        "___?+": {
+          "guess": "baked",
+          "next": {
+            "___?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "ferry",
+                "leery"
+              ]
+            },
+            "__??_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "perky",
+                "jerky"
+              ]
+            },
+            "?__??": "derby",
+            "+__?_": "berry",
+            "___??": "decry"
+          }
+        },
+        "___+_": {
+          "guess": "delft",
+          "next": {
+            "_+_?_": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "fewer",
+                "fever"
+              ]
+            },
+            "++__?": "deter",
+            "++_?_": "defer",
+            "_+?__": {
+              "guessesLeft": 3,
+              "possibilities": [
+                "leper",
+                "lever"
+              ]
+            },
+            "_+__+": "beret"
+          }
+        },
+        "__+?_": "genre",
+        "__??_": "nerve",
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "demur",
+            "lemur",
+            "femur"
+          ]
+        },
+        "__?+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "never",
+            "newer"
+          ]
+        },
+        "+__?_": "merge",
+        "__??+": "nerdy",
+        "_?_?_": "decor",
+        "_?+?_": "tenor",
+        "+__?+": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "merry",
+            "mercy"
+          ]
+        },
+        "+?_?_": "metro",
+        "+__+_": "meter"
+      }
+    },
+    "+_?+_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "radio",
+        "rabid",
+        "radii",
+        "ratio",
+        "rapid"
+      ]
+    },
+    "+__?_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "rhino",
+        "rigor",
+        "right"
+      ]
+    },
+    "___+?": {
+      "guess": "compt",
+      "next": {
+        "?+___": "sonic",
+        "_?_?_": "spoil",
+        "____+": "visit",
+        "_+___": "solid",
+        "_+_?+": "posit",
+        "??__?": "stoic",
+        "_____": "squib",
+        "___?+": "split",
+        "?_?__": "music"
+      }
+    },
+    "__??_": {
+      "guess": "glint",
+      "next": {
+        "_??_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "vital",
+            "tidal"
+          ]
+        },
+        "+?+__": "gaily",
+        "_??__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "lilac",
+            "villa",
+            "viola"
+          ]
+        },
+        "?_++_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "aging",
+            "aping"
+          ]
+        },
+        "_???_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "final",
+            "inlay"
+          ]
+        },
+        "__??_": "ninja",
+        "__++_": "china",
+        "?++?_": "align",
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "iliac",
+            "alibi"
+          ]
+        },
+        "__?__": "pizza",
+        "__+_?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "amity",
+            "faith"
+          ]
+        },
+        "__+++": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "faint",
+            "paint",
+            "taint"
+          ]
+        },
+        "__?_?": "cacti",
+        "__+__": "axiom",
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "voila",
+            "axial",
+            "daily"
+          ]
+        },
+        "__???": "titan",
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "avian",
+            "axion"
+          ]
+        }
+      }
+    },
+    "_????": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "aside",
+        "aisle"
+      ]
+    },
+    "?_?+_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "tapir",
+        "acrid",
+        "nadir"
+      ]
+    },
+    "++__+": "rebus",
+    "?___+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "truss",
+        "dross",
+        "cross",
+        "torus",
+        "gross"
+      ]
+    },
+    "??_??": {
+      "guess": "nymph",
+      "next": {
+        "____?": "shire",
+        "?____": "siren",
+        "___?_": "spire",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "skier",
+            "wiser"
+          ]
+        },
+        "__?__": "miser"
+      }
+    },
+    "+__+_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "robin",
+        "rigid"
+      ]
+    },
+    "_++_?": {
+      "guess": "flyte",
+      "next": {
+        "___?+": "tease",
+        "_?_??": "least",
+        "__???": "yeast",
+        "+__??": "feast",
+        "___??": "beast",
+        "_?__?": "leash",
+        "_?__+": "lease",
+        "____+": "cease"
+      }
+    },
+    "_?_+_": {
+      "guess": "punto",
+      "next": {
+        "____?": "movie",
+        "??___": "equip",
+        "_+_?_": "cutie",
+        "+____": "pixie",
+        "___?_": "ethic",
+        "__?__": "elfin",
+        "_???_": "untie"
+      }
+    },
+    "??_+_": "their",
+    "??+_?": {
+      "guess": "natch",
+      "next": {
+        "_?_?_": "scare",
+        "??___": "snare",
+        "_??__": "stare",
+        "_?__?": "share",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "erase",
+            "spare"
+          ]
+        }
+      }
+    },
+    "?_++?": "stair",
+    "+_?__": {
+      "guess": "hotly",
+      "next": {
+        "_+_??": "royal",
+        "_?___": "razor",
+        "?____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "rajah",
+            "ranch"
+          ]
+        },
+        "____+": "randy",
+        "_____": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "radar",
+            "rumba"
+          ]
+        },
+        "___++": "rally",
+        "?__?_": "ralph",
+        "__+_+": "ratty",
+        "_?__?": "rayon",
+        "___?_": "rural"
+      }
+    },
+    "_+_??": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "heist",
+        "seize"
+      ]
+    },
+    "_+__+": "fetus",
+    "__+_+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "glass",
+        "class",
+        "chaos",
+        "amass"
+      ]
+    },
+    "?_+?_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "tiara",
+        "diary"
+      ]
+    },
+    "+___?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "rusty",
+        "roost"
+      ]
+    },
+    "_???_": {
+      "guess": "elvan",
+      "next": {
+        "?+_?+": "alien",
+        "?+_?_": "alike",
+        "?+??_": "alive",
+        "?__??": "anime",
+        "?_??_": "waive",
+        "??_+_": "ideal",
+        "?_???": "naive",
+        "?__?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "abide",
+            "maize"
+          ]
+        },
+        "??_?_": "agile"
+      }
+    },
+    "???_?": {
+      "guess": "frump",
+      "next": {
+        "_?_?_": "smear",
+        "??___": "safer",
+        "_?___": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "swear",
+            "shear",
+            "saner"
+          ]
+        },
+        "_+___": "arose",
+        "_?__?": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "parse",
+            "spear"
+          ]
+        }
+      }
+    },
+    "__+?_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "khaki",
+        "piano",
+        "giant"
+      ]
+    },
+    "?+_+_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "merit",
+        "eerie",
+        "peril"
+      ]
+    },
+    "__???": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "saint",
+        "sigma",
+        "vista",
+        "daisy",
+        "waist"
+      ]
+    },
+    "_?_+?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "stein",
+        "sheik"
+      ]
+    },
+    "_?+?_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "inane",
+        "image"
+      ]
+    },
+    "__++_": {
+      "guess": "plant",
+      "next": {
+        "_++__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "claim",
+            "flail"
+          ]
+        },
+        "_?+__": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "avail",
+            "quail"
+          ]
+        },
+        "+++__": "plaid",
+        "__+?_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "again",
+            "chain"
+          ]
+        },
+        "+++?_": "plain",
+        "+++_+": "plait",
+        "__+_+": "await"
+      }
+    },
+    "+_??_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "rainy",
+        "rabbi",
+        "rival"
+      ]
+    },
+    "__+??": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "quasi",
+        "swami"
+      ]
+    },
+    "?????": "arise",
+    "+?_?_": {
+      "guess": "paved",
+      "next": {
+        "___?_": "rifle",
+        "__++_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "rivet",
+            "river"
+          ]
+        },
+        "___??": "ridge",
+        "?__+_": {
+          "guessesLeft": 4,
+          "possibilities": [
+            "riper",
+            "ripen"
+          ]
+        },
+        "___+?": "rider"
+      }
+    },
+    "_+?_?": "sedan",
+    "+?_??": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "risen",
+        "rinse",
+        "riser"
+      ]
+    },
+    "++__?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "reset",
+        "reuse"
+      ]
+    },
+    "+__??": "risky",
+    "??__+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "cress",
+        "dress",
+        "press"
+      ]
+    },
+    "__++?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "snail",
+        "stain",
+        "slain",
+        "staid"
+      ]
+    },
+    "+??__": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "range",
+        "ramen",
+        "racer",
+        "rarer",
+        "raven"
+      ]
+    },
+    "_?__+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "bless",
+        "ethos",
+        "guess",
+        "chess"
+      ]
+    },
+    "?+?__": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "zebra",
+        "cedar",
+        "debar",
+        "terra",
+        "feral"
+      ]
+    },
+    "????_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "aider",
+        "afire"
+      ]
+    },
+    "??+?_": "irate",
+    "+?__?": "rouse",
+    "___?+": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "bliss",
+        "minus",
+        "ficus"
+      ]
+    },
+    "_+?+?": "sepia",
+    "++_?_": "reign",
+    "+_+_?": "roast",
+    "+_+__": "roach",
+    "++_+_": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "remit",
+        "relic",
+        "refit"
+      ]
+    },
+    "_+?+_": "media",
+    "++_+?": "resin",
+    "__?++": "basis",
+    "+????": "raise",
+    "?+_?_": "weird",
+    "?__+?": {
+      "guessesLeft": 5,
+      "possibilities": [
+        "strip",
+        "sprig"
+      ]
+    },
+    "__??+": "amiss",
+    "+_?_?": "raspy",
+    "?+_+?": "serif",
+    "?__?+": "virus",
+    "_?++_": "email"
+  }
+}

@@ -1,0 +1,4773 @@
+{
+  "guess": "tenor",
+  "next": {
+    "+++++": "tenor",
+    "+++__": {
+      "guess": "tenet",
+      "next": {
+        "+++++": "tenet",
+        "+++?_": "tense",
+        "+++_?": "tenth"
+      }
+    },
+    "++_?_": "tempo",
+    "++__?": {
+      "guess": "terse",
+      "next": {
+        "+++++": "terse",
+        "+++__": "terra",
+        "++?__": "teary"
+      }
+    },
+    "++___": {
+      "guess": "evade",
+      "next": {
+        "?_+_+": "tease",
+        "?_+__": "teach",
+        "?__+_": "teddy",
+        "?__?_": "tepid",
+        "?___+": "tepee",
+        "?___?": "teeth",
+        "?____": "testy"
+      }
+    },
+    "+???_": "token",
+    "+??_?": "trend",
+    "+??__": {
+      "guess": "twine",
+      "next": {
+        "+++++": "twine",
+        "+__??": "taken"
+      }
+    },
+    "+?_?+": "tower",
+    "+?_??": {
+      "guess": "trove",
+      "next": {
+        "+++++": "trove",
+        "+++_+": "trope"
+      }
+    },
+    "+?_?_": {
+      "guess": "totem",
+      "next": {
+        "+++++": "totem",
+        "++_+_": "towel",
+        "+?_?_": "those"
+      }
+    },
+    "+?__+": {
+      "guess": "guimp",
+      "next": {
+        "?_?__": "tiger",
+        "_+___": "tuber",
+        "_?___": "truer",
+        "__??_": "timer",
+        "__?__": "their",
+        "___?_": "tamer",
+        "____?": "taper",
+        "_____": "taker"
+      }
+    },
+    "+?__?": {
+      "guess": "piece",
+      "next": {
+        "??__+": "tripe",
+        "_??__": "tried",
+        "_?_++": "trice",
+        "_?__+": {
+          "guess": "trite",
+          "next": {
+            "+++++": "trite",
+            "+++_+": "tribe"
+          }
+        },
+        "__+_+": "there",
+        "__+__": {
+          "guess": "treat",
+          "next": {
+            "+++++": "treat",
+            "++++_": "tread"
+          }
+        },
+        "__?_+": "three",
+        "__?__": "threw",
+        "___++": {
+          "guess": "trace",
+          "next": {
+            "+++++": "trace",
+            "++_++": "truce"
+          }
+        },
+        "____+": "trade"
+      }
+    },
+    "+?___": {
+      "guess": "hails",
+      "next": {
+        "??___": "theta",
+        "?_+__": "thief",
+        "?_?__": "tithe",
+        "?___?": "these",
+        "?____": {
+          "guess": "theta",
+          "next": {
+            "+++?_": "theft",
+            "+++__": "theme",
+            "++?__": "thyme"
+          }
+        },
+        "_+_+_": "table",
+        "_+__?": "taste",
+        "_?___": "tweak",
+        "__+__": "twice",
+        "__?+_": "title",
+        "__??_": "tilde",
+        "___+_": "tulle",
+        "_____": {
+          "guess": "tweed",
+          "next": {
+            "+++++": "tweed",
+            "++++_": "tweet"
+          }
+        }
+      }
+    },
+    "+_+?_": {
+      "guess": "focal",
+      "next": {
+        "_+?__": "tonic",
+        "_+_++": "tonal",
+        "_+_?_": "tonga",
+        "_?_?_": "tango"
+      }
+    },
+    "+_+__": {
+      "guess": "tangy",
+      "next": {
+        "+++++": "tangy",
+        "+_+__": "tunic"
+      }
+    },
+    "+_?+_": "talon",
+    "+_???": "thorn",
+    "+_??_": {
+      "guess": "toxin",
+      "next": {
+        "+++++": "toxin",
+        "+?__?": "thong"
+      }
+    },
+    "+_?_?": {
+      "guess": "train",
+      "next": {
+        "+++++": "train",
+        "++__?": "trunk"
+      }
+    },
+    "+_?__": {
+      "guess": "light",
+      "next": {
+        "_+__?": "titan",
+        "_????": "thing",
+        "_??_?": "tying",
+        "_?_??": "think",
+        "_?__+": "taint",
+        "__?_?": "twang",
+        "___??": "thank",
+        "____+": "taunt",
+        "____?": "tawny"
+      }
+    },
+    "+__++": {
+      "guess": "tutor",
+      "next": {
+        "+++++": "tutor",
+        "++_++": "tumor"
+      }
+    },
+    "+__+?": {
+      "guess": "whelp",
+      "next": {
+        "?+___": "throw",
+        "_+___": "throb",
+        "____+": "troop",
+        "_____": "tarot"
+      }
+    },
+    "+__+_": "taboo",
+    "+__??": {
+      "guess": "blush",
+      "next": {
+        "?_?__": "turbo",
+        "_?___": "troll",
+        "__??_": "torus",
+        "__?__": "trout",
+        "___+_": "torso",
+        "____+": "torch"
+      }
+    },
+    "+__?_": {
+      "guess": "ducal",
+      "next": {
+        "?__+_": "today",
+        "?____": "toddy",
+        "_??__": "touch",
+        "_?___": "tough",
+        "__?__": {
+          "guess": "topic",
+          "next": {
+            "+++++": "topic",
+            "++_++": "toxic"
+          }
+        },
+        "___++": "total",
+        "___+_": "topaz",
+        "___?_": "toast",
+        "_____": "tooth"
+      }
+    },
+    "+___+": "tapir",
+    "+___?": {
+      "guess": "claim",
+      "next": {
+        "?_+__": {
+          "guess": "track",
+          "next": {
+            "+++++": "track",
+            "++++_": "tract"
+          }
+        },
+        "?__?_": "trick",
+        "?____": "truck",
+        "_?++_": "trail",
+        "_?+__": "trawl",
+        "_???_": "trial",
+        "_?_?_": "twirl",
+        "_?___": "truly",
+        "__++_": "trait",
+        "__+?_": "tiara",
+        "__+_?": "tramp",
+        "__+__": "trash",
+        "__??_": "triad",
+        "__?__": "tardy",
+        "___?_": "third",
+        "____+": "thrum",
+        "____?": "trump",
+        "_____": {
+          "guess": "cauls",
+          "next": {
+            "__+_+": "truss",
+            "__+_?": "trust",
+            "__+__": "truth",
+            "____?": "tryst"
+          }
+        }
+      }
+    },
+    "+____": {
+      "guess": "chibs",
+      "next": {
+        "?++__": "thick",
+        "?_?__": "tacit",
+        "?____": "tacky",
+        "_++__": "thigh",
+        "_+_?_": "thumb",
+        "_+___": "thump",
+        "_??__": "tight",
+        "__+_?": "twist",
+        "__+__": "twixt",
+        "__??_": "tibia",
+        "__?_?": "tipsy",
+        "__?__": {
+          "guess": "kails",
+          "next": {
+            "_???_": "tidal",
+            "__??_": "tulip",
+            "__?__": "timid"
+          }
+        },
+        "___+_": "tabby",
+        "___?_": "tubal",
+        "____?": "tasty",
+        "_____": {
+          "guess": "hilts",
+          "next": {
+            "__+?_": "tally",
+            "___+_": "tatty",
+            "___?_": "taffy"
+          }
+        }
+      }
+    },
+    "?+?__": {
+      "guess": "meant",
+      "next": {
+        "+++++": "meant",
+        "_++++": "leant"
+      }
+    },
+    "?+_+_": {
+      "guess": "depot",
+      "next": {
+        "+++++": "depot",
+        "++_+?": "detox"
+      }
+    },
+    "?+_??": {
+      "guess": "retro",
+      "next": {
+        "+++++": "retro",
+        "_++++": "metro"
+      }
+    },
+    "?+_?_": "pesto",
+    "?+__+": {
+      "guess": "deter",
+      "next": {
+        "+++++": "deter",
+        "_++++": "meter"
+      }
+    },
+    "?+__?": {
+      "guess": "birch",
+      "next": {
+        "+_+_+": "berth",
+        "+_+__": "beret",
+        "?_?__": "rebut",
+        "_?+__": "merit",
+        "_??__": {
+          "guess": "remit",
+          "next": {
+            "+++++": "remit",
+            "++_++": "refit"
+          }
+        },
+        "__?++": "retch",
+        "__?+_": "react",
+        "__??_": "recut",
+        "__?_?": "heart",
+        "__?__": {
+          "guess": "reset",
+          "next": {
+            "+++++": "reset",
+            "++__?": "retry"
+          }
+        }
+      }
+    },
+    "?+___": {
+      "guess": "flays",
+      "next": {
+        "+??__": "fetal",
+        "+_+_?": "feast",
+        "+___+": "fetus",
+        "+____": {
+          "guess": "fetid",
+          "next": {
+            "+++++": "fetid",
+            "+++__": "fetch"
+          }
+        },
+        "??_?_": "lefty",
+        "?__?_": "hefty",
+        "?____": "befit",
+        "_?+_?": "least",
+        "_?+__": {
+          "guess": "leapt",
+          "next": {
+            "+++++": "leapt",
+            "?++_+": "dealt"
+          }
+        },
+        "_??__": {
+          "guess": "splay",
+          "next": {
+            "_??+_": "petal",
+            "__+?_": "delta",
+            "__?+_": "metal"
+          }
+        },
+        "_?___": "betel",
+        "__+??": "yeast",
+        "__+?_": "meaty",
+        "__+_?": "beast",
+        "__+__": {
+          "guess": "heath",
+          "next": {
+            "+++++": "heath",
+            "_++++": "death"
+          }
+        },
+        "__?__": "begat",
+        "___??": "zesty",
+        "___?_": {
+          "guess": "spayd",
+          "next": {
+            "_?_?_": "petty",
+            "___??": "deity",
+            "___?_": "jetty"
+          }
+        },
+        "____?": {
+          "guess": "shady",
+          "next": {
+            "+____": "setup",
+            "??___": "heist",
+            "?____": "beset"
+          }
+        },
+        "_____": {
+          "guess": "basil",
+          "next": {
+            "+____": "beget",
+            "?__+_": "debit",
+            "?____": "debut",
+            "_____": "depth"
+          }
+        }
+      }
+    },
+    "????_": {
+      "guess": "serve",
+      "next": {
+        "+___+": "stone",
+        "??___": "onset",
+        "_?___": "often",
+        "____+": "atone"
+      }
+    },
+    "???_+": {
+      "guess": "inter",
+      "next": {
+        "+++++": "inter",
+        "_++++": "enter"
+      }
+    },
+    "???_?": {
+      "guess": "inert",
+      "next": {
+        "+++++": "inert",
+        "_+?+?": "entry",
+        "_?++?": "stern"
+      }
+    },
+    "???__": {
+      "guess": "anils",
+      "next": {
+        "+?___": "agent",
+        "?+___": "enact",
+        "??___": "eaten",
+        "_++__": "unite",
+        "_+??_": "inlet",
+        "_+?__": {
+          "guess": "inept",
+          "next": {
+            "+++++": "inept",
+            "?+?_?": "untie"
+          }
+        },
+        "_+_+_": "knelt",
+        "_+__?": "unset",
+        "_+___": "unmet",
+        "_??_?": "stein",
+        "_?__?": {
+          "guess": "scent",
+          "next": {
+            "+++++": "scent",
+            "+_+++": "spent"
+          }
+        },
+        "_?___": "event"
+      }
+    },
+    "??_+_": {
+      "guess": "ethos",
+      "next": {
+        "+++++": "ethos",
+        "+?_+_": "extol"
+      }
+    },
+    "??_?+": {
+      "guess": "outdo",
+      "next": {
+        "+++__": "outer",
+        "+_+__": "otter",
+        "+_?__": "other",
+        "?_+__": "voter"
+      }
+    },
+    "??_??": {
+      "guess": "fresh",
+      "next": {
+        "+??__": "forte",
+        "_+?__": "wrote",
+        "_?+__": "overt",
+        "_???_": "store",
+        "_??__": "route"
+      }
+    },
+    "??_?_": {
+      "guess": "mvule",
+      "next": {
+        "+__??": "motel",
+        "?___+": "smote",
+        "?___?": "comet",
+        "_+__+": "ovate",
+        "_?__+": "stove",
+        "_?__?": "covet",
+        "__?_+": "quote",
+        "___++": "stole",
+        "___??": "hotel",
+        "____+": "stoke",
+        "____?": "octet"
+      }
+    },
+    "??__+": {
+      "guess": "latch",
+      "next": {
+        "+++__": "later",
+        "??+__": "alter",
+        "_++?_": "cater",
+        "_++_?": "hater",
+        "_++__": {
+          "guess": "eater",
+          "next": {
+            "+++++": "eater",
+            "_++++": "water"
+          }
+        },
+        "_?+__": "after",
+        "__+__": {
+          "guess": "ester",
+          "next": {
+            "+++++": "ester",
+            "__+++": "utter"
+          }
+        },
+        "__?_?": "ether",
+        "__?__": "steer"
+      }
+    },
+    "??__?": {
+      "guess": "caese",
+      "next": {
+        "+?__+": "crate",
+        "+_++_": "crest",
+        "+_+__": "crept",
+        "?_+_?": "erect",
+        "_+?__": "earth",
+        "_?+__": {
+          "guess": "greve",
+          "next": {
+            "+++__": "great",
+            "_?+?_": "avert",
+            "_?+__": "alert"
+          }
+        },
+        "_??__": "extra",
+        "_?_?+": "stare",
+        "_?__+": {
+          "guess": "grate",
+          "next": {
+            "+++++": "grate",
+            "_++++": "irate"
+          }
+        },
+        "__++_": "wrest",
+        "__+_?": {
+          "guess": "greet",
+          "next": {
+            "+++++": "greet",
+            "_?+?+": "exert"
+          }
+        },
+        "__?_?": "egret",
+        "__?__": {
+          "guess": "rivet",
+          "next": {
+            "+++++": "rivet",
+            "?__?+": "erupt"
+          }
+        },
+        "____+": {
+          "guess": "write",
+          "next": {
+            "+++++": "write",
+            "_+_++": "brute"
+          }
+        }
+      }
+    },
+    "??___": {
+      "guess": "plats",
+      "next": {
+        "++++_": "plate",
+        "++??_": "pleat",
+        "+_?+?": "paste",
+        "+__+_": "piety",
+        "?+_??": "slept",
+        "??_??": "spelt",
+        "?_??_": "adept",
+        "?__+?": "spite",
+        "?__+_": "empty",
+        "?__??": {
+          "guess": "easle",
+          "next": {
+            "?_+__": "upset",
+            "?_?_?": "steep",
+            "?_?__": "swept"
+          }
+        },
+        "_+++?": "slate",
+        "_+++_": "elate",
+        "_+??_": {
+          "guess": "bleat",
+          "next": {
+            "+++++": "bleat",
+            "_++++": "cleat"
+          }
+        },
+        "_+_+_": {
+          "guess": "elite",
+          "next": {
+            "+++++": "elite",
+            "_+_++": "flute"
+          }
+        },
+        "_+_??": "sleet",
+        "_+_?_": {
+          "guess": "easle",
+          "next": {
+            "+__??": "elect",
+            "?__??": "fleet",
+            "?__?_": "cleft"
+          }
+        },
+        "_?+??": "stale",
+        "_?+?_": "exalt",
+        "_??+_": "latte",
+        "_????": "steal",
+        "_???_": {
+          "guess": "easle",
+          "next": {
+            "+?_?_": "eclat",
+            "?+_?_": "valet",
+            "_+_?+": "lathe"
+          }
+        },
+        "_?_??": {
+          "guess": "easle",
+          "next": {
+            "?_?+_": "smelt",
+            "?_???": "steel",
+            "?_??_": "islet",
+            "__?++": "style"
+          }
+        },
+        "_?_?_": {
+          "guess": "easle",
+          "next": {
+            "+__+_": "exult",
+            "?__+_": "dwelt",
+            "?__?_": "filet",
+            "___++": "utile",
+            "___?+": "lithe"
+          }
+        },
+        "__++?": {
+          "guess": "skate",
+          "next": {
+            "+++++": "skate",
+            "+_+++": "state"
+          }
+        },
+        "__++_": {
+          "guess": "abate",
+          "next": {
+            "+++++": "abate",
+            "+_+++": "agate"
+          }
+        },
+        "__+??": {
+          "guess": "glisk",
+          "next": {
+            "?__?_": "stage",
+            "___??": "stake",
+            "___?_": "stave"
+          }
+        },
+        "__+?_": "exact",
+        "__?+?": {
+          "guess": "schwa",
+          "next": {
+            "+___?": "saute",
+            "??__?": "caste",
+            "?_?_?": "haste",
+            "?__??": "waste",
+            "?___?": "baste"
+          }
+        },
+        "__?+_": {
+          "guess": "acute",
+          "next": {
+            "+++++": "acute",
+            "?_+++": "haute"
+          }
+        },
+        "__???": {
+          "guess": "admit",
+          "next": {
+            "+___+": "asset",
+            "??__?": "stead",
+            "?_?_?": "steam",
+            "?___+": "sweat",
+            "?___?": "steak"
+          }
+        },
+        "__??_": {
+          "guess": "caple",
+          "next": {
+            "++__?": "cadet",
+            "+?__?": "cheat",
+            "?+__?": "facet",
+            "_+__+": "bathe",
+            "_+__?": "matey",
+            "_?__?": "wheat"
+          }
+        },
+        "___+?": {
+          "guess": "smite",
+          "next": {
+            "+++++": "smite",
+            "+_+++": "suite"
+          }
+        },
+        "___+_": {
+          "guess": "sluit",
+          "next": {
+            "__+_?": "chute",
+            "__???": "quite",
+            "__?_?": "butte",
+            "___??": "white"
+          }
+        },
+        "___??": {
+          "guess": "sight",
+          "next": {
+            "+__?+": "sheet",
+            "+___+": "sweet",
+            "+___?": "steed",
+            "??__+": "exist",
+            "?_?_+": "guest",
+            "?__?+": "chest",
+            "?___+": "quest"
+          }
+        },
+        "___?_": {
+          "guess": "caids",
+          "next": {
+            "+_?__": "cutie",
+            "?_+?_": "edict",
+            "?_+__": "evict",
+            "?_?__": "ethic",
+            "?____": "eject",
+            "__+__": "quiet",
+            "__?__": "eight",
+            "___+_": "etude",
+            "___?_": "duvet"
+          }
+        }
+      }
+    },
+    "?_+?_": {
+      "guess": "humph",
+      "next": {
+        "_+___": "junto",
+        "_?___": "donut",
+        "__?_+": "month",
+        "___?_": "pinto"
+      }
+    },
+    "?_+__": {
+      "guess": "sissy",
+      "next": {
+        "_+__+": "minty",
+        "_+___": "ninth",
+        "____+": "aunty",
+        "_____": "junta"
+      }
+    },
+    "?_?+_": {
+      "guess": "baton",
+      "next": {
+        "+++++": "baton",
+        "__?+?": "ingot"
+      }
+    },
+    "?_???": {
+      "guess": "stink",
+      "next": {
+        "+?_?_": "snort",
+        "_???_": "intro",
+        "_?_+_": "front",
+        "_?_?_": "north"
+      }
+    },
+    "?_??_": {
+      "guess": "spicy",
+      "next": {
+        "+___+": "stony",
+        "+____": "snout",
+        "_?+__": "point",
+        "__+__": "joint",
+        "___+_": "notch",
+        "___?_": "count",
+        "_____": "mount"
+      }
+    },
+    "?_?_?": {
+      "guess": "argue",
+      "next": {
+        "?+?__": "grant",
+        "_+??_": "grunt",
+        "_+_?_": "brunt",
+        "_+___": "print",
+        "_?_?_": "burnt"
+      }
+    },
+    "?_?__": {
+      "guess": "gaitt",
+      "next": {
+        "++__+": "gaunt",
+        "+??_+": "giant",
+        "+_+_+": "glint",
+        "??__+": "angst",
+        "?_+?_": "sting",
+        "?_?_+": "night",
+        "?__?_": "stung",
+        "_++_+": {
+          "guess": "spait",
+          "next": {
+            "+_??+": "saint",
+            "_???+": "paint",
+            "__??+": "faint"
+          }
+        },
+        "_+??_": "satin",
+        "_+_+_": "nasty",
+        "_+_?_": "natal",
+        "_+__+": {
+          "guess": "hadji",
+          "next": {
+            "++___": "haunt",
+            "_+?__": "daunt",
+            "_+_?_": "jaunt",
+            "_+___": "vaunt"
+          }
+        },
+        "_???_": {
+          "guess": "stain",
+          "next": {
+            "+++++": "stain",
+            "_??+?": "antic"
+          }
+        },
+        "_?_?_": {
+          "guess": "stand",
+          "next": {
+            "+++++": "stand",
+            "++++_": "stank"
+          }
+        },
+        "_?__+": {
+          "guess": "salut",
+          "next": {
+            "+??_+": "slant",
+            "+?__+": "scant",
+            "_??_+": "plant",
+            "_?__+": "chant"
+          }
+        },
+        "__++_": "unity",
+        "__+?+": "stint",
+        "__+?_": "stink",
+        "__+_+": "flint",
+        "__??_": "until",
+        "__?_+": {
+          "guess": "salut",
+          "next": {
+            "__+?+": "unlit",
+            "___++": "input",
+            "___?+": "unfit"
+          }
+        },
+        "___+?": "nutty",
+        "___?+": "stunt",
+        "___?_": "stunk",
+        "____+": {
+          "guess": "salut",
+          "next": {
+            "+__?+": "shunt",
+            "__??+": "blunt",
+            "___++": "uncut"
+          }
+        }
+      }
+    },
+    "?__++": {
+      "guess": "motor",
+      "next": {
+        "+++++": "motor",
+        "_++++": "rotor",
+        "__+++": "actor"
+      }
+    },
+    "?__+?": "robot",
+    "?__+_": {
+      "guess": "spilt",
+      "next": {
+        "+?__?": "stoop",
+        "+__??": "stool",
+        "+___+": "shoot",
+        "+___?": "stood",
+        "?___+": "ascot",
+        "_???+": "pilot",
+        "_??_+": "pivot",
+        "__+_+": "idiot",
+        "__?_+": "bigot",
+        "___?+": "allot",
+        "____+": {
+          "guess": "afoot",
+          "next": {
+            "+++++": "afoot",
+            "+__++": "abbot"
+          }
+        }
+      }
+    },
+    "?__??": {
+      "guess": "boast",
+      "next": {
+        "+?__?": "broth",
+        "???_+": "abort",
+        "??__+": "orbit",
+        "_++++": "roast",
+        "_+?_?": "aorta",
+        "_+_++": {
+          "guess": "worst",
+          "next": {
+            "+++++": "worst",
+            "_+?++": "roost"
+          }
+        },
+        "_+__+": "court",
+        "_+__?": {
+          "guess": "frosh",
+          "next": {
+            "+??_+": "forth",
+            "+??__": "forty",
+            "_??_+": "worth"
+          }
+        },
+        "_??_?": "ratio",
+        "_?_++": "frost",
+        "_?_?+": {
+          "guess": "sport",
+          "next": {
+            "+++++": "sport",
+            "+_+++": "short"
+          }
+        },
+        "_?_??": {
+          "guess": "mayst",
+          "next": {
+            "?__??": "storm",
+            "__???": "story",
+            "___??": "stork"
+          }
+        },
+        "_?__+": {
+          "guess": "grout",
+          "next": {
+            "+++++": "grout",
+            "_++_+": "droit"
+          }
+        },
+        "_?__?": "froth"
+      }
+    },
+    "?__?_": {
+      "guess": "sauch",
+      "next": {
+        "+_+_+": "south",
+        "+_??_": "scout",
+        "+_?_?": "shout",
+        "+_?__": {
+          "guess": "stout",
+          "next": {
+            "+++++": "stout",
+            "+_+++": "spout"
+          }
+        },
+        "+__+_": "stock",
+        "+__?_": "stoic",
+        "+___+": {
+          "guess": "sooth",
+          "next": {
+            "+++++": "sooth",
+            "+_+++": "sloth"
+          }
+        },
+        "+____": {
+          "guess": "stomp",
+          "next": {
+            "+++++": "stomp",
+            "+?+__": "sooty"
+          }
+        },
+        "??_?_": "coast",
+        "??___": "boast",
+        "?_+__": "joust",
+        "?_?__": "gusto",
+        "?___?": {
+          "guess": "ghost",
+          "next": {
+            "+++++": "ghost",
+            "_??++": "hoist"
+          }
+        },
+        "?____": {
+          "guess": "fujis",
+          "next": {
+            "+__??": "foist",
+            "__???": "joist",
+            "___+?": "posit",
+            "___??": "moist",
+            "____?": "boost"
+          }
+        },
+        "_+___": "patio",
+        "_??__": {
+          "guess": "about",
+          "next": {
+            "+++++": "about",
+            "?_+??": "quota"
+          }
+        },
+        "_?_?_": "octal",
+        "_?__+": "loath",
+        "_?___": {
+          "guess": "flubs",
+          "next": {
+            "++___": "float",
+            "?+___": "aloft",
+            "_+_?_": "bloat",
+            "_+___": "gloat",
+            "_?___": "atoll",
+            "_____": "adopt"
+          }
+        },
+        "__+_+": {
+          "guess": "youth",
+          "next": {
+            "+++++": "youth",
+            "_++++": "mouth"
+          }
+        },
+        "__+__": {
+          "guess": "plush",
+          "next": {
+            "+_+__": "pouty",
+            "_?+__": "moult",
+            "__+__": "doubt"
+          }
+        },
+        "__??_": "clout",
+        "__?_+": "quoth",
+        "__?_?": "ought",
+        "__?__": {
+          "guess": "adust",
+          "next": {
+            "_??_?": "outdo",
+            "__?_+": "flout",
+            "__?_?": "outgo"
+          }
+        },
+        "___++": "botch",
+        "___?+": "cloth",
+        "___?_": "optic",
+        "____+": "booth",
+        "____?": {
+          "guess": "photo",
+          "next": {
+            "+++++": "photo",
+            "_???_": "hotly"
+          }
+        },
+        "_____": {
+          "guess": "simul",
+          "next": {
+            "_+___": "ditto",
+            "_?+__": "vomit",
+            "_??__": "motif",
+            "__?__": "motto",
+            "____?": "lofty",
+            "_____": "booty"
+          }
+        }
+      }
+    },
+    "?___+": {
+      "guess": "altar",
+      "next": {
+        "+++++": "altar",
+        "?_+_+": "satyr",
+        "?_?_+": "stair"
+      }
+    },
+    "?___?": {
+      "guess": "shirt",
+      "next": {
+        "+++++": "shirt",
+        "+_+++": "skirt",
+        "+_???": "strip",
+        "+__++": {
+          "guess": "muist",
+          "next": {
+            "?__?+": "smart",
+            "_?_?+": "spurt",
+            "___?+": "start"
+          }
+        },
+        "+__+?": "stark",
+        "+__?+": "strut",
+        "+__??": {
+          "guess": "swapt",
+          "next": {
+            "+??_?": "straw",
+            "+_???": "strap",
+            "+_?_?": "stray"
+          }
+        },
+        "?_+?+": "wrist",
+        "?_??+": "first",
+        "?__?+": {
+          "guess": "crust",
+          "next": {
+            "+++++": "crust",
+            "_??++": "burst"
+          }
+        },
+        "?__??": {
+          "guess": "rusty",
+          "next": {
+            "+++++": "rusty",
+            "?_??+": "artsy"
+          }
+        },
+        "_+_++": "chart",
+        "_???+": "right",
+        "_????": {
+          "guess": "sagum",
+          "next": {
+            "__?__": "girth",
+            "____?": "mirth",
+            "_____": "birth"
+          }
+        },
+        "_?_??": "wrath",
+        "__+++": "flirt",
+        "__+?+": "drift",
+        "__+??": "fritz",
+        "__??+": "fruit",
+        "__???": "dirty",
+        "___++": {
+          "guess": "surah",
+          "next": {
+            "_+??_": "quart",
+            "_??__": "blurt",
+            "__??_": "apart"
+          }
+        },
+        "___+?": "ultra",
+        "___?+": {
+          "guess": "scaud",
+          "next": {
+            "_?+__": "craft",
+            "_??__": "carat",
+            "_?___": "crypt",
+            "__+_?": "draft",
+            "__+__": "graft"
+          }
+        },
+        "___??": {
+          "guess": "sprit",
+          "next": {
+            "_?+_?": "party",
+            "__+_?": "warty",
+            "__?_?": "ratty"
+          }
+        }
+      }
+    },
+    "?____": {
+      "guess": "platt",
+      "next": {
+        "+++_+": "plait",
+        "+_?+?": "patty",
+        "+_?+_": {
+          "guess": "pasta",
+          "next": {
+            "+++++": "pasta",
+            "++++_": "pasty"
+          }
+        },
+        "+_??_": {
+          "guess": "patsy",
+          "next": {
+            "+++++": "patsy",
+            "+++__": "patch"
+          }
+        },
+        "+__+?": "putty",
+        "+__?_": {
+          "guess": "pithy",
+          "next": {
+            "+++++": "pithy",
+            "+++?_": "pitch"
+          }
+        },
+        "????_": "aptly",
+        "???_+": "splat",
+        "??__+": {
+          "guess": "spilt",
+          "next": {
+            "+++++": "spilt",
+            "++??+": "split"
+          }
+        },
+        "?_+?_": "stamp",
+        "?_+_+": "adapt",
+        "?_?_+": "caput",
+        "?__?_": "stump",
+        "_++_+": "blast",
+        "_+_+_": "blitz",
+        "_?+?_": {
+          "guess": "stalk",
+          "next": {
+            "+++++": "stalk",
+            "++++_": "stall"
+          }
+        },
+        "_?+_+": "shalt",
+        "_??+_": {
+          "guess": "waltz",
+          "next": {
+            "+++++": "waltz",
+            "_+++_": "salty"
+          }
+        },
+        "_???_": {
+          "guess": "apish",
+          "next": {
+            "?_?__": "vital",
+            "?___+": "latch",
+            "?____": "fatal"
+          }
+        },
+        "_??_+": {
+          "guess": "faith",
+          "next": {
+            "++_?_": "fault",
+            "_+_?_": "vault",
+            "_?_?_": "adult"
+          }
+        },
+        "_?_+_": {
+          "guess": "lusty",
+          "next": {
+            "+++++": "lusty",
+            "?__+_": "filth"
+          }
+        },
+        "_?_?+": "stilt",
+        "_?_?_": "still",
+        "_?__+": {
+          "guess": "bigha",
+          "next": {
+            "+?___": "built",
+            "_+++_": "light",
+            "_+___": "limit",
+            "_??__": "guilt",
+            "_?___": "quilt"
+          }
+        },
+        "__++_": "swath",
+        "__+?_": {
+          "guess": "laich",
+          "next": {
+            "_??__": "staid",
+            "_?_+_": "stack",
+            "_?__+": "stash",
+            "_?___": "staff"
+          }
+        },
+        "__+_+": {
+          "guess": "shaft",
+          "next": {
+            "+++++": "shaft",
+            "__+_+": "await"
+          }
+        },
+        "__?+?": {
+          "guess": "calif",
+          "next": {
+            "++___": "catty",
+            "_+__?": "fatty",
+            "_+___": "batty"
+          }
+        },
+        "__?+_": {
+          "guess": "apish",
+          "next": {
+            "+_+__": "amity",
+            "?_+_+": "faith",
+            "?_??_": "vista",
+            "?_?__": "cacti",
+            "?__??": "hasty"
+          }
+        },
+        "__???": "attic",
+        "__??_": {
+          "guess": "hawms",
+          "next": {
+            "++___": "hatch",
+            "?+?__": "watch",
+            "?+_?_": "match",
+            "?+___": "catch",
+            "_+_?_": "datum"
+          }
+        },
+        "__?_+": {
+          "guess": "hault",
+          "next": {
+            "++__+": "habit",
+            "?+__+": "yacht",
+            "_+?_+": "gamut",
+            "_+__+": "waist",
+            "_?+_+": "squat",
+            "_??_+": "audit",
+            "_?__+": "admit"
+          }
+        },
+        "___+?": {
+          "guess": "bawds",
+          "next": {
+            "+____": "bitty",
+            "__?__": "witty",
+            "___?_": "ditty",
+            "_____": "kitty"
+          }
+        },
+        "___+_": {
+          "guess": "mysid",
+          "next": {
+            "+?+__": "musty",
+            "?_??_": "smith",
+            "_?+_?": "dusty",
+            "_?+__": "gusty",
+            "_???_": "sixty",
+            "_?_?_": "fifty",
+            "__??_": "sixth",
+            "___??": "width",
+            "___?_": "fifth"
+          }
+        },
+        "___?_": {
+          "guess": "hiked",
+          "next": {
+            "++___": "hitch",
+            "+____": "hutch",
+            "?+__?": "ditch",
+            "?+___": "witch",
+            "??___": "itchy",
+            "?___?": "dutch",
+            "?____": "butch",
+            "_??__": "stick",
+            "_?___": "stiff",
+            "__?__": "stuck",
+            "____?": "study",
+            "_____": "stuff"
+          }
+        },
+        "____+": {
+          "guess": "shawm",
+          "next": {
+            "++___": "shift",
+            "+?___": "sight",
+            "+__?_": "swift",
+            "?___?": "midst",
+            "?____": "visit",
+            "_?_?_": "wight",
+            "_?__?": "might",
+            "_?___": "fight",
+            "_____": "digit"
+          }
+        }
+      }
+    },
+    "_+++_": "venom",
+    "_++_?": {
+      "guess": "renew",
+      "next": {
+        "+++++": "renew",
+        "+++__": "renal",
+        "?++?_": "genre"
+      }
+    },
+    "_++__": {
+      "guess": "space",
+      "next": {
+        "+___+": "sense",
+        "?___+": "dense",
+        "_??_?": "penal",
+        "_?_++": "pence",
+        "_?__+": "penne",
+        "_?__?": "penny",
+        "___++": {
+          "guess": "fence",
+          "next": {
+            "+++++": "fence",
+            "_++++": "hence"
+          }
+        },
+        "___+?": {
+          "guess": "bench",
+          "next": {
+            "+++++": "bench",
+            "_++++": "wench"
+          }
+        },
+        "____+": {
+          "guess": "genie",
+          "next": {
+            "+++++": "genie",
+            "_++_+": "venue"
+          }
+        },
+        "____?": "denim"
+      }
+    },
+    "_+?+?": "heron",
+    "_+?+_": {
+      "guess": "model",
+      "next": {
+        "+?_??": "melon",
+        "????_": "demon",
+        "??_??": "lemon",
+        "_?_??": "felon"
+      }
+    },
+    "_+?_+": {
+      "guess": "never",
+      "next": {
+        "+++++": "never",
+        "++_++": "newer"
+      }
+    },
+    "_+?_?": {
+      "guess": "valid",
+      "next": {
+        "?____": "nerve",
+        "_??__": "learn",
+        "_?___": "yearn",
+        "___+_": "resin",
+        "___?_": "reign",
+        "____?": "nerdy",
+        "_____": "rerun"
+      }
+    },
+    "_+?__": {
+      "guess": "bavin",
+      "next": {
+        "+?__+": "began",
+        "+__++": "begin",
+        "+__??": "being",
+        "+___+": "begun",
+        "_??_+": "vegan",
+        "_?__+": {
+          "guess": "sedan",
+          "next": {
+            "+++++": "sedan",
+            "_+_++": "pecan"
+          }
+        },
+        "__+_+": "seven",
+        "___?+": {
+          "guess": "feign",
+          "next": {
+            "+++++": "feign",
+            "_++++": "deign"
+          }
+        },
+        "___??": "neigh",
+        "____+": "semen",
+        "____?": {
+          "guess": "needy",
+          "next": {
+            "+++++": "needy",
+            "++__+": "newly"
+          }
+        }
+      }
+    },
+    "_+_++": "decor",
+    "_+_+_": {
+      "guess": "below",
+      "next": {
+        "+++++": "below",
+        "_+_+_": "decoy"
+      }
+    },
+    "_+_??": "verso",
+    "_+_?_": {
+      "guess": "cello",
+      "next": {
+        "+++++": "cello",
+        "?+__+": "gecko",
+        "_++++": "hello"
+      }
+    },
+    "_+__+": {
+      "guess": "fades",
+      "next": {
+        "+__+_": {
+          "guess": "fewer",
+          "next": {
+            "+++++": "fewer",
+            "++_++": "fever"
+          }
+        },
+        "+__?_": "femur",
+        "?_?+_": "defer",
+        "?__+_": "refer",
+        "_?+?_": "cedar",
+        "_???_": "debar",
+        "_?_?_": "rebar",
+        "__??_": "demur",
+        "___+?": {
+          "guess": "sever",
+          "next": {
+            "+++++": "sever",
+            "++_++": "sewer"
+          }
+        },
+        "___+_": {
+          "guess": "leper",
+          "next": {
+            "+++++": "leper",
+            "++_++": "lever"
+          }
+        },
+        "___?_": {
+          "guess": "lemur",
+          "next": {
+            "+++++": "lemur",
+            "_+_++": "recur"
+          }
+        }
+      }
+    },
+    "_+__?": {
+      "guess": "pyral",
+      "next": {
+        "+?+__": "perky",
+        "+_+_+": "peril",
+        "+_+__": "perch",
+        "+_??+": "pearl",
+        "???+_": "repay",
+        "???_?": "reply",
+        "?_?+_": "recap",
+        "?_?_+": "repel",
+        "_?+__": {
+          "guess": "ambry",
+          "next": {
+            "_?_++": "merry",
+            "_?_?+": "mercy",
+            "__?++": "berry",
+            "__??+": "derby",
+            "___++": "ferry",
+            "___?+": "jerky"
+          }
+        },
+        "_??+?": "relay",
+        "_???_": {
+          "guess": "weary",
+          "next": {
+            "+++++": "weary",
+            "_++?+": "ready"
+          }
+        },
+        "_??_?": "leery",
+        "_??__": {
+          "guess": "reedy",
+          "next": {
+            "+++++": "reedy",
+            "?+_?+": "decry"
+          }
+        },
+        "__+++": "feral",
+        "__+__": {
+          "guess": "silva",
+          "next": {
+            "+?___": "serif",
+            "+__+_": "serve",
+            "+____": "serum",
+            "?__?_": "verse",
+            "_?___": "eerie",
+            "___+_": "verve",
+            "___?_": "verge",
+            "_____": "merge"
+          }
+        },
+        "__?++": "regal",
+        "__?+?": "relax",
+        "__?+_": "rehab",
+        "__???": "realm",
+        "__??_": {
+          "guess": "barry",
+          "next": {
+            "+?_+_": "beard",
+            "??_+_": "zebra",
+            "_??+_": "rearm",
+            "_??__": "reach",
+            "_?_+_": "heard"
+          }
+        },
+        "__?_+": {
+          "guess": "rebel",
+          "next": {
+            "+++++": "rebel",
+            "++_++": "revel"
+          }
+        },
+        "__?_?": "relic",
+        "__?__": {
+          "guess": "ryals",
+          "next": {
+            "+___+": "rebus",
+            "+___?": "reuse",
+            "+____": "revue",
+            "?____": "weird"
+          }
+        }
+      }
+    },
+    "_+___": {
+      "guess": "dhals",
+      "next": {
+        "+_??_": {
+          "guess": "delay",
+          "next": {
+            "+++++": "delay",
+            "++?+_": "decal"
+          }
+        },
+        "+_?__": "decay",
+        "+__?_": {
+          "guess": "delve",
+          "next": {
+            "+++++": "delve",
+            "++??_": "devil"
+          }
+        },
+        "+____": {
+          "guess": "debug",
+          "next": {
+            "+++++": "debug",
+            "++_?_": "deuce"
+          }
+        },
+        "??+__": "heady",
+        "??___": "hedge",
+        "?_+__": "beady",
+        "?_??_": {
+          "guess": "medal",
+          "next": {
+            "+++++": "medal",
+            "_++++": "pedal"
+          }
+        },
+        "?_?__": "media",
+        "?__?_": "ledge",
+        "?___?": "seedy",
+        "?____": {
+          "guess": "dwale",
+          "next": {
+            "??__+": "wedge",
+            "??__?": "weedy",
+            "?___?": "medic"
+          }
+        },
+        "_?+??": "leash",
+        "_?+?_": "leach",
+        "_?+__": {
+          "guess": "hable",
+          "next": {
+            "+?__+": "heave",
+            "+?__?": "heavy",
+            "???_?": "beach",
+            "??__?": "peach"
+          }
+        },
+        "_?_??": "welsh",
+        "_?_?_": {
+          "guess": "bylaw",
+          "next": {
+            "+_+__": "belch",
+            "__+_?": "welch",
+            "__+__": "helix",
+            "__?__": "leech"
+          }
+        },
+        "_?___": {
+          "guess": "beech",
+          "next": {
+            "+++++": "beech",
+            "_+__+": "weigh"
+          }
+        },
+        "__++_": "mealy",
+        "__+??": "lease",
+        "__+?_": {
+          "guess": "false",
+          "next": {
+            "???_?": "leafy",
+            "_??_+": "leave",
+            "_??_?": "leaky"
+          }
+        },
+        "__+_?": "cease",
+        "__+__": {
+          "guess": "weave",
+          "next": {
+            "+++++": "weave",
+            "_++_+": "peace"
+          }
+        },
+        "__?+_": "fella",
+        "__??_": {
+          "guess": "fecal",
+          "next": {
+            "+++++": "fecal",
+            "_+_++": "legal"
+          }
+        },
+        "__?_?": "sepia",
+        "__?__": {
+          "guess": "kebab",
+          "next": {
+            "+++++": "kebab",
+            "_+_?_": "mecca"
+          }
+        },
+        "___+_": {
+          "guess": "badly",
+          "next": {
+            "+__++": "belly",
+            "+__+_": "belle",
+            "___++": "jelly"
+          }
+        },
+        "___?_": {
+          "guess": "bevel",
+          "next": {
+            "+++++": "bevel",
+            "++_++": "bezel",
+            "++_??": "belie",
+            "_++++": "level",
+            "_+_++": "jewel",
+            "_+_+?": "melee",
+            "_+__?": "leggy"
+          }
+        },
+        "____?": {
+          "guess": "glace",
+          "next": {
+            "+___+": "geese",
+            "?___+": "segue",
+            "____+": "seize",
+            "____?": "pesky"
+          }
+        },
+        "_____": {
+          "guess": "badly",
+          "next": {
+            "+___+": "beefy",
+            "____+": "geeky",
+            "_____": "femme"
+          }
+        }
+      }
+    },
+    "_?++_": "canoe",
+    "_?+?+": {
+      "guess": "goner",
+      "next": {
+        "+++++": "goner",
+        "_?+++": "owner"
+      }
+    },
+    "_?+?_": {
+      "guess": "humph",
+      "next": {
+        "+____": "honey",
+        "_+___": "ounce",
+        "__?__": "money",
+        "_____": "boney"
+      }
+    },
+    "_?+_+": {
+      "guess": "field",
+      "next": {
+        "++?__": "finer",
+        "_+??_": "liner",
+        "_+?_?": "diner",
+        "_+?__": "miner",
+        "_??__": "inner",
+        "__?__": "saner"
+      }
+    },
+    "_?+_?": {
+      "guess": "range",
+      "next": {
+        "+++++": "range",
+        "+_+_+": "rinse"
+      }
+    },
+    "_?+__": {
+      "guess": "cause",
+      "next": {
+        "?+__+": {
+          "guess": "lance",
+          "next": {
+            "+++++": "lance",
+            "_++++": "dance"
+          }
+        },
+        "?_?_+": "dunce",
+        "?__?+": "since",
+        "?___+": {
+          "guess": "wince",
+          "next": {
+            "+++++": "wince",
+            "_++++": "mince"
+          }
+        },
+        "_+__+": "mange",
+        "_+__?": "panel",
+        "_?__?": {
+          "guess": "annex",
+          "next": {
+            "+++++": "annex",
+            "+_++_": "apnea"
+          }
+        },
+        "__?_+": "lunge",
+        "__?_?": "ennui",
+        "___?+": "singe",
+        "___??": "sinew",
+        "____+": {
+          "guess": "hinge",
+          "next": {
+            "+++++": "hinge",
+            "_++++": "binge"
+          }
+        },
+        "____?": {
+          "guess": "linen",
+          "next": {
+            "+++++": "linen",
+            "_+++_": "piney"
+          }
+        }
+      }
+    },
+    "_??+_": {
+      "guess": "enjoy",
+      "next": {
+        "+++++": "enjoy",
+        "++_++": "envoy",
+        "++_+_": "endow"
+      }
+    },
+    "_????": {
+      "guess": "pound",
+      "next": {
+        "+?_+_": "prone",
+        "_+_+_": "borne",
+        "_?_+?": "drone",
+        "_?_+_": "crone",
+        "_?_?_": "snore"
+      }
+    },
+    "_???_": {
+      "guess": "close",
+      "next": {
+        "+++_+": "clone",
+        "+_?_?": "coven",
+        "?_+?+": "scone",
+        "?_?_?": "ocean",
+        "_++_+": "alone",
+        "_+?_?": "olden",
+        "_??_+": "noble",
+        "_??_?": "novel",
+        "__+++": "noose",
+        "__+?+": "shone",
+        "__+_+": {
+          "guess": "moola",
+          "next": {
+            "?_+__": "gnome",
+            "_?+__": "ozone",
+            "__+_?": "anode",
+            "__+__": "phone"
+          }
+        },
+        "__+_?": "ebony",
+        "__?++": "noise",
+        "__???": "nosey",
+        "__?_+": {
+          "guess": "opine",
+          "next": {
+            "+++++": "opine",
+            "+_+++": "ovine"
+          }
+        },
+        "__?_?": {
+          "guess": "moved",
+          "next": {
+            "?+_+_": "women",
+            "_+++_": "woven",
+            "_+_+?": "dozen",
+            "_+_+_": "woken",
+            "_?_+_": "oaken"
+          }
+        }
+      }
+    },
+    "_??_+": {
+      "guess": "digit",
+      "next": {
+        "?____": "under",
+        "_+___": "nicer",
+        "_?___": "infer",
+        "__+__": "anger",
+        "_____": "sneer"
+      }
+    },
+    "_??_?": {
+      "guess": "pause",
+      "next": {
+        "+_+_+": "prune",
+        "+___?": "preen",
+        "?___?": "ripen",
+        "_+__?": {
+          "guess": "ramen",
+          "next": {
+            "+++++": "ramen",
+            "++_++": "raven"
+          }
+        },
+        "_?_?+": "snare",
+        "_?__+": "crane",
+        "_?__?": "arena",
+        "__?++": "nurse",
+        "__?_+": "urine",
+        "___??": {
+          "guess": "risen",
+          "next": {
+            "+++++": "risen",
+            "?+?++": "siren"
+          }
+        },
+        "____+": "brine",
+        "____?": "green"
+      }
+    },
+    "_??__": {
+      "guess": "alike",
+      "next": {
+        "+++_?": "alien",
+        "+?_?+": "ankle",
+        "+?__+": "angle",
+        "+?__?": "angel",
+        "+_+_+": "anime",
+        "+___?": {
+          "guess": "ashen",
+          "next": {
+            "+++++": "ashen",
+            "+__??": "amend"
+          }
+        },
+        "?+__+": "plane",
+        "?+__?": {
+          "guess": "glean",
+          "next": {
+            "+++++": "glean",
+            "_++++": "clean"
+          }
+        },
+        "??__?": {
+          "guess": "laden",
+          "next": {
+            "+++++": "laden",
+            "?+_+?": "navel"
+          }
+        },
+        "?_+_+": "naive",
+        "?_?_+": "inane",
+        "?__++": "snake",
+        "?__?+": "knave",
+        "?__??": {
+          "guess": "sneak",
+          "next": {
+            "+++++": "sneak",
+            "_+++?": "knead"
+          }
+        },
+        "?___?": {
+          "guess": "aweel",
+          "next": {
+            "??_+_": "waxen",
+            "?_+?_": "enema",
+            "?_+__": "hyena",
+            "?__+_": "haven"
+          }
+        },
+        "_+?_?": "elfin",
+        "_+__?": "blend",
+        "_????": "liken",
+        "_?_??": "kneel",
+        "_?__+": "uncle",
+        "_?__?": "lumen",
+        "__+?+": "knife",
+        "__+??": "eking",
+        "__+_+": {
+          "guess": "whips",
+          "next": {
+            "+++__": "whine",
+            "?_+_?": "swine",
+            "_++_?": "shine",
+            "__++?": "snipe",
+            "__+??": "spine",
+            "__+_?": "snide"
+          }
+        },
+        "__+_?": "eying",
+        "__?_+": {
+          "guess": "niece",
+          "next": {
+            "+++++": "niece",
+            "++_?+": "niche"
+          }
+        },
+        "__?_?": {
+          "guess": "divan",
+          "next": {
+            "?+__+": "widen",
+            "?+__?": "fiend",
+            "??__?": "index",
+            "_++_+": "given",
+            "_+?_+": "vixen"
+          }
+        },
+        "___??": "kneed",
+        "____+": {
+          "guess": "anise",
+          "next": {
+            "_+_?+": "ensue",
+            "_+__+": "undue",
+            "_?_?+": "scene",
+            "_?__+": "nudge"
+          }
+        },
+        "____?": {
+          "guess": "hawed",
+          "next": {
+            "+__+_": "hymen",
+            "?__+_": "sheen",
+            "__+++": "unwed",
+            "___++": "unfed",
+            "___+_": "queen",
+            "___?+": "spend",
+            "___?_": "enemy"
+          }
+        }
+      }
+    },
+    "_?_++": "error",
+    "_?_+_": "elbow",
+    "_?_?+": {
+      "guess": "rocks",
+      "next": {
+        "++___": {
+          "guess": "gowls",
+          "next": {
+            "?+___": "roger",
+            "_++__": "rower",
+            "_+___": "rover"
+          }
+        },
+        "?+?__": {
+          "guess": "worms",
+          "next": {
+            "?+?__": "cower",
+            "_++__": "corer",
+            "_+?__": "cover"
+          }
+        },
+        "?+_?_": {
+          "guess": "poker",
+          "next": {
+            "+++++": "poker",
+            "_++++": "joker"
+          }
+        },
+        "?+__?": {
+          "guess": "lowps",
+          "next": {
+            "++__?": "loser",
+            "_++_?": "sower",
+            "_+_??": "poser",
+            "_+__?": "sober"
+          }
+        },
+        "?+___": {
+          "guess": "whelm",
+          "next": {
+            "+_?__": "wooer",
+            "?_??_": "lower",
+            "?_?_?": "mower",
+            "?_?__": "power",
+            "_??_?": "homer",
+            "_??__": "hover",
+            "__??_": "lover",
+            "__?_?": "mover",
+            "__?__": "foyer"
+          }
+        },
+        "??___": {
+          "guess": "odyls",
+          "next": {
+            "++___": "odder",
+            "+?_?_": "older",
+            "+?___": "order",
+            "+____": "offer"
+          }
+        }
+      }
+    },
+    "_?_??": {
+      "guess": "prods",
+      "next": {
+        "+++_?": "prose",
+        "+++__": {
+          "guess": "prove",
+          "next": {
+            "+++++": "prove",
+            "+++_+": "probe"
+          }
+        },
+        "?++__": "grope",
+        "??+_?": "spore",
+        "???__": "opera",
+        "_+++_": "erode",
+        "_++?_": "drove",
+        "_++_?": "arose",
+        "_++__": {
+          "guess": "brogs",
+          "next": {
+            "+++__": "broke",
+            "_++?_": "grove",
+            "_++__": "froze"
+          }
+        },
+        "_+?+_": "credo",
+        "_?+?_": "adore",
+        "_?+_?": {
+          "guess": "chops",
+          "next": {
+            "?_+_?": "score",
+            "_++_?": "shore",
+            "__+_?": "swore"
+          }
+        },
+        "_?+__": "chore",
+        "_??+_": "horde",
+        "_???_": "rodeo",
+        "_??_?": {
+          "guess": "crush",
+          "next": {
+            "_?++_": "rouse",
+            "_?_+?": "horse",
+            "_?_+_": "worse"
+          }
+        },
+        "_??__": {
+          "guess": "grubs",
+          "next": {
+            "+?___": "gorge",
+            "??+__": "rouge",
+            "???__": "rogue",
+            "??___": "forge",
+            "_?_?_": "ombre",
+            "_?___": "force"
+          }
+        }
+      }
+    },
+    "_?_?_": {
+      "guess": "close",
+      "next": {
+        "+++++": "close",
+        "+++_+": "clove",
+        "+_+++": "chose",
+        "+_+_+": "choke",
+        "+_?++": "copse",
+        "+_?_+": "coupe",
+        "+_?_?": {
+          "guess": "cameo",
+          "next": {
+            "+++++": "cameo",
+            "+__+?": "covey"
+          }
+        },
+        "?_+?+": "scope",
+        "?_+_?": "epoch",
+        "?_?_+": "voice",
+        "_++?+": "slope",
+        "_++_+": {
+          "guess": "blogs",
+          "next": {
+            "+++__": "bloke",
+            "?++?_": "globe",
+            "_++?_": "glove",
+            "_++__": "elope"
+          }
+        },
+        "_+?_+": "olive",
+        "_?+++": "loose",
+        "_?+_+": "whole",
+        "_??++": "louse",
+        "_???+": "solve",
+        "_??_+": {
+          "guess": "boule",
+          "next": {
+            "+++++": "boule",
+            "_+_?+": "lodge"
+          }
+        },
+        "_??_?": {
+          "guess": "devel",
+          "next": {
+            "+__++": "dowel",
+            "?__++": "model",
+            "__+++": "hovel",
+            "__?++": "vowel",
+            "___++": "bowel",
+            "___+?": "golem"
+          }
+        },
+        "__+++": {
+          "guess": "mools",
+          "next": {
+            "+++_?": "moose",
+            "_++_?": "goose",
+            "__+_?": "whose"
+          }
+        },
+        "__+?+": {
+          "guess": "slump",
+          "next": {
+            "+__?_": "smoke",
+            "+___?": "spoke",
+            "+____": "shove"
+          }
+        },
+        "__+_+": {
+          "guess": "doabs",
+          "next": {
+            "+?___": "diode",
+            "???+_": "adobe",
+            "????_": "abode",
+            "_+_?_": "booze",
+            "_???_": "above",
+            "_??__": "awoke",
+            "_?_?_": "biome",
+            "_?___": "evoke"
+          }
+        },
+        "__+_?": {
+          "guess": "epoxy",
+          "next": {
+            "+++++": "epoxy",
+            "?_+_+": "gooey"
+          }
+        },
+        "__?++": {
+          "guess": "pilum",
+          "next": {
+            "+?___": "poise",
+            "+____": "posse",
+            "___??": "mouse",
+            "___?_": "house",
+            "_____": "obese"
+          }
+        },
+        "__?+?": "poesy",
+        "__?_+": {
+          "guess": "glove",
+          "next": {
+            "+_?_+": "gouge",
+            "?_??+": "vogue",
+            "?_?_+": "dodge",
+            "__??+": "movie",
+            "__?_+": "oxide"
+          }
+        },
+        "__?_?": {
+          "guess": "dolce",
+          "next": {
+            "++__?": "dopey",
+            "?+__?": "modem",
+            "??__?": "video",
+            "_?__?": "omega"
+          }
+        }
+      }
+    },
+    "_?__+": {
+      "guess": "pilaf",
+      "next": {
+        "++___": "piper",
+        "+??__": "plier",
+        "+_+?_": "paler",
+        "+__?_": {
+          "guess": "pyral",
+          "next": {
+            "+???_": "payer",
+            "+_+?_": "parer",
+            "+_??_": "paper"
+          }
+        },
+        "+____": "purer",
+        "?+___": {
+          "guess": "riper",
+          "next": {
+            "+++++": "riper",
+            "_++++": "viper"
+          }
+        },
+        "?__+_": "spear",
+        "?__?_": "caper",
+        "?____": {
+          "guess": "spial",
+          "next": {
+            "+?___": "super",
+            "_+___": "upper",
+            "_?___": "hyper"
+          }
+        },
+        "_++_?": "filer",
+        "_+?__": "liver",
+        "_+_?_": "aider",
+        "_+__?": {
+          "guess": "fixer",
+          "next": {
+            "+++++": "fixer",
+            "++_++": "fiber"
+          }
+        },
+        "_+___": {
+          "guess": "rudas",
+          "next": {
+            "+_+__": "rider",
+            "+___?": "riser",
+            "+____": "river",
+            "?_+__": "wider",
+            "?_?__": "diver",
+            "?___?": "miser",
+            "?____": "giver"
+          }
+        },
+        "_?+__": "idler",
+        "_??_?": "flier",
+        "_?___": {
+          "guess": "picas",
+          "next": {
+            "_??__": "crier",
+            "_?__?": "skier",
+            "_?___": "drier"
+          }
+        },
+        "__+?_": "baler",
+        "__+__": "ruler",
+        "__?+_": "clear",
+        "__??_": {
+          "guess": "layer",
+          "next": {
+            "+++++": "layer",
+            "++_++": "lager"
+          }
+        },
+        "__?_?": "flyer",
+        "__?__": {
+          "guess": "uplay",
+          "next": {
+            "+_?__": "ulcer",
+            "?_?__": "bluer",
+            "__?__": "elder"
+          }
+        },
+        "___+_": {
+          "guess": "mihas",
+          "next": {
+            "?__+?": "smear",
+            "__?+?": "shear",
+            "___+?": "swear"
+          }
+        },
+        "___??": {
+          "guess": "safer",
+          "next": {
+            "+++++": "safer",
+            "_++++": "wafer"
+          }
+        },
+        "___?_": {
+          "guess": "gawcy",
+          "next": {
+            "++__?": "gayer",
+            "++___": "gamer",
+            "?+?__": "wager",
+            "?+___": "eager",
+            "_+?__": "waver",
+            "_+_?_": "racer",
+            "_+___": "baker",
+            "_?___": "amber"
+          }
+        },
+        "____?": "freer",
+        "_____": {
+          "guess": "dumbs",
+          "next": {
+            "+____": "dryer",
+            "?+___": "ruder",
+            "??___": "udder",
+            "_+_?_": "buyer",
+            "_+__?": "surer",
+            "_+___": "queer",
+            "_?__?": "usher",
+            "__??_": "ember",
+            "___?_": "cyber",
+            "____?": "sheer",
+            "_____": "cheer"
+          }
+        }
+      }
+    },
+    "_?__?": {
+      "guess": "grace",
+      "next": {
+        "+++++": "grace",
+        "+++_+": {
+          "guess": "pavid",
+          "next": {
+            "??___": "grape",
+            "_??__": "grave",
+            "_?__?": "grade",
+            "_?___": "graze"
+          }
+        },
+        "++__+": {
+          "guess": "grime",
+          "next": {
+            "+++++": "grime",
+            "+++_+": "gripe"
+          }
+        },
+        "++__?": {
+          "guess": "caids",
+          "next": {
+            "__+__": "grief",
+            "___?_": "greed",
+            "_____": "gruel"
+          }
+        },
+        "+?+_+": "glare",
+        "?+?_+": "argue",
+        "???_+": {
+          "guess": "clags",
+          "next": {
+            "_??+_": "large",
+            "__?+_": "barge",
+            "__??_": "agree"
+          }
+        },
+        "??__+": {
+          "guess": "drape",
+          "next": {
+            "+?__+": "dirge",
+            "??__+": "ridge",
+            "_?_?+": "purge",
+            "_?__+": "surge"
+          }
+        },
+        "_++++": "brace",
+        "_++?+": {
+          "guess": "craze",
+          "next": {
+            "+++++": "craze",
+            "+++_+": "crave"
+          }
+        },
+        "_++_+": {
+          "guess": "kembs",
+          "next": {
+            "??_?_": "brake",
+            "??___": "drake",
+            "_??__": "frame",
+            "_?_?_": "brave",
+            "_?__?": "erase",
+            "_?___": "drape"
+          }
+        },
+        "_+???": {
+          "guess": "creak",
+          "next": {
+            "+++++": "creak",
+            "++++_": "cream"
+          }
+        },
+        "_+?_+": "arise",
+        "_+?_?": {
+          "guess": "bifid",
+          "next": {
+            "+___+": "bread",
+            "+____": "break",
+            "__?__": "freak",
+            "____+": "dread",
+            "____?": "dream",
+            "_____": "wreak"
+          }
+        },
+        "_+_++": "price",
+        "_+_+?": "wreck",
+        "_+_?+": {
+          "guess": "piece",
+          "next": {
+            "?_+?+": "crepe",
+            "_?_?+": "crime",
+            "__+?+": "creme",
+            "___?+": "crude"
+          }
+        },
+        "_+_??": {
+          "guess": "preed",
+          "next": {
+            "?+++_": "creep",
+            "_++++": "creed",
+            "_+++_": "creek",
+            "_++__": "cress",
+            "_+_++": "cried",
+            "_+_+_": "cruel"
+          }
+        },
+        "_+__+": {
+          "guess": "dimps",
+          "next": {
+            "+?___": "drive",
+            "??_?_": "pride",
+            "??___": "bride",
+            "?__?_": "prude",
+            "_???_": "prime",
+            "_?_?_": "prize",
+            "_?___": "bribe"
+          }
+        },
+        "_+__?": {
+          "guess": "prief",
+          "next": {
+            "++++_": "pried",
+            "++_?_": "press",
+            "_++++": "brief",
+            "_+++?": "fried",
+            "_+++_": "dried",
+            "_+_+?": "freed",
+            "_+_+_": "breed",
+            "_+_??": "fresh",
+            "_+_?_": "dress"
+          }
+        },
+        "_?+?+": "scare",
+        "_?+_+": {
+          "guess": "flaps",
+          "next": {
+            "+++__": "flare",
+            "_++__": "blare",
+            "__+??": "spare",
+            "__+_?": "share",
+            "__+__": "aware"
+          }
+        },
+        "_??++": "farce",
+        "_???+": "carve",
+        "_??_+": {
+          "guess": "saice",
+          "next": {
+            "?++_+": "raise",
+            "?+__+": "parse",
+            "_?+_+": "afire",
+            "_?__+": "azure"
+          }
+        },
+        "_??_?": {
+          "guess": "harem",
+          "next": {
+            "+++++": "harem",
+            "_++?_": "early"
+          }
+        },
+        "_?_?+": {
+          "guess": "saice",
+          "next": {
+            "+__?+": "scree",
+            "?__?+": "curse",
+            "___?+": "curve"
+          }
+        },
+        "_?_??": {
+          "guess": "screw",
+          "next": {
+            "+++++": "screw",
+            "_???_": "clerk"
+          }
+        },
+        "_?__+": {
+          "guess": "pairs",
+          "next": {
+            "+__??": "purse",
+            "+__?_": "puree",
+            "?_++?": "spire",
+            "?__??": "spree",
+            "?__?_": "rupee",
+            "__++?": "shire",
+            "__?+_": "fibre",
+            "__??_": "rifle",
+            "___+_": "where",
+            "___?_": "rhyme"
+          }
+        },
+        "_?__?": {
+          "guess": "piece",
+          "next": {
+            "?_+__": "sperm",
+            "_++__": "fiery",
+            "__+_?": "every",
+            "__+__": "query",
+            "__?__": "shrew"
+          }
+        }
+      }
+    },
+    "_?___": {
+      "guess": "maple",
+      "next": {
+        "+++++": "maple",
+        "++__+": {
+          "guess": "bails",
+          "next": {
+            "?+___": "maybe",
+            "_++__": "maize",
+            "_+__?": "masse",
+            "_+___": "mauve"
+          }
+        },
+        "+___+": "midge",
+        "?+_??": "camel",
+        "??+++": "ample",
+        "??_++": "amble",
+        "??_?+": {
+          "guess": "flame",
+          "next": {
+            "+++++": "flame",
+            "_++++": "blame"
+          }
+        },
+        "??_??": {
+          "guess": "gleam",
+          "next": {
+            "+++++": "gleam",
+            "_????": "email"
+          }
+        },
+        "??__+": {
+          "guess": "slaid",
+          "next": {
+            "+_+__": "shame",
+            "?_?__": "amuse",
+            "__+?_": "image",
+            "__+__": "amaze"
+          }
+        },
+        "?_+??": "impel",
+        "?_??+": "plume",
+        "?__++": "smile",
+        "?__+?": "smell",
+        "?__?+": {
+          "guess": "flume",
+          "next": {
+            "+++++": "flume",
+            "_+_++": "slime"
+          }
+        },
+        "?___+": {
+          "guess": "clasp",
+          "next": {
+            "+____": "chime",
+            "?____": "emcee",
+            "_____": "imbue"
+          }
+        },
+        "?___?": "embed",
+        "_++?+": "lapse",
+        "_++??": "lapel",
+        "_+?_+": {
+          "guess": "pause",
+          "next": {
+            "+++++": "pause",
+            "++__+": "payee"
+          }
+        },
+        "_+_++": {
+          "guess": "cadee",
+          "next": {
+            "++__+": "cable",
+            "_++_+": "ladle",
+            "_+_?+": "eagle",
+            "_+__+": "fable"
+          }
+        },
+        "_+_?+": {
+          "guess": "shaul",
+          "next": {
+            "+_?_?": "salve",
+            "?_?_?": "false",
+            "_??_?": "halve",
+            "__?+?": "value",
+            "__?_?": "valve"
+          }
+        },
+        "_+_??": {
+          "guess": "blags",
+          "next": {
+            "+???_": "bagel",
+            "???__": "label",
+            "_???_": "gavel",
+            "_??_?": "easel",
+            "_??__": "hazel"
+          }
+        },
+        "_+__+": {
+          "guess": "saugh",
+          "next": {
+            "+++__": "sauce",
+            "?++__": "cause",
+            "_+++_": "gauge",
+            "_++?_": "gauze",
+            "_+??_": "vague",
+            "_+_+_": "badge",
+            "_+_?_": "gaffe",
+            "_+__?": "cache",
+            "_+___": "waive"
+          }
+        },
+        "_+__?": "cagey",
+        "_?+++": "apple",
+        "_???+": "place",
+        "_????": "plead",
+        "_??_+": {
+          "guess": "spald",
+          "next": {
+            "+++_?": "spade",
+            "+++__": "space",
+            "+?+__": "shape",
+            "??+__": "phase",
+            "_?+__": "agape"
+          }
+        },
+        "_??_?": {
+          "guess": "cheap",
+          "next": {
+            "+++++": "cheap",
+            "__++?": "speak"
+          }
+        },
+        "_?_++": {
+          "guess": "clasp",
+          "next": {
+            "??+?_": "scale",
+            "_?+?_": "shale",
+            "_?+__": "whale",
+            "_???_": "aisle",
+            "_??__": "agile"
+          }
+        },
+        "_?_?+": {
+          "guess": "gived",
+          "next": {
+            "+__??": "glade",
+            "+__?_": "glaze",
+            "?__?_": "algae",
+            "_???_": "alive",
+            "_?_?_": "alike",
+            "__??_": "slave",
+            "___??": "blade",
+            "___?_": "blaze"
+          }
+        },
+        "_?_??": {
+          "guess": "basil",
+          "next": {
+            "+?__?": "bleak",
+            "??__?": "abled",
+            "_?_?+": "ideal",
+            "_?__+": "equal",
+            "_?__?": "alley"
+          }
+        },
+        "_?__+": {
+          "guess": "scudi",
+          "next": {
+            "+_?__": "suave",
+            "+__+_": "shade",
+            "+____": "shake",
+            "??___": "chase",
+            "?_+__": "abuse",
+            "?_?__": "usage",
+            "?__+?": "aside",
+            "?____": "abase",
+            "_?___": "chafe",
+            "__?__": "quake",
+            "___+?": "abide",
+            "___+_": "evade",
+            "___?_": "adage",
+            "_____": "awake"
+          }
+        },
+        "_?__?": {
+          "guess": "spial",
+          "next": {
+            "?__+_": "essay",
+            "?__?_": "askew",
+            "___+_": "ahead",
+            "___?_": "abbey"
+          }
+        },
+        "__+??": "expel",
+        "__?+?": {
+          "guess": "whelp",
+          "next": {
+            "+++++": "whelp",
+            "__++?": "spell"
+          }
+        },
+        "__??+": "pulse",
+        "__???": {
+          "guess": "clasp",
+          "next": {
+            "_+_?+": "sleep",
+            "_+__+": "bleep",
+            "_+__?": "plied",
+            "_?_??": "spiel",
+            "_?__?": "pixel"
+          }
+        },
+        "__?_+": {
+          "guess": "scail",
+          "next": {
+            "+?_?_": "spice",
+            "+__?_": "spike",
+            "_?_?_": "piece",
+            "___+_": "pixie",
+            "___?_": "pique"
+          }
+        },
+        "__?_?": {
+          "guess": "child",
+          "next": {
+            "?_?__": "bicep",
+            "?____": "speck",
+            "_+___": "sheep",
+            "__+_+": "spied",
+            "__?__": "equip",
+            "____+": "speed",
+            "_____": "sweep"
+          }
+        },
+        "___++": {
+          "guess": "laigh",
+          "next": {
+            "?_+?_": "guile",
+            "?_+_?": "while",
+            "?_+__": "exile",
+            "?_?__": "bible",
+            "?__?_": "bugle",
+            "?____": "cycle"
+          }
+        },
+        "___+?": {
+          "guess": "swayl",
+          "next": {
+            "++__+": "swell",
+            "+___+": "shell",
+            "+___?": "shelf",
+            "_+__+": "dwell",
+            "_?__?": "wield",
+            "___??": "yield",
+            "____+": "quell",
+            "____?": "field"
+          }
+        },
+        "___?+": {
+          "guess": "gilds",
+          "next": {
+            "+??+_": "glide",
+            "?++__": "bilge",
+            "?+?__": "liege",
+            "?_+__": "bulge",
+            "_??+?": "slide",
+            "_??+_": "elide",
+            "_??_?": "slice",
+            "__?+_": "elude",
+            "__?__": "fluke"
+          }
+        },
+        "___??": {
+          "guess": "glees",
+          "next": {
+            "?++?_": "elegy",
+            "_+++?": "sleek",
+            "_+++_": "bleed",
+            "_++_+": "bless",
+            "_++_?": "flesh",
+            "_++__": "fleck",
+            "_+_+_": "clued",
+            "_?++_": "wheel",
+            "_??+_": "excel",
+            "_?_+_": "libel"
+          }
+        },
+        "____+": {
+          "guess": "gibus",
+          "next": {
+            "+?_??": "guise",
+            "+?_?_": "guide",
+            "?+__?": "siege",
+            "?_??_": "budge",
+            "?__+_": "fugue",
+            "?__?_": "fudge",
+            "_+__?": "sieve",
+            "_?_+?": "issue",
+            "_?_?_": "juice",
+            "_?___": "chide",
+            "___+_": "queue"
+          }
+        },
+        "____?": {
+          "guess": "laics",
+          "next": {
+            "__+?_": "chief",
+            "__+_?": "shied",
+            "__+__": "edify",
+            "__??_": "dicey",
+            "__?_?": "sheik",
+            "___+_": "check",
+            "___?+": "chess",
+            "___?_": "cheek",
+            "____+": "guess",
+            "____?": "bused"
+          }
+        }
+      }
+    },
+    "__+++": {
+      "guess": "death",
+      "next": {
+        "+____": "donor",
+        "__?__": "manor",
+        "____?": "honor",
+        "_____": "minor"
+      }
+    },
+    "__++_": {
+      "guess": "canon",
+      "next": {
+        "+++++": "canon",
+        "_?++?": "annoy",
+        "__++_": "synod"
+      }
+    },
+    "__+?+": "sonar",
+    "__+?_": {
+      "guess": "basil",
+      "next": {
+        "++___": "banjo",
+        "+_?__": "bonus",
+        "+__?_": "bingo",
+        "+____": "bongo",
+        "_+___": "mango",
+        "_?__+": "zonal",
+        "_?___": "gonad",
+        "__?+_": "sonic",
+        "___+_": {
+          "guess": "conic",
+          "next": {
+            "+++++": "conic",
+            "_++++": "ionic"
+          }
+        },
+        "___??": "lingo",
+        "___?_": "dingo",
+        "_____": {
+          "guess": "conch",
+          "next": {
+            "+++++": "conch",
+            "+++__": "condo"
+          }
+        }
+      }
+    },
+    "__+_+": "lunar",
+    "__+_?": {
+      "guess": "randy",
+      "next": {
+        "+++++": "randy",
+        "+++__": "ranch"
+      }
+    },
+    "__+__": {
+      "guess": "claim",
+      "next": {
+        "+??__": "canal",
+        "+_?__": {
+          "guess": "canny",
+          "next": {
+            "+++++": "canny",
+            "+++_+": "candy"
+          }
+        },
+        "+__+_": "cynic",
+        "+__?_": "cinch",
+        "??___": {
+          "guess": "lynch",
+          "next": {
+            "+++++": "lynch",
+            "+_+++": "lunch"
+          }
+        },
+        "?_?+?": "manic",
+        "?_?+_": "panic",
+        "?_?__": "fancy",
+        "?__?_": {
+          "guess": "pilaf",
+          "next": {
+            "++___": "pinch",
+            "_+__?": "finch",
+            "_+___": "winch"
+          }
+        },
+        "?___?": "munch",
+        "?____": {
+          "guess": "hiply",
+          "next": {
+            "+____": "hunch",
+            "?_?__": "punch",
+            "?____": "bunch"
+          }
+        },
+        "_???_": "final",
+        "_??_?": "manly",
+        "_??__": {
+          "guess": "pical",
+          "next": {
+            "___++": "banal",
+            "___?+": "annul",
+            "___??": "lanky"
+          }
+        },
+        "_?_?_": "vinyl",
+        "__?+?": "mania",
+        "__??_": "ninja",
+        "__?_?": {
+          "guess": "manga",
+          "next": {
+            "+++++": "manga",
+            "++++_": "mangy"
+          }
+        },
+        "__?__": {
+          "guess": "diffs",
+          "next": {
+            "+____": "dandy",
+            "?___?": "sandy",
+            "?____": "handy",
+            "__?__": "fanny",
+            "____?": "pansy",
+            "_____": "nanny"
+          }
+        },
+        "___++": "minim",
+        "___??": "minus",
+        "___?_": {
+          "guess": "kiang",
+          "next": {
+            "++_?_": "kinky",
+            "?+_?_": "pinky",
+            "_+_+_": "ninny",
+            "_+_??": "dingy",
+            "_+_?_": "windy",
+            "_?_??": "fungi"
+          }
+        },
+        "_____": {
+          "guess": "fains",
+          "next": {
+            "+__+_": "funny",
+            "+__?_": "funky",
+            "___+?": "sunny",
+            "___+_": "bunny",
+            "___?_": "hunky"
+          }
+        }
+      }
+    },
+    "__?+?": {
+      "guess": "karma",
+      "next": {
+        "_++__": "baron",
+        "_+?__": "rayon",
+        "_?+__": "apron",
+        "_??__": "arson",
+        "__+?_": "moron"
+      }
+    },
+    "__?+_": {
+      "guess": "spica",
+      "next": {
+        "++___": "spoon",
+        "+?___": "snoop",
+        "+_+?_": "scion",
+        "+___?": "salon",
+        "+____": "swoon",
+        "?_?__": "bison",
+        "?___?": "mason",
+        "__+_?": "axion",
+        "__+__": {
+          "guess": "onion",
+          "next": {
+            "+++++": "onion",
+            "_++++": "union"
+          }
+        },
+        "__?__": "inbox",
+        "___??": "bacon",
+        "___?_": "colon",
+        "____?": "wagon",
+        "_____": "nylon"
+      }
+    },
+    "__???": {
+      "guess": "grind",
+      "next": {
+        "++??_": "groin",
+        "++_?_": {
+          "guess": "groan",
+          "next": {
+            "+++++": "groan",
+            "+++_+": "grown"
+          }
+        },
+        "?+_+_": {
+          "guess": "prong",
+          "next": {
+            "+++++": "prong",
+            "_++++": "wrong"
+          }
+        },
+        "?+_?_": "organ",
+        "_+?+_": "irony",
+        "_+_++": "frond",
+        "_+_+_": "crony",
+        "_+_??": "drown",
+        "_+_?_": {
+          "guess": "franc",
+          "next": {
+            "++_?_": "frown",
+            "_+_??": "crown",
+            "_+_?_": "brown"
+          }
+        },
+        "_?++_": "rhino",
+        "_???_": "robin",
+        "_?_++": "round",
+        "_?_+_": {
+          "guess": "corny",
+          "next": {
+            "+++++": "corny",
+            "_++++": "horny"
+          }
+        },
+        "_?_??": "adorn",
+        "_?_?_": {
+          "guess": "cowan",
+          "next": {
+            "??_?+": "acorn",
+            "??__+": "scorn",
+            "_+__+": "mourn",
+            "_??_+": "sworn",
+            "_?__+": "shorn"
+          }
+        }
+      }
+    },
+    "__??_": {
+      "guess": "gowls",
+      "next": {
+        "++___": "going",
+        "?+_?_": "login",
+        "?+___": {
+          "guess": "doing",
+          "next": {
+            "+++++": "doing",
+            "_+_++": "young"
+          }
+        },
+        "???__": "owing",
+        "??_?_": "along",
+        "??___": {
+          "guess": "among",
+          "next": {
+            "+++++": "among",
+            "+_++?": "agony"
+          }
+        },
+        "_++__": "downy",
+        "_+?__": {
+          "guess": "wound",
+          "next": {
+            "+++++": "wound",
+            "++_?_": "woman"
+          }
+        },
+        "_+_+_": "nobly",
+        "_+__?": {
+          "guess": "sound",
+          "next": {
+            "+++++": "sound",
+            "?+_?_": "noisy"
+          }
+        },
+        "_+___": {
+          "guess": "bumph",
+          "next": {
+            "+?___": "bound",
+            "_??__": "mound",
+            "_?_?_": "pound",
+            "_?__?": "hound",
+            "_?___": "found",
+            "__+__": "nomad"
+          }
+        },
+        "_???_": {
+          "guess": "cobia",
+          "next": {
+            "+?___": "clown",
+            "_??__": "blown",
+            "_?___": "flown"
+          }
+        },
+        "_??_?": {
+          "guess": "shown",
+          "next": {
+            "+++++": "shown",
+            "+_++?": "snowy"
+          }
+        },
+        "_??__": "known",
+        "_?_+_": "knoll",
+        "_?_?_": "blond",
+        "_?___": {
+          "guess": "glady",
+          "next": {
+            "__+__": "piano",
+            "____+": "phony",
+            "_____": "knock"
+          }
+        }
+      }
+    },
+    "__?_+": {
+      "guess": "incur",
+      "next": {
+        "+++++": "incur",
+        "??__+": "nadir"
+      }
+    },
+    "__?_?": {
+      "guess": "bring",
+      "next": {
+        "+++++": "bring",
+        "++++_": {
+          "guess": "brink",
+          "next": {
+            "+++++": "brink",
+            "++++_": "briny"
+          }
+        },
+        "++??_": "brain",
+        "++_+_": "brand",
+        "++_?_": "brawn",
+        "?+_?_": "urban",
+        "_++++": "wring",
+        "_+++?": "grind",
+        "_+++_": "drink",
+        "_+???": "grain",
+        "_+??_": "drain",
+        "_+_++": "wrung",
+        "_+_+?": "grand",
+        "_+_+_": {
+          "guess": "cupid",
+          "next": {
+            "+____": "crank",
+            "_?__?": "drunk",
+            "__?__": "prank",
+            "____?": "drank",
+            "_____": "frank"
+          }
+        },
+        "_+_?_": {
+          "guess": "drawn",
+          "next": {
+            "+++++": "drawn",
+            "_++++": "prawn"
+          }
+        },
+        "_?++_": "rainy",
+        "_?+?_": "cairn",
+        "_?_??": "angry",
+        "_?_?_": {
+          "guess": "bhang",
+          "next": {
+            "_+_?_": "churn",
+            "__+?_": "snarl",
+            "___?_": "spurn"
+          }
+        }
+      }
+    },
+    "__?__": {
+      "guess": "scail",
+      "next": {
+        "+?+__": "snack",
+        "+?___": "snuck",
+        "+_+++": "snail",
+        "+_++?": "slain",
+        "+_+_?": "slang",
+        "+_+__": {
+          "guess": "pains",
+          "next": {
+            "??_+?": "spank",
+            "??_??": "spawn",
+            "_?_+?": "shank",
+            "_?_??": "snaky"
+          }
+        },
+        "+_?__": "sauna",
+        "+__??": {
+          "guess": "sling",
+          "next": {
+            "+++++": "sling",
+            "++++_": "slink"
+          }
+        },
+        "+__?_": {
+          "guess": "faugh",
+          "next": {
+            "?____": "sniff",
+            "__??_": "suing",
+            "___?_": "swing",
+            "____?": "shiny",
+            "_____": "spiny"
+          }
+        },
+        "+___?": {
+          "guess": "slung",
+          "next": {
+            "+++++": "slung",
+            "++++_": "slunk"
+          }
+        },
+        "+____": {
+          "guess": "ikans",
+          "next": {
+            "_+_+?": "skunk",
+            "_?_+?": "spunk",
+            "___+?": "swung",
+            "___??": "snuff"
+          }
+        },
+        "?_+__": "gnash",
+        "?_?+_": "basin",
+        "?_?_+": "nasal",
+        "?__?_": "using",
+        "_+_?_": "icing",
+        "_?++_": "chain",
+        "_?+_?": {
+          "guess": "clank",
+          "next": {
+            "+++++": "clank",
+            "++++_": "clang"
+          }
+        },
+        "_?+__": "knack",
+        "_??+_": "cabin",
+        "_???_": "china",
+        "_?_+_": "cumin",
+        "_?_??": {
+          "guess": "cling",
+          "next": {
+            "+++++": "cling",
+            "++++_": "clink"
+          }
+        },
+        "_?__?": "clung",
+        "_?___": "chunk",
+        "__++?": "plain",
+        "__++_": "again",
+        "__+_?": {
+          "guess": "bifid",
+          "next": {
+            "+___+": "bland",
+            "+____": "blank",
+            "__?__": "flank",
+            "____+": "gland",
+            "_____": "plank"
+          }
+        },
+        "__?++": "anvil",
+        "__?+_": "admin",
+        "__???": {
+          "guess": "inlay",
+          "next": {
+            "+++++": "inlay",
+            "????_": "align"
+          }
+        },
+        "__??_": {
+          "guess": "spial",
+          "next": {
+            "_++?_": "aping",
+            "__++_": "avian",
+            "__+?_": "aging"
+          }
+        },
+        "__?_+": "naval",
+        "__?__": {
+          "guess": "glias",
+          "next": {
+            "?__+_": "pagan",
+            "___+_": "human",
+            "___?_": "fauna"
+          }
+        },
+        "___+_": {
+          "guess": "unzip",
+          "next": {
+            "+++++": "unzip",
+            "++_+_": "undid"
+          }
+        },
+        "___??": {
+          "guess": "glaik",
+          "next": {
+            "?+_?_": "fling",
+            "??_?_": "lying",
+            "_+_?+": "blink",
+            "_+_?_": "blind"
+          }
+        },
+        "___?_": {
+          "guess": "guild",
+          "next": {
+            "?_+_?": "dying",
+            "?_+__": "vying",
+            "_?+__": "unify",
+            "__+__": "whiny"
+          }
+        },
+        "____?": {
+          "guess": "pugil",
+          "next": {
+            "+?__?": "plunk",
+            "_??_?": "flung",
+            "_?__?": "flunk"
+          }
+        },
+        "_____": "nymph"
+      }
+    },
+    "___++": {
+      "guess": "palms",
+      "next": {
+        "+____": "prior",
+        "?+___": "vapor",
+        "_++__": "valor",
+        "_+?__": "labor",
+        "_+_?_": {
+          "guess": "major",
+          "next": {
+            "+++++": "major",
+            "++_++": "mayor"
+          }
+        },
+        "_+__?": "savor",
+        "_+___": {
+          "guess": "favor",
+          "next": {
+            "+++++": "favor",
+            "_+_++": "razor"
+          }
+        },
+        "_?_?_": "armor",
+        "_?___": {
+          "guess": "album",
+          "next": {
+            "+_+__": "arbor",
+            "+_?__": "abhor",
+            "+____": "ardor"
+          }
+        },
+        "__+__": "color",
+        "__?__": "floor",
+        "___?_": {
+          "guess": "humor",
+          "next": {
+            "+++++": "humor",
+            "_++++": "rumor"
+          }
+        },
+        "____?": "visor",
+        "_____": {
+          "guess": "favus",
+          "next": {
+            "+__?_": "furor",
+            "__?__": "vigor",
+            "___?_": "juror",
+            "_____": "rigor"
+          }
+        }
+      }
+    },
+    "___+?": {
+      "guess": "clamp",
+      "next": {
+        "+??__": "carol",
+        "+____": "crook",
+        "_?___": "drool",
+        "__?__": "arrow",
+        "___?_": {
+          "guess": "groom",
+          "next": {
+            "+++++": "groom",
+            "_++++": "broom"
+          }
+        },
+        "____+": "droop",
+        "____?": "proof",
+        "_____": {
+          "guess": "brood",
+          "next": {
+            "+++++": "brood",
+            "++++_": "brook"
+          }
+        }
+      }
+    },
+    "___+_": {
+      "guess": "balms",
+      "next": {
+        "++___": "bayou",
+        "+_??_": "bloom",
+        "+_?__": "blood",
+        "+__??": "bosom",
+        "+__?_": "buxom",
+        "_+__?": "savoy",
+        "_+___": "havoc",
+        "_?+__": {
+          "guess": "blaws",
+          "next": {
+            "_+??_": "allow",
+            "_+?__": "alloy",
+            "_???_": "aglow"
+          }
+        },
+        "_??__": "aloof",
+        "_?_?_": "axiom",
+        "_?__+": "chaos",
+        "_?___": "cocoa",
+        "__+__": "igloo",
+        "__??_": "gloom",
+        "__?_?": {
+          "guess": "spool",
+          "next": {
+            "+++++": "spool",
+            "+?++?": "sloop"
+          }
+        },
+        "__?__": "flood",
+        "___?_": "idiom",
+        "____?": {
+          "guess": "spick",
+          "next": {
+            "++__+": "spook",
+            "++___": "spoof",
+            "+?_?_": "scoop",
+            "+?___": "swoop",
+            "+___+": "shook"
+          }
+        },
+        "_____": {
+          "guess": "widow",
+          "next": {
+            "+++++": "widow",
+            "+__+_": "whoop"
+          }
+        }
+      }
+    },
+    "___?+": {
+      "guess": "slump",
+      "next": {
+        "+?___": "solar",
+        "+_?__": "scour",
+        "_+?__": "flour",
+        "_?_?_": "molar",
+        "_?__?": "polar",
+        "__?__": "occur",
+        "_____": "choir"
+      }
+    },
+    "___??": {
+      "guess": "darcy",
+      "next": {
+        "+_?_+": "dowry",
+        "+_?__": {
+          "guess": "droll",
+          "next": {
+            "+++++": "droll",
+            "+++__": "dross"
+          }
+        },
+        "?+?__": "radio",
+        "???__": {
+          "guess": "chard",
+          "next": {
+            "_?+++": "hoard",
+            "__+++": "board",
+            "__??+": "broad"
+          }
+        },
+        "?_+_+": "wordy",
+        "?_+__": "world",
+        "?_??_": {
+          "guess": "chord",
+          "next": {
+            "+++++": "chord",
+            "+_+?+": "crowd"
+          }
+        },
+        "?_?_+": "rowdy",
+        "?_?_?": "hydro",
+        "?_?__": {
+          "guess": "cowry",
+          "next": {
+            "_+_+_": "gourd",
+            "_??+_": "sword",
+            "_?_+_": "fjord",
+            "_?_?_": "proud"
+          }
+        },
+        "_++?_": "cargo",
+        "_+??_": "macro",
+        "_?+?_": "coral",
+        "_?+_+": "foray",
+        "_?+__": {
+          "guess": "borax",
+          "next": {
+            "+++++": "borax",
+            "_+++_": "moral"
+          }
+        },
+        "_??+_": "roach",
+        "_???_": {
+          "guess": "croak",
+          "next": {
+            "+++++": "croak",
+            "+???_": "cobra"
+          }
+        },
+        "_??_+": "ovary",
+        "_??_?": "royal",
+        "_??__": {
+          "guess": "clary",
+          "next": {
+            "_+?+_": "flora",
+            "__+?_": "bravo",
+            "__?+_": "agora",
+            "__??_": "aroma"
+          }
+        },
+        "__++_": "porch",
+        "__+?_": "curio",
+        "__+_+": {
+          "guess": "cowal",
+          "next": {
+            "_+?__": "worry",
+            "_+__?": "lorry",
+            "_+___": "sorry"
+          }
+        },
+        "__+__": {
+          "guess": "modal",
+          "next": {
+            "++___": "morph",
+            "?+___": "forum",
+            "_+___": "forgo"
+          }
+        },
+        "__?+_": {
+          "guess": "crock",
+          "next": {
+            "+++++": "crock",
+            "_++++": "frock"
+          }
+        },
+        "__??+": "rocky",
+        "__??_": {
+          "guess": "courd",
+          "next": {
+            "+???_": "croup",
+            "+?_?_": "cross",
+            "??_+_": "micro"
+          }
+        },
+        "__?_+": {
+          "guess": "podal",
+          "next": {
+            "+?___": "proxy",
+            "_+___": "roomy",
+            "_?__?": "glory",
+            "_?___": "ivory"
+          }
+        },
+        "__?__": {
+          "guess": "paoli",
+          "next": {
+            "+_+?_": "prowl",
+            "+_?_?": "primo",
+            "?_+__": "group",
+            "__+??": "broil",
+            "__+?_": "growl",
+            "__+__": "gross",
+            "__?__": "rough"
+          }
+        }
+      }
+    },
+    "___?_": {
+      "guess": "acold",
+      "next": {
+        "+_+?+": "aloud",
+        "+_+?_": "afoul",
+        "+_+_+": "avoid",
+        "+_?_?": "audio",
+        "??+?_": "cloak",
+        "????_": {
+          "guess": "loofa",
+          "next": {
+            "++__?": "local",
+            "?+_??": "focal",
+            "?+__?": "vocal"
+          }
+        },
+        "???__": {
+          "guess": "coals",
+          "next": {
+            "+++__": "coach",
+            "++?__": "comma",
+            "+??__": "cacao",
+            "?+?__": "mocha",
+            "???__": "macho"
+          }
+        },
+        "?_++_": "viola",
+        "?_+?_": "shoal",
+        "?_?+_": {
+          "guess": "koala",
+          "next": {
+            "+++++": "koala",
+            "_+_++": "voila"
+          }
+        },
+        "?_???": "modal",
+        "?_??_": {
+          "guess": "colas",
+          "next": {
+            "_++?_": "polka",
+            "_+?+_": "loyal",
+            "_+??_": "loamy",
+            "_?+??": "salvo",
+            "_??+_": "offal",
+            "_????": "lasso"
+          }
+        },
+        "?_?_?": {
+          "guess": "vodka",
+          "next": {
+            "+++++": "vodka",
+            "_+?_+": "dogma"
+          }
+        },
+        "?_?__": {
+          "guess": "scald",
+          "next": {
+            "+_+__": "soapy",
+            "__+__": "foamy",
+            "__?__": "mambo"
+          }
+        },
+        "_++++": "scold",
+        "_++?_": "scowl",
+        "_++__": "scoff",
+        "_?+?+": "cloud",
+        "_?+?_": {
+          "guess": "calfs",
+          "next": {
+            "+_?__": "clock",
+            "?_??_": "flock",
+            "?_?__": "block"
+          }
+        },
+        "_?+__": {
+          "guess": "chola",
+          "next": {
+            "+++__": "chock",
+            "?++__": "shock",
+            "??+__": "pooch",
+            "?_+__": "smock"
+          }
+        },
+        "_??++": "could",
+        "_??+_": "coyly",
+        "_???_": {
+          "guess": "locus",
+          "next": {
+            "+++++": "locus",
+            "++?__": "logic"
+          }
+        },
+        "_??_?": "disco",
+        "_??__": {
+          "guess": "piccy",
+          "next": {
+            "+__+_": "pouch",
+            "_???_": "comic",
+            "__+__": "focus",
+            "__?+_": "couch",
+            "__?_+": "comfy",
+            "__?__": "cough",
+            "___+_": "vouch"
+          }
+        },
+        "__++_": "wooly",
+        "__+?_": {
+          "guess": "glads",
+          "next": {
+            "++__+": "gloss",
+            "+?___": "ghoul",
+            "_+__+": "floss",
+            "_+__?": "slosh",
+            "_?__?": "spoil",
+            "_?___": "loopy"
+          }
+        },
+        "__+_+": "ovoid",
+        "__+_?": {
+          "guess": "mogul",
+          "next": {
+            "++___": "moody",
+            "_+?__": "goody",
+            "_+___": "woody"
+          }
+        },
+        "__+__": {
+          "guess": "womby",
+          "next": {
+            "++__+": "woozy",
+            "??__+": "showy",
+            "_+_++": "booby",
+            "_+_?+": "boozy",
+            "_+__+": "goofy",
+            "_??_+": "smoky",
+            "_?___": "kiosk"
+          }
+        },
+        "__?++": "would",
+        "__?+?": {
+          "guess": "colas",
+          "next": {
+            "_++__": "dolly",
+            "_+?__": "godly",
+            "_??__": "oddly"
+          }
+        },
+        "__?+_": {
+          "guess": "filch",
+          "next": {
+            "+_+__": "folly",
+            "__+_?": "holly",
+            "__+__": "jolly",
+            "__?__": "lowly"
+          }
+        },
+        "__??+": "solid",
+        "__???": "moldy",
+        "__??_": {
+          "guess": "sulci",
+          "next": {
+            "???__": "lousy",
+            "_??__": "mogul",
+            "__+_?": "folio",
+            "__+__": "polyp",
+            "__?_?": "limbo",
+            "__?__": "lobby"
+          }
+        },
+        "__?_?": {
+          "guess": "holds",
+          "next": {
+            "++_+_": "howdy",
+            "?+_?_": "dough",
+            "_+_+_": "dowdy",
+            "_+_?_": "dodgy"
+          }
+        },
+        "__?__": {
+          "guess": "bogus",
+          "next": {
+            "++??_": "bough",
+            "++__?": "bossy",
+            "++___": "bobby",
+            "?+___": "hobby",
+            "????_": "gumbo",
+            "??_?_": "jumbo",
+            "_++_?": "soggy",
+            "_++__": "foggy",
+            "_+__?": "mossy",
+            "_+___": "poppy",
+            "_?_+_": "opium",
+            "_?___": "hippo"
+          }
+        }
+      }
+    },
+    "____+": {
+      "guess": "cigar",
+      "next": {
+        "+++++": "cigar",
+        "+?_?+": "chair",
+        "?+_++": "vicar",
+        "_?_++": {
+          "guess": "briar",
+          "next": {
+            "+++++": "briar",
+            "_++++": "friar"
+          }
+        },
+        "_?_?+": "flair",
+        "__+++": "sugar",
+        "__+?+": "augur",
+        "___++": "radar"
+      }
+    },
+    "____?": {
+      "guess": "carls",
+      "next": {
+        "+++__": "carry",
+        "+?+__": "circa",
+        "+???_": "crawl",
+        "+??_+": "crass",
+        "+??_?": "crash",
+        "+??__": {
+          "guess": "daych",
+          "next": {
+            "??_??": "chard",
+            "_???_": "crazy",
+            "_?_+_": "crack",
+            "_?_??": "charm",
+            "_?_?_": "cramp"
+          }
+        },
+        "+_++_": "curly",
+        "+_+__": {
+          "guess": "curvy",
+          "next": {
+            "+++++": "curvy",
+            "+++_+": "curry"
+          }
+        },
+        "+_?_?": {
+          "guess": "crisp",
+          "next": {
+            "+++++": "crisp",
+            "++_+_": "crush"
+          }
+        },
+        "+_?__": {
+          "guess": "biach",
+          "next": {
+            "?__?_": "crumb",
+            "_?_+_": "crick",
+            "_?_??": "chirp",
+            "_?_?_": "crimp",
+            "___?_": "crump"
+          }
+        },
+        "?++__": "march",
+        "??+_?": {
+          "guess": "scrap",
+          "next": {
+            "+++++": "scrap",
+            "++++_": "scram"
+          }
+        },
+        "??+__": "acrid",
+        "???_?": {
+          "guess": "scarf",
+          "next": {
+            "+++++": "scarf",
+            "++++_": "scary"
+          }
+        },
+        "???__": "wrack",
+        "?_+?_": {
+          "guess": "lurch",
+          "next": {
+            "+++++": "lurch",
+            "+_+?_": "lyric"
+          }
+        },
+        "?_+_?": {
+          "guess": "scrub",
+          "next": {
+            "+++++": "scrub",
+            "++++_": "scrum"
+          }
+        },
+        "?_+__": "birch",
+        "?_?__": {
+          "guess": "prick",
+          "next": {
+            "+++++": "prick",
+            "_++++": "brick"
+          }
+        },
+        "_++?_": "larva",
+        "_++_?": {
+          "guess": "marsh",
+          "next": {
+            "+++++": "marsh",
+            "_++++": "harsh"
+          }
+        },
+        "_++__": {
+          "guess": "sharp",
+          "next": {
+            "_??+_": "harry",
+            "_????": "harpy",
+            "_???_": "hardy",
+            "__?+?": "parry",
+            "__?+_": "marry",
+            "__???": "parka",
+            "__??_": "karma"
+          }
+        },
+        "_+?+_": "rally",
+        "_+??_": "ralph",
+        "_+?_?": "raspy",
+        "_+?__": {
+          "guess": "dhobi",
+          "next": {
+            "+___?": "dairy",
+            "?__??": "rabid",
+            "?___+": "radii",
+            "?___?": "rapid",
+            "_?__?": "hairy",
+            "_?___": "rajah",
+            "___++": "rabbi",
+            "____?": "fairy"
+          }
+        },
+        "_?+?_": {
+          "guess": "camis",
+          "next": {
+            "_??__": "mural",
+            "_?_?_": "viral",
+            "_?___": "rural"
+          }
+        },
+        "_?+_?": "spray",
+        "_?+__": "array",
+        "_???_": {
+          "guess": "brigs",
+          "next": {
+            "++___": "brawl",
+            "_+??_": "grail",
+            "_+?__": "frail",
+            "_+___": "drawl",
+            "_??__": "rival",
+            "_?___": "alarm"
+          }
+        },
+        "_??_+": {
+          "guess": "brass",
+          "next": {
+            "+++++": "brass",
+            "_++++": "grass"
+          }
+        },
+        "_??_?": {
+          "guess": "skimp",
+          "next": {
+            "+?__?": "spark",
+            "+?___": "shark",
+            "+__?_": "swarm",
+            "+___+": "sharp",
+            "+____": "shard",
+            "?___+": "grasp",
+            "?____": "brash"
+          }
+        },
+        "_??__": {
+          "guess": "durry",
+          "next": {
+            "+_?__": "drama",
+            "+__++": "diary",
+            "+__+_": "dwarf",
+            "?+_+_": "guard",
+            "???__": "fraud",
+            "?_?__": "braid",
+            "?__+_": "award",
+            "_+?__": "rumba",
+            "_+_+_": "quark",
+            "_?_+_": "umbra",
+            "__?_+": "gravy",
+            "__?__": "graph",
+            "___+_": "wharf"
+          }
+        },
+        "__++?": "surly",
+        "__++_": {
+          "guess": "burly",
+          "next": {
+            "+++++": "burly",
+            "__+++": "girly"
+          }
+        },
+        "__+?_": "lurid",
+        "__+_+": "virus",
+        "__+_?": {
+          "guess": "biach",
+          "next": {
+            "?___?": "shrub",
+            "_?___": "sprig",
+            "____?": "shrug",
+            "_____": "syrup"
+          }
+        },
+        "__+__": {
+          "guess": "chams",
+          "next": {
+            "_?_?_": "myrrh",
+            "_?___": "hurry",
+            "___?_": "murky",
+            "_____": "furry"
+          }
+        },
+        "__?+_": {
+          "guess": "fudgy",
+          "next": {
+            "+____": "frill",
+            "__?_+": "dryly",
+            "__?__": "drill",
+            "___?_": "grill",
+            "____+": "wryly",
+            "_____": "krill"
+          }
+        },
+        "__???": {
+          "guess": "swirl",
+          "next": {
+            "+++++": "swirl",
+            "+__+?": "slurp"
+          }
+        },
+        "__??_": {
+          "guess": "blurb",
+          "next": {
+            "+++++": "blurb",
+            "_?_+_": "whirl"
+          }
+        },
+        "__?_?": {
+          "guess": "simba",
+          "next": {
+            "+??__": "smirk",
+            "+?___": "shirk",
+            "?+___": "risky",
+            "???__": "prism",
+            "??_?_": "brisk",
+            "??___": "frisk",
+            "?__?_": "brush",
+            "?____": "usurp"
+          }
+        },
+        "__?__": {
+          "guess": "craig",
+          "next": {
+            "_+_+_": "druid",
+            "_+_??": "grimy",
+            "_+_?_": "privy",
+            "_+__?": "gruff",
+            "_?_+?": "rigid",
+            "_?_?_": "quirk",
+            "_?__?": "rugby",
+            "_?___": "ruddy"
+          }
+        }
+      }
+    },
+    "_____": {
+      "guess": "mails",
+      "next": {
+        "++?__": {
+          "guess": "claim",
+          "next": {
+            "?_?+?": "magic",
+            "__?++": "maxim",
+            "__?+?": "mafia"
+          }
+        },
+        "++_+_": "madly",
+        "++___": {
+          "guess": "cymas",
+          "next": {
+            "?_?+_": "macaw",
+            "_?+?_": "mammy",
+            "__+?_": "mamma",
+            "__?+_": "madam",
+            "__??_": "magma"
+          }
+        },
+        "+_??_": "milky",
+        "+_?_?": {
+          "guess": "missy",
+          "next": {
+            "+++++": "missy",
+            "+?+__": "music"
+          }
+        },
+        "+_?__": "mimic",
+        "+__?_": "mulch",
+        "+___+": "mucus",
+        "+___?": {
+          "guess": "musky",
+          "next": {
+            "+++++": "musky",
+            "+++_+": "mushy"
+          }
+        },
+        "+____": {
+          "guess": "clams",
+          "next": {
+            "?__?_": "mucky",
+            "___+_": "mummy",
+            "___?_": "muddy"
+          }
+        },
+        "?+_?_": "balmy",
+        "?+___": "gamma",
+        "??+_+": "amiss",
+        "????_": "claim",
+        "???_?": {
+          "guess": "sigma",
+          "next": {
+            "+++++": "sigma",
+            "+?_+?": "swami"
+          }
+        },
+        "??_+?": {
+          "guess": "psalm",
+          "next": {
+            "+++++": "psalm",
+            "_?++?": "small"
+          }
+        },
+        "??_+_": {
+          "guess": "qualm",
+          "next": {
+            "+++++": "qualm",
+            "__?+?": "amply"
+          }
+        },
+        "??_?_": {
+          "guess": "claim",
+          "next": {
+            "+++_?": "clamp",
+            "_++_?": "llama",
+            "_+?_+": "album"
+          }
+        },
+        "??__+": "amass",
+        "??__?": {
+          "guess": "clasp",
+          "next": {
+            "+_++_": "chasm",
+            "?_+?+": "scamp",
+            "?_+?_": "smack",
+            "?_??_": "sumac",
+            "__++?": "spasm",
+            "__++_": "smash",
+            "__+?+": "swamp"
+          }
+        },
+        "??___": "champ",
+        "?_+??": "slimy",
+        "?_+?_": {
+          "guess": "blimp",
+          "next": {
+            "+++++": "blimp",
+            "?+++_": "climb"
+          }
+        },
+        "?_+_?": "skimp",
+        "?_?+_": {
+          "guess": "imply",
+          "next": {
+            "+++++": "imply",
+            "??_++": "dimly"
+          }
+        },
+        "?_??_": "filmy",
+        "?_?__": {
+          "guess": "humid",
+          "next": {
+            "+++++": "humid",
+            "__+?_": "wimpy"
+          }
+        },
+        "?__??": "slump",
+        "?__?_": {
+          "guess": "sculp",
+          "next": {
+            "_?+?+": "clump",
+            "__+?+": "plump",
+            "__+??": "plumb",
+            "__???": "lumpy",
+            "___??": "lymph"
+          }
+        },
+        "?___+": "humus",
+        "?____": {
+          "guess": "pudsy",
+          "next": {
+            "+___+": "pygmy",
+            "?+?_+": "dumpy",
+            "?+__+": "jumpy",
+            "?+___": "humph",
+            "??___": "chump",
+            "_+?_+": "dummy",
+            "_+__+": "gummy"
+          }
+        },
+        "_+++_": {
+          "guess": "gaily",
+          "next": {
+            "+++++": "gaily",
+            "_++++": "daily"
+          }
+        },
+        "_++_?": "daisy",
+        "_+???": "basil",
+        "_+??_": {
+          "guess": "valid",
+          "next": {
+            "+++++": "valid",
+            "?+?+_": "cavil"
+          }
+        },
+        "_+?_+": "basis",
+        "_+?_?": "basic",
+        "_+?__": "vapid",
+        "_+_+?": {
+          "guess": "sadly",
+          "next": {
+            "+++++": "sadly",
+            "++_++": "sally"
+          }
+        },
+        "_+_+_": {
+          "guess": "duals",
+          "next": {
+            "+_?+_": "dally",
+            "?_?+_": "badly",
+            "_??+_": "caulk",
+            "__?+_": "gayly"
+          }
+        },
+        "_+_??": {
+          "guess": "palsy",
+          "next": {
+            "+++++": "palsy",
+            "_+++_": "salsa",
+            "_++?_": "salad",
+            "_+??_": "basal"
+          }
+        },
+        "_+_?_": {
+          "guess": "scail",
+          "next": {
+            "_??_+": "cabal",
+            "__?_+": "papal",
+            "__?_?": "laugh"
+          }
+        },
+        "_+__?": {
+          "guess": "spics",
+          "next": {
+            "+?___": "sappy",
+            "+__+_": "saucy",
+            "+___?": "sassy",
+            "+____": "savvy",
+            "?___?": "gassy"
+          }
+        },
+        "_+___": {
+          "guess": "cadgy",
+          "next": {
+            "+++_+": "caddy",
+            "++__+": "cabby",
+            "?+__+": "wacky",
+            "_++_+": "daddy",
+            "_+??+": "gaudy",
+            "_+?_+": "bawdy",
+            "_+_++": "baggy",
+            "_+_?+": "gawky",
+            "_+__+": "jazzy",
+            "_+__?": "kayak",
+            "_+___": "kappa"
+          }
+        },
+        "_?+?_": {
+          "guess": "claim",
+          "next": {
+            "?+??_": "iliac",
+            "_+??_": "alibi",
+            "_???_": "axial"
+          }
+        },
+        "_??+_": "villa",
+        "_???_": {
+          "guess": "aumil",
+          "next": {
+            "+__++": "avail",
+            "?+_++": "quail",
+            "?__++": "flail",
+            "?__+?": "plaid",
+            "?__??": "lilac"
+          }
+        },
+        "_??_?": "quasi",
+        "_??__": {
+          "guess": "palis",
+          "next": {
+            "+?_?_": "pizza",
+            "??_+_": "aphid",
+            "_?_+_": "affix",
+            "_?_?_": "khaki"
+          }
+        },
+        "_?_+?": {
+          "guess": "spyal",
+          "next": {
+            "+?_??": "scalp",
+            "+_???": "scaly",
+            "+__?+": "shall",
+            "+__??": "scald"
+          }
+        },
+        "_?_+_": {
+          "guess": "apply",
+          "next": {
+            "+++++": "apply",
+            "?__+_": "chalk"
+          }
+        },
+        "_?_?+": {
+          "guess": "glass",
+          "next": {
+            "+++++": "glass",
+            "_++++": "class"
+          }
+        },
+        "_?_??": {
+          "guess": "sauch",
+          "next": {
+            "+?_+_": "slack",
+            "+?__+": "slash",
+            "+?__?": "shawl",
+            "??+__": "usual",
+            "??_?+": "clash",
+            "??_?_": "clasp",
+            "??__+": "flash",
+            "??___": "flask"
+          }
+        },
+        "_?_?_": {
+          "guess": "flaky",
+          "next": {
+            "+++++": "flaky",
+            "+++?_": "flack",
+            "???__": "awful",
+            "_++?_": "black",
+            "_++__": "plaza",
+            "_+?_+": "allay",
+            "_+?__": "alpha",
+            "_??_?": "bylaw",
+            "_??__": "pupal"
+          }
+        },
+        "_?__+": "abyss",
+        "_?__?": {
+          "guess": "sucky",
+          "next": {
+            "+??__": "scuba",
+            "+?___": "squad",
+            "+_??_": "shack",
+            "+__++": "shaky",
+            "+___+": "shady",
+            "+____": "swash",
+            "?+___": "quash",
+            "?___+": "assay",
+            "?____": "awash"
+          }
+        },
+        "_?___": {
+          "guess": "sauch",
+          "next": {
+            "_??+_": "quack",
+            "_??__": "guava",
+            "_?_+?": "whack",
+            "_?_+_": "aback",
+            "_?_??": "chaff"
+          }
+        },
+        "__++?": {
+          "guess": "palki",
+          "next": {
+            "?_?_?": "spill",
+            "__???": "skill",
+            "__?_?": "swill"
+          }
+        },
+        "__++_": {
+          "guess": "scudi",
+          "next": {
+            "_+__?": "icily",
+            "_?_??": "child",
+            "_?__+": "chili",
+            "_?__?": "chill",
+            "__???": "guild",
+            "__?_?": "quill"
+          }
+        },
+        "__+?+": "bliss",
+        "__+??": "slick",
+        "__+?_": {
+          "guess": "fails",
+          "next": {
+            "+_+?_": "flick",
+            "?_+?_": "cliff",
+            "__+?_": "click"
+          }
+        },
+        "__+_?": {
+          "guess": "silky",
+          "next": {
+            "+?_++": "spiky",
+            "+?_?_": "skiff",
+            "+?__+": "spicy",
+            "+?___": "swish",
+            "??_?_": "whisk"
+          }
+        },
+        "__+__": {
+          "guess": "caulk",
+          "next": {
+            "+___+": "chick",
+            "?_?_+": "quick",
+            "?_?__": "juicy",
+            "?____": "which",
+            "_____": "whiff"
+          }
+        },
+        "__?+?": "silly",
+        "__?+_": {
+          "guess": "whyda",
+          "next": {
+            "+_?__": "willy",
+            "_??__": "hilly",
+            "__+?_": "idyll",
+            "__??_": "dilly",
+            "__?__": "filly"
+          }
+        },
+        "__???": "silky",
+        "__??_": {
+          "guess": "pical",
+          "next": {
+            "+?__+": "pupil",
+            "?+__?": "lipid",
+            "_+?_+": "civil",
+            "_+__+": "vigil",
+            "_+__?": "livid",
+            "_?+_?": "lucid",
+            "_?__?": "fluid"
+          }
+        },
+        "__?_+": "ficus",
+        "__?_?": {
+          "guess": "sulph",
+          "next": {
+            "++__?": "sushi",
+            "+?___": "squib",
+            "+____": "sissy",
+            "?__+_": "wispy",
+            "?__?_": "gipsy",
+            "?___?": "fishy"
+          }
+        },
+        "__?__": {
+          "guess": "pudgy",
+          "next": {
+            "++___": "pubic",
+            "+__++": "piggy",
+            "+___+": "picky",
+            "?___+": "hippy",
+            "_+___": "cubic",
+            "__+?+": "giddy",
+            "__+_+": "biddy",
+            "__?_+": "dizzy",
+            "__?__": "vivid",
+            "____+": "jiffy",
+            "_____": "civic"
+          }
+        },
+        "___+?": {
+          "guess": "slily",
+          "next": {
+            "++_++": "slyly",
+            "+?_++": "sully",
+            "+?_+_": "skull",
+            "+__++": "shyly",
+            "+__+_": "skulk"
+          }
+        },
+        "___+_": {
+          "guess": "fudgy",
+          "next": {
+            "++__+": "fully",
+            "_+?_+": "dully",
+            "_+_?+": "gully",
+            "_+__+": "bully"
+          }
+        },
+        "___?+": "lupus",
+        "___??": {
+          "guess": "spifs",
+          "next": {
+            "+___?": "slush",
+            "+____": "sulky",
+            "??___": "plush",
+            "?__?_": "flush",
+            "?____": "blush"
+          }
+        },
+        "___?_": {
+          "guess": "chubs",
+          "next": {
+            "+_+__": "cluck",
+            "???__": "gulch",
+            "?_+__": "pluck",
+            "?_?__": "lucky",
+            "_?___": "glyph",
+            "__+?_": "bluff",
+            "__+__": "fluff",
+            "__??_": "bulky",
+            "__?__": "pulpy"
+          }
+        },
+        "____?": {
+          "guess": "hasps",
+          "next": {
+            "+_+_?": "hussy",
+            "+_+__": "husky",
+            "?_+?_": "pushy",
+            "?_+__": "bushy",
+            "?_?_?": "shush",
+            "?_?__": "shuck",
+            "__+_?": "fussy",
+            "__+__": "dusky",
+            "__??_": "gypsy"
+          }
+        },
+        "_____": {
+          "guess": "fudgy",
+          "next": {
+            "++__+": "fuzzy",
+            "?+__+": "puffy",
+            "_++++": "pudgy",
+            "_++_+": "buddy",
+            "_+?_+": "duchy",
+            "_+_++": "buggy",
+            "_+_?+": "guppy",
+            "_+__+": "puppy",
+            "_?___": "chuck"
+          }
+        }
+      }
+    }
+  }
+}
