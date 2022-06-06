@@ -65,6 +65,14 @@ struct RunnerMulti {
         fout << "maxTotalGuesses: " << GlobalArgs.maxTotalGuesses << "\n";
         fout << "word,numWrong,numTries\n";
 
+        // auto myAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        // auto myGuesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        // PerfStats myStats;
+        // auto newGuesses = RemoveGuessesPartitions::removeWithBetterOrSameGuess(myStats, myGuesses, myAnswers);
+        // auto numRemoved = myGuesses.size() - newGuesses.size();
+        // DEBUG("#removed: " << getPerc(numRemoved, myGuesses.size()));
+        // exit(1);
+
         std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size(), RunnerMultiResult());
         std::transform(
             executionPolicy,

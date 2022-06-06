@@ -31,7 +31,7 @@ struct RemoveGuessesWithBetterGuessCache
             RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask, answers);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
-                DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size());
+                DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size()); exit(1);
             }
 
             totalSize += guessesFast.size();
@@ -41,11 +41,13 @@ struct RemoveGuessesWithBetterGuessCache
         }
         bar.dispose();
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
-        stats.printEntry("removeSubs", 44);
-        stats.printEntry("10", 10);
-        stats.printEntry("11", 11);
-        stats.printEntry("12", 12);
-        stats.printEntry("13", 13);
+        if (GlobalArgs.timings) {
+            stats.printEntry("removeSubs", 44);
+            stats.printEntry("10", 10);
+            stats.printEntry("11", 11);
+            stats.printEntry("12", 12);
+            stats.printEntry("13", 13);
+        }
 
         END_TIMER(removeguessesbetterguesscache);
     }

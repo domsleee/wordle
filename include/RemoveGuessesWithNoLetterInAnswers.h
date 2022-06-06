@@ -3,6 +3,7 @@
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
 #include "RemoveGuessesPartitions.h"
+#include "RemoveGuessesWithBetterGuessCache.h"
 
 using namespace NonLetterLookupHelpers;
 
@@ -98,55 +99,50 @@ struct RemoveGuessesWithNoLetterInAnswers {
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
     }
 
-    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask, const AnswersVec &answers) {
-        stats.tick(10);
+    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask, const AnswersVec &answers, bool isDebug = false) {
+        stats.tick(11);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
             guessToNumNonLetters[guessIndex] = getNumNonLetters(guessIndex, nonLetterMask);
         }
-        stats.tock(10);
-        std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
+        std::stable_sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumNonLetters[a] < guessToNumNonLetters[b];});
 
-        std::vector<int> guessIndexToNodeId(GlobalState.allGuesses.size());
-        std::vector<int> nodeIdToFirstSeen(NonLetterLookup::nodes.size(), -1);
+        static thread_local std::vector<int> guessIndexToNodeId;
+        static thread_local std::vector<IndexType> nodeIdToFirstSeen;
+        guessIndexToNodeId.resize(GlobalState.allGuesses.size());
+        nodeIdToFirstSeen.assign(NonLetterLookup::nodes.size(), MAX_INDEX_TYPE);
         std::stack<int> nodeIdsToMark = {};
-        stats.tick(11);
+        stats.tock(11);
+
+        stats.tick(12);
         for (auto guessIndex: guesses) {
             auto nodeId = getNodeId(guessIndex, nonLetterMask);
             guessIndexToNodeId[guessIndex] = nodeId;
 
-            if (nodeIdToFirstSeen[nodeId] != -1) continue;
+            if (nodeIdToFirstSeen[nodeId] != MAX_INDEX_TYPE) continue;
             nodeIdToFirstSeen[nodeId] = guessIndex;
 
-            //DEBUG("go: " << repString);
             nodeIdsToMark.push(nodeId);
             while (!nodeIdsToMark.empty()) {
                 auto t = nodeIdsToMark.top(); nodeIdsToMark.pop();
                 //DEBUG("child: " << NonLetterLookup::idToStringPattern[t] << ": (t: " << t << ") #childreN: " << NonLetterLookup::nodes[t].childIds.size());
                 for (auto childId: NonLetterLookup::nodes[t].childIds) {
-                    if (nodeIdToFirstSeen[childId] != -1) continue;
+                    if (nodeIdToFirstSeen[childId] != MAX_INDEX_TYPE) continue;
                     nodeIdToFirstSeen[childId] = guessIndex;
                     nodeIdsToMark.push(childId);
                 }
             }
         }
-        stats.tock(11);
+        stats.tock(12);
 
         stats.tick(13);
-        auto partitions = RemoveGuessesPartitions::getPartitions(guesses, answers);
+        auto partitions = isDebug ? RemoveGuessesPartitions::getPartitions(guesses, answers) : RemoveGuessesPartitions::PartitionVec();
         std::erase_if(guesses, [&](auto guessIndex) {
-            if (guessIndexToNodeId[guessIndex] != guessIndex) {
-                auto g1 = guessIndexToNodeId[guessIndex];
-                auto g2 = guessIndex;
-                auto oth = RemoveGuessesPartitions::compare(partitions, g1, g2);
-                if (oth != CompareResult::BetterThanOrEqualTo) {
-                    DEBUG("oh no!"); exit(1);
-                }
-            }
             return nodeIdToFirstSeen[guessIndexToNodeId[guessIndex]] != guessIndex;
         });
         stats.tock(13);
     }
+
 
     static int8_t getNumNonLetters(IndexType guessIndex, int nonLetterMask) {
         //static std::unordered_map<int, int8_t> cache = {};

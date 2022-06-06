@@ -35,37 +35,41 @@ struct PerfStats {
         for (int i = 1; i <= GlobalArgs.maxTries; ++i) {
             printf("%6d %12lld %12lld %12lld %12lld %12lld %2f\n", i, curr.entryStats[i][0], curr.entryStats[i][1], curr.entryStats[i][2], curr.entryStats[i][3], curr.ncpu[50+i], curr.tcpu[50+i]);
         }
-        // printf("numAnswers,calls,time\n");
-        // for (int i = 0; i < 5000; ++i) {
-        //     auto v = 2*5000 + i;
-        //     if (curr.ncpu[v] == 0) continue;
-        //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
-        // }
+        if (GlobalArgs.timings) {
+            // printf("numAnswers,calls,time\n");
+            // for (int i = 0; i < 5000; ++i) {
+            //     auto v = 2*5000 + i;
+            //     if (curr.ncpu[v] == 0) continue;
+            //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
+            // }
 
-        // printf("numNonLetters,calls,time\n");
-        // for (int i = 0; i <= 26; ++i) {
-        //     auto v = 2000 + i;
-        //     if (curr.ncpu[v] == 0) continue;
-        //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
-        // }
+            // printf("numNonLetters,calls,time\n");
+            // for (int i = 0; i <= 26; ++i) {
+            //     auto v = 2000 + i;
+            //     if (curr.ncpu[v] == 0) continue;
+            //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
+            // }
 
-        curr.printEntry("yeet", 44);
-        curr.printEntry("answerLoop", 45);
-        curr.printEntry("getCache", 46);
-        curr.printEntry("getCacheKey", 48);
-        curr.printEntry("setCacheVal", 49);
+            curr.printEntry("yeet", 44);
+            curr.printEntry("answerLoop", 45);
+            curr.printEntry("getCache", 46);
+            curr.printEntry("getCacheKey", 48);
+            curr.printEntry("setCacheVal", 49);
 
-        curr.printEntry("sumOverPart1", 20);
-        curr.printEntry("sumOverPart2", 21);
-        curr.printEntry("sumOverPart3", 22);
-        for (int i = 0; i <= GlobalArgs.maxTries; ++i) {
-            std::string s = std::string("sumOver depth:") + std::to_string(i);
-            curr.printEntry(s, 23+i);
+            curr.printEntry("sumOverPart1", 20);
+            curr.printEntry("sumOverPart2", 21);
+            curr.printEntry("sumOverPart3", 22);
+            for (int i = 0; i <= GlobalArgs.maxTries; ++i) {
+                std::string s = std::string("sumOver depth:") + std::to_string(i);
+                curr.printEntry(s, 23+i);
+            }
+            curr.printEntry("remGuesses", 33);
+            curr.printEntry("remGuesses p1", 10);
+            curr.printEntry("remGuesses p2", 11);
+            curr.printEntry("remGuesses p3", 12);
+            curr.printEntry("remGuesses p3", 13);
+            curr.printEntry("lb hacks", 34);
         }
-        curr.printEntry("rem guesses", 33);
-        curr.printEntry("lb hacks", 34);
-        DEBUG("Nodes used = " << curr.nodes);
-
 
         // printf("RemoveGuessesBetterGuess\n");
         // printf("depth,calls,time\n");
@@ -74,6 +78,7 @@ struct PerfStats {
         //     DEBUG(i << "," << curr.ncpu[v] << "," << curr.tcpu[v]);
         // }
 
+        DEBUG("Nodes used = " << curr.nodes);
         return out;
     }
 
@@ -84,7 +89,7 @@ struct PerfStats {
     void tick(int i){if(GlobalArgs.timings && !ignoreTime(i))lcpu[i]=cpu();}
     void tock(int i){if(GlobalArgs.timings && !ignoreTime(i)){ncpu[i]+=1;tcpu[i]+=cpu()-lcpu[i];}}
     bool ignoreTime(int i) {
-        return 46 <= i && i <= 4450;
+        return (46 <= i && i <= 49);
     }
     double cpu(){return clock()/double(CLOCKS_PER_SEC);}
 

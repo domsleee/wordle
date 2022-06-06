@@ -271,7 +271,6 @@ struct AnswersAndGuessesSolver {
         stats.tick(45);
         //auto perfectAnswerCandidates = answers;
         //auto nonLetterMaskNoSpecialMask2 = RemoveGuessesWithBetterGuessCache::getNonLetterMaskNoSpecialMask(answers);
-        //RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, perfectAnswerCandidates, nonLetterMaskNoSpecialMask2); // removes a few more
 
         for (const auto answerIndexForGuess: answers) {
             count.fill(0);
@@ -313,11 +312,12 @@ struct AnswersAndGuessesSolver {
             return minNumWrongFor2;
         }
 
-        stats.entryStats[GlobalArgs.maxTries-remDepth][3]++;
+        stats.entryStats[depth][3]++;
 
         GuessesVec guessesCopy = guessesDisregardingAnswers;
         // auto bef = guessesCopy.size();
         stats.tick(33);
+        stats.tick(10);
         char greenLetters[5];
         uint8_t maxLetterCt[27] = {0}, greenLetterCt[27] = {0};
         for (auto i = 0; i < 5; ++i) greenLetters[i] = GlobalState.reverseIndexLookup[answers[0]][i];
@@ -347,22 +347,32 @@ struct AnswersAndGuessesSolver {
             }
         }
 
-        //guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
-        
-        if (false && depth == 1) {
-            // both: 807011
-            // RemoveGuessesWithNoLetterInAnswers only: 952632
-            // RemoveGuessesPartitions only: 807017
-            // neither: 975400
-            //guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
+        stats.tock(10);
+        if (false && depth <= 3) {
+            // 27655580
+            // 29744453
+            // 32813016
+            // <= 1: 27591995
+            // <= 2: 36137726
+            // <= 3: 11209085
+            // ??    16958341
+            // j = 0 --> dfjkl: 47436722
+            // with sort??
+            std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
+            guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
         } else {
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask, answers); // removes a few more
+            // 27655580 
+            // 27900824
+            // 47436722
+            // 3942170 ? from remDepth = 3
+            // std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask, answers, false); // removes a few more
         }
+
         stats.tock(33);
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
-        const bool shouldSort = true;
-        if (shouldSort) std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
+        std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
         // full search for remDepth >= 3
         BestWordResult res = getDefaultBestWordResult();
@@ -474,7 +484,10 @@ struct AnswersAndGuessesSolver {
             if (totalWrongForGuess >= beta) {
                 stats.tick(34);
                 someLbHack(guesses, guessIndex, remDepth, lb, s, myEquiv);
-                someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
+                //if (totalWrongForGuess >= GlobalArgs.maxWrong) {
+                    someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
+                //}
+
                 stats.tock(34);
                 stats.tock(23+depth);
                 return totalWrongForGuess;
