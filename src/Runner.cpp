@@ -27,7 +27,7 @@ int Runner::run() {
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
         NonLetterLookup::build();
-        RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
+        RemoveGuessesWithNoLetterInAnswers::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         EndGameAnalysis::init();
         // SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);

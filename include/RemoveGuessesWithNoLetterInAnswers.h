@@ -10,17 +10,6 @@ using namespace NonLetterLookupHelpers;
 struct RemoveGuessesWithNoLetterInAnswers {
     inline static std::vector<int> letterCountLookup = {};
 
-    /*static std::vector<IndexType> clearGuesses(std::vector<IndexType> guesses, const std::vector<IndexType> &answers) {   
-        int answerLetterMask = 0;
-        for (auto &answerIndex: answers) {
-            answerLetterMask |= letterCountLookup[answerIndex];
-        }
-        std::erase_if(guesses, [&](const int &guessIndex) {
-            return (answerLetterMask & letterCountLookup[guessIndex]) == 0;
-        });
-        return guesses;
-    }&*/
-
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
         //auto numNonLetters = __builtin_popcount(nonLetterMask);
 
@@ -191,25 +180,6 @@ struct RemoveGuessesWithNoLetterInAnswers {
             DEBUG("HELLO??  orig: " << GlobalState.reverseIndexLookup[guessIndex] << ", expected: " << repString << ", actual: " << actual << ", trieId: " << trieId); exit(1);
         }
         return NonLetterLookup::stringPatternToId[repString];
-    }
-
-    static inline std::vector<long long> guessToNumGroups = {};
-    static void computeGuessToNumGroups() {
-        if (guessToNumGroups.size() != 0) return;
-        START_TIMER(computeGuessToNumGroups);
-        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
-        auto answers = getVector<GuessesVec>(GlobalState.allGuesses.size());
-        guessToNumGroups.assign(guesses.size(), 0);
-        for (auto guessIndex: guesses) {
-            bool seen[243] = {0};
-            for (auto answerIndex: answers) {
-                auto s = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
-                if (seen[s]) continue;
-                seen[s] = 1;
-                guessToNumGroups[guessIndex]++;
-            }
-        }
-        END_TIMER(computeGuessToNumGroups);
     }
 
     static void clearGuesses(GuessesVec &guesses, const AnswersVec &answers) {
