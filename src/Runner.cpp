@@ -25,11 +25,11 @@ int Runner::run() {
         auto solver = AnswersAndGuessesSolver<isEasyMode, isGetLowestAverage>(GlobalArgs.maxTries);
 
         START_TIMER(precompute);
+        PatternGetterCached::buildCache();
         NonLetterLookup::build();
         RemoveGuessesWithNoLetterInAnswers::buildClearGuessesInfo();
         RemoveGuessesWithBetterGuessCache::init();
         EndGameAnalysis::init();
-        PatternGetterCached::buildCache();
         // SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
 
         //return 0;

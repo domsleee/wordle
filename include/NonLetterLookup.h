@@ -33,41 +33,42 @@ struct NonLetterLookup {
     static void build() {
         START_TIMER(NonLetterLookup);
         for (std::size_t i = 0; i < GlobalState.allGuesses.size(); ++i) {
-            getIndex(GlobalState.allGuesses[i]);
+            getOrCreateIndex(GlobalState.allGuesses[i]);
         }
 
         for (std::size_t i = 0; i < GlobalState.allGuesses.size(); ++i) {
-            buildNode(GlobalState.allGuesses[i], true);
+            buildNode(GlobalState.allGuesses[i]);
         }
         DEBUG("nonLetterLookup: numNodes: " << nodes.size());
         END_TIMER(NonLetterLookup);
     }
 
-    static int buildNode(std::string s, bool forceCreateChildren = false) {
-        auto id = getIndex(s);
-        if (!id.first && !forceCreateChildren) return id.second;
+    static int buildNode(std::string s) {
+        auto id = getOrCreateIndex(s);
+        if (nodes[id].childIds.size()) return id;
+        DEBUG("id: " << id);
 
         for (int i = 0; i < 5; ++i) {
             if (s[i] == '.') continue;
             auto oldSi = s[i];
             s[i] = '.';
             auto childId = buildNode(s);
-            nodes[id.second].childIds.push_back(childId);
-            trieNodes[id.second].childByLetter[i*27 + letterToInd(oldSi)] = childId;
+            nodes[id].childIds.push_back(childId);
+            trieNodes[id].childByLetter[i*27 + letterToInd(oldSi)] = childId;
             s[i] = oldSi;
         }
-        return id.second;
+        return id;
     }
 
-    static std::pair<bool, int> getIndex(const std::string &s) {
+    static int getOrCreateIndex(const std::string &s) {
         auto it = stringPatternToId.find(s);
-        if (it != stringPatternToId.end()) return {false, it->second};
+        if (it != stringPatternToId.end()) return it->second;
 
         auto id = nodes.size();
         nodes.resize(id+1);
         trieNodes.resize(id+1);
-        stringPatternToId[s] = id;;
+        stringPatternToId[s] = id;
         idToStringPattern[id] = s;
-        return {true, id};
+        return id;
     }
 };
