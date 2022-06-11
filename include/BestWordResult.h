@@ -3,7 +3,7 @@
 #include "Util.h"
 
 struct BestWordResult {
-    int numWrong;
+    int numWrong = -1;
     IndexType wordIndex;
     BestWordResult() {}
 

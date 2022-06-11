@@ -3,6 +3,7 @@
 #include "WordSetHelpers.h"
 #include "PerfStats.h"
 #include "SimpleProgress.h"
+#include <filesystem>
 
 #include "Util.h"
 struct RemoveGuessesWithBetterGuessCache
@@ -12,6 +13,17 @@ struct RemoveGuessesWithBetterGuessCache
 
     static void init()
     {
+        auto filename = FROM_SS("databases/betterGuess"
+            << "_" << GlobalState.allAnswers.size()
+            << "_" << GlobalState.allGuesses.size()
+            << "_" << GlobalArgs.specialLetters
+            << ".dat");
+        if (std::filesystem::exists(filename)) {
+            readFromFile(filename);
+            // checkCompression();
+            return;
+        }
+
         START_TIMER(removeguessesbetterguesscache);
         auto expected = 1 << (GlobalArgs.specialLetters.size());
         auto bar = SimpleProgress("RemoveGuessesWithBetterGuessCache", expected, true);
@@ -28,7 +40,7 @@ struct RemoveGuessesWithBetterGuessCache
             auto guessesFast = guesses;
             const bool compareWithSlowMethod = false;
             if (compareWithSlowMethod) RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask, answers);
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
                 DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size()); exit(1);
@@ -50,6 +62,8 @@ struct RemoveGuessesWithBetterGuessCache
         }
 
         END_TIMER(removeguessesbetterguesscache);
+
+        writeToFile(filename);
     }
 
     static const GuessesVec &getCachedGuessesVec(const AnswersVec &answers)
@@ -87,5 +101,51 @@ struct RemoveGuessesWithBetterGuessCache
         }
         int nonLetterMask = ~answerLetterMask;
         return nonLetterMask;
+    }
+
+    static void readFromFile(const std::string &filename) {
+        START_TIMER(betterGuessCacheReadFromFile);
+        std::ifstream fin(filename, std::ios_base::binary);
+        int cacheSize;
+        fin.read(reinterpret_cast<char*>(&cacheSize), sizeof(cacheSize));
+        
+        int index, numEntries;
+        while (cacheSize--) {
+            fin.read(reinterpret_cast<char*>(&index), sizeof(index));
+            fin.read(reinterpret_cast<char*>(&numEntries), sizeof(numEntries));
+            GuessesVec vec(numEntries);
+            fin.read(reinterpret_cast<char*>(vec.data()), sizeof(IndexType) * numEntries);
+            cache[index] = std::move(vec);
+            cacheWsGuesses[index] = WordSetHelpers::buildGuessesWordSet(cache[index]);
+        }
+        END_TIMER(betterGuessCacheReadFromFile);
+    }
+
+    static void writeToFile(const std::string &filename) {
+        START_TIMER(betterGuessCacheWriteToFile);
+        std::ofstream fout(filename, std::ios_base::binary);
+        int cacheSize = cache.size();
+        fout.write(reinterpret_cast<char*>(&cacheSize), sizeof(cacheSize));
+        for (auto &entry: cache) {
+            int index = entry.first, numEntries = (int)entry.second.size();
+            fout.write(reinterpret_cast<char*>(&index), sizeof(index));
+            fout.write(reinterpret_cast<char*>(&numEntries), sizeof(numEntries));
+            fout.write(reinterpret_cast<char*>(entry.second.data()), sizeof(IndexType) * numEntries);
+        }
+        fout.close();
+        END_TIMER(betterGuessCacheWriteToFile);
+    }
+
+    static void checkCompression() {
+        std::unordered_set<WordSetGuesses> sets = {};
+        long long totalCt = 0, setCt = 0;
+        for (auto &entry: cacheWsGuesses) {
+            sets.insert(entry.second);
+            totalCt += entry.second.count();
+        }
+        for (auto &entry: sets) setCt += entry.count();
+        DEBUG("Compressable? " << getPerc(setCt, totalCt));
+        exit(1);
+
     }
 };

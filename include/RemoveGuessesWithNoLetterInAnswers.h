@@ -88,7 +88,7 @@ struct RemoveGuessesWithNoLetterInAnswers {
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
     }
 
-    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask, const AnswersVec &answers, bool isDebug = false) {
+    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
         stats.tick(11);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
@@ -125,7 +125,6 @@ struct RemoveGuessesWithNoLetterInAnswers {
         stats.tock(12);
 
         stats.tick(13);
-        auto partitions = isDebug ? RemoveGuessesPartitions::getPartitions(guesses, answers) : RemoveGuessesPartitions::PartitionVec();
         std::erase_if(guesses, [&](auto guessIndex) {
             return nodeIdToFirstSeen[guessIndexToNodeId[guessIndex]] != guessIndex;
         });

@@ -16,6 +16,7 @@
 #include "EndGameAnalysis.h"
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
+#include "LookupCacheEntry.h"
 
 #include <algorithm>
 #include <map>
@@ -28,20 +29,6 @@
 #define GUESSESSOLVER_DEBUG(x) 
 
 using namespace NonLetterLookupHelpers;
-
-static constexpr int INF_INT = (int)1e8;
-static constexpr double INF_DOUBLE = 1e8;
-
-struct LookupCacheEntry {
-    IndexType guessForLb, guessForUb;
-    int lb, ub;
-    LookupCacheEntry(IndexType guessForLb, IndexType guessForUb, int lb, int ub)
-        : guessForLb(guessForLb),
-          guessForUb(guessForUb),
-          lb(lb),
-          ub(ub) {}
-    LookupCacheEntry() {}
-};
 
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
@@ -248,11 +235,13 @@ struct AnswersAndGuessesSolver {
         const int nAnswers = answers.size();
         if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) >= nAnswers) {
             //auto m = *std::min_element(answers.begin(), answers.end());
+            assert(answers[0] == *std::min_element(answers.begin(), answers.end()));
             return {0, answers[0]};
         }
         if (remDepth == 1) {
             // no info from last guess
             //auto m = *std::min_element(answers.begin(), answers.end());
+            assert(answers[0] == *std::min_element(answers.begin(), answers.end()));
             return {nAnswers-1, answers[0]};
         }
 
@@ -366,7 +355,7 @@ struct AnswersAndGuessesSolver {
             // 47436722
             // 3942170 ? from remDepth = 3
             // std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask, answers, false); // removes a few more
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
         }
 
         stats.tock(33);
@@ -376,10 +365,10 @@ struct AnswersAndGuessesSolver {
 
         // full search for remDepth >= 3
         BestWordResult res = getDefaultBestWordResult();
-        int endGameLb = endGameAnalysis(answers, guesses, key, remDepth, beta);
-        if (endGameLb >= beta) {
+        BestWordResult endGameRes = endGameAnalysisCached(answers, guesses, key, remDepth, beta);
+        if (endGameRes.numWrong >= beta) {
             // lbCache is set within `endGameAnalysis` function
-            return {endGameLb, answers[0]};
+            return endGameRes;
         }
         res.wordIndex = answers[0];
         std::size_t numGuessIndexesToCheck = std::min(guessesCopy.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
@@ -484,9 +473,7 @@ struct AnswersAndGuessesSolver {
             if (totalWrongForGuess >= beta) {
                 stats.tick(34);
                 someLbHack(guesses, guessIndex, remDepth, lb, s, myEquiv);
-                //if (totalWrongForGuess >= GlobalArgs.maxWrong) {
-                    someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
-                //}
+                someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
 
                 stats.tock(34);
                 stats.tock(23+depth);
@@ -566,6 +553,33 @@ struct AnswersAndGuessesSolver {
         return 0;
     }
 
+    BestWordResult endGameAnalysisCached(
+        const AnswersVec &answers,
+        const GuessesVec &guesses,
+        const AnswersAndGuessesKey<isEasyMode> &cacheKey,
+        RemDepthType remDepth,
+        int beta
+    )
+    {
+        std::vector<int> endGameMasks(EndGameAnalysis::numEndGames, 0);
+        for (auto answerIndex: answers) for (auto [e, maskIndex]: EndGameAnalysis::wordNum2EndGamePair[answerIndex]) {
+            endGameMasks[e] |= (1 << maskIndex);
+        }
+        auto maxR = BestWordResult(-1, 0);
+        for (int e = 0; e < EndGameAnalysis::numEndGames; ++e) {
+            auto r = EndGameAnalysis::getFromCache(remDepth, e, endGameMasks[e]);
+            if (r.numWrong > maxR.numWrong) {
+                maxR = r;
+            }
+        }
+        if (maxR.numWrong >= beta) {
+            setLbCache(cacheKey, maxR);
+            return maxR;
+        }
+        return {0, answers[0]};
+
+    }
+
     void someLbHack(const GuessesVec &guesses, const IndexType guessIndex, RemDepthType remDepth, const int *lb, PatternType s, const std::array<AnswersVec, NUM_PATTERNS> &equiv) {
         // The point is that eval(H0 u H1) >= eval(H0) + eval(H1)
         static int mm[] = {1,3,9,27,81};
@@ -643,6 +657,7 @@ struct AnswersAndGuessesSolver {
     }
 
     inline void setLbCache(const AnswersAndGuessesKey<isEasyMode> &key, BestWordResult res) {
+        if (res.numWrong == 0) return;
         setCacheEntry(key, res.numWrong, INF_INT, res.wordIndex, 0);
     }
 

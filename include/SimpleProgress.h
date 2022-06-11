@@ -8,6 +8,7 @@ struct SimpleProgress {
     int64_t maxA = 0;
     const int64_t total;
     indicators::ProgressBar bar;
+    int everyNth = 1;
 
     SimpleProgress(const std::string &prefix, int64_t total, bool isPrecompute=false)
     : prefix(prefix),
@@ -18,15 +19,17 @@ struct SimpleProgress {
 
     void incrementAndUpdateStatus(const std::string &suffix = "", int amount = 1) {
         maxA += amount;
+        if ((maxA % everyNth) != 0 && !isFinished()) return;
         if (suffix.size() == 0) {
             updateStatusInner(lastSuffix);
         } else {
+            lastSuffix = suffix;
             updateStatusInner(suffix);
         }
-        
     }
 
     void updateStatus(const std::string &suffix) {
+        lastSuffix = suffix;
         updateStatusInner(suffix);
     }
     
@@ -54,6 +57,10 @@ private:
         //DEBUG("update status..." << suffix);
         bar.set_option(indicators::option::PostfixText{prefix + " " + getFrac(maxA, total) + suffix});
         bar.set_progress(getIntegerPerc(maxA, total));
-        if (maxA != total) bar.print_progress();
+        if (!isFinished()) bar.print_progress();
+    }
+
+    bool isFinished() {
+        return maxA == total;
     }
 };

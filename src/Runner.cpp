@@ -30,6 +30,7 @@ int Runner::run() {
         RemoveGuessesWithNoLetterInAnswers::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         EndGameAnalysis::init();
+        EndGameAnalysis::initCache<isEasyMode>(solver);
         // SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
 
         //return 0;

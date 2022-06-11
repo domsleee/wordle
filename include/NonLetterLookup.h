@@ -46,8 +46,6 @@ struct NonLetterLookup {
     static int buildNode(std::string s) {
         auto id = getOrCreateIndex(s);
         if (nodes[id].childIds.size()) return id;
-        DEBUG("id: " << id);
-
         for (int i = 0; i < 5; ++i) {
             if (s[i] == '.') continue;
             auto oldSi = s[i];
