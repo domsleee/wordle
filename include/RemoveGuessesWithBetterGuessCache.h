@@ -14,7 +14,7 @@ struct RemoveGuessesWithBetterGuessCache
     static void init()
     {
         auto filename = FROM_SS("databases/betterGuess"
-            << "_" << GlobalState.allAnswers.size()
+            << "_" << GlobalState.allAnswers.size() // required to have `allAnswers` because it affects the indexes in allGuesses
             << "_" << GlobalState.allGuesses.size()
             << "_" << GlobalArgs.specialLetters
             << ".dat");

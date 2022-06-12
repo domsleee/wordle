@@ -280,6 +280,12 @@ struct AnswersAndGuessesSolver {
 
         if (fastMode == 2) return {-1, 0};
 
+        BestWordResult endGameRes = endGameAnalysisCached(answers, guesses, key, remDepth, beta);
+        if (endGameRes.numWrong >= beta) {
+            // lbCache is set within `endGameAnalysis` function
+            return endGameRes;
+        }
+
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
         const int depth = GlobalArgs.maxTries - remDepth;
 
@@ -303,7 +309,7 @@ struct AnswersAndGuessesSolver {
 
         stats.entryStats[depth][3]++;
 
-        GuessesVec guessesCopy = guessesDisregardingAnswers;
+        GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         stats.tick(33);
         stats.tick(10);
@@ -365,11 +371,6 @@ struct AnswersAndGuessesSolver {
 
         // full search for remDepth >= 3
         BestWordResult res = getDefaultBestWordResult();
-        BestWordResult endGameRes = endGameAnalysisCached(answers, guesses, key, remDepth, beta);
-        if (endGameRes.numWrong >= beta) {
-            // lbCache is set within `endGameAnalysis` function
-            return endGameRes;
-        }
         res.wordIndex = answers[0];
         std::size_t numGuessIndexesToCheck = std::min(guessesCopy.size(), static_cast<std::size_t>(GlobalArgs.guessLimitPerNode));
         bool exact = false;

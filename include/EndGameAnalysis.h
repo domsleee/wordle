@@ -61,6 +61,8 @@ struct EndGameAnalysis {
             "databases/endGame_"
             << GlobalState.allAnswers.size()
             << "_" << GlobalState.allGuesses.size()
+            << "_" << GlobalArgs.maxWrong
+            << "_" << GlobalArgs.maxTries
             << ".dat");
         if (std::filesystem::exists(filename)) {
             readFromCache(filename);
