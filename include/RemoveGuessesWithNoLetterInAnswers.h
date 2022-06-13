@@ -115,6 +115,8 @@ struct RemoveGuessesWithNoLetterInAnswers {
             while (!nodeIdsToMark.empty()) {
                 auto t = nodeIdsToMark.top(); nodeIdsToMark.pop();
                 //DEBUG("child: " << NonLetterLookup::idToStringPattern[t] << ": (t: " << t << ") #childreN: " << NonLetterLookup::nodes[t].childIds.size());
+                // doesn't make sense to use compressedNodes here.
+                // example: .ss.. will not be marked by .ss.s
                 for (auto childId: NonLetterLookup::nodes[t].childIds) {
                     if (nodeIdToFirstSeen[childId] != MAX_INDEX_TYPE) continue;
                     nodeIdToFirstSeen[childId] = guessIndex;
@@ -155,15 +157,9 @@ struct RemoveGuessesWithNoLetterInAnswers {
         // auto it = cache.find(key);
         // if (it != cache.end()) return it->second;
 
-        int trieId = guessIndex;
-        for (int i = 0; i < 5; ++i) {
-            char c = GlobalState.reverseIndexLookup[guessIndex][i];
-            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
-            if (knownNonLetter) {
-                trieId = NonLetterLookup::trieNodes[trieId].childByLetter[i*27 + letterToInd(c)];
-            }
-        }
-        return trieId;
+        auto trieIdUsingCompressed = getNodeIdUsingCompressed(guessIndex, nonLetterMask);
+        //assert(trieIdUsingCompressed == getNodeIdUsingNormal(guessIndex, nonLetterMask));
+        return trieIdUsingCompressed;
 
         auto repString = GlobalState.reverseIndexLookup[guessIndex];
         for (int i = 0; i < 5; ++i) {
@@ -174,11 +170,34 @@ struct RemoveGuessesWithNoLetterInAnswers {
             }
         }
         //assert(NonLetterLookup::stringPatternToId.find(repString) != NonLetterLookup::stringPatternToId.end());
-        auto actual = NonLetterLookup::idToStringPattern[trieId];
+        auto actual = NonLetterLookup::idToStringPattern[trieIdUsingCompressed];
         if (actual != repString) {
-            DEBUG("HELLO??  orig: " << GlobalState.reverseIndexLookup[guessIndex] << ", expected: " << repString << ", actual: " << actual << ", trieId: " << trieId); exit(1);
+            DEBUG("HELLO??  orig: " << GlobalState.reverseIndexLookup[guessIndex] << ", expected: " << repString << ", actual: " << actual << ", trieId: " << trieIdUsingCompressed); exit(1);
         }
         return NonLetterLookup::stringPatternToId[repString];
+    }
+
+    static int getNodeIdUsingCompressed(IndexType guessIndex, int nonLetterMask) {
+        int trieId = guessIndex;
+        for (uint8_t charIndex: NonLetterLookup::guessIndexToCharIndexes[guessIndex]) {
+            bool knownNonLetter = (nonLetterMask & (1 << charIndex)) != 0;
+            if (knownNonLetter) {
+                trieId = NonLetterLookup::compressedTrieNodes[trieId].childByLetter[charIndex];
+            }
+        }
+        return trieId;
+    }
+
+    static int getNodeIdUsingNormal(IndexType guessIndex, int nonLetterMask) {
+        int trieId = guessIndex;
+        for (int i = 0; i < 5; ++i) {
+            char c = GlobalState.reverseIndexLookup[guessIndex][i];
+            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+            if (knownNonLetter) {
+                trieId = NonLetterLookup::trieNodes[trieId].childByPosition[i];
+            }
+        }
+        return trieId;
     }
 
     static void clearGuesses(GuessesVec &guesses, const AnswersVec &answers) {

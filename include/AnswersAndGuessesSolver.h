@@ -343,7 +343,7 @@ struct AnswersAndGuessesSolver {
     int sumOverPartitionsLeastWrong(
         const AnswersVec &answers,
         const GuessesVec &guesses,
-        const RemDepthType remDepth, // remDepth to solve ALL partitions
+        const RemDepthType remDepth, // remDepth for each partition
         const IndexType guessIndex,
         int beta
     )
@@ -432,10 +432,11 @@ struct AnswersAndGuessesSolver {
             totalWrongForGuess -= lb[s];
             const auto pr = minOverWordsLeastWrong(myEquiv[s], guesses, remDepth, 0, beta - totalWrongForGuess);
             totalWrongForGuess = std::min(totalWrongForGuess + pr.numWrong, INF_INT);
+            lb[s] = std::max(lb[s], pr.numWrong);
             if (totalWrongForGuess >= beta) {
                 stats.tick(34);
                 someLbHack(guesses, guessIndex, remDepth, lb, s, myEquiv);
-                someLbHack2(guesses, guessIndex, remDepth, totalWrongForGuess, s, myEquiv);
+                someLbHack2(guesses, guessIndex, remDepth, lb[s], s, myEquiv);
 
                 stats.tock(34);
                 stats.tock(23+depth);
@@ -516,19 +517,20 @@ struct AnswersAndGuessesSolver {
                 //writelboundcache(depth+1,filtered[s],u,inc-u.size());
             }
         }
-        // for(int i=0;i<3;i++)if((s/mm[i])%3==0)for(int j=i+1;j<4;j++)if((s/mm[j])%3==0)for(int k = j+1; k<5; ++k)if((s/mm[k])%3==0){
-        //     int a,b,c,t=0;
-        //     for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]].size();
+        for(int i=0;i<3;i++)if((s/mm[i])%3==0)for(int j=i+1;j<4;j++)if((s/mm[j])%3==0)for(int k = j+1; k<5; ++k)if((s/mm[k])%3==0){
+            int a,b,c,t=0;
+            for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]].size();
 
-        //     if(t>int(equiv[s].size())){
-        //         auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
-        //         for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c){
-        //             auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]];
-        //             for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
-        //         }
-        //         setLbCache(cacheKey, {numWrong, guessIndex});
-        //     }
-        // }
+            if(t>int(equiv[s].size())){
+                AnswersVec newAnswers = {};
+                for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c){
+                    auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]];
+                    for (auto ind: e) newAnswers.push_back(ind);
+                }
+                std::sort(newAnswers.begin(), newAnswers.end());
+                setLbCache(newAnswers, guesses, remDepth, {numWrong, guessIndex});
+            }
+        }
 
         // for(int i=0;i<2;i++)if((s/mm[i])%3==0)for(int j=i+1;j<3;j++)if((s/mm[j])%3==0)for(int k = j+1; k<4; ++k)if((s/mm[k])%3==0)for(int l = k+1; l<5; ++l)if((s/mm[l])%3==0){
         //     int a,b,c,d,t=0;
@@ -568,6 +570,8 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth,
         int lb, int ub, IndexType guessForLb, IndexType guessForUb) {
 
+        assert(std::is_sorted(answers.begin(), answers.end()));
+
         auto &cache = guessCache2[remDepth];
         std::pair<AnswersVec, GuessesVec> p = isEasyModeVar
             ? std::pair<AnswersVec, GuessesVec>(answers, GuessesVec())
@@ -593,6 +597,8 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth) {
         stats.tick(46);
         auto &cache = guessCache2[remDepth];
+
+        assert(std::is_sorted(answers.begin(), answers.end()));
 
         std::pair<AnswersVec, GuessesVec> p = isEasyModeVar
             ? std::pair<AnswersVec, GuessesVec>(answers, GuessesVec())

@@ -9,11 +9,12 @@ make -j;
 #./bin/solve -pr --max-tries 4 --max-incorrect 146 ext/wordle-guesses.txt ext/wordle-answers.txt
 
 # ./bin/solve -p -Seartolsincuyhpdmgbkf -L 1 -N50 --min-lb-cache 2 ext/wordle-combined.txt ext/wordle-combined.txt
-#./bin/solve -Seartolsincuyhpdmgbkf -w lants ext/wordle-combined.txt ext/wordle-combined.txt
+./bin/solve -Seartolsincuyhpdmgbkf -w lants ext/wordle-combined.txt ext/wordle-combined.txt
+#./bin/solve -Seartolsincuyhp -L 1 -N20 -n1150 --min-lb-cache 2 ext/wordle-combined.txt ext/wordle-combined.txt
 #./bin/solve --min-lb-cache 3 -Seartolsincuy -L25 -I50 -g4 -N50 ext/wordle-guesses.txt ext/wordle-answers.txt
 
-LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
-./bin/solve -L20 -w tenor -I17 -g4 -Seartolsincuyhpdmgbkf ext/wordle-guesses.txt ext/wordle-answers.txt
+#LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
+#./bin/solve -L20 -w tenor -I17 -g4 -Seartolsincuyhpdmgbkf ext/wordle-guesses.txt ext/wordle-answers.txt
 
 #./bin/solve -Seartolsincuyhpdmgbkf -N5 ext/wordle-combined.txt ext/wordle-combined.txt
 #LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
