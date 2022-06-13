@@ -7,3 +7,4 @@ databases/*
 .vscode
 .DS_Store
 screenlog.0
+cacheDebug

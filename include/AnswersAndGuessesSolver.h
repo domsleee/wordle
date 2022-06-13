@@ -177,7 +177,7 @@ struct AnswersAndGuessesSolver {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
                 auto &seenVal = seen[patternInt];
                 numWrongFor2 += seenVal;
-                if (numWrongFor2 >= beta) break; // it seems slower to use beta and get lbs here.
+                if (numWrongFor2 >= minNumWrongFor2.numWrong) break; // it seems slower to use beta and get lbs here.
                 seenVal = 1;
             }
 
@@ -297,7 +297,7 @@ struct AnswersAndGuessesSolver {
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
         stats.tock(50 + depth);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
-            bool exact = remDepth > 2 || minNumWrongFor2.numWrong < beta;
+            bool exact = true;// remDepth > 2 || minNumWrongFor2.numWrong < beta;
             if (exact) setOptCache(key, minNumWrongFor2);
             else setLbCache(key, minNumWrongFor2);
             return minNumWrongFor2;
@@ -415,10 +415,15 @@ struct AnswersAndGuessesSolver {
             if (innerRes.numWrong != -1) {
                 lb[s] = innerRes.numWrong;
             } else {
-                auto lbKey = getCacheKey(myEquiv[s], guesses, remDepth-1);
-                auto cacheEntry = getCache(lbKey);
-                lb[s] = cacheEntry.lb;
-                if (cacheEntry.ub != cacheEntry.lb) {
+                if (remDepth-1 >= 2) {
+                    auto lbKey = getCacheKey(myEquiv[s], guesses, remDepth-1);
+                    auto cacheEntry = getCache(lbKey);
+                    lb[s] = cacheEntry.lb;
+                    if (cacheEntry.ub != cacheEntry.lb) {
+                        indexToPattern[m++] = s;
+                    }
+                } else {
+                    lb[s] = 0;
                     indexToPattern[m++] = s;
                 }
             }
@@ -580,6 +585,7 @@ struct AnswersAndGuessesSolver {
 
     inline void setLbCache(const AnswersAndGuessesKey<isEasyMode> &key, BestWordResult res) {
         if (res.numWrong == 0) return;
+        if (key.state.remDepth < GlobalArgs.minLbCache) return;
         setCacheEntry(key, res.numWrong, INF_INT, res.wordIndex, 0);
     }
 
@@ -591,6 +597,9 @@ struct AnswersAndGuessesSolver {
             if (ub < curr.ub) { curr.ub = ub; curr.guessForUb = guessForUb; }
         } else {
             stats.addCacheWrite(key.state.remDepth);
+            static std::ofstream cacheDebug("cacheDebug");
+            cacheDebug << key.state.wsAnswers.count() << '\n';
+            cacheDebug.flush();
             guessCache[key] = LookupCacheEntry(guessForLb, guessForUb, lb, ub);
         }
     }
@@ -637,13 +646,18 @@ struct AnswersAndGuessesSolver {
     }
 
     long long nextCheck = 0;
-    static constexpr std::size_t keySize =  sizeof(AnswersAndGuessesKey<isEasyMode>);
+    static constexpr std::size_t keySize = sizeof(AnswersAndGuessesKey<isEasyMode>);
     static constexpr std::size_t valSize = sizeof(LookupCacheEntry);
 
     void maybePruneCache() {
         if (stats.nodes >= nextCheck) {
             // each cache entry = 
-            auto approxBytes = 1.1 * guessCache.size() * (sizeof(void*) + keySize + valSize);
+            auto entrySize = (sizeof(void*) + keySize + valSize);
+            // DEBUG("entrySize: " << entrySize);
+            // DEBUG("sizeof(void*): " << sizeof(void*));
+            // DEBUG("keySize: " << keySize);
+            // DEBUG("valSize: " << valSize);
+            auto approxBytes = 1.1 * guessCache.size() * entrySize;
             if (approxBytes >= GlobalArgs.memLimitPerThread * 1e9) {
                 DEBUG("pruned ;)");
                 guessCache.clear();

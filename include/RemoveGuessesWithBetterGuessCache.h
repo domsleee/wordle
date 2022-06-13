@@ -113,11 +113,11 @@ struct RemoveGuessesWithBetterGuessCache
         while (cacheSize--) {
             fin.read(reinterpret_cast<char*>(&index), sizeof(index));
             fin.read(reinterpret_cast<char*>(&numEntries), sizeof(numEntries));
-            GuessesVec vec(numEntries);
-            fin.read(reinterpret_cast<char*>(vec.data()), sizeof(IndexType) * numEntries);
-            cache[index] = std::move(vec);
+            cache[index].resize(numEntries);
+            fin.read(reinterpret_cast<char*>(cache[index].data()), sizeof(IndexType) * numEntries);
             cacheWsGuesses[index] = WordSetHelpers::buildGuessesWordSet(cache[index]);
         }
+        fin.close();
         END_TIMER(betterGuessCacheReadFromFile);
     }
 

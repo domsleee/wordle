@@ -6,7 +6,7 @@ struct _GlobalArgs {
     static inline std::string guesses, answers;
 
     // values
-    static inline int numToRestrict, topLevelGuesses, maxTries, maxWrong, guessLimitPerNode;
+    static inline int numToRestrict, topLevelGuesses, maxTries, maxWrong, guessLimitPerNode, minLbCache;
     static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters = "eartolsincuyhpdmgbk";
     static inline double memLimitPerThread = 2;
 
