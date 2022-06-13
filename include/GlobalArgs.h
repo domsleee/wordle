@@ -8,6 +8,7 @@ struct _GlobalArgs {
     // values
     static inline int numToRestrict, topLevelGuesses, maxTries, maxWrong, guessLimitPerNode;
     static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters = "eartolsincuyhpdmgbk";
+    static inline double memLimitPerThread = 2;
 
     // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
     // eartolsincuyhpdmgbkfwvxzqj

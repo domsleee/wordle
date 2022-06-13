@@ -52,7 +52,8 @@ struct RunnerMulti {
 
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, 1);
+        auto numWorkers = GlobalArgs.parallel ? 24 : 1;
+        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, std::ceil((double)guessIndexesToCheck.size()/numWorkers));
         DEBUG("#batches: " << batchesOfFirstWords.size());
 
         std::mutex lock;

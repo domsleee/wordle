@@ -5,12 +5,6 @@
 #include <algorithm>
 #include <numeric>
 
-template<typename T>
-void printSolverInformation(const T& solver) {
-    auto cacheTotal = solver.cacheHit + solver.cacheMiss;
-    DEBUG("solver cache: " << getPerc(solver.cacheHit, cacheTotal));
-
-}
 
 struct RunnerUtil {
     template <typename T>
@@ -45,7 +39,6 @@ struct RunnerUtil {
         DEBUG("lettersUsed : " << GlobalArgs.specialLetters);
         DEBUG(stats);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
-        printSolverInformation(solver);
     }
 };
 

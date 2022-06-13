@@ -8,9 +8,11 @@ make -j;
 #./bin/solve -pr --max-tries 4 --max-incorrect 33 -w caste ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --max-tries 4 --max-incorrect 146 ext/wordle-guesses.txt ext/wordle-answers.txt
 
-./bin/solve -Seartolsincuyhpdmgbkf -w lants ext/wordle-combined.txt ext/wordle-combined.txt
+#/bin/solve -Seartolsincuyhpdmgbkf -I17 -g4 -w tenor ext/wordle-guesses.txt ext/wordle-answers.txt
+./bin/solve -L1 -p -Seartolsincuyhpdmgbkf ext/wordle-combined.txt ext/wordle-combined.txt
+#./bin/solve -Seartolsincuyhpdmgbkf -N5 ext/wordle-combined.txt ext/wordle-combined.txt
 #LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
-#./bin/solve -Seartolsincuyhpdmgbkf -I50 -g4 -N25 ext/wordle-guesses.txt ext/wordle-answers.txt
+#./bin/solve -Seartolsincuyhpdmgbkf -I50 -g4 -N1 ext/wordle-guesses.txt ext/wordle-answers.txt
 
 #LSAN_OPTIONS=fast_unwind_on_malloc=1 ./bin/solve -Seartol -p -I20 -g4 ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --force-sequential --max-tries 1 --max-incorrect 150 -w slate ext/wordle-guesses.txt ext/wordle-answers.txt

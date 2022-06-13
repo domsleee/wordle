@@ -49,6 +49,7 @@ int getIndex(const std::vector<T> &vec, const T& val) {
     return std::distance(vec.begin(), it);
 }
 
+
 template <typename T>
 static T safeMultiply(T a, T b) {
     T x = a * b;
@@ -189,3 +190,8 @@ inline void printIterable(const T &iterable) {
     for (auto el: iterable) DEBUG(el);
 }
 
+
+inline std::string fromBytes(long long numBytes) {
+    if (numBytes <= 1024 * 1024) return FROM_SS((numBytes / 1024) << "KB");
+    return FROM_SS((numBytes/1024/1024) << "MB");
+}

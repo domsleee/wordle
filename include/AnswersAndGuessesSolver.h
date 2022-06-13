@@ -39,7 +39,6 @@ struct AnswersAndGuessesSolver {
     const RemDepthType maxTries;
     std::string startingWord = "";
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, LookupCacheEntry> guessCache = {};
-    long long cacheMiss = 0, cacheHit = 0;
     PerfStats stats;
 
     static const int isEasyModeVar = isEasyMode;
@@ -136,10 +135,13 @@ struct AnswersAndGuessesSolver {
         auto &count = equiv;
         int nh = answers.size();
 
+        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        assert(thr >= 3);
+
         for (const auto guessIndex: guesses) {
             // const auto [numWrongFor2, sortVal] = calcSortVectorAndGetMinNumWrongFor2(guessIndex, answers, count, remDepth);
-            int numWrongFor2 = 0, innerLb = 0, s2 = 0;
-            int maxC = 0;
+            int innerLb = 0, s2 = 0;
+            bool maxCLtThr = true; // maxC < thr
             count.fill(0);
             for (const auto answerIndex: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
@@ -147,15 +149,12 @@ struct AnswersAndGuessesSolver {
                 ++c;
                 innerLb += 2 - (c <= 1); // Assumes remdepth>=3
                 s2 += 2*c - 1;
-                numWrongFor2 += c > 1;
-                if (c > maxC) maxC = c;
+                if (c >= thr) { maxCLtThr = false; }
             }
             
-            if (numWrongFor2 == 0) {
+            if (maxCLtThr) {
                 return {0, guessIndex};
             }
-
-            if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) > maxC) return {0, guessIndex};
             innerLb -= count[NUM_PATTERNS - 1];
             auto sortVal = (int64_t(2*s2 + nh*innerLb)<<32)|guessIndex;
             sortVec[guessIndex] = sortVal;
@@ -255,21 +254,23 @@ struct AnswersAndGuessesSolver {
         }
         stats.entryStats[GlobalArgs.maxTries-remDepth][2]++;
 
-        std::array<IndexType, NUM_PATTERNS> equiv;
-        auto &count = equiv;
+        maybePruneCache();
+
+        std::array<uint8_t, NUM_PATTERNS> count;
         stats.tick(45);
         //auto perfectAnswerCandidates = answers;
         //auto nonLetterMaskNoSpecialMask2 = RemoveGuessesWithBetterGuessCache::getNonLetterMaskNoSpecialMask(answers);
 
+        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
         for (const auto answerIndexForGuess: answers) {
             count.fill(0);
-            int maxC = 0;
+            bool maxCBelowThr = true;
             for (const auto actualAnswer: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(actualAnswer, answerIndexForGuess);
-                int c = (++count[patternInt]);
-                maxC = std::max(maxC, c);
+                auto c = ++count[patternInt];
+                if (c >= thr) { maxCBelowThr = false; break; }
             }
-            if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) > maxC) {
+            if (maxCBelowThr) {
                 stats.tock(45);
                 BestWordResult res = {0, answerIndexForGuess};
                 setOptCache(key, res);
@@ -279,12 +280,6 @@ struct AnswersAndGuessesSolver {
         stats.tock(45);
 
         if (fastMode == 2) return {-1, 0};
-
-        BestWordResult endGameRes = endGameAnalysisCached(answers, guesses, key, remDepth, beta);
-        if (endGameRes.numWrong >= beta) {
-            // lbCache is set within `endGameAnalysis` function
-            return endGameRes;
-        }
 
         std::array<int64_t, MAX_NUM_GUESSES> sortVec;
         const int depth = GlobalArgs.maxTries - remDepth;
@@ -298,6 +293,7 @@ struct AnswersAndGuessesSolver {
 
         stats.tick(50 + depth);
         auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() ? guessesDisregardingAnswers : guesses;
+        std::array<IndexType, NUM_PATTERNS> equiv;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
         stats.tock(50 + depth);
         if (minNumWrongFor2.numWrong == 0 || remDepth <= 2) {
@@ -343,27 +339,7 @@ struct AnswersAndGuessesSolver {
         }
 
         stats.tock(10);
-        if (false && depth <= 3) {
-            // 27655580
-            // 29744453
-            // 32813016
-            // <= 1: 27591995
-            // <= 2: 36137726
-            // <= 3: 11209085
-            // ??    16958341
-            // j = 0 --> dfjkl: 47436722
-            // with sort??
-            std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
-            guessesCopy = RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
-        } else {
-            // 27655580 
-            // 27900824
-            // 47436722
-            // 3942170 ? from remDepth = 3
-            // std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
-        }
-
+        RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
         stats.tock(33);
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
@@ -407,12 +383,11 @@ struct AnswersAndGuessesSolver {
         PatternType indexToPattern[NUM_PATTERNS];
         std::array<AnswersVec, NUM_PATTERNS> myEquiv{};
 
-        stats.tick(20);
-
         for (const auto answerIndex: answers) {
             const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
             myEquiv[patternInt].push_back(answerIndex);
         }
+        stats.tick(20);
         int totalWrongForGuess = 0;
         for (PatternType s = 0; s < NUM_PATTERNS-1; ++s) {
             std::size_t sz = myEquiv[s].size();
@@ -455,6 +430,19 @@ struct AnswersAndGuessesSolver {
 
         n = m;
 
+        for (int i = 0; i < n; ++i) {
+            auto s = indexToPattern[i];
+            totalWrongForGuess -= lb[s];
+            auto lbKey = getCacheKey(myEquiv[s], guesses, remDepth-1);
+            BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, lbKey, remDepth, beta);
+            lb[s] = std::max(lb[s], endGameRes.numWrong);
+
+            totalWrongForGuess = std::min(totalWrongForGuess + lb[s], INF_INT);
+            if (totalWrongForGuess >= beta) {
+                return totalWrongForGuess;
+            }
+        }
+
         stats.tick(22);
         int score[243];
         for (int i = 0; i < n; ++i) {
@@ -484,74 +472,6 @@ struct AnswersAndGuessesSolver {
 
         stats.tock(23+depth);
         return totalWrongForGuess;
-    }
-
-    int endGameAnalysis(
-        const AnswersVec &answers,
-        const GuessesVec &guesses,
-        const AnswersAndGuessesKey<isEasyMode> &cacheKey,
-        RemDepthType remDepth,
-        int beta
-    )
-    {
-        std::vector<int> endCount(EndGameAnalysis::numEndGames, 0);
-        int e, biggestendgame = -1, mx = 0;
-
-        for (auto answerIndex: answers) for (auto e: EndGameAnalysis::wordNum2EndGame[answerIndex]) endCount[e]++;
-        for (e = 0; e < EndGameAnalysis::numEndGames; e++) {
-            if (endCount[e] > mx) {
-                mx = endCount[e];
-                biggestendgame = e;
-            }
-        }
-        if (biggestendgame >= 0 && remDepth >= 1 && mx-1 > remDepth-1) {
-            // DEBUG("checking end game...");
-            AnswersVec liveEndGame = {};
-            for(auto answerIndex: answers) {
-                for (auto e: EndGameAnalysis::wordNum2EndGame[answerIndex]) {
-                    if (e == biggestendgame) liveEndGame.push_back(answerIndex);
-                }
-            }
-            int mult[6]={0};
-            std::pair<int, IndexType> indexThatAchievesLb = {0, 0};
-            for(auto guessIndex: guesses){
-                std::vector<int> seen(243, 0);
-                int n = 0;
-                for(auto answerIndex: liveEndGame) {
-                    auto s = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
-                    n += (seen[s] == 0);
-                    seen[s] = 1;
-                }
-                assert(n >= 1 && n <= 6); mult[n-1]++; // eg endgame .arks with fixed guess
-                if (n > indexThatAchievesLb.first) {
-                    indexThatAchievesLb = {n, guessIndex};
-                }
-            }
-            int n, r = remDepth - 1;
-            int sum = 0;
-            for (n = 5; n > 0 && r > 0; n--) {
-                int r1 = std::min(r, mult[n]);
-                sum += r1*n;
-                r -= r1;
-            }
-            auto minNumWrong = mx - 1 - sum;
-            setLbCache(cacheKey, {minNumWrong, indexThatAchievesLb.second});
-            if (minNumWrong >= beta) {
-                //static int endGameHit = 0;
-                //DEBUG("end game hit..." << ++endGameHit);
-                return minNumWrong;
-            }
-
-            /*if (liveEndGame.size() < answers.size()) {
-                auto v = minOverWordsLeastWrong(liveEndGame, guesses, remDepth, 0, beta);
-                if(v.numWrong >= beta) {
-                    DEBUG("end sub lookup hit...");
-                    setLbCacheVal(cacheKey, v.numWrong, v.wordIndex);
-                    return v.numWrong;
-                }
-            }*/
-        }
-        return 0;
     }
 
     BestWordResult endGameAnalysisCached(
@@ -588,6 +508,7 @@ struct AnswersAndGuessesSolver {
             int s0 = s - ((s/mm[j])%3)*mm[j];
             int v = 0;
             for (int a = 0; a < 3; a++) v = std::min(v + lb[s0+mm[j]*a], INF_INT);
+            if (v == 0) continue;
             auto cacheKey = getCacheKey(equiv[s0], guesses, remDepth-1);
             for (auto ind: equiv[s0+mm[j]]) cacheKey.state.wsAnswers[ind] = true;
             for (auto ind: equiv[s0+2*mm[j]]) cacheKey.state.wsAnswers[ind] = true;
@@ -620,33 +541,33 @@ struct AnswersAndGuessesSolver {
                 //writelboundcache(depth+1,filtered[s],u,inc-u.size());
             }
         }
-        for(int i=0;i<3;i++)if((s/mm[i])%3==0)for(int j=i+1;j<4;j++)if((s/mm[j])%3==0)for(int k = j+1; k<5; ++k)if((s/mm[k])%3==0){
-            int a,b,c,t=0;
-            for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]].size();
+        // for(int i=0;i<3;i++)if((s/mm[i])%3==0)for(int j=i+1;j<4;j++)if((s/mm[j])%3==0)for(int k = j+1; k<5; ++k)if((s/mm[k])%3==0){
+        //     int a,b,c,t=0;
+        //     for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]].size();
 
-            if(t>int(equiv[s].size())){
-                auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
-                for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c){
-                    auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]];
-                    for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
-                }
-                setLbCache(cacheKey, {numWrong, guessIndex});
-            }
-        }
+        //     if(t>int(equiv[s].size())){
+        //         auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
+        //         for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c){
+        //             auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]];
+        //             for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
+        //         }
+        //         setLbCache(cacheKey, {numWrong, guessIndex});
+        //     }
+        // }
 
-        for(int i=0;i<2;i++)if((s/mm[i])%3==0)for(int j=i+1;j<3;j++)if((s/mm[j])%3==0)for(int k = j+1; k<4; ++k)if((s/mm[k])%3==0)for(int l = k+1; l<5; ++l)if((s/mm[l])%3==0){
-            int a,b,c,d,t=0;
-            for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)for(d=0;d<3;++d)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]+d*mm[l]].size();
+        // for(int i=0;i<2;i++)if((s/mm[i])%3==0)for(int j=i+1;j<3;j++)if((s/mm[j])%3==0)for(int k = j+1; k<4; ++k)if((s/mm[k])%3==0)for(int l = k+1; l<5; ++l)if((s/mm[l])%3==0){
+        //     int a,b,c,d,t=0;
+        //     for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)for(d=0;d<3;++d)t+=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]+d*mm[l]].size();
 
-            if(t>int(equiv[s].size())){
-                auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
-                for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)for(d=0;d<3;++d){
-                    auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]+d*mm[l]];
-                    for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
-                }
-                setLbCache(cacheKey, {numWrong, guessIndex});
-            }
-        }
+        //     if(t>int(equiv[s].size())){
+        //         auto cacheKey = getCacheKey(AnswersVec(), guesses, remDepth-1);
+        //         for(a=0;a<3;a++)for(b=0;b<3;b++)for(c=0;c<3;++c)for(d=0;d<3;++d){
+        //             auto &e=equiv[s+a*mm[i]+b*mm[j]+c*mm[k]+d*mm[l]];
+        //             for (auto ind: e) cacheKey.state.wsAnswers[ind] = true;
+        //         }
+        //         setLbCache(cacheKey, {numWrong, guessIndex});
+        //     }
+        // }
     }
 
     int getDefaultBeta() {
@@ -669,6 +590,7 @@ struct AnswersAndGuessesSolver {
             if (lb > curr.lb) { curr.lb = lb; curr.guessForLb = guessForLb; }
             if (ub < curr.ub) { curr.ub = ub; curr.guessForUb = guessForUb; }
         } else {
+            stats.addCacheWrite(key.state.remDepth);
             guessCache[key] = LookupCacheEntry(guessForLb, guessForUb, lb, ub);
         }
     }
@@ -685,10 +607,12 @@ struct AnswersAndGuessesSolver {
         stats.tick(46);
         auto it = guessCache.find(key);
         if (it == guessCache.end()) {
-            cacheMiss++; stats.tock(46);
+            stats.addCacheMiss(key.state.remDepth);
+            stats.tock(46);
             return LookupCacheEntry(0, 0, 0, -1);
         }
-        cacheHit++; stats.tock(46);
+        stats.addCacheHit(key.state.remDepth);
+        stats.tock(46);
         return it->second;
     }
 
@@ -710,5 +634,20 @@ struct AnswersAndGuessesSolver {
     static const BestWordResult& getDefaultBestWordResult() {
         static BestWordResult defaultBestWordResult = {INF_INT, MAX_INDEX_TYPE};
         return defaultBestWordResult;
+    }
+
+    long long nextCheck = 0;
+    static constexpr std::size_t keySize =  sizeof(AnswersAndGuessesKey<isEasyMode>);
+    static constexpr std::size_t valSize = sizeof(LookupCacheEntry);
+
+    void maybePruneCache() {
+        if (stats.nodes >= nextCheck) {
+            // each cache entry = 
+            auto approxBytes = 1.1 * guessCache.size() * (sizeof(void*) + keySize + valSize);
+            if (approxBytes >= GlobalArgs.memLimitPerThread * 1e9) {
+                DEBUG("pruned ;)");
+                guessCache.clear();
+            }
+        }
     }
 };

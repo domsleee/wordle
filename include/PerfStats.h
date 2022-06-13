@@ -8,6 +8,7 @@ const int TOTAL_TIMINGS = 100;
 #define TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth) (60 + depth)
 
 struct PerfStats {
+    long long cacheInfo[MAX_DEPTH][3] = {0};
     long long entryStats[MAX_DEPTH][NUM_FAST_MODES] = {0};
     long long nodes = 0;
     double lcpu[TOTAL_TIMINGS] = {0.00}, tcpu[TOTAL_TIMINGS] = {0.00};
@@ -21,6 +22,9 @@ struct PerfStats {
             for (int j = 0; j < NUM_FAST_MODES; ++j) {
                 entryStats[i][j] += other.entryStats[i][j];
             }
+            for (int j = 0; j < 3; ++j) {
+                cacheInfo[i][j] += other.cacheInfo[i][j];
+            }
         }
         for (int i = 0; i < TOTAL_TIMINGS; ++i) {
             lcpu[i] += other.lcpu[i];
@@ -31,9 +35,12 @@ struct PerfStats {
     }
 
     friend std::ostream& operator<< (std::ostream& out, const PerfStats &curr) {
-        printf("%6s %12s %12s %12s %12s %12s\n", "depth", "mode0", "mode1", "mode2", "mode3", "#wrongFor2");
+        printf("%6s %12s %12s %12s %12s %12s %7s %12s %12s %12s\n", "depth", "mode0", "mode1", "mode2", "mode3", "#wrongFor2", " ", "cWrite", "cRead", "cMiss");
         for (int i = 1; i <= GlobalArgs.maxTries; ++i) {
-            printf("%6d %12lld %12lld %12lld %12lld %12lld %2f\n", i, curr.entryStats[i][0], curr.entryStats[i][1], curr.entryStats[i][2], curr.entryStats[i][3], curr.ncpu[50+i], curr.tcpu[50+i]);
+            printf("%6d %12lld %12lld %12lld %12lld %12lld %2.4f %12lld %12lld %12lld\n", i,
+                curr.entryStats[i][0], curr.entryStats[i][1], curr.entryStats[i][2], curr.entryStats[i][3],
+                curr.ncpu[50+i], curr.tcpu[50+i],
+                curr.cacheInfo[i][0], curr.cacheInfo[i][1], curr.cacheInfo[i][2]);
         }
         if (GlobalArgs.timings) {
             // printf("numAnswers,calls,time\n");
@@ -85,6 +92,21 @@ struct PerfStats {
     void printEntry(std::string label, int i) const {
         printf("%5d (%15s): %12lld, %3f\n", i, label.c_str(), ncpu[i], tcpu[i]);
     }
+
+    void addCacheWrite(RemDepthType remDepth) {
+        cacheInfo[getDepth(remDepth)][0]++;
+
+    }
+
+    void addCacheHit(RemDepthType remDepth) {
+        cacheInfo[getDepth(remDepth)][1]++;
+    }
+
+    void addCacheMiss(RemDepthType remDepth) {
+        cacheInfo[getDepth(remDepth)][2]++;
+    }
+
+    int getDepth(RemDepthType remDepth) { return GlobalArgs.maxTries - remDepth; }
 
     void tick(int i){if(GlobalArgs.timings && !ignoreTime(i))lcpu[i]=cpu();}
     void tock(int i){if(GlobalArgs.timings && !ignoreTime(i)){ncpu[i]+=1;tcpu[i]+=cpu()-lcpu[i];}}

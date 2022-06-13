@@ -31,6 +31,9 @@ int main(int argc, char *argv[]) {
         ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
 
+        // floats
+        ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
+
         ("h,help", "Print usage")
     ;
     options.parse_positional({"guesses", "answers"});
@@ -50,6 +53,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.numToRestrict = result["num-to-restrict"].as<int>();
     GlobalArgs.maxTries = result["max-tries"].as<int>();
     GlobalArgs.maxWrong = result["max-numWrong"].as<int>();
+    GlobalArgs.memLimitPerThread = result["mem-limit"].as<double>();
     GlobalArgs.firstWord = result["first-guess"].as<std::string>();
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
