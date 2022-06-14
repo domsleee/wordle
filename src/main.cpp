@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
         ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
         ("min-lb-cache", "RemDepth for storing lb cache", cxxopts::value<int>()->default_value("2"))
+        ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
 
         // floats
         ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
@@ -56,6 +57,7 @@ int main(int argc, char *argv[]) {
     GlobalArgs.maxWrong = result["max-numWrong"].as<int>();
     GlobalArgs.memLimitPerThread = result["mem-limit"].as<double>();
     GlobalArgs.minLbCache = result["min-lb-cache"].as<int>();
+    GlobalArgs.workers = result["workers"].as<int>();
     GlobalArgs.firstWord = result["first-guess"].as<std::string>();
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();

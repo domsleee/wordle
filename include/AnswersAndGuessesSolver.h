@@ -583,8 +583,11 @@ struct AnswersAndGuessesSolver {
             if (ub < curr.ub) { curr.ub = ub; curr.guessForUb = guessForUb; }
         } else {
             stats.addCacheWrite(remDepth);
-            static const std::size_t entryOverhead = 2 * sizeof(void*) + sizeof(LookupCacheEntry);
-            cacheSize[remDepth] += entryOverhead + answers.size() * sizeof(IndexType);
+            static const std::size_t entryOverhead = sizeof(std::_Rb_tree_node_base);
+            static const std::size_t valueSize = sizeof(void*) + sizeof(LookupCacheEntry);
+
+            std::size_t keySize = sizeof(void*) + answers.capacity() * sizeof(IndexType);
+            cacheSize[remDepth] += entryOverhead + valueSize + keySize;
             // static std::ofstream cacheDebug("cacheDebug");
             // cacheDebug << answers.size() << '\n';
             // cacheDebug.flush();
@@ -632,7 +635,8 @@ struct AnswersAndGuessesSolver {
 
             // DEBUG("approxBytes: " << stats.nodes << ", " << fromBytes(approxBytes));
 
-            if (approxBytes >= GlobalArgs.memLimitPerThread * 1e9) {
+            auto memLimit = 0.75 * GlobalArgs.memLimitPerThread * 1e9;
+            if (approxBytes >= memLimit) {
                 DEBUG("pruned ;)");
                 for (int i = 0; i <= maxTries; ++i) {
                     cacheSize[i] = 0;
