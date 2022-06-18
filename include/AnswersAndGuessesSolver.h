@@ -45,6 +45,7 @@ struct AnswersAndGuessesSolver {
     std::vector<uint64_t> cacheSize = {};
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, LookupCacheEntry> guessCache = {};
     PerfStats stats;
+    bool disableEndGameAnalysis = false;
 
     static const int isEasyModeVar = isEasyMode;
 
@@ -404,17 +405,20 @@ struct AnswersAndGuessesSolver {
         if (n == 0) return totalWrongForGuess;
 
         assert(remDepth >= 2);
-        for (int i = 0; i < n; ++i) {
-            auto s = indexToPattern[i];
-            totalWrongForGuess -= lb[s];
-            BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, remDepth, beta);
-            lb[s] = std::max(lb[s], endGameRes.numWrong);
+        if (!disableEndGameAnalysis) {
+            for (int i = 0; i < n; ++i) {
+                auto s = indexToPattern[i];
+                totalWrongForGuess -= lb[s];
+                BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, remDepth, beta);
+                lb[s] = std::max(lb[s], endGameRes.numWrong);
 
-            totalWrongForGuess = std::min(totalWrongForGuess + lb[s], INF_INT);
-            if (totalWrongForGuess >= beta) {
-                return totalWrongForGuess;
+                totalWrongForGuess = std::min(totalWrongForGuess + lb[s], INF_INT);
+                if (totalWrongForGuess >= beta) {
+                    return totalWrongForGuess;
+                }
             }
         }
+
 
         stats.tick(22);
         int score[243];
@@ -455,12 +459,12 @@ struct AnswersAndGuessesSolver {
         int beta
     )
     {
-        std::vector<int> endGameMasks(EndGameAnalysis::numEndGames, 0);
+        std::vector<int> endGameMasks(EndGameAnalysis::endGames.size(), 0);
         for (auto answerIndex: answers) for (auto [e, maskIndex]: EndGameAnalysis::wordNum2EndGamePair[answerIndex]) {
             endGameMasks[e] |= (1 << maskIndex);
         }
         auto maxR = BestWordResult(-1, 0);
-        for (int e = 0; e < EndGameAnalysis::numEndGames; ++e) {
+        for (std::size_t e = 0; e < EndGameAnalysis::endGames.size(); ++e) {
             auto r = EndGameAnalysis::getFromCache(remDepth, e, endGameMasks[e]);
             if (r.numWrong > maxR.numWrong) {
                 maxR = r;

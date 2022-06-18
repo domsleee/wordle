@@ -12,12 +12,22 @@ struct _GlobalState {
     _GlobalState(){}
 
     _GlobalState(
-        const std::vector<std::string> &allGuesses,
-        const std::vector<std::string> &allAnswers)
-        : allGuesses(allGuesses),
-          allAnswers(allAnswers),
-          reverseIndexLookup(buildLookup())
+        const std::vector<std::string> &guesses,
+        const std::vector<std::string> &answers)
     {
+        allAnswers = answers;
+        std::sort(allAnswers.begin(), allAnswers.end());
+
+        auto guessesCopy = guesses;
+        std::sort(guessesCopy.begin(), guessesCopy.end());
+        std::vector<std::string> guessesNotInAnswers = {};
+
+        std::set_difference(guessesCopy.begin(), guessesCopy.end(), allAnswers.begin(), allAnswers.end(),
+            std::inserter(guessesNotInAnswers, guessesNotInAnswers.begin()));
+        
+        allGuesses = allAnswers;
+        for (const auto &s: guessesNotInAnswers) allGuesses.push_back(s);
+
         checkWordSetSize<WordSetAnswers>("NUM_WORDS", allAnswers.size());
         checkWordSetSize<WordSetGuesses>("MAX_NUM_GUESSES", allGuesses.size());
 
@@ -28,20 +38,17 @@ struct _GlobalState {
                 exit(1);
             }
         }
+
+        reverseIndexLookup = allGuesses;
     }
 
-    std::vector<std::string> buildLookup() {
-        std::vector<std::string> lookup(allGuesses.size());
-
+    void validateGuesses() {
         for (std::size_t i = 0; i < allGuesses.size(); ++i) {
-            lookup[i] = allGuesses[i];
             if (i < allAnswers.size() && allGuesses[i] != allAnswers[i]) {
                 DEBUG("allGuesses[" << i << "] should equal allAnswers[" << i << "], " << allGuesses[i] << " vs " << allAnswers[i]);
                 exit(1);
             }
         }
-
-        return lookup;
     }
 
     IndexType getIndexForWord(const std::string &word) const {

@@ -13,7 +13,6 @@ int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
     auto guesses = readFromFile(GlobalArgs.guesses);
 
-    guesses = mergeAndUniq(answers, guesses);
     if (GlobalArgs.reduceGuesses) {
         answers = getFirstNWords(answers, GlobalArgs.numToRestrict);
         guesses = answers;
@@ -29,9 +28,9 @@ int Runner::run() {
         NonLetterLookup::build();
         RemoveGuessesWithNoLetterInAnswers::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
-        EndGameAnalysis::init();
+        //SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
+        EndGameAnalysis::init<isEasyMode>(solver);
         EndGameAnalysis::initCache<isEasyMode>(solver);
-        // SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
 
         //return 0;
         END_TIMER(precompute);

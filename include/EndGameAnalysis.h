@@ -1,58 +1,174 @@
 #pragma once
 #include "Defs.h"
 #include "GlobalState.h"
-#include "LookupCacheEntry.h"
 
 #include <map>
 #include <string>
 #include <filesystem>
 
 struct EndGameAnalysis {
-    static inline std::vector<GuessesVec> wordNum2EndGame = {};
     static inline std::vector<std::vector<std::pair<int, int>>> wordNum2EndGamePair = {};
-    static inline int numEndGames = 0;
-    static const int minEndGameCount = 4;
-    static inline std::vector<std::vector<int>> endGames = {};
+    static inline std::vector<AnswersVec> endGames = {};
+    static inline std::vector<bool> isOneWildcard = {};
     static inline std::vector<std::vector<std::vector<BestWordResult>>> cache;
 
-    static void init() {
-        int i,j,nh=GlobalState.allAnswers.size();
+    static const int minEndGameCount = 4;
+
+    template <bool isEasyMode>
+    static void init(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+        int nh=GlobalState.allAnswers.size();
+        IndexType i;
         std::map<std::string, unsigned int> wcount;// Map from wildcarded string, e.g. ".arks", to number of occurrences
         std::map<std::string, int> w2e;    // Map from wildcarded string, e.g. ".arks", to endgame number
         
         for (std::string &s: GlobalState.allAnswers){
-            for (j = 0; j < 5; j++){
-                std::string t = getWildcard(s, j);
+            for (std::string t: getWildcards(s)) {
                 if (wcount.count(t) == 0) wcount[t] = 0;
                 wcount[t]++;
             }
         }
-        
-        wordNum2EndGame.resize(nh);
-        wordNum2EndGamePair.resize(nh);
-        endGames.assign(numEndGames, {});
-        numEndGames = 0;
+
+        endGames = {};
         for (i = 0; i < nh; i++){
             std::string s = GlobalState.allAnswers[i];
-            for(j = 0; j < 5; j++){
-                std::string t = getWildcard(s, j);
+            for (auto t: getWildcards(s)) {
+                int ct = 0;
+                for (char c: t) ct += (c == '.');
                 if (wcount[t] >= minEndGameCount){
                     if (w2e.count(t) == 0) {
-                        w2e[t] = numEndGames++;
-                        endGames.resize(numEndGames);
+                        w2e[t] = endGames.size();
+                        endGames.resize(endGames.size()+1);
+                        isOneWildcard.resize(endGames.size());
                     }
-                    wordNum2EndGame[i].push_back(w2e[t]);
-                    wordNum2EndGamePair[i].push_back({w2e[t], endGames[w2e[t]].size()});
-                    endGames[w2e[t]].push_back(i);
+                    int e = w2e[t];
+                    // wordNum2EndGame[i].push_back(e);
+                    // wordNum2EndGamePair[i].push_back({e, endGames[e].size()});
+                    endGames[e].push_back(i);
+                    isOneWildcard[e] = ct == 1;
+                }
+            }
+        }
+        std::vector<AnswersVec> filteredEndGames = getFilteredEndGames(nothingSolver);
+
+        DEBUG("filtered endGames: " << getPerc(filteredEndGames.size(), endGames.size()));
+        endGames = filteredEndGames;
+        std::size_t maxEndGame = 0;
+        
+       // wordNum2EndGame.assign(nh, {});
+        wordNum2EndGamePair.assign(nh, {});
+        for (std::size_t e = 0; e < endGames.size(); ++e) {
+            for (std::size_t k = 0; k < endGames[e].size(); ++k) {
+                IndexType v = endGames[e][k];
+                //wordNum2EndGame[v].push_back(e);
+                wordNum2EndGamePair[v].push_back({e, k});
+            }
+            maxEndGame = std::max(maxEndGame, endGames[e].size());
+        }
+
+        DEBUG("numEndGames: " << endGames.size() << ", maxEndGame: " << maxEndGame);
+    }
+
+    static void printEndgame(int e) {
+        DEBUG("endGame: " << e);
+        std::vector<std::string> res = {};
+        for (auto v: endGames[e]) res.push_back(GlobalState.reverseIndexLookup[v]);
+        printIterable(res);
+    }
+
+    template <bool isEasyMode>
+    static std::vector<AnswersVec> getFilteredEndGames(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+        std::set<int> filteredEndGames = {};
+        std::set<AnswersVec> resEndGames = {};
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        int remDepthGte3 = 0;
+        long long totalOneWildcard = 0, totalToEvaluate = 0;
+
+        for (std::size_t e = 0; e < endGames.size(); ++e) {
+            if (isOneWildcard[e]) {
+                totalOneWildcard++;
+                filteredEndGames.insert(e);
+                resEndGames.insert(endGames[e]);
+                if (endGames[e].size() >= 20) {
+                    DEBUG("LSDKFJSDLKJF: " << e << " " << endGames[e].size() << ", " << getBoolVal(isOneWildcard[e]));
+                    printIterable(endGames[e]);
+                    exit(1);
                 }
             }
         }
 
-        DEBUG("numEndGames: " << numEndGames);
+        const int groupSize = 19;
+        int myMax=0;
+        for (RemDepthType remDepth = 4; remDepth >= 2; remDepth--) {
+            for (std::size_t e = 0; e < endGames.size(); ++e) {
+                if (!isOneWildcard[e]) {
+                    totalToEvaluate += std::max(0, (int)endGames[e].size()-groupSize);
+                    myMax = std::max(myMax, (int)endGames[e].size());
+                }
+            }
+        }
+        DEBUG("myMax: " << myMax);
+
+        auto bar = SimpleProgress("EndGameFilter", totalToEvaluate);
+
+        for (RemDepthType remDepth = 4; remDepth >= 2; remDepth--) {
+            for (std::size_t e = 0; e < endGames.size(); ++e) {
+                if (filteredEndGames.contains(e)) continue;
+
+                auto solver = nothingSolver;
+                solver.disableEndGameAnalysis = true;
+                
+                const auto &endGame = endGames[e];
+                if (endGame.size() < groupSize) continue;
+                for (std::size_t i = 0; i < endGame.size()-groupSize; ++i) {
+                    AnswersVec answers = {};
+                    for (std::size_t j = i; j < i+groupSize; ++j) answers.push_back(endGame[j]);
+                    auto res = solver.minOverWordsLeastWrong(answers, guesses, remDepth, 0, solver.getDefaultBeta());
+                    if (res.numWrong > 0) {
+                        filteredEndGames.insert(e);
+                        resEndGames.insert(answers);
+                        //DEBUG("INSERT: " << resEndGames.size() << ": " << answers.size());
+                        if (answers.size() > 20) { DEBUG("SDLFJDSKL:F"); exit(1); }
+                        remDepthGte3 += remDepth >= 3;
+                        i += groupSize;
+                        bar.incrementAndUpdateStatus("", groupSize-1);
+                    }
+                    bar.incrementAndUpdateStatus("");
+                }
+                if (remDepth == 2 && filteredEndGames.size() >= 2000) break;
+                
+            }
+        }
+
+        DEBUG("percent remDepthGte3 " << getPerc(remDepthGte3, filteredEndGames.size()) << ", totalOneWildcard: " << totalOneWildcard);
+
+        return {resEndGames.begin(), resEndGames.end()};
     }
 
-    static std::string getWildcard(const std::string &s, int j) {
-        return s.substr(0,j) + "." + s.substr(j+1, 5-(j+1));
+    static std::vector<std::string> getWildcards(const std::string &s) {
+        std::vector<std::string> res = {};
+        for (int i = 0; i < 5; ++i) {
+            std::string cop(s);
+            cop[i] = '.';
+            res.push_back(cop);
+        }
+        for (int i = 0; i < 5; ++i) {
+            for (int j = i+1; j < 5; ++j) {
+                std::string cop(s);
+                cop[i] = cop[j] = '.';
+                res.push_back(cop);
+            }
+        }
+        // for (int i = 0; i < 5; ++i) {
+        //     for (int j = i+1; j < 5; ++j) {
+        //         for (int k = j+1; k < 5; ++k) {
+        //             std::string cop(s);
+        //             cop[i] = cop[j] = cop[k] = '.';
+        //             res.push_back(cop);
+        //         }
+        //     }
+        // }
+
+        return res;
     }
 
     template <bool isEasyMode>
@@ -71,6 +187,7 @@ struct EndGameAnalysis {
 
         START_TIMER(initEndGameAnalysisCache);
         auto solver = nothingSolver;
+        solver.disableEndGameAnalysis = true;
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
 
         setDefaultCache();
@@ -81,8 +198,8 @@ struct EndGameAnalysis {
         bar.everyNth = 100;
 
         for (RemDepthType remDepth = 2; remDepth <= GlobalArgs.maxTries-1; ++remDepth) {
-            for (int e = 0; e < numEndGames; ++e) {
-                bar.updateStatus(FROM_SS(" remDepth: " << (int)remDepth << ", e: " << getFrac(e, numEndGames) << ", sub: " << subsetHelp << ", sup: " << supersetHelp));
+            for (std::size_t e = 0; e < endGames.size(); ++e) {
+                bar.updateStatus(FROM_SS(" remDepth: " << (int)remDepth << ", e: " << getFrac(e, (int)endGames.size()) << ", sub: " << subsetHelp << ", sup: " << supersetHelp));
                 int maxV = getMaxV(e);
                 for (int mask = maxV; mask >= 0; --mask) {
                     AnswersVec answers = {};
@@ -121,8 +238,8 @@ struct EndGameAnalysis {
     static void setDefaultCache() {
         cache.resize(GlobalArgs.maxTries-2); // remDepth = 0, 1, maxTries not populated
         for (RemDepthType remDepth = 2; remDepth <= GlobalArgs.maxTries-1; ++remDepth) {
-            cache[remDepth-2].resize(numEndGames);
-            for (int e = 0; e < numEndGames; ++e) {
+            cache[remDepth-2].resize(endGames.size());
+            for (std::size_t e = 0; e < endGames.size(); ++e) {
                 int maxV = getMaxV(e);
                 BestWordResult def(-1, MAX_INDEX_TYPE);
                 assertBounds(remDepth, e, maxV);
@@ -189,7 +306,7 @@ struct EndGameAnalysis {
 
     static void assertBounds(RemDepthType remDepth, int e, int mask) {
         assert(2 <= remDepth && remDepth <= GlobalArgs.maxTries-1);
-        assert(0 <= e && e < numEndGames);
+        assert(0 <= e && e < (int)endGames.size());
         assert(0 <= mask && mask <= getMaxV(e));
     }
 
@@ -197,7 +314,7 @@ struct EndGameAnalysis {
         START_TIMER(writeCacheToFile);
         std::ofstream fout(filename);
         for (RemDepthType remDepth = 2; remDepth <= GlobalArgs.maxTries-1; ++remDepth) {
-            for (int e = 0; e < numEndGames; ++e) {
+            for (std::size_t e = 0; e < endGames.size(); ++e) {
                 int maxV = getMaxV(e);
                 for (int mask = 0; mask <= maxV; ++mask) {
                     auto entry = getFromCache(remDepth, e, mask);
@@ -236,3 +353,4 @@ struct EndGameAnalysis {
         END_TIMER(endGameAnalysisReadFromCache);
     }
 };
+
