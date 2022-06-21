@@ -17,7 +17,7 @@ reals,1,0
 salet,1,0
 lanes,0,0
 lears,1,0
-aloes,1,0
+aloes,2,0
 seral,1,0
 lores,0,0
 laers,1,0

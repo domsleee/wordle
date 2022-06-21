@@ -54,18 +54,23 @@ struct EndGameAnalysis {
         endGames = filteredEndGames;
         std::size_t maxEndGame = 0;
         
-       // wordNum2EndGame.assign(nh, {});
-        wordNum2EndGamePair.assign(nh, {});
-        for (std::size_t e = 0; e < endGames.size(); ++e) {
-            for (std::size_t k = 0; k < endGames[e].size(); ++k) {
-                IndexType v = endGames[e][k];
-                //wordNum2EndGame[v].push_back(e);
-                wordNum2EndGamePair[v].push_back({e, k});
-            }
-            maxEndGame = std::max(maxEndGame, endGames[e].size());
-        }
+        populateWordNum2EndGamePair();
 
         DEBUG("numEndGames: " << endGames.size() << ", maxEndGame: " << maxEndGame);
+    }
+
+    static void populateWordNum2EndGamePair() {
+        wordNum2EndGamePair.assign(GlobalState.allGuesses.size(), {});
+        for (std::size_t e = 0; e < endGames.size(); ++e) {
+            populateWordNum2EndGamePair(e, endGames[e]);
+        }
+    }
+
+    static void populateWordNum2EndGamePair(std::size_t e, const AnswersVec &answers) {
+        for (std::size_t k = 0; k < answers.size(); ++k) {
+            IndexType v = answers[k];
+            wordNum2EndGamePair[v].push_back({e, k});
+        }
     }
 
     static void printEndgame(int e) {
@@ -79,23 +84,62 @@ struct EndGameAnalysis {
     static std::vector<AnswersVec> getFilteredEndGames(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         std::set<int> filteredEndGames = {};
         std::set<AnswersVec> resEndGames = {};
-        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
-        int remDepthGte3 = 0;
-        long long totalOneWildcard = 0, totalToEvaluate = 0;
+        long long totalOneWildcard = 0;
 
         for (std::size_t e = 0; e < endGames.size(); ++e) {
-            if (isOneWildcard[e]) {
-                totalOneWildcard++;
-                filteredEndGames.insert(e);
-                resEndGames.insert(endGames[e]);
-                if (endGames[e].size() >= 20) {
-                    DEBUG("LSDKFJSDLKJF: " << e << " " << endGames[e].size() << ", " << getBoolVal(isOneWildcard[e]));
-                    printIterable(endGames[e]);
-                    exit(1);
-                }
-            }
+            if (!isOneWildcard[e]) continue;
+            totalOneWildcard++;
+            filteredEndGames.insert(e);
+            resEndGames.insert(endGames[e]);
         }
 
+        auto r2 = getFilteredEndGamesDifferentToOneWildcard(nothingSolver);
+        for (auto &v: r2) resEndGames.insert(v);
+        return {resEndGames.begin(), resEndGames.end()};
+    }
+
+    template <bool isEasyMode>
+    static std::set<AnswersVec> getFilteredEndGamesDifferentToOneWildcard(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+        std::set<AnswersVec> resEndGames = {};
+        auto solver = nothingSolver;
+        solver.disableEndGameAnalysis = true;
+        
+        std::vector<std::vector<AnswersVec>> groupsThatAreDifferentToOneWildcard = {};
+        for (std::size_t e = 0; e < endGames.size(); ++e) {
+            if (isOneWildcard[e]) continue;
+            groupsThatAreDifferentToOneWildcard.push_back(getGroupsDiffToOne(e));
+        }
+
+        long long totalToEvaluate = 0;
+        for (const auto &grp: groupsThatAreDifferentToOneWildcard) {
+            totalToEvaluate += 1 * grp.size();
+        }
+
+        auto bar = SimpleProgress("EndGameFilter_DiffOne", totalToEvaluate);
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        for (const auto &grp: groupsThatAreDifferentToOneWildcard) {
+            for (const auto &answerVec: grp) {
+                auto res = solver.minOverWordsLeastWrong(answerVec, guesses, 3, 0, solver.getDefaultBeta());
+                if (res.numWrong > 0) {
+                    // good anakin, gooood
+                    resEndGames.insert(answerVec);
+                    break;
+                }
+                bar.incrementAndUpdateStatus(FROM_SS(" endGames: " << resEndGames.size()    ));
+            }
+        }
+        bar.dispose();
+        DEBUG("EndGameFilter_DiffOne: " << resEndGames.size());
+        return resEndGames;
+    }
+
+    template <bool isEasyMode>
+    static std::set<AnswersVec> getFilteredEndGamesSlidingWindow(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+        std::set<int> filteredEndGames = {};
+        std::set<AnswersVec> resEndGames = {};
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        int remDepthGte3 = 0;
+        long long totalToEvaluate = 0;
         const int groupSize = 19;
         int myMax=0;
         for (RemDepthType remDepth = 4; remDepth >= 2; remDepth--) {
@@ -112,7 +156,7 @@ struct EndGameAnalysis {
 
         for (RemDepthType remDepth = 4; remDepth >= 2; remDepth--) {
             for (std::size_t e = 0; e < endGames.size(); ++e) {
-                if (filteredEndGames.contains(e)) continue;
+                if (filteredEndGames.contains(e) || isOneWildcard[e]) continue;
 
                 auto solver = nothingSolver;
                 solver.disableEndGameAnalysis = true;
@@ -139,9 +183,70 @@ struct EndGameAnalysis {
             }
         }
 
-        DEBUG("percent remDepthGte3 " << getPerc(remDepthGte3, filteredEndGames.size()) << ", totalOneWildcard: " << totalOneWildcard);
+        return resEndGames;
+    }
 
-        return {resEndGames.begin(), resEndGames.end()};
+    static std::vector<AnswersVec> getGroupsDiffToOne(int e) {
+        std::vector<AnswersVec> res = {};
+        AnswersVec vec = {};
+        if (endGames[e].size() > 40) return res;
+        std::vector<int> endGameCt(endGames.size());
+        populateWordNum2EndGamePair();
+        std::size_t maxI = 50000;
+        getGroupsDiffToOne(res, endGameCt, vec, 0, e, maxI);
+        DEBUG("getGroupsDiffToOne: " << e << ", size: " << res.size());
+        return res;
+    }
+
+    static void getGroupsDiffToOne(std::vector<AnswersVec> &res, std::vector<int> &endGameCt, AnswersVec &vec, const std::size_t i, const int e, std::size_t &maxI) {
+        //DEBUG("call res:" << res.size() << ", vec:" << vec.size() << ", i: " << i << ", e: " << e << ", endGames[e]: " << endGames[e].size() << ", maxI: " << maxI);
+        if (res.size() > 50000) return;
+        static const std::size_t groupSize = 19;
+        static const int maxSimilarToOne = 7;
+
+        assert(vec.size() <= groupSize);
+        if (vec.size() > groupSize) { DEBUG("FAIL"); exit(1); }
+
+        if (i == endGames[e].size()) {
+            if (vec.size() == groupSize) {   
+                res.push_back(vec);
+                std::size_t newE = endGameCt.size();
+                endGameCt.resize(newE + 1);
+                endGameCt[newE] = vec.size();
+                populateWordNum2EndGamePair(newE, vec);
+                // maxI = i-groupSize+1;
+            }
+            return;
+        }
+
+        if (i > maxI) return;
+        if (vec.size() + (endGames[e].size() - i) < groupSize) return;
+
+        getGroupsDiffToOne(res, endGameCt, vec, i+1, e, maxI); // don't take it
+        // take it
+        if (vec.size() == groupSize) return;
+        IndexType ind = endGames[e][i];
+        int M = 0;
+        for (auto [e2, _]: wordNum2EndGamePair[ind]) {
+            if (!isOneWildcardOrAdded(e2)) continue;
+            M = std::max(M, ++endGameCt[e2]);
+        }
+
+        if (M <= maxSimilarToOne) {
+            // do recursion
+            vec.push_back(ind);
+            getGroupsDiffToOne(res, endGameCt, vec, i+1, e, maxI);
+            vec.pop_back();
+        }
+
+        for (auto [e2, _]: wordNum2EndGamePair[ind]) {
+            if (!isOneWildcardOrAdded(e2)) continue;
+            --endGameCt[e2];
+        }
+    }
+
+    static bool isOneWildcardOrAdded(std::size_t e) {
+        return isOneWildcard[e] || (e >= endGames.size());
     }
 
     static std::vector<std::string> getWildcards(const std::string &s) {
