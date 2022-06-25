@@ -9,4 +9,8 @@ struct LookupCacheEntry {
           lb(lb),
           ub(ub) {}
     LookupCacheEntry() {}
+
+    static LookupCacheEntry defaultLookupCacheEntry() {
+        return LookupCacheEntry(0, 0, 0, -1);
+    }
 };

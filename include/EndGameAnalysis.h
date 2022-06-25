@@ -256,13 +256,13 @@ struct EndGameAnalysis {
             cop[i] = '.';
             res.push_back(cop);
         }
-        for (int i = 0; i < 5; ++i) {
-            for (int j = i+1; j < 5; ++j) {
-                std::string cop(s);
-                cop[i] = cop[j] = '.';
-                res.push_back(cop);
-            }
-        }
+        // for (int i = 0; i < 5; ++i) {
+        //     for (int j = i+1; j < 5; ++j) {
+        //         std::string cop(s);
+        //         cop[i] = cop[j] = '.';
+        //         res.push_back(cop);
+        //     }
+        // }
         // for (int i = 0; i < 5; ++i) {
         //     for (int j = i+1; j < 5; ++j) {
         //         for (int k = j+1; k < 5; ++k) {

@@ -146,6 +146,7 @@ struct RunnerMulti {
                 }
                 
                 result.stats = solver.stats;
+                getAnswerSubsetData(solver);
                 return result;
             }
         );
@@ -323,5 +324,21 @@ struct RunnerMulti {
 
         DEBUG("num groups: " << groups.size() << " " << getPerc(groups.size(), indexes.size()));
         return groups;
+    }
+
+    template <bool isEasyMode>
+    static int getAnswerSubsetData(const AnswersAndGuessesSolver<isEasyMode> &solver) {
+        //solver.answe
+        DEBUG("remDepth,id,idSize,numHits")
+        for (int remDepth = 2; remDepth <= GlobalArgs.maxTries; ++remDepth) {
+            for (auto [id, numHits]: solver.subsetCache.numHits[remDepth]) {
+                DEBUG(remDepth
+                << "," << id
+                << "," << solver.subsetCache.idSize[remDepth][id]
+                << "," << numHits);
+            }
+        }
+        return 0;
+
     }
 };

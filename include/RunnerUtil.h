@@ -38,6 +38,7 @@ struct RunnerUtil {
         DEBUG("average     : " << avg);
         DEBUG("lettersUsed : " << GlobalArgs.specialLetters);
         DEBUG(stats);
+        DEBUG("lbFromHarderInstances: " << solver.subsetCache.lbFromHarderInstances);
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
     }
 };

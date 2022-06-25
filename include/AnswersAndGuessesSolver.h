@@ -17,6 +17,7 @@
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
 #include "LookupCacheEntry.h"
+#include "SubsetCache.h"
 
 #include <algorithm>
 #include <map>
@@ -33,7 +34,8 @@ using namespace NonLetterLookupHelpers;
 template <bool isEasyMode>
 struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(RemDepthType maxTries)
-        : maxTries(maxTries)
+        : maxTries(maxTries),
+          subsetCache(SubsetCache(maxTries))
         {
             guessCache2.resize(maxTries+1);
             cacheSize.assign(maxTries+1, 0);
@@ -45,6 +47,8 @@ struct AnswersAndGuessesSolver {
     std::vector<uint64_t> cacheSize = {};
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, LookupCacheEntry> guessCache = {};
     PerfStats stats;
+    SubsetCache subsetCache;
+
     bool disableEndGameAnalysis = false;
 
     static const int isEasyModeVar = isEasyMode;
@@ -411,6 +415,9 @@ struct AnswersAndGuessesSolver {
                 totalWrongForGuess -= lb[s];
                 BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, remDepth, beta);
                 lb[s] = std::max(lb[s], endGameRes.numWrong);
+                
+                int lb2 = getLbFromAnswerSubsets(myEquiv[s], guesses, remDepth);
+                lb[s] = std::max(lb[s], lb2);
 
                 totalWrongForGuess = std::min(totalWrongForGuess + lb[s], INF_INT);
                 if (totalWrongForGuess >= beta) {
@@ -471,7 +478,7 @@ struct AnswersAndGuessesSolver {
             }
         }
         if (maxR.numWrong >= beta) {
-            setLbCache(answers, guesses, remDepth, maxR);
+            setLbCache(answers, guesses, remDepth, maxR, true);
             return maxR;
         }
         return {0, answers[0]};
@@ -563,16 +570,18 @@ struct AnswersAndGuessesSolver {
 
     inline void setLbCache(const AnswersVec &answers,
         const GuessesVec &guesses,
-        const RemDepthType remDepth, BestWordResult res) {
+        const RemDepthType remDepth,
+        BestWordResult res,
+        bool skipRecordSuperset = false) {
         if (res.numWrong == 0) return;
         if (remDepth < GlobalArgs.minLbCache) return;
-        setCacheEntry(answers, guesses, remDepth, res.numWrong, INF_INT, res.wordIndex, 0);
+        setCacheEntry(answers, guesses, remDepth, res.numWrong, INF_INT, res.wordIndex, 0, skipRecordSuperset);
     }
 
     void setCacheEntry(const AnswersVec &answers,
         const GuessesVec &guesses,
         const RemDepthType remDepth,
-        int lb, int ub, IndexType guessForLb, IndexType guessForUb) {
+        int lb, int ub, IndexType guessForLb, IndexType guessForUb, bool skipRecordSuperset = false) {
 
         assert(std::is_sorted(answers.begin(), answers.end()));
 
@@ -583,6 +592,7 @@ struct AnswersAndGuessesSolver {
         auto it = cache.find(p);
         if (it != cache.end()) {
             auto &curr = it->second;
+            if (!skipRecordSuperset) setSupersetCache(answers, guesses, remDepth, curr.lb, lb);
             if (lb > curr.lb) { curr.lb = lb; curr.guessForLb = guessForLb; }
             if (ub < curr.ub) { curr.ub = ub; curr.guessForUb = guessForUb; }
         } else {
@@ -596,7 +606,17 @@ struct AnswersAndGuessesSolver {
             // cacheDebug << answers.size() << '\n';
             // cacheDebug.flush();
             cache[p] = LookupCacheEntry(guessForLb, guessForUb, lb, ub);
+            if (!skipRecordSuperset) setSupersetCache(answers, guesses, remDepth, 0, lb);
         }
+    }
+
+    void setSupersetCache(const AnswersVec &answers,
+        const GuessesVec &guesses,
+        const RemDepthType remDepth,
+        int oldLb, int lb)
+    {
+        if (!isRemDepthValidForSubsetCache(remDepth)) return;
+        subsetCache.setSubsetCache(answers, guesses, remDepth, oldLb, lb);
     }
 
     LookupCacheEntry getCache(const AnswersVec &answers,
@@ -614,11 +634,27 @@ struct AnswersAndGuessesSolver {
         if (it == cache.end()) {
             stats.addCacheMiss(remDepth);
             stats.tock(46);
-            return LookupCacheEntry(0, 0, 0, -1);
+            return LookupCacheEntry::defaultLookupCacheEntry();
         }
         stats.addCacheHit(remDepth);
         stats.tock(46);
         return it->second;
+    }
+
+    bool isRemDepthValidForSubsetCache(const RemDepthType remDepth) const {
+        return (remDepth == 3 || remDepth == 4) && isEasyMode;
+    }
+
+    int getLbFromAnswerSubsets(const AnswersVec &answers,
+        const GuessesVec &guesses,
+        const RemDepthType remDepth)
+    {
+        if (!isRemDepthValidForSubsetCache(remDepth)) return 0;
+        stats.tick(36);
+        auto res = subsetCache.getLbFromAnswerSubsetsFAST(answers, guesses, remDepth);
+        stats.tock(36);
+
+        return res;
     }
 
     static const BestWordResult& getDefaultBestWordResult() {

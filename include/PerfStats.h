@@ -77,6 +77,7 @@ struct PerfStats {
             curr.printEntry("remGuesses p3", 13);
             curr.printEntry("lb hacks", 34);
             curr.printEntry("getGreenLetters", 35);
+            curr.printEntry("lbSupersets", 36);
         }
 
         // printf("RemoveGuessesBetterGuess\n");

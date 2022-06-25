@@ -23,6 +23,8 @@ int Runner::run() {
     auto lambda = [&]<bool isEasyMode>() -> bool {
         auto solver = AnswersAndGuessesSolver<isEasyMode>(GlobalArgs.maxTries);
 
+        DEBUG("ENTER CHAR TO CONTINUE"); char c; std::cin >> c;
+
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
         NonLetterLookup::build();
