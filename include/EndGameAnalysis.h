@@ -9,8 +9,10 @@
 struct EndGameAnalysis {
     static inline std::vector<std::vector<std::pair<int, int>>> wordNum2EndGamePair = {};
     static inline std::vector<AnswersVec> endGames = {};
-    static inline std::vector<bool> isOneWildcard = {};
     static inline std::vector<std::vector<std::vector<BestWordResult>>> cache;
+
+    // ??
+    static inline std::vector<bool> isOneWildcard = {};
 
     static const int minEndGameCount = 4;
 
@@ -304,40 +306,45 @@ struct EndGameAnalysis {
 
         for (RemDepthType remDepth = 2; remDepth <= GlobalArgs.maxTries-1; ++remDepth) {
             for (std::size_t e = 0; e < endGames.size(); ++e) {
-                bar.updateStatus(FROM_SS(" remDepth: " << (int)remDepth << ", e: " << getFrac(e, (int)endGames.size()) << ", sub: " << subsetHelp << ", sup: " << supersetHelp));
-                int maxV = getMaxV(e);
-                for (int mask = maxV; mask >= 0; --mask) {
-                    AnswersVec answers = {};
-                    for (int k = 0; (1 << k) <= maxV; ++k) {
-                        if (mask & (1 << k)) {
-                            answers.push_back(endGames[e][k]);
-                        }
-                    }
-                    if (getFromCache(remDepth, e, mask).numWrong != -1) continue;
-                    auto res = solver.minOverWordsLeastWrong(answers, guesses, remDepth, 0, solver.getDefaultBeta());
-                    if (setCache(bar, remDepth, e, mask, res)) {
-                        // if (res.numWrong >= solver.getDefaultBeta()) {
-                        //     // DEBUG("markAllParents??");
-                        //     markAllSupersets(bar, remDepth, e, mask, res);
-                        //     for (RemDepthType rDepth2 = remDepth - 1; rDepth2 >= 2; --rDepth2) {
-                        //         setCache(bar, rDepth2, e, mask, res);
-                        //         markAllSubsets(bar, rDepth2, e, mask, res);
-                        //     }
-                        // }
-                        if (res.numWrong == 0) {
-                            markAllSubsets(bar, remDepth, e, mask, res);
-                            for (RemDepthType rDepth2 = remDepth + 1; rDepth2 <= GlobalArgs.maxTries-1; ++rDepth2) {
-                                setCache(bar, rDepth2, e, mask, res);
-                                markAllSubsets(bar, rDepth2, e, mask, res);
-                            }
-                        }
-                    }
-                }
+                populateEntry(solver, bar, remDepth, e, guesses);
             }
         }
         bar.dispose();
         END_TIMER(initEndGameAnalysisCache);
         writeCacheToFile(filename);
+    }
+
+    template <bool isEasyMode>
+    static void populateEntry(AnswersAndGuessesSolver<isEasyMode> &solver, SimpleProgress &bar, RemDepthType remDepth, std::size_t e, GuessesVec &guesses) {
+        bar.updateStatus(FROM_SS(" remDepth: " << (int)remDepth << ", e: " << getFrac(e, (int)endGames.size()) << ", sub: " << subsetHelp << ", sup: " << supersetHelp));
+        int maxV = getMaxV(e);
+        for (int mask = maxV; mask >= 0; --mask) {
+            AnswersVec answers = {};
+            for (int k = 0; (1 << k) <= maxV; ++k) {
+                if (mask & (1 << k)) {
+                    answers.push_back(endGames[e][k]);
+                }
+            }
+            if (getFromCache(remDepth, e, mask).numWrong != -1) continue;
+            auto res = solver.minOverWordsLeastWrong(answers, guesses, remDepth, 0, solver.getDefaultBeta());
+            if (setCache(bar, remDepth, e, mask, res)) {
+                // if (res.numWrong >= solver.getDefaultBeta()) {
+                //     // DEBUG("markAllParents??");
+                //     markAllSupersets(bar, remDepth, e, mask, res);
+                //     for (RemDepthType rDepth2 = remDepth - 1; rDepth2 >= 2; --rDepth2) {
+                //         setCache(bar, rDepth2, e, mask, res);
+                //         markAllSubsets(bar, rDepth2, e, mask, res);
+                //     }
+                // }
+                if (res.numWrong == 0) {
+                    markAllSubsets(bar, remDepth, e, mask, res);
+                    for (RemDepthType rDepth2 = remDepth + 1; rDepth2 <= GlobalArgs.maxTries-1; ++rDepth2) {
+                        setCache(bar, rDepth2, e, mask, res);
+                        markAllSubsets(bar, rDepth2, e, mask, res);
+                    }
+                }
+            }
+        }
     }
 
     static void setDefaultCache() {
