@@ -8,6 +8,7 @@
 #include "../include/SolveFor2Ideas.h"
 #include "../include/RemoveGuessesWithBetterGuessCache.h"
 #include "../include/NonLetterLookup.h"
+#include "../include/EndGameDatabase.h"
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
@@ -23,7 +24,9 @@ int Runner::run() {
     auto lambda = [&]<bool isEasyMode>() -> bool {
         auto solver = AnswersAndGuessesSolver<isEasyMode>(GlobalArgs.maxTries);
 
-        DEBUG("ENTER CHAR TO CONTINUE"); char c; std::cin >> c;
+        if (GlobalArgs.pauseForAttach) { DEBUG("ENTER CHAR TO CONTINUE"); char c; std::cin >> c; }
+
+        DEBUG("initialising...");
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
@@ -31,8 +34,7 @@ int Runner::run() {
         RemoveGuessesWithNoLetterInAnswers::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         //SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
-        EndGameAnalysis::init<isEasyMode>(solver);
-        EndGameAnalysis::initCache<isEasyMode>(solver);
+        EndGameDatabase(solver).init("list1");
 
         //return 0;
         END_TIMER(precompute);

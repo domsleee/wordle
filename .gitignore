@@ -8,3 +8,4 @@ databases/*
 .DS_Store
 screenlog.0
 cacheDebug
+endGameCache/

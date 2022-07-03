@@ -413,7 +413,9 @@ struct AnswersAndGuessesSolver {
             for (int i = 0; i < n; ++i) {
                 auto s = indexToPattern[i];
                 totalWrongForGuess -= lb[s];
+                stats.tick(38);
                 BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, remDepth, beta);
+                stats.tock(38);
                 lb[s] = std::max(lb[s], endGameRes.numWrong);
                 
                 int lb2 = getLbFromAnswerSubsets(myEquiv[s], guesses, remDepth);
@@ -467,8 +469,10 @@ struct AnswersAndGuessesSolver {
     )
     {
         std::vector<int> endGameMasks(EndGameAnalysis::endGames.size(), 0);
-        for (auto answerIndex: answers) for (auto [e, maskIndex]: EndGameAnalysis::wordNum2EndGamePair[answerIndex]) {
-            endGameMasks[e] |= (1 << maskIndex);
+        for (auto answerIndex: answers) {
+            for (auto [e, maskIndex]: EndGameAnalysis::wordNum2EndGamePair[answerIndex]) {
+                endGameMasks[e] |= (1 << maskIndex);
+            }
         }
         auto maxR = BestWordResult(-1, 0);
         for (std::size_t e = 0; e < EndGameAnalysis::endGames.size(); ++e) {
@@ -616,7 +620,9 @@ struct AnswersAndGuessesSolver {
         int oldLb, int lb)
     {
         if (!isRemDepthValidForSubsetCache(remDepth)) return;
+        stats.tick(37);
         subsetCache.setSubsetCache(answers, guesses, remDepth, oldLb, lb);
+        stats.tock(37);
     }
 
     LookupCacheEntry getCache(const AnswersVec &answers,
@@ -642,7 +648,8 @@ struct AnswersAndGuessesSolver {
     }
 
     bool isRemDepthValidForSubsetCache(const RemDepthType remDepth) const {
-        return (remDepth == 3 || remDepth == 4) && isEasyMode;
+        //return GlobalArgs.useSubsetCache && remDepth == 4 && isEasyMode;
+        return GlobalArgs.useSubsetCache && (remDepth == 3 || remDepth == 4) && isEasyMode;
     }
 
     int getLbFromAnswerSubsets(const AnswersVec &answers,

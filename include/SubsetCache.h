@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 struct SubsetCache {
-    // subsetCache[remDepth][answerIndex] is a vector of "group" ids that had answerIndex in their cache
+    // subsetCache[remDepth][answerIndex] is a vector of "subsetIds", which are ids that had answerIndex in their cache
     std::vector<std::vector<std::vector<int>>> subsetCache = {};
     std::vector<int> minIdSize;
     std::vector<std::vector<int>> minIdSizes;
@@ -15,7 +15,7 @@ struct SubsetCache {
 
     SubsetCache(int maxTries) {
         minIdSize.assign(maxTries+1, INF_INT);
-        minIdSizes.assign(GlobalState.allAnswers.size(), std::vector<int>(maxTries+1, INF_INT));
+        minIdSizes.assign(maxTries+1, std::vector<int>(GlobalState.allAnswers.size(), INF_INT));
         subsetCache.resize(maxTries+1);
         numHits.resize(maxTries+1);
         for (int i = 0; i <= maxTries; ++i) {
@@ -122,10 +122,22 @@ struct SubsetCache {
         return hasMatch ? 1 : 0;
     }
 
-    void recordHit(RemDepthType remDepth, int id) {
+    void recordHit(RemDepthType remDepth, int subsetId) {
         static bool recordingEnabled = true;
         if (!recordingEnabled) return;
 
-        numHits[remDepth][id]++; // trust me, its default initialised to zero
+        numHits[remDepth][subsetId]++; // trust me, its default initialised to zero
+    }
+
+    AnswersVec getAnswers(RemDepthType remDepth, int subsetId) const {
+        AnswersVec res = {};
+        auto answers = getVector(GlobalState.allAnswers.size());
+        for (IndexType answerIndex: answers) {
+            const auto &vec = subsetCache[remDepth][answerIndex];
+            if (std::find(vec.begin(), vec.end(), subsetId) != vec.end()) {
+                res.push_back(answerIndex);
+            }
+        }
+        return res;
     }
 };

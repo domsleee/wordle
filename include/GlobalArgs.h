@@ -14,7 +14,8 @@ struct _GlobalArgs {
     // eartolsincuyhpdmgbkfwvxzqj
 
     // flags
-    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = false;
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = true, pauseForAttach = false;
+    static inline bool useSubsetCache = true;
 };
 
 static inline _GlobalArgs GlobalArgs;

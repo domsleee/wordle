@@ -10,7 +10,9 @@
 #include "JsonConverter.h"
 #include "Verifier.h"
 #include "SimpleProgress.h"
+#include "EndGameDatabase.h"
 #include <type_traits>
+#include <iostream>
 
 
 struct RunnerMultiResultPair {
@@ -327,16 +329,42 @@ struct RunnerMulti {
     }
 
     template <bool isEasyMode>
+    static int getHits(const AnswersAndGuessesSolver<isEasyMode> &solver, RemDepthType remDepth, int subsetId) {
+        if (solver.subsetCache.numHits[remDepth].count(subsetId) == 0) return 0;
+        return solver.subsetCache.numHits[remDepth].at(subsetId);
+    } 
+
+    template <bool isEasyMode>
     static int getAnswerSubsetData(const AnswersAndGuessesSolver<isEasyMode> &solver) {
-        //solver.answe
-        DEBUG("remDepth,id,idSize,numHits")
+        DEBUG("remDepth,id,idSize,numHits");
+        
+        std::vector<int> subsetIdsToPrint = {};
         for (int remDepth = 2; remDepth <= GlobalArgs.maxTries; ++remDepth) {
+            std::vector<int> subsetIds = {};
             for (auto [id, numHits]: solver.subsetCache.numHits[remDepth]) {
-                DEBUG(remDepth
-                << "," << id
-                << "," << solver.subsetCache.idSize[remDepth][id]
-                << "," << numHits);
+                subsetIds.push_back(id);
             }
+            std::sort(subsetIds.begin(), subsetIds.end(), [&](int subsetId1, int subsetId2) {
+                return getHits(solver, 3, subsetId1) > getHits(solver, 3, subsetId2);
+            });
+            for (auto subsetId: subsetIds) {
+                auto numHits = solver.subsetCache.numHits[remDepth].at(subsetId);
+                auto idSize = solver.subsetCache.idSize[remDepth][subsetId];
+                DEBUG(remDepth
+                << "," << subsetId
+                << "," << idSize
+                << "," << numHits);
+
+                if (remDepth == 3 && idSize < 22 && numHits >= 1) {
+                    subsetIdsToPrint.push_back(subsetId);
+                }
+            }
+        }
+        
+        for (auto subsetId: subsetIdsToPrint) {
+            auto ans = solver.subsetCache.getAnswers(3, subsetId);
+            EndGameDatabase<true>::writeEndGamesList(std::cout, ans);
+            std::cout << '\n';
         }
         return 0;
 

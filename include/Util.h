@@ -10,6 +10,7 @@
 #include <bitset>
 
 #define DEBUG(x) std::cout << x << '\n';
+#define ERROR(s) { DEBUG("ERROR: " << s); exit(1); }
 #define assertm(expr, msg) assert(((void)(msg), (expr)))
 
 #define START_TIMER(name) auto timer_##name = std::chrono::steady_clock::now()
@@ -194,4 +195,42 @@ inline void printIterable(const T &iterable) {
 inline std::string fromBytes(long long numBytes) {
     if (numBytes <= 1024 * 1024) return FROM_SS((numBytes / 1024) << "KB");
     return FROM_SS((numBytes/1024/1024) << "MB");
+}
+
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h> // strerror
+#include <iostream>
+#include <filesystem>
+
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+
+
+// https://stackoverflow.com/questions/10058606/splitting-a-string-by-a-character
+inline std::vector<std::string> split(const std::string &inputString, char delim = '/') {
+    std::stringstream test(inputString);
+    std::string segment;
+    std::vector<std::string> seglist;
+
+    while(std::getline(test, segment, delim)) {
+        seglist.push_back(segment);
+    }
+    return seglist;
+}
+
+inline std::ofstream safeFout(const std::string &filename) {
+    auto pathList = split(filename);
+    std::string currFolder = pathList[0];
+    for (std::size_t i = 0; i < pathList.size()-1; ++i) {
+        if (!std::filesystem::exists(currFolder)) {
+            if (mkdir(currFolder.c_str(), 0777) == -1) {
+                ERROR(strerror(errno));
+            }
+        }
+        currFolder += FROM_SS("/" << pathList[i+1]);
+    }
+
+    return std::ofstream(filename);
 }
