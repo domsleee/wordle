@@ -52,7 +52,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGSTEST) -c -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGSTEST) -c -MMD -MF $(patsubst %.o,%.d,$@) -o $@ $< $(LIBS)
 
 clean:
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*

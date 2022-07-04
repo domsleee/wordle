@@ -18,6 +18,7 @@
 #include "NonLetterLookup.h"
 #include "LookupCacheEntry.h"
 #include "SubsetCache.h"
+#include "BiTrieSubsetCache.h"
 
 #include <algorithm>
 #include <map>
@@ -39,6 +40,9 @@ struct AnswersAndGuessesSolver {
         {
             guessCache2.resize(maxTries+1);
             cacheSize.assign(maxTries+1, 0);
+            for (int i = 0; i <= maxTries; ++i) {
+                biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
+            }
         }
 
     const RemDepthType maxTries;
@@ -48,6 +52,7 @@ struct AnswersAndGuessesSolver {
     std::unordered_map<AnswersAndGuessesKey<isEasyMode>, LookupCacheEntry> guessCache = {};
     PerfStats stats;
     SubsetCache subsetCache;
+    std::vector<BiTrieSubsetCache> biTrieSubsetCaches;
 
     bool disableEndGameAnalysis = false;
 
@@ -413,9 +418,9 @@ struct AnswersAndGuessesSolver {
             for (int i = 0; i < n; ++i) {
                 auto s = indexToPattern[i];
                 totalWrongForGuess -= lb[s];
-                stats.tick(38);
+                stats.tick(41);
                 BestWordResult endGameRes = endGameAnalysisCached(myEquiv[s], guesses, remDepth, beta);
-                stats.tock(38);
+                stats.tock(41);
                 lb[s] = std::max(lb[s], endGameRes.numWrong);
                 
                 int lb2 = getLbFromAnswerSubsets(myEquiv[s], guesses, remDepth);
@@ -576,16 +581,16 @@ struct AnswersAndGuessesSolver {
         const GuessesVec &guesses,
         const RemDepthType remDepth,
         BestWordResult res,
-        bool skipRecordSuperset = false) {
+        bool skipRecordSubset = false) {
         if (res.numWrong == 0) return;
         if (remDepth < GlobalArgs.minLbCache) return;
-        setCacheEntry(answers, guesses, remDepth, res.numWrong, INF_INT, res.wordIndex, 0, skipRecordSuperset);
+        setCacheEntry(answers, guesses, remDepth, res.numWrong, INF_INT, res.wordIndex, 0, skipRecordSubset);
     }
 
     void setCacheEntry(const AnswersVec &answers,
         const GuessesVec &guesses,
         const RemDepthType remDepth,
-        int lb, int ub, IndexType guessForLb, IndexType guessForUb, bool skipRecordSuperset = false) {
+        int lb, int ub, IndexType guessForLb, IndexType guessForUb, bool skipRecordSubset = false) {
 
         assert(std::is_sorted(answers.begin(), answers.end()));
 
@@ -596,7 +601,7 @@ struct AnswersAndGuessesSolver {
         auto it = cache.find(p);
         if (it != cache.end()) {
             auto &curr = it->second;
-            if (!skipRecordSuperset) setSupersetCache(answers, guesses, remDepth, curr.lb, lb);
+            if (!skipRecordSubset) setSubsetCache(answers, guesses, remDepth, curr.lb, lb);
             if (lb > curr.lb) { curr.lb = lb; curr.guessForLb = guessForLb; }
             if (ub < curr.ub) { curr.ub = ub; curr.guessForUb = guessForUb; }
         } else {
@@ -610,19 +615,32 @@ struct AnswersAndGuessesSolver {
             // cacheDebug << answers.size() << '\n';
             // cacheDebug.flush();
             cache[p] = LookupCacheEntry(guessForLb, guessForUb, lb, ub);
-            if (!skipRecordSuperset) setSupersetCache(answers, guesses, remDepth, 0, lb);
+            if (!skipRecordSubset) setSubsetCache(answers, guesses, remDepth, 0, lb);
         }
     }
 
-    void setSupersetCache(const AnswersVec &answers,
+    void setSubsetCache(const AnswersVec &answers,
         const GuessesVec &guesses,
         const RemDepthType remDepth,
         int oldLb, int lb)
     {
         if (!isRemDepthValidForSubsetCache(remDepth)) return;
+    
         stats.tick(37);
         subsetCache.setSubsetCache(answers, guesses, remDepth, oldLb, lb);
         stats.tock(37);
+
+        if (useBiTrieSubset(remDepth)) {
+            stats.tick(39);
+            biTrieSubsetCaches[remDepth].setSubsetCache(answers, guesses, oldLb, lb);
+            stats.tock(39);
+
+            // if (lb > 0) DEBUG("set value: " << lb << " " << getIterableString(answers));
+        }
+    }
+
+    bool useBiTrieSubset(RemDepthType remDepth) {
+        return remDepth == 3;
     }
 
     LookupCacheEntry getCache(const AnswersVec &answers,
@@ -657,10 +675,28 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth)
     {
         if (!isRemDepthValidForSubsetCache(remDepth)) return 0;
-        stats.tick(36);
-        auto res = subsetCache.getLbFromAnswerSubsetsFAST(answers, guesses, remDepth);
-        stats.tock(36);
+        int res = 0;
 
+        if (useBiTrieSubset(remDepth)) {
+            stats.tick(38);
+            res = biTrieSubsetCaches[remDepth].getLbFromAnswerSubsets(answers, guesses);
+            stats.tock(38);
+            static bool compareWithSlowMethod = false;
+            if (compareWithSlowMethod) {
+                auto slowRes = subsetCache.getLbFromAnswerSubsetsFAST(answers, guesses, remDepth);
+                if (slowRes != res) {
+                    DEBUG("OH NO, exp: " << slowRes << ", actual: " << res);
+                    DEBUG(getIterableString(answers));
+                    exit(1);
+                }
+                
+            }
+        } else {
+            stats.tick(36);
+            res = subsetCache.getLbFromAnswerSubsetsFAST(answers, guesses, remDepth);
+            stats.tock(36);
+        }
+    
         return res;
     }
 

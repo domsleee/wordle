@@ -8,9 +8,9 @@
 #define CATCH_CONFIG_MAIN
 #include "../third_party/catch.hpp"
 
+#include "TestDefs.h"
+#include "BiTrieSubsetCacheTest.h"
 #include <iostream>
-
-#define REQUIRE_MESSAGE(cond, msg) do { INFO(msg); REQUIRE(cond); } while((void)0, 0)
 
 TEST_CASE("attempt state") {
     std::vector<std::string> startWords = {

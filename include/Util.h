@@ -191,6 +191,13 @@ inline void printIterable(const T &iterable) {
     for (auto el: iterable) DEBUG(el);
 }
 
+template <typename T>
+std::string getIterableString(const T &iterable) {
+    std::string res = "";
+    for (auto el: iterable) res = FROM_SS(res << el << " ");
+    return res;
+}
+
 
 inline std::string fromBytes(long long numBytes) {
     if (numBytes <= 1024 * 1024) return FROM_SS((numBytes / 1024) << "KB");

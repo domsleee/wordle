@@ -336,6 +336,7 @@ struct RunnerMulti {
 
     template <bool isEasyMode>
     static int getAnswerSubsetData(const AnswersAndGuessesSolver<isEasyMode> &solver) {
+        return 0;
         DEBUG("remDepth,id,idSize,numHits");
         
         std::vector<int> subsetIdsToPrint = {};
