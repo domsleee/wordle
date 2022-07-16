@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Util.h"
 #include "PerfStats.h"
 #include "PatternGetterCached.h"
@@ -21,7 +22,6 @@ struct RemoveGuessesPartitions {
         PartitionVec partitions = getPartitions(guesses, answers);
 
         std::vector<int8_t> eliminated(GlobalState.allGuesses.size(), 0);
-        int ct = 0;
         const bool useSort = false;
         int nGuesses = guesses.size();
 
@@ -43,11 +43,14 @@ struct RemoveGuessesPartitions {
                 auto r2 = compare(partitions, g2, g1);
 
                 if (r1 == BetterThanOrEqualTo && r2 == BetterThanOrEqualTo) {
-                    eliminated[std::max(g1, g2)] = 1; ct++;
+                    auto elimPair = originalOrder[g1] > originalOrder[g2]
+                        ? std::pair<int,int>(g1, g2)
+                        : std::pair<int,int>(g2, g1);
+                    markAsEliminated(eliminated, elimPair.first, elimPair.second, true);
                 } else if (r1 == BetterThanOrEqualTo) {
-                    eliminated[g2] = 1;
+                    markAsEliminated(eliminated, g2, g1);
                 } else if (r2 == BetterThanOrEqualTo) {
-                    eliminated[g1] = 1; ct++;
+                    markAsEliminated(eliminated, g1, g2);
                 }
                 if (eliminated[g1]) break;
             }
@@ -57,6 +60,14 @@ struct RemoveGuessesPartitions {
             return eliminated[guessIndex] == 1;
         });
         if (useSort) std::sort(guesses.begin(), guesses.end(), [&](const int i, const int j) { return originalOrder[i] < originalOrder[j]; });
+    }
+
+    static void markAsEliminated(std::vector<int8_t> &eliminated, IndexType guessToElim, IndexType guessThatIsBetter, bool equalTo = false) {
+        // if (guessToElim == 751) {
+        //     std::string op = equalTo ? std::string(">=") : std::string(">");
+        //     DEBUG("eliminated " << guessToElim << " because " << guessThatIsBetter << ' ' << op << ' ' << guessToElim);
+        // }
+        eliminated[guessToElim] = 1;
     }
 
     static PartitionVec getPartitions(const GuessesVec &guesses, const AnswersVec &answers) {

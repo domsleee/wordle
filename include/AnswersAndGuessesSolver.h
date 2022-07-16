@@ -12,6 +12,7 @@
 #include "UnorderedVector.h"
 #include "RemoveGuessesWithBetterGuessCache.h"
 #include "RemoveGuessesPartitions.h"
+#include "RemoveGuessesPartitionsTrie.h"
 
 #include "EndGameAnalysis.h"
 #include "PerfStats.h"
@@ -323,9 +324,9 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (remDepth == 3) {
+        if (remDepth == 4) {
             stats.tick(32);
-            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
+            removeWithBetterOrSameGuessPartitions(guessesCopy, answers);
             stats.tock(32);
         } else {
             stats.tick(33);
@@ -354,6 +355,34 @@ struct AnswersAndGuessesSolver {
         if (exact) setOptCache(answers, guesses, remDepth, res);
         else setLbCache(answers, guesses, remDepth, res);
         return res;
+    }
+
+    void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers) {
+        enum Approach {
+            compareWithSlower = 0,
+            useOldVersion,
+            useNewVersion
+        };
+        static Approach approach = useNewVersion;
+
+        if (approach == useNewVersion) {
+            RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
+        } else if (approach == useOldVersion) {
+            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guesses, answers);
+        }
+        else if (approach == compareWithSlower) {
+            auto orig = guesses;
+            auto slower = guesses;
+            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, slower, answers);
+            RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
+            if (guesses != slower) {
+                DEBUG("DIFFERENT!@");
+                DEBUG("orig   : " << getIterableString(orig));
+                DEBUG("slower : " << getIterableString(slower));
+                DEBUG("trie   : " << getIterableString(guesses));
+                exit(1);
+            }
+        }
     }
 
     int sumOverPartitionsLeastWrong(
