@@ -323,9 +323,15 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        stats.tick(33);
-        RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
-        stats.tock(33);
+        if (remDepth == 3) {
+            stats.tick(32);
+            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guessesCopy, answers);
+            stats.tock(32);
+        } else {
+            stats.tick(33);
+            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+            stats.tock(33);
+        }
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
         std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });

@@ -70,6 +70,7 @@ struct PerfStats {
                 std::string s = std::string("sumOver depth:") + std::to_string(i);
                 curr.printEntry(s, 23+i);
             }
+            curr.printEntry("remParts", 32);
             curr.printEntry("remGuesses", 33);
             curr.printEntry("remGuesses p1", 10);
             curr.printEntry("remGuesses p2", 11);
