@@ -324,11 +324,12 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (remDepth == 4) {
+        if ((3 <= remDepth && remDepth <= 4)) {
             stats.tick(32);
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers);
             stats.tock(32);
         } else {
+            // doubt this does much
             stats.tick(33);
             RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             stats.tock(33);

@@ -63,14 +63,35 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(70);
 
         stats.tick(71);
+        std::vector<int8_t> eliminated(GlobalState.allGuesses.size(), 0);
+        for (auto t1: guesses) {
+            if (eliminated[t1]) continue;
+            auto initialNodeId = getNodeId(partitions[t1][0]);
+            auto exactVec = nodes[initialNodeId].exact;
+            for (int i = 1; i < static_cast<int>(partitions[t1].size()); ++i) {
+                auto nodeId = getNodeId(partitions[t1][i]);
+                inplaceSetIntersection(exactVec, nodes[nodeId].exact);
+            }
+
+            int minExact = exactVec.size() > 0 ? exactVec[0] : 0;
+            for (auto t2: exactVec) if (originalOrder[t2] < originalOrder[minExact]) minExact = t2;
+            for (auto t2: exactVec) {
+                if (t1 == t2) continue;
+                if (minExact != t2) eliminated[t2] = 1;
+            }
+        }
+        stats.tock(71);
+
+        stats.tick(72);
         for (auto t: guesses) {
+            if (eliminated[t]) continue;
             for (const auto &p: partitions[t]) {
                 const int pSize = p.size();
                 std::stack<std::pair<int,int>> st = {};
                 st.push({0, 0});
                 while (!st.empty()) {
                     auto [nodeId, i] = st.top();
-                    nodes[nodeId].subset.push_back(t);
+                    if (nodes[nodeId].exact.size() > 0) nodes[nodeId].subset.push_back(t);
                     st.pop();
                     for (const auto entry: nodes[nodeId].next) {
                         while (i < pSize && p[i] < entry.first) i++;
@@ -88,11 +109,9 @@ struct RemoveGuessesPartitionsTrie {
                 }
             }
         }
-        stats.tock(71);
+        stats.tock(72);
 
-        stats.tick(72);
-
-        std::vector<int8_t> eliminated(GlobalState.allGuesses.size(), 0);
+        stats.tick(73);
         for (auto t1: guesses) {
             if (eliminated[t1]) continue;
             auto initialNodeId = getNodeId(partitions[t1][0]);
@@ -105,24 +124,15 @@ struct RemoveGuessesPartitionsTrie {
             }
 
             inplaceSetDifference(subsetVec, exactVec);
-
-            int minExact = exactVec.size() > 0 ? exactVec[0] : 0;
-            for (auto t2: exactVec) if (originalOrder[t2] < originalOrder[minExact]) minExact = t2;
-            for (auto t2: exactVec) {
-                if (t1 == t2) continue;
-                if (minExact != t2) eliminated[t2] = 1;
-            }
-
             for (auto t2: subsetVec) if (t1 != t2) eliminated[t2] = 1;
         }
+        stats.tock(73);
 
-        stats.tock(72);
-
-        stats.tick(73);
+        stats.tick(74);
         std::erase_if(_guesses, [&](const auto guessIndex) {
             return eliminated[guessIndex] == 1;
         });
-        stats.tock(73);
+        stats.tock(74);
     }
 
     static int getNodeId(const AnswersVec &p) {
