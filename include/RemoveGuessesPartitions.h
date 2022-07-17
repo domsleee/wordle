@@ -84,6 +84,7 @@ struct RemoveGuessesPartitions {
                     partitions[guessIndex].push_back(equiv[i]);
                 }
             }
+            std::sort(partitions[guessIndex].begin(), partitions[guessIndex].end(), [](const auto &a, const auto &b) { return a.size() < b.size(); });
         }
 
         return partitions;

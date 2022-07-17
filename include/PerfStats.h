@@ -77,6 +77,7 @@ struct PerfStats {
             curr.printEntry("remParts3", 72);
             curr.printEntry("remParts4", 73);
             curr.printEntry("remParts5", 74);
+            curr.printEntry("remParts6", 75);
             curr.printEntry("remGuesses p1", 10);
             curr.printEntry("remGuesses p2", 11);
             curr.printEntry("remGuesses p3", 12);
