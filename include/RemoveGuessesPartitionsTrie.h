@@ -16,47 +16,63 @@ struct PartitionsTrieNode {
     std::vector<int> nextKeys = {}, nextVals = {};
 };
 
+struct PartitionMeta {
+    std::vector<int> ts = {};
+    AnswersVec p = {};
+    int nodeId = -1;
+
+    template <typename T>
+    int getNodeId() {
+        if (nodeId != -1) {
+            return nodeId;
+        }
+        return nodeId = T::getNodeId(p);
+    }
+};
+
+#define GET_NODE_ID(t1, i) partitionMeta[partitionMetaIndexes[t1][i]].getNodeId<RemoveGuessesPartitionsTrie>()
+
 struct RemoveGuessesPartitionsTrie {
     static inline thread_local std::vector<PartitionsTrieNode> nodes = {};
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &_guesses, const AnswersVec &answers) {
         // static thread_local int called = 0;
         // DEBUG("CALLED" << ++called);
 
-        RemoveGuessesPartitions::PartitionVec partitions = RemoveGuessesPartitions::getPartitions(_guesses, answers);
-
+        stats.tick(75);
         auto guesses = _guesses;
         const int nGuesses = guesses.size();
 
-        static std::vector<int> originalOrder(GlobalState.allGuesses.size(), 0);
+        std::vector<int> originalOrder(GlobalState.allGuesses.size(), 0);
         for (int i = 0; i < nGuesses; ++i) {
             originalOrder[guesses[i]] = i;
         }
 
         std::sort(guesses.begin(), guesses.end());
+        stats.tock(75);
 
-        //RemoveGuessesPartitions::printPartitions(partitions, 751);
-        //RemoveGuessesPartitions::printPartitions(partitions, 9611);
+        stats.tick(69);
+        auto [partitionMetaIndexes, partitionMeta] = getPartitionsAndMeta(guesses, answers);
+        stats.tock(69);
 
         stats.tick(70);
         nodes.resize(0);
         getNewNodeId();
-        for (auto t: guesses) {
-            nodes[0].subset.push_back(t);
-            for (const auto &p: partitions[t]) {
-                int nodeId = 0;
-                for (auto t2: p) {
-                    auto ind = nodeNextFindInd(nodeId, t2);
-                    int nextNodeId;
-                    if (ind == static_cast<int>(nodes[nodeId].nextKeys.size())) {
-                        nextNodeId = getNewNodeId();
-                        nodeNextInsert(nodeId, t2, nextNodeId);
-                    } else {
-                        nextNodeId = nodes[nodeId].nextVals[ind];
-                    }
-                    nodeId = nextNodeId;
+        for (const auto &meta: partitionMeta) {
+            int nodeId = 0;
+            for (auto t2: meta.p) {
+                auto ind = nodeNextFindInd(nodeId, t2);
+                int nextNodeId;
+                if (ind == static_cast<int>(nodes[nodeId].nextKeys.size())) {
+                    nextNodeId = getNewNodeId();
+                    nodeNextInsert(nodeId, t2, nextNodeId);
+                } else {
+                    nextNodeId = nodes[nodeId].nextVals[ind];
                 }
-                nodes[nodeId].exact.push_back(t);
+                nodeId = nextNodeId;
             }
+            nodes[nodeId].exact = meta.ts;
+            //inplaceSetUnion(nodes[nodeId].exact, meta.ts);
+            //nodes[nodeId].exact.push_back(t);
         }
         stats.tock(70);
 
@@ -64,10 +80,10 @@ struct RemoveGuessesPartitionsTrie {
         std::vector<int8_t> eliminated(GlobalState.allGuesses.size(), 0);
         for (auto t1: guesses) {
             if (eliminated[t1]) continue;
-            auto initialNodeId = getNodeId(partitions[t1][0]);
+            auto initialNodeId = GET_NODE_ID(t1, 0);// getNodeId(partitions[t1][0]);
             auto exactVec = nodes[initialNodeId].exact;
-            for (int i = 1; i < static_cast<int>(partitions[t1].size()); ++i) {
-                auto nodeId = getNodeId(partitions[t1][i]);
+            for (int i = 1; i < static_cast<int>(partitionMetaIndexes[t1].size()); ++i) {
+                auto nodeId = GET_NODE_ID(t1, i); //  getNodeId(partitions[t1][i]);
                 inplaceSetIntersection(exactVec, nodes[nodeId].exact);
             }
 
@@ -80,58 +96,42 @@ struct RemoveGuessesPartitionsTrie {
         }
         stats.tock(71);
 
-        stats.tick(70);
-        nodes.resize(0);
-        getNewNodeId();
-        for (auto t: guesses) {
-            if (eliminated[t]) continue;
-            nodes[0].subset.push_back(t);
-            for (const auto &p: partitions[t]) {
-                int nodeId = 0;
-                for (auto t2: p) {
-                    auto ind = nodeNextFindInd(nodeId, t2);
-                    int nextNodeId;
-                    if (ind == static_cast<int>(nodes[nodeId].nextKeys.size())) {
-                        nextNodeId = getNewNodeId();
-                        nodeNextInsert(nodeId, t2, nextNodeId);
-                    } else {
-                        nextNodeId = nodes[nodeId].nextVals[ind];
-                    }
-                    nodeId = nextNodeId;
-                }
-                nodes[nodeId].exact.push_back(t);
-            }
+        stats.tick(75);
+        for (auto &meta: partitionMeta) {
+            std::erase_if(meta.ts, [&](const auto t) { return eliminated[t]; });
         }
-        stats.tock(70);
-
-        std::map<AnswersVec, std::vector<int>> partitionsToT = {};
-        int totalP = 0;
-        for (auto t: guesses) {
-            if (eliminated[t]) continue;
-            for (const auto &p: partitions[t]) { partitionsToT[p].push_back(t); totalP++; }
+        for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
+            std::erase_if(nodes[i].exact, [&](const auto t) { return eliminated[t]; });
         }
-        //DEBUG("potensh? " << getPerc(partitionsSet.size(), totalP));
+        stats.tock(75);
 
         stats.tick(72);
-        for (const auto &[p, vecT]: partitionsToT) {
-            const int pSize = p.size();
-            std::stack<std::pair<int,int>> st = {};
+        std::stack<std::pair<int,int>> st = {};
+        for (const auto &meta: partitionMeta) {
+            const int pSize = meta.p.size();
             st.push({0, 0});
             while (!st.empty()) {
                 auto [nodeId, i] = st.top();
-                if (nodes[nodeId].exact.size() > 0) {
-                    for (auto t: vecT) if (!eliminated[t]) nodes[nodeId].push_back(t);
+                auto &node = nodes[nodeId];
+                if (node.exact.size() > 0) {
+                    for (auto t: meta.ts) {
+                        assert(!eliminated[t]);
+                        node.subset.push_back(t);
+                    }
                 }
                 st.pop();
             
-                for (int j = 0; j < static_cast<int>(nodes[nodeId].nextKeys.size()); ++j) {
-                    auto nextKey = nodes[nodeId].nextKeys[j];
-                    auto nextVal = nodes[nodeId].nextVals[j];
-                
-                    while (i < pSize && p[i] < nextKey) i++;
+                const int nKeys = node.nextKeys.size();
+                for (int j = 0; j < nKeys; ++j) {
+                    auto nextKey = node.nextKeys[j];
+                    while (i < pSize && meta.p[i] < nextKey) i++;
                     if (i == pSize) break;
-                    if (p[i] == nextKey) {
+                   
+                    nextKey = node.nextKeys[j];
+                    if (meta.p[i] == nextKey) {
+                        const auto nextVal = node.nextVals[j];
                         st.push({nextVal, i+1});
+                        ++i;
                     }
                 }
             }
@@ -147,20 +147,18 @@ struct RemoveGuessesPartitionsTrie {
         stats.tick(74);
         for (auto t1: guesses) {
             if (eliminated[t1]) continue;
-            const auto &pVec = partitions[t1];
-            int mNodeId = getNodeId(pVec[0]), mIndex = 0;
-            for (int i = 1; i < static_cast<int>(pVec.size()); ++i) {
-                auto nodeId = getNodeId(pVec[i]);
-                if (nodes[nodeId].subset.size() < nodes[mNodeId].subset.size()) {
-                    mIndex = i, mNodeId = nodeId;
-                }
-            }
+            const auto &pVec = partitionMetaIndexes[t1];
+            int mNodeId = GET_NODE_ID(t1, 0), mIndex = 0;
+
             auto exactVec = nodes[mNodeId].exact;
             auto subsetVec = nodes[mNodeId].subset;
 
+            //inplaceSetDifference(exactVec, {t1});
+            //inplaceSetDifference(subsetVec, {t1});
+
             for (int i = 0; i < static_cast<int>(pVec.size()); ++i) {
                 if (i == mIndex) continue;
-                auto nodeId = getNodeId(pVec[i]);
+                auto nodeId = GET_NODE_ID(t1, i); // getNodeId(pVec[i]);
                 //inplaceSetIntersection(exactVec, nodes[nodeId].exact);
                 //DEBUG("INTERSECTING: " << subsetVec.size() << " with " << nodes[nodeId].subset.size());
                 inplaceSetIntersection(subsetVec, nodes[nodeId].subset);
@@ -178,10 +176,51 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(75);
     }
 
+    static std::pair<std::vector<std::vector<int>>, std::vector<PartitionMeta>>  getPartitionsAndMeta(const GuessesVec &guesses, const AnswersVec &answers) {
+        RemoveGuessesPartitions::PartitionVec partitions(GlobalState.allGuesses.size(), std::vector<AnswersVec>());
+        assert(std::is_sorted(answers.begin(), answers.end()));
+        for (const auto t: guesses) {
+            std::array<uint8_t, NUM_PATTERNS> patternToInd;
+            patternToInd.fill(255);
+            for (const auto answerIndex: answers) {
+                const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, t);
+                if (patternToInd[patternInt] == 255) {
+                    const auto ind = partitions[t].size();
+                    patternToInd[patternInt] = ind;
+                    partitions[t].push_back({answerIndex});
+                } else {
+                    const auto ind = patternToInd[patternInt];
+                    partitions[t][ind].push_back(answerIndex);
+                }
+            }
+        }
+
+        std::map<AnswersVec, int> partitionToMetaIndex = {};
+        std::vector<std::vector<int>> partitionMetaIndexes(GlobalState.allGuesses.size(), std::vector<int>());
+        std::vector<PartitionMeta> partitionMeta = {};
+        for (auto t: guesses) {
+            for (const auto &p: partitions[t]) {
+                auto it = partitionToMetaIndex.find(p);
+                int metaIndex;
+                if (it == partitionToMetaIndex.end()) {
+                    metaIndex = partitionMeta.size();
+                    partitionToMetaIndex[p] = metaIndex;
+                    partitionMeta.resize(metaIndex+1);
+                } else {
+                    metaIndex = it->second;
+                }
+                partitionMeta[metaIndex].ts.push_back(t);
+                partitionMeta[metaIndex].p = p;
+                partitionMetaIndexes[t].push_back(metaIndex);
+            }
+        }
+
+        return {partitionMetaIndexes, partitionMeta};
+    }
+
     static int getNodeId(const AnswersVec &p) {
         int nodeId = 0;
         for (auto t2: p) {
-            ;
             nodeId = nodes[nodeId].nextVals[nodeNextFindInd(nodeId, t2)];
         }
         return nodeId;
@@ -193,31 +232,19 @@ struct RemoveGuessesPartitionsTrie {
     }
 
     static void nodeNextInsert(int nodeId, int k, int v) {
-        // if (nodeId == 0 && k == 3703) {
-        //     auto ind = nodeNextFindInd(nodeId, k);
-        //     int nSize = nodes[nodeId].nextKeys.size();
-        //     DEBUG("nodes[" << nodeId << "].next[" << k << "] = " << v << " (existing ind: " << ind << " / " << nSize);
-        //     if (ind != nSize) {
-        //         DEBUG("who do you think you are?");
-        //         exit(1);
-        //     }
-        // }
-
         auto it = std::lower_bound(nodes[nodeId].nextKeys.begin(), nodes[nodeId].nextKeys.end(), k);
         it = nodes[nodeId].nextKeys.insert(it, k);
-        // if (!std::is_sorted(nodes[nodeId].nextKeys.begin(), nodes[nodeId].nextKeys.end())) {
-        //     DEBUG("WHAT");
-        //     exit(1);
-        // }
-        auto distOfIt = std::distance(nodes[nodeId].nextKeys.begin(), it);
-        auto nextValsIt = nodes[nodeId].nextVals.begin() + distOfIt;
-        nodes[nodeId].nextVals.insert(nextValsIt, v);
+        auto &node = nodes[nodeId];
+        const auto distOfIt = std::distance(node.nextKeys.begin(), it);
+        const auto nextValsIt = node.nextVals.begin() + distOfIt;
+        node.nextVals.insert(nextValsIt, v);
     }
 
     static int nodeNextFindInd(int nodeId, int k) {
-        auto it = std::lower_bound(nodes[nodeId].nextKeys.begin(), nodes[nodeId].nextKeys.end(), k);
-        if (it == nodes[nodeId].nextKeys.end() || *it != k) return nodes[nodeId].nextKeys.size();
-        return std::distance(nodes[nodeId].nextKeys.begin(), it);
+        const auto &keys = nodes[nodeId].nextKeys;
+        auto it = std::lower_bound(keys.begin(), keys.end(), k);
+        if (it == keys.end() || *it != k) return keys.size();
+        return std::distance(keys.begin(), it);
     }
 
 
@@ -228,6 +255,17 @@ struct RemoveGuessesPartitionsTrie {
         //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
         auto nd = std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), a.begin());
         a.erase(nd, a.end());
+    }
+
+    template <typename T>
+    static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
+        // trust me, its fine
+        // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
+        //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
+        std::vector<T> out = {};
+        std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
+        a.swap(out);
+        // a.assign(out.begin(), out.end());
     }
 
     template <typename T>

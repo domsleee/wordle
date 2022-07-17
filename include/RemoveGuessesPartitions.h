@@ -72,19 +72,22 @@ struct RemoveGuessesPartitions {
 
     static PartitionVec getPartitions(const GuessesVec &guesses, const AnswersVec &answers) {
         PartitionVec partitions(GlobalState.allGuesses.size(), std::vector<AnswersVec>());
+        assert(std::is_sorted(answers.begin(), answers.end()));
         for (const auto guessIndex: guesses) {
-            std::vector<AnswersVec> equiv(NUM_PATTERNS, AnswersVec());
+            std::array<uint8_t, NUM_PATTERNS> patternToInd;
+            patternToInd.fill(255);
             for (const auto answerIndex: answers) {
                 const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
-                equiv[patternInt].push_back(answerIndex);
-            }
-            for (PatternType i = 0; i < NUM_PATTERNS; ++i) {
-                if (equiv[i].size()) {
-                    std::sort(equiv[i].begin(), equiv[i].end());
-                    partitions[guessIndex].push_back(equiv[i]);
+                if (patternToInd[patternInt] == 255) {
+                    const auto ind = partitions[guessIndex].size();
+                    patternToInd[patternInt] = ind;
+                    partitions[guessIndex].push_back({answerIndex});
+                } else {
+                    const auto ind = patternToInd[patternInt];
+                    partitions[guessIndex][ind].push_back(answerIndex);
                 }
             }
-            std::sort(partitions[guessIndex].begin(), partitions[guessIndex].end(), [](const auto &a, const auto &b) { return a.size() < b.size(); });
+            // std::sort(partitions[guessIndex].begin(), partitions[guessIndex].end(), [](const auto &a, const auto &b) { return a.size() < b.size(); });
         }
 
         return partitions;
