@@ -16,6 +16,29 @@ struct PartitionsTrieNode {
     std::vector<int> nextKeys = {}, nextVals = {};
 };
 
+struct CachedSetIntersection {
+    const std::vector<PartitionsTrieNode> &nodes;
+    std::map<std::pair<int, int>, std::vector<int>> cache = {};
+
+    CachedSetIntersection(const std::vector<PartitionsTrieNode> &nodes)
+        : nodes(nodes) {}
+
+    void cachedInplaceSetIntersection(std::vector<int> &a, int n1, int n2) {
+        int m = std::min(n1, n2);
+        int M = std::max(n1, n2);
+        std::pair<int,int> p(m, M);
+        auto it = cache.find(p);
+        if (it != cache.end()) {
+            inplaceSetIntersection(a, it->second);
+        } else {
+            std::vector<int> r1 = nodes[n1].subset;
+            inplaceSetIntersection(r1, nodes[n2].subset);
+            cache[p] = r1;
+            inplaceSetIntersection(a, r1);
+        }
+    }
+};
+
 struct PartitionMeta {
     std::vector<int> ts = {};
     AnswersVec p = {};
@@ -30,7 +53,13 @@ struct PartitionMeta {
     }
 };
 
-#define GET_NODE_ID(t1, i) partitionMeta[partitionMetaIndexes[t1][i]].getNodeId<RemoveGuessesPartitionsTrie>()
+
+struct PartitionMetaGroup {
+    std::vector<std::vector<int>> indexes; // indexes[t] = indexes of meta for test word `t`
+    std::vector<PartitionMeta> meta;
+};
+
+#define GET_NODE_ID(t1, i) metaGroup.meta[metaGroup.indexes[t1][i]].getNodeId<RemoveGuessesPartitionsTrie>()
 
 struct RemoveGuessesPartitionsTrie {
     static inline thread_local std::vector<PartitionsTrieNode> nodes = {};
@@ -51,13 +80,14 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(75);
 
         stats.tick(69);
-        auto [partitionMetaIndexes, partitionMeta] = getPartitionsAndMeta(guesses, answers);
+        PartitionMetaGroup metaGroup = getPartitionsAndMeta(guesses, answers);
+        //auto &[partitionMetaIndexes, partitionMeta] = getPartitionsAndMeta(guesses, answers);
         stats.tock(69);
 
         stats.tick(70);
         nodes.resize(0);
         getNewNodeId();
-        for (const auto &meta: partitionMeta) {
+        for (const auto &meta: metaGroup.meta) {
             int nodeId = 0;
             for (auto t2: meta.p) {
                 auto ind = nodeNextFindInd(nodeId, t2);
@@ -80,12 +110,8 @@ struct RemoveGuessesPartitionsTrie {
         std::vector<int8_t> eliminated(GlobalState.allGuesses.size(), 0);
         for (auto t1: guesses) {
             if (eliminated[t1]) continue;
-            auto initialNodeId = GET_NODE_ID(t1, 0);// getNodeId(partitions[t1][0]);
-            auto exactVec = nodes[initialNodeId].exact;
-            for (int i = 1; i < static_cast<int>(partitionMetaIndexes[t1].size()); ++i) {
-                auto nodeId = GET_NODE_ID(t1, i); //  getNodeId(partitions[t1][i]);
-                inplaceSetIntersection(exactVec, nodes[nodeId].exact);
-            }
+            static auto lambda = [&](const int nodeId) -> const std::vector<int>& { return nodes[nodeId].exact; };
+            const auto exactVec = getSetIntersection(metaGroup, lambda, t1);
 
             int minExact = exactVec.size() > 0 ? exactVec[0] : 0;
             for (auto t2: exactVec) if (originalOrder[t2] < originalOrder[minExact]) minExact = t2;
@@ -97,7 +123,7 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(71);
 
         stats.tick(75);
-        for (auto &meta: partitionMeta) {
+        for (auto &meta: metaGroup.meta) {
             std::erase_if(meta.ts, [&](const auto t) { return eliminated[t]; });
         }
         for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
@@ -107,7 +133,7 @@ struct RemoveGuessesPartitionsTrie {
 
         stats.tick(72);
         std::stack<std::pair<int,int>> st = {};
-        for (const auto &meta: partitionMeta) {
+        for (const auto &meta: metaGroup.meta) {
             const int pSize = meta.p.size();
             st.push({0, 0});
             while (!st.empty()) {
@@ -145,23 +171,26 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(73);
 
         stats.tick(74);
+        auto cachedSetIntersection = CachedSetIntersection(nodes);
         for (auto t1: guesses) {
             if (eliminated[t1]) continue;
-            const auto &pVec = partitionMetaIndexes[t1];
-            int mNodeId = GET_NODE_ID(t1, 0), mIndex = 0;
+            const auto &pVec = metaGroup.indexes[t1];
+            // auto exactVec = nodes[mNodeId].exact;
+            enum SetIntersectionStrategy {
+                Naive,
+                Counting,
+                AbuseSmallSets
+            };
 
-            auto exactVec = nodes[mNodeId].exact;
-            auto subsetVec = nodes[mNodeId].subset;
-
-            //inplaceSetDifference(exactVec, {t1});
-            //inplaceSetDifference(subsetVec, {t1});
-
-            for (int i = 0; i < static_cast<int>(pVec.size()); ++i) {
-                if (i == mIndex) continue;
-                auto nodeId = GET_NODE_ID(t1, i); // getNodeId(pVec[i]);
-                //inplaceSetIntersection(exactVec, nodes[nodeId].exact);
-                //DEBUG("INTERSECTING: " << subsetVec.size() << " with " << nodes[nodeId].subset.size());
-                inplaceSetIntersection(subsetVec, nodes[nodeId].subset);
+            std::vector<int> subsetVec = {};
+            static auto lambda = [&](const int nodeId) -> const std::vector<int>& { return nodes[nodeId].subset; };
+            const auto myStrat = SetIntersectionStrategy::Counting;
+            if (myStrat == SetIntersectionStrategy::Naive) {
+                subsetVec = getSetIntersection(metaGroup, lambda, t1);
+            } else if (myStrat == SetIntersectionStrategy::AbuseSmallSets) {
+                subsetVec = getSetIntersectionAbuseSmallSets(metaGroup, pVec, t1);
+            } else if (myStrat == SetIntersectionStrategy::Counting) {
+                subsetVec = getSetIntersectionCounting(metaGroup, lambda, t1);
             }
 
             // inplaceSetDifference(subsetVec, exactVec);
@@ -176,7 +205,75 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(75);
     }
 
-    static std::pair<std::vector<std::vector<int>>, std::vector<PartitionMeta>>  getPartitionsAndMeta(const GuessesVec &guesses, const AnswersVec &answers) {
+    static std::vector<int> getSetIntersectionAbuseSmallSets(PartitionMetaGroup &metaGroup, const std::vector<int> &pVec, int t1) {
+        //https://www.geeksforgeeks.org/intersection-of-n-sets
+        const int pVecSize = pVec.size();
+        std::vector<int> nodeIds(pVecSize, 0);
+        int n0 = GET_NODE_ID(t1, 0);
+        nodeIds[0] = n0;
+        int minI = 0, minNodeSize = nodes[n0].subset.size();
+
+        for (int i = 0; i < pVecSize; ++i) {
+            const int ni = GET_NODE_ID(t1, i);
+            nodeIds[i] = ni;
+            const int sz = nodes[ni].subset.size();
+            if (sz < minNodeSize) {
+                minI = i, minNodeSize = sz;
+            }
+        }
+        //std::sort(nodeIds.begin(), nodeIds.end(), [&](const auto a, const auto b) { return nodes[a].subset.size() < nodes[b].subset.size(); });
+
+        std::vector<int> res = {};
+        for (int t2: nodes[nodeIds[minI]].subset) {
+            bool skip = false;
+            for (int i = 0; i < pVecSize; ++i) {
+                if (i == minI) continue;
+
+                const int ni = nodeIds[i];
+                if (!std::binary_search(nodes[ni].subset.begin(), nodes[ni].subset.end(), t2)) {
+                    skip = true;
+                    break;
+                }
+            }
+
+            if (!skip) res.push_back(t2);
+        }
+        return res;
+        //return getSetIntersection(metaGroup, pVec, t1);
+    }
+
+    template <typename T>
+    static std::vector<int> getSetIntersectionCounting(PartitionMetaGroup &metaGroup, T const& getVectorFn, int t1) {
+        const auto &pVec = metaGroup.indexes[t1];
+        std::vector<int> res = {};
+        res.reserve(pVec.size());
+        std::vector<IndexType> ct(GlobalState.allAnswers.size(), 0);
+        const int pVecSize = pVec.size();
+        for (int i = 0; i < pVecSize; ++i) {
+            auto nodeId = GET_NODE_ID(t1, i);
+            for (const auto t2: getVectorFn(nodeId)) {
+                if (++ct[t2] == pVecSize) res.push_back(t2);
+            }
+        }
+        std::sort(res.begin(), res.end());
+        return res;
+    }
+
+    template <typename T>
+    static std::vector<int> getSetIntersection(PartitionMetaGroup &metaGroup, T const& getVectorFn, int t1) {
+        const auto &pVec = metaGroup.indexes[t1];
+        int mNodeId = GET_NODE_ID(t1, 0);
+        std::vector<int> subsetVec = getVectorFn(mNodeId);
+
+        const int pVecSize = pVec.size();
+        for (int i = 1; i < pVecSize; ++i) {
+            auto nodeId = GET_NODE_ID(t1, i);
+            inplaceSetIntersection(subsetVec, getVectorFn(nodeId));
+        }
+        return subsetVec;
+    }
+
+    static PartitionMetaGroup getPartitionsAndMeta(const GuessesVec &guesses, const AnswersVec &answers) {
         RemoveGuessesPartitions::PartitionVec partitions(GlobalState.allGuesses.size(), std::vector<AnswersVec>());
         assert(std::is_sorted(answers.begin(), answers.end()));
         for (const auto t: guesses) {
@@ -195,27 +292,35 @@ struct RemoveGuessesPartitionsTrie {
             }
         }
 
+        auto metaGroup = PartitionMetaGroup();
+        metaGroup.indexes = {};
+        metaGroup.indexes.assign(GlobalState.allGuesses.size(), std::vector<int>());
+        metaGroup.meta = {};
         std::map<AnswersVec, int> partitionToMetaIndex = {};
-        std::vector<std::vector<int>> partitionMetaIndexes(GlobalState.allGuesses.size(), std::vector<int>());
-        std::vector<PartitionMeta> partitionMeta = {};
+        // std::vector<std::vector<int>> partitionMetaIndexes();
+        // std::vector<PartitionMeta> partitionMeta = {};
         for (auto t: guesses) {
             for (const auto &p: partitions[t]) {
                 auto it = partitionToMetaIndex.find(p);
                 int metaIndex;
                 if (it == partitionToMetaIndex.end()) {
-                    metaIndex = partitionMeta.size();
+                    metaIndex = metaGroup.meta.size();
                     partitionToMetaIndex[p] = metaIndex;
-                    partitionMeta.resize(metaIndex+1);
+                    metaGroup.meta.resize(metaIndex+1);
                 } else {
                     metaIndex = it->second;
                 }
-                partitionMeta[metaIndex].ts.push_back(t);
-                partitionMeta[metaIndex].p = p;
-                partitionMetaIndexes[t].push_back(metaIndex);
+                metaGroup.meta[metaIndex].ts.push_back(t);
+                metaGroup.meta[metaIndex].p = p;
+                metaGroup.indexes[t].push_back(metaIndex);
             }
+
+            //auto &indexes = metaGroup.indexes[t];
+            //std::sort(indexes.begin(), indexes.end(), [&](const auto &a, const auto &b) { return metaGroup.meta[a].p.size() < metaGroup.meta[b].p.size(); });
+            //if (indexes.size() > 0) DEBUG("indexes[0]: " << metaGroup.meta[indexes[0]].p.size() << " VS " << metaGroup.meta[indexes[1]].p.size());
         }
 
-        return {partitionMetaIndexes, partitionMeta};
+        return metaGroup;
     }
 
     static int getNodeId(const AnswersVec &p) {
@@ -245,27 +350,6 @@ struct RemoveGuessesPartitionsTrie {
         auto it = std::lower_bound(keys.begin(), keys.end(), k);
         if (it == keys.end() || *it != k) return keys.size();
         return std::distance(keys.begin(), it);
-    }
-
-
-    template <typename T>
-    static void inplaceSetIntersection(std::vector<T> &a, const std::vector<T> &b) {
-        // trust me, its fine
-        // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
-        //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
-        auto nd = std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), a.begin());
-        a.erase(nd, a.end());
-    }
-
-    template <typename T>
-    static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
-        // trust me, its fine
-        // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
-        //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
-        std::vector<T> out = {};
-        std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
-        a.swap(out);
-        // a.assign(out.begin(), out.end());
     }
 
     template <typename T>

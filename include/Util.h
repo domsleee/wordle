@@ -241,3 +241,24 @@ inline std::ofstream safeFout(const std::string &filename) {
 
     return std::ofstream(filename);
 }
+
+
+template <typename T>
+static void inplaceSetIntersection(std::vector<T> &a, const std::vector<T> &b) {
+    // trust me, its fine
+    // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
+    //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
+    auto nd = std::set_intersection(a.begin(), a.end(), b.begin(), b.end(), a.begin());
+    a.erase(nd, a.end());
+}
+
+template <typename T>
+static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
+    // trust me, its fine
+    // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
+    //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
+    static thread_local std::vector<T> out = {};
+    std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
+    a.assign(out.begin(), out.end());
+    // a.assign(out.begin(), out.end());
+}
