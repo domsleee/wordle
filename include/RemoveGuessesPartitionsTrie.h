@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <queue>
 #include "Util.h"
 #include "PerfStats.h"
 #include "PatternGetterCached.h"
@@ -132,43 +133,8 @@ struct RemoveGuessesPartitionsTrie {
         stats.tock(75);
 
         stats.tick(72);
-        std::stack<std::pair<int,int>> st = {};
-        for (const auto &meta: metaGroup.meta) {
-            const int pSize = meta.p.size();
-            st.push({0, 0});
-            while (!st.empty()) {
-                auto [nodeId, i] = st.top();
-                auto &node = nodes[nodeId];
-                if (node.exact.size() > 0) {
-                    for (auto t: meta.ts) {
-                        assert(!eliminated[t]);
-                        node.subset.push_back(t);
-                    }
-                }
-                st.pop();
-            
-                const int nKeys = node.nextKeys.size();
-                for (int j = 0; j < nKeys; ++j) {
-                    auto nextKey = node.nextKeys[j];
-                    while (i < pSize && meta.p[i] < nextKey) i++;
-                    if (i == pSize) break;
-                   
-                    nextKey = node.nextKeys[j];
-                    if (meta.p[i] == nextKey) {
-                        const auto nextVal = node.nextVals[j];
-                        st.push({nextVal, i+1});
-                        ++i;
-                    }
-                }
-            }
-        }
+        buildSubsetNodesForDebug(stats, metaGroup, eliminated);
         stats.tock(72);
-
-        stats.tick(73);
-        for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
-            std::sort(nodes[i].subset.begin(), nodes[i].subset.end());
-        }
-        stats.tock(73);
 
         stats.tick(74);
         auto cachedSetIntersection = CachedSetIntersection(nodes);
@@ -203,6 +169,7 @@ struct RemoveGuessesPartitionsTrie {
             return eliminated[guessIndex] == 1;
         });
         stats.tock(75);
+        assert(_guesses.size() > 0);
     }
 
     static std::vector<int> getSetIntersectionAbuseSmallSets(PartitionMetaGroup &metaGroup, const std::vector<int> &pVec, int t1) {
@@ -357,4 +324,118 @@ struct RemoveGuessesPartitionsTrie {
         auto nd = std::set_difference(a.begin(), a.end(), b.begin(), b.end(), a.begin());
         a.erase(nd, a.end()); // I think its fine?
     }
+
+    static void buildSubsetNodesForDebug(PerfStats &stats, PartitionMetaGroup &metaGroup, const std::vector<int8_t> &eliminated) {
+        buildSubsetNodes(stats, metaGroup, eliminated);
+        auto slowNodes = nodes;
+        for (auto n: nodes) n.subset = {};
+        buildSubsetNodesFast(stats, metaGroup, eliminated);
+        for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
+            const auto &slowSubset = slowNodes[i].subset;
+            const auto &fastSubset = nodes[i].subset;
+            if (slowSubset != fastSubset) {
+                DEBUG("ERROR. slow (" << slowSubset.size() << ") vs fast (" << fastSubset.size() << ")");
+                DEBUG(getIterableString(slowSubset));
+                DEBUG(getIterableString(fastSubset));
+                exit(1);
+            }
+        }
+    }
+
+    static void buildSubsetNodes(PerfStats &stats, PartitionMetaGroup &metaGroup, const std::vector<int8_t> &eliminated) {
+        std::stack<std::pair<int,int>> st = {};
+        for (const auto &meta: metaGroup.meta) {
+            const int pSize = meta.p.size();
+            st.push({0, 0});
+            while (!st.empty()) {
+                auto [nodeId, i] = st.top();
+                auto &node = nodes[nodeId];
+                if (node.exact.size() > 0) {
+                    for (auto t: meta.ts) {
+                        assert(!eliminated[t]);
+                        node.subset.push_back(t);
+                    }
+                }
+                st.pop();
+            
+                const int nKeys = node.nextKeys.size();
+                for (int j = 0; j < nKeys; ++j) {
+                    auto nextKey = node.nextKeys[j];
+                    while (i < pSize && meta.p[i] < nextKey) i++;
+                    if (i == pSize) break;
+                   
+                    nextKey = node.nextKeys[j];
+                    if (meta.p[i] == nextKey) {
+                        const auto nextVal = node.nextVals[j];
+                        st.push({nextVal, i+1});
+                        ++i;
+                    }
+                }
+            }
+        }
+
+        stats.tick(73);
+        for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
+            std::sort(nodes[i].subset.begin(), nodes[i].subset.end());
+        }
+        stats.tock(73);
+    }
+
+    static void buildSubsetNodesFast(PerfStats &stats, PartitionMetaGroup &metaGroup, const std::vector<int8_t> &eliminated) {
+        struct BFSNode {
+            int nodeId = 0;
+            std::vector<std::pair<int,int>> metaGroupIdPartitionIndexes = {};
+        };
+
+        if (metaGroup.meta.size() == 0) return;
+
+        std::queue<BFSNode> q = {};
+        
+        BFSNode initialNode = {};
+        for (int i = 0; i < metaGroup.meta.size(); ++i) {
+            initialNode.metaGroupIdPartitionIndexes.push_back({i, 0});
+        }
+        q.push(initialNode);
+        //DEBUG("NEW SEARCH");
+        while (!q.empty()) {
+            auto bfsNode = q.front(); q.pop();
+            auto &node = nodes[bfsNode.nodeId];
+            if (node.exact.size() > 0) {
+                auto getFromMetaGroupId = [&](const int metaGroupId) -> const std::vector<int>& {
+                    //DEBUG("metaGroup.meta.size(): " << metaGroup.meta.size() << ", id: " << metaGroupId);
+                    return metaGroup.meta[metaGroupId].ts;
+                };
+
+                const auto initialMetaGroupId = bfsNode.metaGroupIdPartitionIndexes[0].first;
+                //DEBUG("trieNode: " << bfsNode.nodeId << ", INITIAL META GROUP ID: " << initialMetaGroupId);
+                auto subsetVec = std::vector<int>();
+                for (const auto &[metaGroupId, partitionIndex]: bfsNode.metaGroupIdPartitionIndexes) {
+                    inplaceSetUnion(subsetVec, getFromMetaGroupId(metaGroupId));
+                }
+                node.subset = subsetVec;
+            }
+
+            const int nKeys = node.nextKeys.size();
+            for (int j = 0; j < nKeys; ++j) {
+                BFSNode nextNode = {};
+                auto nextKey = node.nextKeys[j];
+
+                for (auto &[metaGroupId, pIndex]: bfsNode.metaGroupIdPartitionIndexes) {
+                    const int pSize = metaGroup.meta[metaGroupId].p.size();
+                    while (pIndex < pSize && metaGroup.meta[metaGroupId].p[pIndex] < nextKey) pIndex++;
+                    if (pIndex == pSize) continue;
+
+                    if (metaGroup.meta[metaGroupId].p[pIndex] == nextKey) {
+                        nextNode.metaGroupIdPartitionIndexes.push_back(std::pair(metaGroupId, pIndex+1));
+                    }
+                }
+
+                if (nextNode.metaGroupIdPartitionIndexes.size() > 0) {
+                    nextNode.nodeId = node.nextVals[j];
+                    q.push(nextNode);
+                }
+            }
+        }
+    }
+
 };

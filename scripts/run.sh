@@ -8,7 +8,7 @@ make -j;
 #./bin/solve -pr --max-tries 4 --max-incorrect 33 -w caste ext/wordle-guesses.txt ext/wordle-answers.txt
 #./bin/solve -pr --max-tries 4 --max-incorrect 146 ext/wordle-guesses.txt ext/wordle-answers.txt
 
-LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
+#LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
 ./bin/solve -Seartolsincuyhdmgb -wlants ext/wordle-combined.txt ext/wordle-combined.txt
 
 #./bin/solve -Seartolsinc -p -L 1.8 -W 12 ext/wordle-combined.txt ext/wordle-combined.txt

@@ -257,8 +257,10 @@ static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
     // trust me, its fine
     // https://stackoverflow.com/questions/1773526/in-place-c-set-intersection
     //DEBUG("INTERSECTING: " << a.size() << " WITH " << b.size());
-    static thread_local std::vector<T> out = {};
+    assert(std::is_sorted(a.begin(), a.end()));
+    assert(std::is_sorted(b.begin(), b.end()));
+    std::vector<T> out = {};
     std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
-    a.assign(out.begin(), out.end());
+    a.swap(out);
     // a.assign(out.begin(), out.end());
 }
