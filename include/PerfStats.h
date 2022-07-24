@@ -90,6 +90,10 @@ struct PerfStats {
             curr.printEntry("lbSubsetTrieGet", 38);
             curr.printEntry("lbSubsetTrieSet", 39);
             curr.printEntry("endGameAnalysis", 41);
+
+            curr.printEntry("ok1", 85);
+            curr.printEntry("ok2", 86);
+
         }
 
         // printf("RemoveGuessesBetterGuess\n");

@@ -2,6 +2,7 @@
 
 #include "Util.h"
 #include "PerfStats.h"
+#include "RemoveGuessesPartitionsTrie.h"
 #include <algorithm>
 #include <numeric>
 
@@ -39,6 +40,8 @@ struct RunnerUtil {
         DEBUG("lettersUsed : " << GlobalArgs.specialLetters);
         DEBUG(stats);
         DEBUG("lbFromHarderInstances: " << solver.subsetCache.lbFromHarderInstances);
+        
+        RemoveGuessesPartitionsTrie::printCalcSubsetsSizeInfo();
         //DEBUG("myData size : " << AttemptStateFastest::myData.size());
     }
 };
