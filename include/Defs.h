@@ -30,3 +30,4 @@ struct AnswersAndGuessesSolver;
 
 static constexpr int INF_INT = (int)1e8;
 static constexpr double INF_DOUBLE = 1e8;
+static constexpr int INDENT = 2;

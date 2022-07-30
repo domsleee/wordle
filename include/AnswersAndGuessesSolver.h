@@ -342,7 +342,9 @@ struct AnswersAndGuessesSolver {
         bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
+            if(depth<=GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
+            if(depth<=GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             if (r < res.numWrong) {
                 res = {r, possibleGuess};
                 if (r < beta) { beta = r; exact = true; }
@@ -483,6 +485,8 @@ struct AnswersAndGuessesSolver {
         auto depth = GlobalArgs.maxTries - remDepth;
         stats.tick(23+depth);
         for (int i = 0; i < n; ++i) {
+            if (depth <= GlobalArgs.printLength) { prs(depth*INDENT); printf("S%dc %d/%d\n", depth, i, n); }
+
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];
             const auto pr = minOverWordsLeastWrong(myEquiv[s], guesses, remDepth, 0, beta - totalWrongForGuess);

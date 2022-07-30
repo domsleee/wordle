@@ -242,6 +242,11 @@ inline std::ofstream safeFout(const std::string &filename) {
     return std::ofstream(filename);
 }
 
+static inline void prs(int n){
+  for(int i=0;i<n;i++)printf(" ");
+}
+
+
 
 template <typename T>
 static void inplaceSetIntersection(std::vector<T> &a, const std::vector<T> &b) {
