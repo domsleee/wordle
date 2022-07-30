@@ -11,7 +11,7 @@ endif
 
 
 CXX = g++-11
-CXXFLAGS = -std=c++20 -Wall -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
+CXXFLAGS = -std=c++20 -Wall -Iinclude -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
 CXXFLAGSTEST = -std=c++20 -Wall -g
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)

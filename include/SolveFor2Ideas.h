@@ -3,7 +3,7 @@
 #include "Defs.h"
 #include "GlobalArgs.h"
 #include "GlobalState.h"
-#include "EndGameAnalysis.h"
+#include "EndGameAnalysis/EndGameAnalysis.h"
 #include <bitset>
 
 struct SolveFor2Ideas {

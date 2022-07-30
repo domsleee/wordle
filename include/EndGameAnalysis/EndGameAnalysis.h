@@ -2,8 +2,8 @@
 #include "Defs.h"
 #include "GlobalState.h"
 #include "GlobalArgs.h"
-#include "EndGameDefs.h"
-#include "EndGameAnalysisHelpers.h"
+#include "EndGameAnalysis/EndGameAnalysisHelpers.h"
+#include "EndGameAnalysis/EndGameDefs.h"
 
 #include <map>
 #include <string>

@@ -1,14 +1,14 @@
-#include "../include/Runner.h"
+#include "Runner.h"
 
 #include "../include/Util.h"
 #include "../include/PatternGetterCached.h"
 #include "../include/RunnerMulti.h"
 #include "../include/Verifier.h"
-#include "../include/EndGameAnalysis.h"
+#include "EndGameAnalysis/EndGameAnalysis.h"
 #include "../include/SolveFor2Ideas.h"
 #include "../include/RemoveGuessesWithBetterGuessCache.h"
 #include "../include/NonLetterLookup.h"
-#include "../include/EndGameDatabase.h"
+#include "EndGameAnalysis/EndGameDatabase.h"
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);

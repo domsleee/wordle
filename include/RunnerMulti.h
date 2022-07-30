@@ -10,7 +10,7 @@
 #include "JsonConverter.h"
 #include "Verifier.h"
 #include "SimpleProgress.h"
-#include "EndGameDatabase.h"
+#include "EndGameAnalysis/EndGameDatabase.h"
 #include <type_traits>
 #include <iostream>
 

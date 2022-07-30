@@ -14,7 +14,7 @@
 #include "RemoveGuessesPartitions.h"
 #include "RemoveGuessesPartitionsTrie.h"
 
-#include "EndGameAnalysis.h"
+#include "EndGameAnalysis/EndGameAnalysis.h"
 #include "PerfStats.h"
 #include "NonLetterLookup.h"
 #include "LookupCacheEntry.h"
