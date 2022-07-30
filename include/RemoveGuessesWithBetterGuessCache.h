@@ -105,6 +105,7 @@ struct RemoveGuessesWithBetterGuessCache
 
     static void readFromFile(const std::string &filename) {
         START_TIMER(betterGuessCacheReadFromFile);
+        long long totalSize = 0;
         std::ifstream fin(filename, std::ios_base::binary);
         int cacheSize;
         fin.read(reinterpret_cast<char*>(&cacheSize), sizeof(cacheSize));
@@ -116,8 +117,11 @@ struct RemoveGuessesWithBetterGuessCache
             cache[index].resize(numEntries);
             fin.read(reinterpret_cast<char*>(cache[index].data()), sizeof(IndexType) * numEntries);
             cacheWsGuesses[index] = WordSetHelpers::buildGuessesWordSet(cache[index]);
+            totalSize += numEntries;
         }
         fin.close();
+        DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
+
         END_TIMER(betterGuessCacheReadFromFile);
     }
 

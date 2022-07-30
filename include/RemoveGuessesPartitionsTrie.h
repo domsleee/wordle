@@ -149,7 +149,7 @@ struct RemoveGuessesPartitionsTrie {
             };
 
             std::vector<int> subsetVec = {};
-            static auto lambda = [&](const int nodeId) -> const std::vector<int>& { return nodes[nodeId].subset; };
+            auto lambda = [&](const int nodeId) -> const std::vector<int>& { return nodes[nodeId].subset; };
             const auto myStrat = SetIntersectionStrategy::Counting;
             if (myStrat == SetIntersectionStrategy::Naive) {
                 subsetVec = getSetIntersection(metaGroup, lambda, t1);
@@ -372,7 +372,7 @@ struct RemoveGuessesPartitionsTrie {
 
         stats.tick(73);
         for (int i = 0; i < static_cast<int>(nodes.size()); ++i) {
-            std::sort(nodes[i].subset.begin(), nodes[i].subset.end());
+            // std::sort(nodes[i].subset.begin(), nodes[i].subset.end());
         }
         stats.tock(73);
     }
@@ -410,12 +410,13 @@ struct RemoveGuessesPartitionsTrie {
                 const auto nextKey = node.nextKeys[j];
 
                 for (auto &[metaGroupId, pIndex]: bfsNode.metaGroupIdPartitionIndexes) {
-                    const int pSize = metaGroup.meta[metaGroupId].p.size();
-                    while (pIndex < pSize && metaGroup.meta[metaGroupId].p[pIndex] < nextKey) pIndex++;
+                    const auto &p = metaGroup.meta[metaGroupId].p;
+                    const int pSize = p.size();
+                    while (pIndex < pSize && p[pIndex] < nextKey) pIndex++;
                     if (pIndex == pSize) continue;
 
-                    if (metaGroup.meta[metaGroupId].p[pIndex] == nextKey) {
-                        nextNode.metaGroupIdPartitionIndexes.emplace_back(std::pair(metaGroupId, pIndex+1));
+                    if (p[pIndex] == nextKey) {
+                        nextNode.metaGroupIdPartitionIndexes.push_back({metaGroupId, pIndex+1});
                     }
                 }
 
@@ -440,78 +441,31 @@ struct RemoveGuessesPartitionsTrie {
             };
 
             //DEBUG("set union of: " <<  bfsNode.metaGroupIdPartitionIndexes.size());
-            auto subsetVec = std::vector<int>();
-            trackCalcSubsetsSize(bfsNode.metaGroupIdPartitionIndexes.size());
+            std::vector<int> subsetVec;
+            const int useHeapCutoff = 800;
+            const int nPartitionIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
+            trackCalcSubsetsSize(nPartitionIndexes);
             //subsetVec.reserve(nGuesses);
-            if (bfsNode.metaGroupIdPartitionIndexes.size() == 1) {
+            if (nPartitionIndexes == 1) {
                 subsetVec = getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[0].first);
             }
-            else if (bfsNode.metaGroupIdPartitionIndexes.size() == 2)
+            else if (nPartitionIndexes == 2)
             {
                 const auto &ts1 = getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[0].first);
                 const auto &ts2 = getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[1].first);
+                subsetVec = {};
                 std::set_union(ts1.begin(), ts1.end(), ts2.begin(), ts2.end(), std::back_inserter(subsetVec));
             }
-            else if (bfsNode.metaGroupIdPartitionIndexes.size() < 500000) {
+            else if (nPartitionIndexes < useHeapCutoff) {
+                subsetVec = getSubsetVecByUnionOfNSets_Sort(bfsNode, metaGroup);
+            }
+            else if (nPartitionIndexes < useHeapCutoff) {
                 subsetVec = getSubsetVecByUnionOfNSets_SmallHeap(bfsNode, metaGroup);
             }
-            else if (bfsNode.metaGroupIdPartitionIndexes.size() < 2000) {
-                int numMetaGroupIdIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
-                std::vector<const std::vector<int>*> ptrs(numMetaGroupIdIndexes);
-                for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
-                    ptrs[i] = &getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[i].first);
-                }
-                std::vector<int> indexes(numMetaGroupIdIndexes, 0);
-                const int nGuesses = GlobalState.allGuesses.size();
-
-#define MERGE_DEBUG(x)
-                MERGE_DEBUG("GOING: " << numMetaGroupIdIndexes);
-                // for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
-                //     const auto &vec = *(ptrs[i]);
-                //     MERGE_DEBUG(getIterableString(vec));
-                // }
-                int minI = 0, maxI = numMetaGroupIdIndexes-1;
-                while (true) {
-                    int m1 = nGuesses, m2 = nGuesses, ind1 = -1; 
-                    for (int i = minI; i <= maxI; ++i) {
-                        const auto &vec = *(ptrs[i]);
-                        const int m = indexes[i] >= vec.size()
-                            ? nGuesses
-                            : vec[indexes[i]];
-                        MERGE_DEBUG("CHECK m from ptrs[" << i << "]: " << m);
-                        if (m < m1) {
-                            m1 = m; ind1 = i;
-                            MERGE_DEBUG("new m1!: " << m1 << ", from ptrs[" << i << "][" << indexes[i] << "]");
-                        } else if (m < m2) {
-                            m2 = m;
-                        }
-                    }
-                    MERGE_DEBUG("ind1: " << ind1 << ", indexes[ind1]: " << indexes[ind1] << ", m1: " << m1 << ", m2: " << m2);
-                    if (ind1 == -1) break;
-                    const auto &ind1Vec = *(ptrs[ind1]);
-                    MERGE_DEBUG("indexes[ind1]: " << indexes[ind1] << " < ind1Vec.size(): " << ind1Vec.size() << " && ind1Vec[ind1]: " << ind1Vec[ind1] << " <= m2: " << m2);
-                    for (;indexes[ind1] < ind1Vec.size() && ind1Vec[indexes[ind1]] <= m2; ++indexes[ind1]) {
-                        const int i = indexes[ind1];
-                        if (subsetVec.size() == 0 || ind1Vec[i] != *subsetVec.rbegin()) {
-                            subsetVec.push_back(ind1Vec[i]);
-                        }
-                    }
-                    if (indexes[ind1] == ind1Vec.size()) {
-                        if (ind1 == minI) {
-                            // while (minI <= maxI) {
-                            //     const auto &minIVec = *(ptrs[minI]);
-                            //     if (indexes[minI] == minIVec.size()) minI++;
-                            //     else break;
-                            // }
-                            minI++;
-                        }
-                        else if (ind1 == maxI) maxI--;
-                    }
-                }
-                MERGE_DEBUG("done");
-                //DEBUG(getIterableString(subsetVec));
+            else if (nPartitionIndexes < useHeapCutoff) {
+                subsetVec = getSubsetVecByUnionOfNSets_NaryMerge(bfsNode, metaGroup);
             }
-            else if (bfsNode.metaGroupIdPartitionIndexes.size() > 2000) {
+            else {
                 //std::fill(bitset.begin(), bitset.end(), 0);
                 int m = GlobalState.allGuesses.size(), M = 0;
                 for (const auto &[metaGroupId, partitionIndex]: bfsNode.metaGroupIdPartitionIndexes) {
@@ -523,35 +477,33 @@ struct RemoveGuessesPartitionsTrie {
                     M = std::max(M, *ts.rbegin());
                 }
 
+                subsetVec = {};
                 moveFromBitsetToVal(subsetVec, bitset, m, M);
-            }
-            else if (true) {
-                for (const auto &[metaGroupId, partitionIndex]: bfsNode.metaGroupIdPartitionIndexes) {
-                    for (auto v: getFromMetaGroupId(metaGroupId)) minHeap.push(v);
-                }
-                int last = -1;
-                while (!minHeap.empty()) {
-                    if (last != minHeap.top()) {
-                        subsetVec.push_back(minHeap.top());
-                        last = minHeap.top();
-                    }
-                    minHeap.pop();
-                }
-            } else if (false) {
-                std::set<int> mySet = {};
-                for (const auto &[metaGroupId, partitionIndex]: bfsNode.metaGroupIdPartitionIndexes) {
-                    for (auto v: getFromMetaGroupId(metaGroupId)) mySet.insert(v);
-                }
-                subsetVec = {mySet.begin(), mySet.end()};
-            } else {
-                for (const auto &[metaGroupId, partitionIndex]: bfsNode.metaGroupIdPartitionIndexes) {
-                    inplaceSetUnion(subsetVec, getFromMetaGroupId(metaGroupId));
-                }
             }
             
             node.subset.swap(subsetVec);
         }
     }
+
+    static std::vector<int> getSubsetVecByUnionOfNSets_Sort(const BFSNode &bfsNode, const PartitionMetaGroup &metaGroup) {
+        auto getFromMetaGroupId = [&](const int metaGroupId) -> const std::vector<int>& {
+            return metaGroup.meta[metaGroupId].ts;
+        };
+
+        auto subsetVec = std::vector<int>();
+        const int numMetaGroupIdIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
+        //std::vector<int> myVec = {};
+        for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
+            const auto &vec = getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[i].first);
+            subsetVec.insert(subsetVec.end(), vec.begin(), vec.end());
+        }
+
+        // std::sort(subsetVec.begin(), subsetVec.end());
+        //auto it = std::unique(subsetVec.begin(), subsetVec.end());
+        //subsetVec.erase(it, subsetVec.end());
+        return subsetVec;
+    }
+
 
     static std::vector<int> getSubsetVecByUnionOfNSets_SmallHeap(const BFSNode &bfsNode, const PartitionMetaGroup &metaGroup) {
         auto getFromMetaGroupId = [&](const int metaGroupId) -> const std::vector<int>& {
@@ -559,7 +511,7 @@ struct RemoveGuessesPartitionsTrie {
         };
 
         auto subsetVec = std::vector<int>();
-        int numMetaGroupIdIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
+        const int numMetaGroupIdIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
         std::vector<const std::vector<int>*> metaGroupIdToTs(numMetaGroupIdIndexes);
         for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
             metaGroupIdToTs[i] = &getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[i].first);
@@ -578,20 +530,80 @@ struct RemoveGuessesPartitionsTrie {
         while (minHeap.size()) {
             auto topVal = minHeap.top(); minHeap.pop();
 
-            auto v = (*topVal.first)[topVal.second];
+            const auto &vec = (*topVal.first);
+            auto v = vec[topVal.second++];
             if (v != last) {
-                subsetVec.push_back(v);
+                auto nextV = (*minHeap.top().first)[minHeap.top().second];
+                while (topVal.second < vec.size() && v <= nextV) {
+                    subsetVec.push_back(v);
+                    v = vec[topVal.second++];
+                }
                 last = v;
             }
 
-            auto nextInd = topVal.second + 1;
-            if (nextInd != (*topVal.first).size()) {
-                minHeap.push({topVal.first, nextInd});
+            if (topVal.second != (*topVal.first).size()) {
+                minHeap.emplace(topVal);
             }
         }
 
         return subsetVec;
 
+    }
+
+    static std::vector<int> getSubsetVecByUnionOfNSets_NaryMerge(const BFSNode &bfsNode, const PartitionMetaGroup &metaGroup) {
+        auto getFromMetaGroupId = [&](const int metaGroupId) -> const std::vector<int>& {
+            return metaGroup.meta[metaGroupId].ts;
+        };
+        
+        std::vector<int> subsetVec = {};
+        const int numMetaGroupIdIndexes = bfsNode.metaGroupIdPartitionIndexes.size();
+        std::vector<const std::vector<int>*> ptrs(numMetaGroupIdIndexes);
+        for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
+            ptrs[i] = &getFromMetaGroupId(bfsNode.metaGroupIdPartitionIndexes[i].first);
+        }
+        std::vector<int> indexes(numMetaGroupIdIndexes, 0);
+        const int nGuesses = GlobalState.allGuesses.size();
+
+#define MERGE_DEBUG(x)
+        MERGE_DEBUG("GOING: " << numMetaGroupIdIndexes);
+        // for (int i = 0; i < numMetaGroupIdIndexes; ++i) {
+        //     const auto &vec = *(ptrs[i]);
+        //     MERGE_DEBUG(getIterableString(vec));
+        // }
+        int minI = 0, maxI = numMetaGroupIdIndexes-1;
+        while (true) {
+            int m1 = nGuesses, m2 = nGuesses, ind1 = -1; 
+            for (int i = minI; i <= maxI; ++i) {
+                const auto &vec = *(ptrs[i]);
+                const int m = indexes[i] >= vec.size()
+                    ? nGuesses
+                    : vec[indexes[i]];
+                MERGE_DEBUG("CHECK m from ptrs[" << i << "]: " << m);
+                if (m < m1) {
+                    m1 = m; ind1 = i;
+                    MERGE_DEBUG("new m1!: " << m1 << ", from ptrs[" << i << "][" << indexes[i] << "]");
+                } else if (m < m2) {
+                    m2 = m;
+                }
+            }
+            MERGE_DEBUG("ind1: " << ind1 << ", indexes[ind1]: " << indexes[ind1] << ", m1: " << m1 << ", m2: " << m2);
+            if (ind1 == -1) break;
+            const auto &ind1Vec = *(ptrs[ind1]);
+            MERGE_DEBUG("indexes[ind1]: " << indexes[ind1] << " < ind1Vec.size(): " << ind1Vec.size() << " && ind1Vec[ind1]: " << ind1Vec[ind1] << " <= m2: " << m2);
+            for (;indexes[ind1] < ind1Vec.size() && ind1Vec[indexes[ind1]] <= m2; ++indexes[ind1]) {
+                const int i = indexes[ind1];
+                if (subsetVec.size() == 0 || ind1Vec[i] != *subsetVec.rbegin()) {
+                    subsetVec.push_back(ind1Vec[i]);
+                }
+            }
+            if (indexes[ind1] == ind1Vec.size()) {
+                if (ind1 == minI) minI++;
+                else if (ind1 == maxI) maxI--;
+            }
+        }
+        MERGE_DEBUG("done");
+        //DEBUG(getIterableString(subsetVec));
+        return subsetVec;
     }
 
     static const long long NUM_RECORD = 50;

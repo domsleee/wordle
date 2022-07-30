@@ -304,7 +304,7 @@ struct AnswersAndGuessesSolver {
         stats.tock(35);
         auto nonLetterMask = nonLetterMaskNoSpecialMask & RemoveGuessesWithNoLetterInAnswers::specialMask;
 
-        auto &guessesDisregardingAnswers = RemoveGuessesWithBetterGuessCache::cache[nonLetterMask];
+        auto &guessesDisregardingAnswers = readGuessesWithBetterGuessCache(nonLetterMask);
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
         stats.tick(50 + depth);
@@ -324,7 +324,7 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if ((3 <= remDepth && remDepth <= 4)) {
+        if (false && (3 <= remDepth && remDepth <= 4)) {
             stats.tick(32);
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers);
             stats.tock(32);
@@ -356,6 +356,10 @@ struct AnswersAndGuessesSolver {
         if (exact) setOptCache(answers, guesses, remDepth, res);
         else setLbCache(answers, guesses, remDepth, res);
         return res;
+    }
+
+    const auto &readGuessesWithBetterGuessCache(int nonLetterMask) {
+        return RemoveGuessesWithBetterGuessCache::cache[nonLetterMask];
     }
 
     void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers) {

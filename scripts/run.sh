@@ -9,7 +9,11 @@ make -j;
 #./bin/solve -pr --max-tries 4 --max-incorrect 146 ext/wordle-guesses.txt ext/wordle-answers.txt
 
 LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
-./bin/solve -Seartolsincuyhdmgb -wlants ext/wordle-combined.txt ext/wordle-combined.txt
+./bin/solve -Seartolsincuyhpdmgbkf -N25 ext/wordle-combined.txt ext/wordle-combined.txt
+
+
+# with parts: 20394009 (6663943)
+# not  parts: 71750343 (18383510)
 
 #./bin/solve -Seartolsinc -p -L 1.8 -W 12 ext/wordle-combined.txt ext/wordle-combined.txt
 # ./bin/solve -p -Seartolsincuyhpdmgbkf -L 1 -N50 --min-lb-cache 2 ext/wordle-combined.txt ext/wordle-combined.txt
