@@ -2,7 +2,7 @@
 
 #include "Util.h"
 #include "PerfStats.h"
-#include "RemoveGuessesPartitionsTrie.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
 #include <algorithm>
 #include <numeric>
 

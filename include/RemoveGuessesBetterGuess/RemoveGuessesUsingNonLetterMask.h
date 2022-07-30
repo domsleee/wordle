@@ -1,13 +1,13 @@
 #pragma once
 #include "GlobalState.h"
-#include "PerfStats.h"
 #include "NonLetterLookup.h"
-#include "RemoveGuessesPartitions.h"
-#include "RemoveGuessesWithBetterGuessCache.h"
+#include "PerfStats.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 
 using namespace NonLetterLookupHelpers;
 
-struct RemoveGuessesWithNoLetterInAnswers {
+struct RemoveGuessesUsingNonLetterMask {
     inline static std::vector<int> letterCountLookup = {};
 
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {

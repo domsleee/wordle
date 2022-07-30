@@ -1,6 +1,6 @@
 #pragma once
-#include "Defs.h"
 #include "BestWordResult.h"
+#include "Defs.h"
 
 using EndGameList = std::vector<AnswersVec>;
 

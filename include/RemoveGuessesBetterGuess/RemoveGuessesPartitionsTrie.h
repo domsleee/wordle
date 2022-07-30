@@ -1,14 +1,16 @@
 #pragma once
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <queue>
-#include "Util.h"
-#include "PerfStats.h"
-#include "PatternGetterCached.h"
+
 #include "Defs.h"
 #include "GlobalState.h"
-#include "RemoveGuessesPartitions.h"
+#include "PatternGetterCached.h"
+#include "PerfStats.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
+#include "Util.h"
+
+#include <algorithm>
+#include <map>
+#include <queue>
+#include <vector>
 
 struct PartitionsTrieNode {
     std::vector<int> subset = {}; // trie(p') = {t | exists(p\in P(H,t))(p' subseteq p)}

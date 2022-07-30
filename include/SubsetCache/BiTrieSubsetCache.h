@@ -2,10 +2,10 @@
 #include "Defs.h"
 #include "Util.h"
 
-#include <vector>
-#include <unordered_map>
 #include <queue>
+#include <unordered_map>
 #include <vector>
+#include <map>
 
 #define TRIE_DEBUG(x) 
 

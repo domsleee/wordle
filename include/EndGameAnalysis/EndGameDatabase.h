@@ -1,9 +1,9 @@
 #pragma once
-#include "Util.h"
 #include "Defs.h"
 #include "EndGameAnalysis/EndGameAnalysis.h"
 #include "EndGameAnalysis/EndGameAnalysisHelpers.h"
 #include "EndGameAnalysis/EndGameDefs.h"
+#include "Util.h"
 
 const std::string folderName = "endGameCache";
 

@@ -1,9 +1,10 @@
 #pragma once
 #include "Defs.h"
-#include "GlobalState.h"
-#include "GlobalArgs.h"
 #include "EndGameAnalysis/EndGameAnalysisHelpers.h"
 #include "EndGameAnalysis/EndGameDefs.h"
+#include "GlobalArgs.h"
+#include "GlobalState.h"
+#include "SimpleProgress.h"
 
 #include <map>
 #include <string>

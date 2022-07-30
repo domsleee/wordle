@@ -1,11 +1,13 @@
 #pragma once
-#include "RemoveGuessesWithNoLetterInAnswers.h"
-#include "WordSetHelpers.h"
 #include "PerfStats.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesUsingNonLetterMask.h"
 #include "SimpleProgress.h"
-#include <filesystem>
-
 #include "Util.h"
+#include "WordSetHelpers.h"
+
+#include <filesystem>
+#include <unordered_map>
+
 struct RemoveGuessesWithBetterGuessCache
 {
     static inline std::unordered_map<int, GuessesVec> cache = {};
@@ -34,13 +36,13 @@ struct RemoveGuessesWithBetterGuessCache
         long long totalSize = 0;
         for (int i = 0; i < max; ++i)
         {
-            int nonLetterMask = i & RemoveGuessesWithNoLetterInAnswers::specialMask;
+            int nonLetterMask = i & RemoveGuessesUsingNonLetterMask::specialMask;
             if (cache.find(nonLetterMask) != cache.end()) continue;
             auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
             auto guessesFast = guesses;
             const bool compareWithSlowMethod = false;
-            if (compareWithSlowMethod) RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask);
+            if (compareWithSlowMethod) RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
+            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
                 DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size()); exit(1);
@@ -90,14 +92,14 @@ struct RemoveGuessesWithBetterGuessCache
 
     static int getNonLetterMask(const AnswersVec &answers)
     {
-        return getNonLetterMaskNoSpecialMask(answers) & RemoveGuessesWithNoLetterInAnswers::specialMask;
+        return getNonLetterMaskNoSpecialMask(answers) & RemoveGuessesUsingNonLetterMask::specialMask;
     }
 
     static int getNonLetterMaskNoSpecialMask(const AnswersVec &answers) {
         int answerLetterMask = 0;
         for (auto answerIndex : answers)
         {
-            answerLetterMask |= RemoveGuessesWithNoLetterInAnswers::letterCountLookup[answerIndex];
+            answerLetterMask |= RemoveGuessesUsingNonLetterMask::letterCountLookup[answerIndex];
         }
         int nonLetterMask = ~answerLetterMask;
         return nonLetterMask;

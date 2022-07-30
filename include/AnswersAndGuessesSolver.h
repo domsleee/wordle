@@ -1,32 +1,29 @@
 #pragma once
+#include "AnswersAndGuessesKey.h"
+#include "AnswersAndGuessesResult.h"
 #include "AttemptState.h"
 #include "AttemptStateFaster.h"
-#include "AnswersAndGuessesResult.h"
-#include "GlobalState.h"
-
-#include "PatternGetter.h"
-#include "WordSetUtil.h"
 #include "BestWordResult.h"
-#include "AnswersAndGuessesKey.h"
 #include "Defs.h"
-#include "UnorderedVector.h"
-#include "RemoveGuessesWithBetterGuessCache.h"
-#include "RemoveGuessesPartitions.h"
-#include "RemoveGuessesPartitionsTrie.h"
-
 #include "EndGameAnalysis/EndGameAnalysis.h"
-#include "PerfStats.h"
-#include "NonLetterLookup.h"
+#include "GlobalState.h"
 #include "LookupCacheEntry.h"
-#include "SubsetCache.h"
-#include "BiTrieSubsetCache.h"
+#include "PatternGetter.h"
+#include "PerfStats.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
+#include "SubsetCache/BiTrieSubsetCache.h"
+#include "SubsetCache/SubsetCache.h"
+#include "UnorderedVector.h"
+#include "WordSetUtil.h"
 
 #include <algorithm>
-#include <map>
-#include <unordered_map>
 #include <bitset>
+#include <map>
 #include <set>
 #include <stack>
+#include <unordered_map>
 #include <unordered_set>
 
 #define GUESSESSOLVER_DEBUG(x) 
@@ -302,7 +299,7 @@ struct AnswersAndGuessesSolver {
         stats.tick(35);
         nonLetterMaskNoSpecialMask |= getGreenLetterMask(answers);
         stats.tock(35);
-        auto nonLetterMask = nonLetterMaskNoSpecialMask & RemoveGuessesWithNoLetterInAnswers::specialMask;
+        auto nonLetterMask = nonLetterMaskNoSpecialMask & RemoveGuessesUsingNonLetterMask::specialMask;
 
         auto &guessesDisregardingAnswers = readGuessesWithBetterGuessCache(nonLetterMask);
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
@@ -331,7 +328,7 @@ struct AnswersAndGuessesSolver {
         } else {
             // doubt this does much
             stats.tick(33);
-            RemoveGuessesWithNoLetterInAnswers::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             stats.tock(33);
         }
         // auto numRemoved = bef - guessesCopy.size();

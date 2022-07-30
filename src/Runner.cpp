@@ -1,14 +1,13 @@
-#include "Runner.h"
-
-#include "../include/Util.h"
-#include "../include/PatternGetterCached.h"
-#include "../include/RunnerMulti.h"
-#include "../include/Verifier.h"
 #include "EndGameAnalysis/EndGameAnalysis.h"
-#include "../include/SolveFor2Ideas.h"
-#include "../include/RemoveGuessesWithBetterGuessCache.h"
-#include "../include/NonLetterLookup.h"
 #include "EndGameAnalysis/EndGameDatabase.h"
+#include "PatternGetterCached.h"
+#include "RemoveGuessesBetterGuess/NonLetterLookup.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
+#include "Runner.h"
+#include "RunnerMulti.h"
+#include "SolveFor2Ideas.h"
+#include "Util.h"
+#include "Verifier.h"
 
 int Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
@@ -31,7 +30,7 @@ int Runner::run() {
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
         NonLetterLookup::build();
-        RemoveGuessesWithNoLetterInAnswers::buildLetterLookup();
+        RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         //SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
         EndGameDatabase(solver).init("list1");

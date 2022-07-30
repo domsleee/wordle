@@ -1,6 +1,6 @@
-#include "../include/PatternGetter.h"
-#include "../include/PatternIntHelpers.h"
-#include "../include/Util.h"
+#include "PatternGetter.h"
+#include "PatternIntHelpers.h"
+#include "Util.h"
 
 std::string getPattern(const std::string &word, const std::string &answer) {
     MinLetterType answerLetterCount = {};
