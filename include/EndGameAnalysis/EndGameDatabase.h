@@ -5,7 +5,7 @@
 #include "EndGameAnalysis/EndGameDefs.h"
 #include "Util.h"
 
-const std::string folderName = "endGameCache";
+const std::string folderName = "databases/endGameCache";
 
 using namespace EndGameAnalysisHelpers;
 
@@ -29,7 +29,7 @@ struct EndGameDatabase {
     std::vector<AnswersVec> readEndGamesList(const std::string &listName) {
         std::string filename = FROM_SS(getEndGameListsFolder() << "/" << listName);
         if (!std::filesystem::exists(filename)) {
-            DEBUG("filename not found, get default endgamelist");
+            DEBUG("filename: " << filename << " not found, get default endgamelist for " << listName);
             EndGameAnalysis::initEndGames();
             writeEndGamesLists(listName, EndGameAnalysis::endGames);
             return EndGameAnalysis::endGames;
@@ -74,7 +74,7 @@ struct EndGameDatabase {
         EndGameAnalysis::setDefaultCache();
         long long totalAmount = 0;
         for (auto &en: EndGameAnalysis::cache) for (auto &en2: en) totalAmount += en2.size();
-        auto bar = SimpleProgress("endGameCache2", totalAmount+1);
+        auto bar = SimpleProgress("endGameCache2", totalAmount+1, true);
         bar.everyNth = 100;
 
         auto solver = nothingSolver;

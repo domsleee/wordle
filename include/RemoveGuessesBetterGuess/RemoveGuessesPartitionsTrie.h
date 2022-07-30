@@ -391,7 +391,7 @@ struct RemoveGuessesPartitionsTrie {
         std::queue<BFSNode> q = {};
         
         BFSNode initialNode = {};
-        for (int i = 0; i < metaGroup.meta.size(); ++i) {
+        for (int i = 0; i < static_cast<int>(metaGroup.meta.size()); ++i) {
             initialNode.metaGroupIdPartitionIndexes.push_back({i, 0});
         }
         q.push(initialNode);
@@ -536,14 +536,14 @@ struct RemoveGuessesPartitionsTrie {
             auto v = vec[topVal.second++];
             if (v != last) {
                 auto nextV = (*minHeap.top().first)[minHeap.top().second];
-                while (topVal.second < vec.size() && v <= nextV) {
+                while (topVal.second < static_cast<int>(vec.size()) && v <= nextV) {
                     subsetVec.push_back(v);
                     v = vec[topVal.second++];
                 }
                 last = v;
             }
 
-            if (topVal.second != (*topVal.first).size()) {
+            if (topVal.second != static_cast<int>((*topVal.first).size())) {
                 minHeap.emplace(topVal);
             }
         }
@@ -577,7 +577,7 @@ struct RemoveGuessesPartitionsTrie {
             int m1 = nGuesses, m2 = nGuesses, ind1 = -1; 
             for (int i = minI; i <= maxI; ++i) {
                 const auto &vec = *(ptrs[i]);
-                const int m = indexes[i] >= vec.size()
+                const int m = indexes[i] >= static_cast<int>(vec.size())
                     ? nGuesses
                     : vec[indexes[i]];
                 MERGE_DEBUG("CHECK m from ptrs[" << i << "]: " << m);
@@ -592,13 +592,13 @@ struct RemoveGuessesPartitionsTrie {
             if (ind1 == -1) break;
             const auto &ind1Vec = *(ptrs[ind1]);
             MERGE_DEBUG("indexes[ind1]: " << indexes[ind1] << " < ind1Vec.size(): " << ind1Vec.size() << " && ind1Vec[ind1]: " << ind1Vec[ind1] << " <= m2: " << m2);
-            for (;indexes[ind1] < ind1Vec.size() && ind1Vec[indexes[ind1]] <= m2; ++indexes[ind1]) {
+            for (;indexes[ind1] < static_cast<int>(ind1Vec.size()) && ind1Vec[indexes[ind1]] <= m2; ++indexes[ind1]) {
                 const int i = indexes[ind1];
                 if (subsetVec.size() == 0 || ind1Vec[i] != *subsetVec.rbegin()) {
                     subsetVec.push_back(ind1Vec[i]);
                 }
             }
-            if (indexes[ind1] == ind1Vec.size()) {
+            if (indexes[ind1] == static_cast<int>(ind1Vec.size())) {
                 if (ind1 == minI) minI++;
                 else if (ind1 == maxI) maxI--;
             }

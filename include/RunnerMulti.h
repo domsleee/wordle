@@ -16,7 +16,7 @@
 
 
 struct RunnerMultiResultPair {
-    RemDepthType numTries;
+    int numWrong;
     IndexType wordIndex;
 };
 
@@ -32,7 +32,7 @@ struct RunnerMulti {
     static constexpr ExecutionPolicy executionPolicy{};
 
     template <bool isEasyMode>
-    int run(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+    std::vector<RunnerMultiResult> run(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         START_TIMER(total);
         if (!std::atomic<int>().is_lock_free()) {
             DEBUG("not lock free!");
@@ -48,7 +48,7 @@ struct RunnerMulti {
     }
 
     template <bool isEasyMode>
-    int runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+    std::vector<RunnerMultiResult> runPartitonedByFirstGuess(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         int completed = 0, minWrong = INF_INT;
         double minAvg = INF_DOUBLE;
 
@@ -97,6 +97,7 @@ struct RunnerMulti {
                 const auto &allGuesses = GlobalState.allGuesses;
                 RunnerMultiResult result;
                 auto solver = nothingSolver;
+                bar.updateStatus(FROM_SS(" batch size: " << firstWordBatch.size() << " loading..."));
 
                 for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
                     auto firstWordIndex = firstWordBatch[i];
@@ -104,17 +105,6 @@ struct RunnerMulti {
                     solver.startingWord = firstWord;
 
                     int numWrong = 0, numTries = 0;
-                    // for (std::size_t answerIndex = 0; answerIndex < allAnswers.size(); ++answerIndex) {
-                    //     if (numWrong > GlobalArgs.maxWrong) {
-                    //         numWrong = INF_INT; // invalid
-                    //         continue;
-                    //     }
-                    //     auto answers = getVector<AnswersVec>(allAnswers.size());
-                    //     auto guesses = getVector<GuessesVec>(allGuesses.size());
-                    //     auto solverRes = solver.solveWord(answerIndex, std::make_shared<SolutionModel>(), firstWordIndex, answers, guesses);
-                    //     numWrong += solverRes.tries == TRIES_FAILED;
-                    //     numTries += solverRes.tries == TRIES_FAILED ? 0 : solverRes.tries;
-                    // }
                     auto answers = getVector<AnswersVec>(allAnswers.size());
                     auto guesses = getVector<GuessesVec>(allGuesses.size());
                     numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
@@ -145,6 +135,10 @@ struct RunnerMulti {
                     } else {
                         bar.updateStatus(s);
                     }
+                    auto p = RunnerMultiResultPair();
+                    p.numWrong = numWrong;
+                    p.wordIndex = firstWordIndex;
+                    result.pairs.push_back(p);
                 }
                 
                 result.stats = solver.stats;
@@ -159,7 +153,7 @@ struct RunnerMulti {
 
         RunnerUtil::printInfo(nothingSolver, {}, stats);
         //DEBUG("guess word ct " << AttemptStateFast::guessWordCt);
-        return 0;
+        return transformResults;
     }
 
     template<bool isEasyMode>
@@ -199,7 +193,7 @@ struct RunnerMulti {
 
     // since the first guess is fixed, partitioning by pattern reduces the amount of work
     template <bool isEasyMode>
-    int runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
+    std::vector<RunnerMultiResult> runPartitionedByActualAnswer(const AnswersAndGuessesSolver<isEasyMode> &nothingSolver) {
         std::atomic<int> completed = 0, numWrong = 0, totalSum = 0, batches = 0;
 
         auto answerIndexesToCheck = getVector(GlobalState.allAnswers.size(), 0);
@@ -263,7 +257,7 @@ struct RunnerMulti {
         std::vector<int64_t> answerIndexToResult(GlobalState.allAnswers.size());
         for (const auto &r: transformResults) {
             for (const auto &rr: r.pairs) {
-                answerIndexToResult[rr.wordIndex] = rr.numTries;
+                answerIndexToResult[rr.wordIndex] = rr.numWrong;
             }
             solutionModel.mergeFromOtherModel(r.solutionModel);
 
@@ -273,7 +267,7 @@ struct RunnerMulti {
         JsonConverter::toFile(solutionModel, "./models/model.json");
         Verifier::verifyModel(solutionModel, nothingSolver, numWrong);
 
-        return 0;
+        return transformResults;
     }
 
     static std::vector<std::vector<IndexType>> getBatches(const std::vector<IndexType> &indexes, std::size_t batchSize) {

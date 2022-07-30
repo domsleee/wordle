@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g -ffast-math
 else
-	CONDITIONAL_CXX = -DNDEBUG -O3 -g -ffast-math #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
+	CONDITIONAL_CXX = -DNDEBUG -g  #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
 ifneq ($(UNAME), Darwin)
 	CONDITIONAL_CXX += #-fsanitize=address -fno-omit-frame-pointer
 endif
@@ -11,8 +11,9 @@ endif
 
 
 CXX = g++-11
-CXXFLAGS = -std=c++20 -Wall -Iinclude -I third_party $(CONDITIONAL_CXX) $(ENV_CXXFLAGS)
-CXXFLAGSTEST = -std=c++20 -Wall -g
+CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX)  -O3
+CXXFLAGS = $(CXXFLAGSCOMMON)
+CXXFLAGSTEST = $(CXXFLAGSCOMMON) -g -O3
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
 LIBS := #-lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib

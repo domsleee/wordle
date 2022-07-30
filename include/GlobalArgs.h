@@ -7,17 +7,17 @@ struct _GlobalArgs {
 
     // values
     static inline int numToRestrict, topLevelGuesses, maxTries, maxWrong, guessLimitPerNode, minLbCache, workers;
-    static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters = "eartolsincuyhpdmgbk";
+    static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters;
     static inline double memLimitPerThread = 2;
 
     // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
     // eartolsincuyhpdmgbkfwvxzqj
 
     // flags
-    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings = false, pauseForAttach = false;
-    static inline bool useSubsetCache = true;
+    static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage;
+    static inline bool disableSubsetCache = false, timings = false, pauseForAttach = false;
 
-    static inline int printLength = 0;
+    static inline int printLength;
 };
 
 static inline _GlobalArgs GlobalArgs;

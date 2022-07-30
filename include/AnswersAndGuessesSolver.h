@@ -342,9 +342,9 @@ struct AnswersAndGuessesSolver {
         bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
-            if(depth<=GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
-            if(depth<=GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("N%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             if (r < res.numWrong) {
                 res = {r, possibleGuess};
                 if (r < beta) { beta = r; exact = true; }
@@ -362,19 +362,19 @@ struct AnswersAndGuessesSolver {
     }
 
     void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers) {
-        enum Approach {
+        enum PartitionApproach {
             compareWithSlower = 0,
             useOldVersion,
             useNewVersion
         };
-        static Approach approach = useNewVersion;
+        static auto approach = useNewVersion;
 
-        if (approach == useNewVersion) {
+        if (approach == PartitionApproach::useNewVersion) {
             RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
-        } else if (approach == useOldVersion) {
+        } else if (approach == PartitionApproach::useOldVersion) {
             RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guesses, answers);
         }
-        else if (approach == compareWithSlower) {
+        else if (approach == PartitionApproach::compareWithSlower) {
             auto orig = guesses;
             auto slower = guesses;
             RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, slower, answers);
@@ -707,8 +707,8 @@ struct AnswersAndGuessesSolver {
     }
 
     bool isRemDepthValidForSubsetCache(const RemDepthType remDepth) const {
-        //return GlobalArgs.useSubsetCache && remDepth == 4 && isEasyMode;
-        return GlobalArgs.useSubsetCache && (remDepth == 3 || remDepth == 4) && isEasyMode;
+        //return !GlobalArgs.disableSubsetCache && remDepth == 4 && isEasyMode;
+        return !GlobalArgs.disableSubsetCache && (remDepth == 3 || remDepth == 4) && isEasyMode;
     }
 
     int getLbFromAnswerSubsets(const AnswersVec &answers,

@@ -4,12 +4,11 @@
 #include "RemoveGuessesBetterGuess/NonLetterLookup.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 #include "Runner.h"
-#include "RunnerMulti.h"
 #include "SolveFor2Ideas.h"
 #include "Util.h"
 #include "Verifier.h"
 
-int Runner::run() {
+std::vector<RunnerMultiResult> Runner::run() {
     auto answers = readFromFile(GlobalArgs.answers);
     auto guesses = readFromFile(GlobalArgs.guesses);
 
@@ -20,7 +19,7 @@ int Runner::run() {
 
     GlobalState = _GlobalState(guesses, answers);
 
-    auto lambda = [&]<bool isEasyMode>() -> bool {
+    auto lambda = [&]<bool isEasyMode>() -> std::vector<RunnerMultiResult> {
         auto solver = AnswersAndGuessesSolver<isEasyMode>(GlobalArgs.maxTries);
 
         if (GlobalArgs.pauseForAttach) { DEBUG("ENTER CHAR TO CONTINUE"); char c; std::cin >> c; }
@@ -42,7 +41,7 @@ int Runner::run() {
             auto model = JsonConverter::fromFile(GlobalArgs.verify);
             auto results = Verifier::verifyModel(model, solver);
             RunnerUtil::printInfo(solver, results);
-            return 0;
+            return {};
         }
 
         if (GlobalArgs.firstWord != "") {

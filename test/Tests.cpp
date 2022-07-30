@@ -1,15 +1,16 @@
-#include "../include/AttemptState.h"
-#include "../include/AttemptStateFaster.h"
-#include "../include/UnorderedVector.h"
-#include "../include/PatternGetter.h"
-#include "../include/PatternGetterCached.h"
+#include "AttemptState.h"
+#include "AttemptStateFaster.h"
+#include "UnorderedVector.h"
+#include "PatternGetter.h"
+#include "PatternGetterCached.h"
 
-#include "../include/Util.h"
+#include "Util.h"
 #define CATCH_CONFIG_MAIN
 #include "../third_party/catch.hpp"
 
 #include "TestDefs.h"
 #include "BiTrieSubsetCacheTest.h"
+#include "IntegrationTest.h"
 #include <iostream>
 
 TEST_CASE("attempt state") {
@@ -117,4 +118,3 @@ TEST_CASE("UnorderedVector basic") {
     REQUIRE(vec[3] == 3);
     REQUIRE(vec[4] == 4);
 }
-

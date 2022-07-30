@@ -10,7 +10,7 @@ make -j;
 
 #LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
 #./bin/solve -Seartolsinc -N25 ext/wordle-combined.txt ext/wordle-combined.txt
-./bin/solve -Seartolsincuyhpdm -N25 ext/wordle-combined.txt ext/wordle-combined.txt
+./bin/solve -Seartolsincuyhdmgb -N25
 
 
 # with parts: 20394009 (6663943)

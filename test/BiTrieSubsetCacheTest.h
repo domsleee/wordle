@@ -1,6 +1,6 @@
 #pragma once
 #include "../third_party/catch.hpp"
-#include "../include/BiTrieSubsetCache.h"
+#include "../include/SubsetCache/BiTrieSubsetCache.h"
 #include "TestDefs.h"
 
 BiTrieSubsetCache prepareCache(const std::vector<AnswersVec> &cacheEntries) {

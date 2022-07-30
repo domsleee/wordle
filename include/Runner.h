@@ -1,6 +1,8 @@
 #pragma once
+#include "RunnerMulti.h"
+#include <vector>
 
 struct Runner {
-    static int run();
+    static std::vector<RunnerMultiResult> run();
 };
 
