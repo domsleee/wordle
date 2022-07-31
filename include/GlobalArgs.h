@@ -16,6 +16,7 @@ struct _GlobalArgs {
     // flags
     static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage;
     static inline bool disableSubsetCache = false, timings = false, pauseForAttach = false;
+    static inline bool usePartitions;
 
     static inline int printLength;
 };

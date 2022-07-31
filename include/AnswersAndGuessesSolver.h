@@ -321,7 +321,7 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (false && (3 <= remDepth && remDepth <= 4)) {
+        if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
             stats.tick(32);
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers);
             stats.tock(32);
@@ -485,7 +485,7 @@ struct AnswersAndGuessesSolver {
         auto depth = GlobalArgs.maxTries - remDepth;
         stats.tick(23+depth);
         for (int i = 0; i < n; ++i) {
-            if (depth <= GlobalArgs.printLength) { prs(depth*INDENT); printf("S%dc %d/%d\n", depth, i, n); }
+            if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("S%dc %9.2f %d/%d\n", depth-1, PerfStats::cpu(), i, n); }
 
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];

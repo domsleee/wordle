@@ -131,6 +131,6 @@ struct PerfStats {
     bool ignoreTime(int i) {
         return (46 <= i && i <= 49);
     }
-    double cpu(){return clock()/double(CLOCKS_PER_SEC);}
+    static double cpu(){return clock()/double(CLOCKS_PER_SEC);}
 
 };

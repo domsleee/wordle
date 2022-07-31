@@ -1,4 +1,4 @@
-#include "OptionsParse.h"
+#include "ParseArgs.h"
 #include "GlobalArgs.h"
 #include "../third_party/cxxopts.hpp"
 
@@ -15,6 +15,7 @@ void parseArgs(int argc, char *argv[]) {
         ("p,parallel", "Use parallel processing")
         ("r,reduce-guesses", "Use the answer dictionary as the guess dictionary")
         ("s,force-sequential", "No parallel when generating cache (for profiling)")
+        ("P,use-partitions", "Use partitions")
 
         // strings
         ("w,first-guess", "First guess", cxxopts::value<std::string>()->default_value(""))
@@ -32,7 +33,7 @@ void parseArgs(int argc, char *argv[]) {
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
         ("min-lb-cache", "RemDepth for storing lb cache", cxxopts::value<int>()->default_value("2"))
         ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
-        ("z,print-length", "Print length", cxxopts::value<int>()->default_value("0"))
+        ("z,print-length", "Print length", cxxopts::value<int>()->default_value("-1"))
 
         // floats
         ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
@@ -71,4 +72,5 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.forceSequential = result.count("force-sequential");
     GlobalArgs.hardMode = result.count("hard-mode");
     GlobalArgs.isGetLowestAverage = result.count("lowest-average");
-}
+    GlobalArgs.usePartitions = result.count("use-partitions");
+} // bottom window = use-partitions

@@ -1,6 +1,6 @@
 #pragma once
 #include "../third_party/catch.hpp"
-#include "OptionsParse.h"
+#include "ParseArgs.h"
 #include "Runner.h"
 #include "TestDefs.h"
 
