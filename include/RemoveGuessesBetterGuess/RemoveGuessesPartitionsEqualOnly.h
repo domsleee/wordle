@@ -8,6 +8,7 @@
 #include "GlobalState.h"
 #include "RemoveGuessesPartitions.h"
 
+// O(HT + TlgT)
 struct RemoveGuessesPartitionsEqualOnly {
     using PartitionVec = std::vector<std::vector<AnswersVec>>;
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {

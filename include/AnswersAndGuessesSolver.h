@@ -13,6 +13,7 @@
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsEqualOnly.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsPairSeq.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 #include "SubsetCache/BiTrieSubsetCache.h"
 #include "SubsetCache/SubsetCache.h"
@@ -322,10 +323,10 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (false && depth == 2) {
+        if (true && depth == 2) {
             stats.tick(32);
-            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
-            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useEqualOnly);
+            //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useOldVersion);
             stats.tock(32);
         }
         else if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
@@ -373,10 +374,14 @@ struct AnswersAndGuessesSolver {
         compareWithSlower = 0,
         useOldVersion,
         useNewVersion,
-        useEqualOnly
+        useEqualOnly,
+        usePairSeq
     };
     void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers, PartitionStrategy strategy) {
-        if (strategy == PartitionStrategy::useEqualOnly) {
+        if (strategy == PartitionStrategy::usePairSeq) {
+            RemoveGuessesPartitionsPairSeq::removeWithBetterOrSameGuess(stats, guesses, answers);
+        }
+        else if (strategy == PartitionStrategy::useEqualOnly) {
             RemoveGuessesPartitionsEqualOnly::removeWithBetterOrSameGuess(stats, guesses, answers);
         }
         else if (strategy == PartitionStrategy::useNewVersion) {
