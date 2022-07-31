@@ -15,23 +15,28 @@ enum CompareResult {
 // O(H.T^2)
 struct RemoveGuessesPartitions {
     using PartitionVec = std::vector<std::vector<AnswersVec>>;
-    using PartitionInvertedIndex = std::vector<std::vector<int>>;
+    using PartitionInvertedIndex = std::vector<int>;
+
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
         //DEBUG("H: " << answers.size() << ", T: " << guesses.size());
         const int nGuesses = guesses.size();
+        stats.tick(70);
         PartitionVec partitions = getPartitionsINDEX(guesses, answers);
-        auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
+        stats.tock(70);
+        //auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
 
+        stats.tick(71);
         std::vector<int8_t> eliminated(nGuesses, 0);
 
         for (int i = 0; i < nGuesses; ++i) {
             if (eliminated[i]) continue;
             for (int j = i+1; j < nGuesses; ++j) {
                 if (eliminated[j]) continue;
-                determineEliminate(eliminated, partitionInvertedIndex, partitions, i, j);
+                determineEliminate(eliminated, partitions, i, j);
                 if (eliminated[i]) break;
             }
         }
+        stats.tock(71);
 
         int count = 0;
         std::erase_if(guesses, [&](const auto guessIndex) {
@@ -40,28 +45,30 @@ struct RemoveGuessesPartitions {
         });
     }
 
-    static void determineEliminate(std::vector<int8_t> &eliminated, const PartitionInvertedIndex &partitionInvertedIndex, const PartitionVec &partitions, int i, int j) {
-        auto r1 = compare(partitions, partitionInvertedIndex, i, j);
-        auto r2 = compare(partitions, partitionInvertedIndex, j, i);
+    static void determineEliminate(std::vector<int8_t> &eliminated, const PartitionVec &partitions, int i, int j) {
         assert(i < j);
 
-        if (r1 == BetterThanOrEqualTo && r2 == BetterThanOrEqualTo) {
-            markAsEliminated(eliminated, j, i, true);
-        } else if (r1 == BetterThanOrEqualTo) {
+        auto r1 = compare(partitions, i, j);
+        if (r1 == BetterThanOrEqualTo) {
             markAsEliminated(eliminated, j, i);
-        } else if (r2 == BetterThanOrEqualTo) {
+            return;
+        }
+
+        auto r2 = compare(partitions, j, i);
+        if (r2 == BetterThanOrEqualTo) {
             markAsEliminated(eliminated, i, j);
         }
     }
 
     static PartitionInvertedIndex buildPartitionInvertedIndex(const PartitionVec &partitions) {
         const int nPartitions = partitions.size();
-        PartitionInvertedIndex partitionInvertedIndex(nPartitions, std::vector<int>(GlobalState.allAnswers.size()));
+        const int allAnswersSize = GlobalState.allAnswers.size();
+        PartitionInvertedIndex partitionInvertedIndex(nPartitions * GlobalState.allAnswers.size(), 0);
         for (int i = 0; i < nPartitions; ++i) {
             for (int pi = 0; pi < static_cast<int>(partitions[i].size()); ++pi) {
                 const auto &p = partitions[i][pi];
                 for (auto h1: p) {
-                    partitionInvertedIndex[i][h1] = pi;
+                    partitionInvertedIndex[i * allAnswersSize + h1] = pi;
                 }
             }
         }
@@ -101,17 +108,21 @@ struct RemoveGuessesPartitions {
 
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then g1 is at least as good as g2
-    static CompareResult compare(const PartitionVec &partitions, const PartitionInvertedIndex &partitionInvertedIndex, int i, int j, bool isDebug = false) {
+    static CompareResult compare(const PartitionVec &partitions, int i, int j, bool isDebug = false) {
         // remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)
         const int REM_DEPTH = 4; // for depth=2, remDepth=4
         const int anyNSolvedIn2Guesses = 3;
         for (const auto &p1: partitions[i]) {
             if (p1.size() <= REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)) continue; // assumes remDepth >= 2
-            int indexJ = partitionInvertedIndex[j][p1[0]];
-            const auto &p2 = partitions[j][indexJ];
-            auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
+            bool hasSubset = false;
+            for (const auto &p2: partitions[j]) {
+                auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
+                if (p1IsSubsetOfP2) {
+                    hasSubset = true; break;
+                }
+            }
    
-            if (!p1IsSubsetOfP2) {
+            if (!hasSubset) {
                 if (isDebug) {
                     DEBUG("g1 " << i << " is not a better guess than g2 " << j << " because:");
                     printIterable(p1);
