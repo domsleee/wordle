@@ -11,6 +11,7 @@
 #include "PatternGetter.h"
 #include "PerfStats.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
+#include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsEqualOnly.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 #include "SubsetCache/BiTrieSubsetCache.h"
@@ -234,7 +235,7 @@ struct AnswersAndGuessesSolver {
     }
 
     //const bool canAny3BeSolvedIn2 = true;
-    const int anyNSolvedIn2Guesses = 3; // not 4: batty,patty,tatty,fatty
+    static const int anyNSolvedIn2Guesses = 3; // not 4: batty,patty,tatty,fatty
     BestWordResult minOverWordsLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, FastModeType fastMode, int beta) {
         assertm(remDepth != 0, "no tries remaining");
         stats.entryStats[GlobalArgs.maxTries-remDepth][0]++;
@@ -321,9 +322,15 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
+        if (false && depth == 2) {
             stats.tick(32);
-            removeWithBetterOrSameGuessPartitions(guessesCopy, answers);
+            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useEqualOnly);
+            stats.tock(32);
+        }
+        else if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
+            stats.tick(32);
+            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useNewVersion);
             stats.tock(32);
         } else {
             // doubt this does much
@@ -331,6 +338,7 @@ struct AnswersAndGuessesSolver {
             RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             stats.tock(33);
         }
+        if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
         std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
@@ -361,20 +369,22 @@ struct AnswersAndGuessesSolver {
         return RemoveGuessesWithBetterGuessCache::cache[nonLetterMask];
     }
 
-    void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers) {
-        enum PartitionApproach {
-            compareWithSlower = 0,
-            useOldVersion,
-            useNewVersion
-        };
-        static auto approach = useNewVersion;
-
-        if (approach == PartitionApproach::useNewVersion) {
+    enum PartitionStrategy {
+        compareWithSlower = 0,
+        useOldVersion,
+        useNewVersion,
+        useEqualOnly
+    };
+    void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers, PartitionStrategy strategy) {
+        if (strategy == PartitionStrategy::useEqualOnly) {
+            RemoveGuessesPartitionsEqualOnly::removeWithBetterOrSameGuess(stats, guesses, answers);
+        }
+        else if (strategy == PartitionStrategy::useNewVersion) {
             RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
-        } else if (approach == PartitionApproach::useOldVersion) {
+        } else if (strategy == PartitionStrategy::useOldVersion) {
             RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guesses, answers);
         }
-        else if (approach == PartitionApproach::compareWithSlower) {
+        else if (strategy == PartitionStrategy::compareWithSlower) {
             auto orig = guesses;
             auto slower = guesses;
             RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, slower, answers);

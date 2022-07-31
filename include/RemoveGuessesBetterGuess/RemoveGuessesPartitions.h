@@ -33,25 +33,13 @@ struct RemoveGuessesPartitions {
         if (useSort) std::sort(guesses.begin(), guesses.end(), [&](auto g1, auto g2) { return partitions[g1].size() < partitions[g2].size(); });
 
         for (int i = 0; i < nGuesses; ++i) {
-            //DEBUG("i" << i << ", ct: " << ct);
+            // DEBUG(getPerc(i, nGuesses));
             auto g1 = guesses[i];
             if (eliminated[g1]) continue;
             for (int j = i+1; j < nGuesses; ++j) {
                 auto g2 = guesses[j];
                 if (eliminated[g2]) continue;
-                auto r1 = compare(partitions, g1, g2);
-                auto r2 = compare(partitions, g2, g1);
-
-                if (r1 == BetterThanOrEqualTo && r2 == BetterThanOrEqualTo) {
-                    auto elimPair = originalOrder[g1] > originalOrder[g2]
-                        ? std::pair<int,int>(g1, g2)
-                        : std::pair<int,int>(g2, g1);
-                    markAsEliminated(eliminated, elimPair.first, elimPair.second, true);
-                } else if (r1 == BetterThanOrEqualTo) {
-                    markAsEliminated(eliminated, g2, g1);
-                } else if (r2 == BetterThanOrEqualTo) {
-                    markAsEliminated(eliminated, g1, g2);
-                }
+                determineEliminate(eliminated, originalOrder, partitions, g1, g2);
                 if (eliminated[g1]) break;
             }
         }
@@ -60,6 +48,38 @@ struct RemoveGuessesPartitions {
             return eliminated[guessIndex] == 1;
         });
         if (useSort) std::sort(guesses.begin(), guesses.end(), [&](const int i, const int j) { return originalOrder[i] < originalOrder[j]; });
+    }
+
+    static void determineEliminate(std::vector<int8_t> &eliminated, const std::vector<int> &originalOrder, const PartitionVec &partitions, int g1, int g2) {
+        auto r1 = compare(partitions, g1, g2);
+        auto r2 = compare(partitions, g2, g1);
+
+        if (r1 == BetterThanOrEqualTo && r2 == BetterThanOrEqualTo) {
+            auto elimPair = originalOrder[g1] < originalOrder[g2]
+                ? std::pair<int,int>(g2, g1)
+                : std::pair<int,int>(g1, g2);
+            markAsEliminated(eliminated, elimPair.first, elimPair.second, true);
+        } else if (r1 == BetterThanOrEqualTo) {
+            markAsEliminated(eliminated, g2, g1);
+        } else if (r2 == BetterThanOrEqualTo) {
+            markAsEliminated(eliminated, g1, g2);
+        }
+    }
+
+    static void determineEliminateFaster(std::vector<int8_t> &eliminated, const std::vector<int> &originalOrder, const PartitionVec &partitions, int g1, int g2) {
+        if (originalOrder[g1] > originalOrder[g2]) std::swap(g1, g2);
+        assert(originalOrder[g1] < originalOrder[g2]);
+
+        auto r1 = compare(partitions, g1, g2);
+        if (r1 == BetterThanOrEqualTo) {
+            markAsEliminated(eliminated, g2, g1);
+            return;
+        }
+
+        auto r2 = compare(partitions, g2, g1);
+        if (r2 == BetterThanOrEqualTo) {
+            markAsEliminated(eliminated, g1, g2);
+        }
     }
 
     static void markAsEliminated(std::vector<int8_t> &eliminated, IndexType guessToElim, IndexType guessThatIsBetter, bool equalTo = false) {
@@ -96,8 +116,11 @@ struct RemoveGuessesPartitions {
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then g1 is at least as good as g2
     static CompareResult compare(const PartitionVec &partitions, IndexType g1, IndexType g2, bool isDebug = false) {
+        // remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)
+        const int REM_DEPTH = 4; // for depth=2, remDepth=4
+        const int anyNSolvedIn2Guesses = 3;
         for (const auto &p1: partitions[g1]) {
-            // if (p1.size() <= 3) continue; // probably can be 3 ;)
+            if (p1.size() <= REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)) continue; // assumes remDepth >= 2
             bool hasSubset = false;
             for (const auto &p2: partitions[g2]) {
                 auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());

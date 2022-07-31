@@ -63,16 +63,16 @@ struct RunnerMulti {
         DEBUG("sizeof perfstats: " << sizeof(PerfStats));
 
         auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
-        std::ofstream fout("./models/out.res");
+        std::ofstream fout(GlobalArgs.outputRes);
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "word,numWrong,numTries\n";
 
         // auto myAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
         // auto myGuesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         // PerfStats myStats;
-        // auto newGuesses = RemoveGuessesPartitions::removeWithBetterOrSameGuess(myStats, myGuesses, myAnswers);
-        // auto numRemoved = myGuesses.size() - newGuesses.size();
-        // DEBUG("#removed: " << getPerc(numRemoved, myGuesses.size()));
+        // RemoveGuessesPartitions::removeWithBetterOrSameGuess(myStats, myGuesses, myAnswers);
+        // auto numRemoved = GlobalState.allGuesses.size() - myGuesses.size();
+        // DEBUG("#removed: " << getPerc(numRemoved, GlobalState.allGuesses.size()));
         // exit(1);
 
         std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size(), RunnerMultiResult());
@@ -184,6 +184,13 @@ struct RunnerMulti {
         }
         std::sort(guessIndexes.begin(), guessIndexes.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
 
+        if (GlobalArgs.topLevelSkip > 0) {
+            GuessesVec newIndexes = {};
+            for (std::size_t i = GlobalArgs.topLevelSkip; i < guessIndexes.size(); ++i) {
+                newIndexes.push_back(guessIndexes[i]);
+            }
+            guessIndexes = newIndexes;
+        }
         if (GlobalArgs.topLevelGuesses < static_cast<int>(guessIndexes.size())) {
             auto sizeOfRes = GlobalArgs.topLevelGuesses;
             guessIndexes.resize(sizeOfRes);
