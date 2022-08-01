@@ -324,6 +324,7 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         if (true && depth == 2) {
+            // O(T^2.H)
             stats.tick(32);
             //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useOldVersion);
@@ -334,7 +335,7 @@ struct AnswersAndGuessesSolver {
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useNewVersion);
             stats.tock(32);
         } else {
-            // doubt this does much
+            // O(TlgT)
             stats.tick(33);
             RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             stats.tock(33);

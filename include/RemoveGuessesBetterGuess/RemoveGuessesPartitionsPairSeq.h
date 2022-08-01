@@ -131,7 +131,7 @@ private:
         return partitions;
     }
 
-     // is g1 a better guess than g2
+    // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then g1 is at least as good as g2
     CompareResult compare(const PartitionVec &partitions, int i, int j, bool isDebug = false) {
         for (const auto &p1: partitions[i]) {

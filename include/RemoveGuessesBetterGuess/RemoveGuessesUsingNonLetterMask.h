@@ -200,49 +200,6 @@ struct RemoveGuessesUsingNonLetterMask {
         return trieId;
     }
 
-    static void clearGuesses(GuessesVec &guesses, const AnswersVec &answers) {
-        auto ratio = (double)guesses.size() / answers.size();
-        
-        if (ratio <= 2.00) {
-            //DEBUG("skipping...");
-            return;
-        }
-        int answerLetterMask = 0;
-        for (auto answerIndex: answers) {
-            answerLetterMask |= letterCountLookup[answerIndex];
-        }
-        std::size_t deleted = 0;
-        for (std::size_t i = 0; i < guesses.size() - deleted; ++i) {
-            if ((answerLetterMask & letterCountLookup[guesses[i]]) == 0) {
-                std::swap(guesses[i], guesses[guesses.size()-1-deleted]);
-                deleted++;
-                --i;
-            }
-        }
-        guesses.resize(guesses.size() - deleted);
-        //DEBUG("sending... " << ratio << " #guesses: " << guesses.size() << ", #answers: " << answers.size() << ", removed: " << deleted);
-    }
-
-    // clear guesses with equal or better guess...
-    // looking at answerLetterMask
-
-    static std::size_t clearGuesses(UnorderedVector<IndexType> &guesses, const UnorderedVector<IndexType> &answers) {
-        std::size_t guessesRemoved = 0;
-        int answerLetterMask = 0;
-        for (auto &answerIndex: answers) {
-            answerLetterMask |= letterCountLookup[answerIndex];
-        }
-        for (std::size_t i = guesses.size()-1; i != MAX_SIZE_VAL; --i) {
-            auto guessIndex = guesses[i];
-            if ((answerLetterMask & letterCountLookup[guessIndex]) == 0) {
-                guesses.deleteIndex(i);
-                guessesRemoved++;
-            }
-        }
-
-        return guessesRemoved;
-    }
-
     static inline int specialMask = 0;
     static void buildLetterLookup() {
         if (letterCountLookup.size() > 0) return;

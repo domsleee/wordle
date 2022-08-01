@@ -16,6 +16,7 @@ enum CompareResult {
 struct RemoveGuessesPartitions {
     using PartitionVec = std::vector<std::vector<AnswersVec>>;
     using PartitionInvertedIndex = std::vector<int>;
+    static inline thread_local std::vector<uint8_t> isGodPartition = {};
 
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
         //DEBUG("H: " << answers.size() << ", T: " << guesses.size());
@@ -87,6 +88,7 @@ struct RemoveGuessesPartitions {
         const int nGuesses = guesses.size();
         PartitionVec partitions(nGuesses, std::vector<AnswersVec>());
         assert(std::is_sorted(answers.begin(), answers.end()));
+        isGodPartition.assign(nGuesses, 0);
         for (int i = 0; i < nGuesses; ++i) {
             std::array<uint8_t, NUM_PATTERNS> patternToInd;
             patternToInd.fill(255);
@@ -101,27 +103,40 @@ struct RemoveGuessesPartitions {
                     partitions[i][ind].push_back(answerIndex);
                 }
             }
+            isGodPartition[i] = (partitions[i].size() == 1);
+            std::erase_if(partitions[i], [&](const auto &p) -> bool {
+                return safeToIgnorePartition(p.size());
+            });
         }
 
+        // int gods = 0;
+        // for (int i = 0; i < nGuesses; ++i) gods += isGodPartition[i];
+        // DEBUG(getPerc(gods, nGuesses));
+
         return partitions;
+    }
+
+    static const int REM_DEPTH = 4; // for depth=2, remDepth=4
+    static const int anyNSolvedIn2Guesses = 3;
+    static bool safeToIgnorePartition(std::size_t partitionSize) {
+        return (partitionSize <= REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)); // assumes remDepth >= 2
     }
 
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then g1 is at least as good as g2
     static CompareResult compare(const PartitionVec &partitions, int i, int j, bool isDebug = false) {
-        // remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)
-        const int REM_DEPTH = 4; // for depth=2, remDepth=4
-        const int anyNSolvedIn2Guesses = 3;
         for (const auto &p1: partitions[i]) {
-            if (p1.size() <= REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)) continue; // assumes remDepth >= 2
-            bool hasSubset = false;
-            for (const auto &p2: partitions[j]) {
-                auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
-                if (p1IsSubsetOfP2) {
-                    hasSubset = true; break;
+            if (safeToIgnorePartition(p1.size())) continue;
+            bool hasSubset = isGodPartition[j];
+            if (!hasSubset) {
+                for (const auto &p2: partitions[j]) {
+                    auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
+                    if (p1IsSubsetOfP2) {
+                        hasSubset = true; break;
+                    }
                 }
             }
-   
+
             if (!hasSubset) {
                 if (isDebug) {
                     DEBUG("g1 " << i << " is not a better guess than g2 " << j << " because:");
