@@ -41,8 +41,8 @@ struct RemoveGuessesWithBetterGuessCache
             auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
             auto guessesFast = guesses;
             const bool compareWithSlowMethod = false;
-            if (compareWithSlowMethod) RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFast(stats, guesses, nonLetterMask);
-            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesFast, nonLetterMask);
+            if (compareWithSlowMethod) RemoveGuessesUsingNonLetterMask(stats, nonLetterMask).removeWithBetterOrSameGuessFast(guesses);
+            RemoveGuessesUsingNonLetterMask(stats, nonLetterMask).removeWithBetterOrSameGuessFaster(guessesFast);
 
             if (compareWithSlowMethod && guesses.size() != guessesFast.size()) {
                 DEBUG("OH NO " << guesses.size() << " VS " << guessesFast.size()); exit(1);

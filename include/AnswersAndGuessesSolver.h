@@ -337,7 +337,7 @@ struct AnswersAndGuessesSolver {
         } else {
             // O(TlgT)
             stats.tick(33);
-            RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
+            RemoveGuessesUsingNonLetterMask(stats, nonLetterMaskNoSpecialMask).removeWithBetterOrSameGuessFaster(guessesCopy); // removes a few more
             stats.tock(33);
         }
         if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }

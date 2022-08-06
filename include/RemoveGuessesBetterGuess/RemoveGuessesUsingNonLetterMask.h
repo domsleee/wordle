@@ -10,7 +10,15 @@ using namespace NonLetterLookupHelpers;
 struct RemoveGuessesUsingNonLetterMask {
     inline static std::vector<int> letterCountLookup = {};
 
-    static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+    PerfStats &stats;
+    const int nonLetterMask;
+    const std::array<uint8_t, 26> &yellowLetterMask;
+    RemoveGuessesUsingNonLetterMask(PerfStats &stats, const int nonLetterMask, const std::array<uint8_t, 26> &yellowLetterMask = {})
+        : stats(stats)
+        , nonLetterMask(nonLetterMask),
+          yellowLetterMask(yellowLetterMask) {}
+
+    void removeWithBetterOrSameGuess(GuessesVec &guesses) {
         //auto numNonLetters = __builtin_popcount(nonLetterMask);
 
         std::vector<int> removedIndexes(GlobalState.allGuesses.size(), 0);
@@ -37,7 +45,7 @@ struct RemoveGuessesUsingNonLetterMask {
         });
     }
 
-    static void removeWithBetterOrSameGuessFast(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+    void removeWithBetterOrSameGuessFast(GuessesVec &guesses) {
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
             int8_t r = 0;
@@ -88,7 +96,7 @@ struct RemoveGuessesUsingNonLetterMask {
         //std::sort(guesses.begin(), guesses.end(), [&](auto a, auto b) { return guessToNumGroups[a] > guessToNumGroups[b];});        
     }
 
-    static void removeWithBetterOrSameGuessFaster(PerfStats &stats, GuessesVec &guesses, const int nonLetterMask) {
+    void removeWithBetterOrSameGuessFaster(GuessesVec &guesses) {
         stats.tick(11);
         std::vector<int8_t> guessToNumNonLetters(GlobalState.allGuesses.size(), 0);
         for (auto guessIndex: guesses) {
@@ -105,7 +113,7 @@ struct RemoveGuessesUsingNonLetterMask {
 
         stats.tick(12);
         for (auto guessIndex: guesses) {
-            auto nodeId = getNodeId(guessIndex, nonLetterMask);
+            auto nodeId = getNodeId(guessIndex);
             guessIndexToNodeId[guessIndex] = nodeId;
 
             if (nodeIdToFirstSeen[nodeId] != MAX_INDEX_TYPE) continue;
@@ -149,7 +157,7 @@ struct RemoveGuessesUsingNonLetterMask {
         return 2*r + isPossibleAnswer;
     }
 
-    static int getNodeId(IndexType guessIndex, int nonLetterMask) {
+    int getNodeId(IndexType guessIndex) {
         // using MyPair = std::pair<IndexType, int>;
         // static std::map<MyPair, int> cache = {};
         // int myMask = nonLetterMask & letterCountLookup[guessIndex];
@@ -157,7 +165,7 @@ struct RemoveGuessesUsingNonLetterMask {
         // auto it = cache.find(key);
         // if (it != cache.end()) return it->second;
 
-        auto trieIdUsingCompressed = getNodeIdUsingCompressed(guessIndex, nonLetterMask);
+        auto trieIdUsingCompressed = getNodeIdUsingCompressed(guessIndex);
         //assert(trieIdUsingCompressed == getNodeIdUsingNormal(guessIndex, nonLetterMask));
         return trieIdUsingCompressed;
 
@@ -177,7 +185,7 @@ struct RemoveGuessesUsingNonLetterMask {
         return NonLetterLookup::stringPatternToId[repString];
     }
 
-    static int getNodeIdUsingCompressed(IndexType guessIndex, int nonLetterMask) {
+    int getNodeIdUsingCompressed(IndexType guessIndex) {
         int trieId = guessIndex;
         for (uint8_t charIndex: NonLetterLookup::guessIndexToCharIndexes[guessIndex]) {
             bool knownNonLetter = (nonLetterMask & (1 << charIndex)) != 0;
@@ -188,7 +196,7 @@ struct RemoveGuessesUsingNonLetterMask {
         return trieId;
     }
 
-    static int getNodeIdUsingNormal(IndexType guessIndex, int nonLetterMask) {
+    int getNodeIdUsingNormal(IndexType guessIndex) {
         int trieId = guessIndex;
         for (int i = 0; i < 5; ++i) {
             char c = GlobalState.reverseIndexLookup[guessIndex][i];
@@ -213,5 +221,31 @@ struct RemoveGuessesUsingNonLetterMask {
         for (auto c: GlobalArgs.specialLetters) {
             specialMask |= (1 << (c-'a'));
         }
+    }
+
+    static std::array<uint8_t, 26> getYellowNonLetterMasks(const AnswersVec &answers) {
+        int letterTotal[27] = {0};
+        uint8_t fail[27] = {0};
+        uint8_t letterPerWordOccurrence[27] = {0};
+        for (auto h: answers) {
+            uint8_t letterCt[27] = {0};
+            for (int i = 0; i < static_cast<int>(GlobalState.reverseIndexLookup[h].size()); ++i) {
+                const char c = GlobalState.reverseIndexLookup[h][c];
+                const int letterInd = letterToInd(c);
+                letterTotal[letterInd]++;
+                if (++letterCt[letterInd] > 1) {
+                    fail[letterInd] = 1;
+                }
+                letterPerWordOccurrence[letterInd] |= 1 << i;
+            }
+        }
+
+        std::array<uint8_t, 26> res = {};
+        const int nAnswers = answers.size();
+        for (int i = 0; i < 26; ++i) {
+            if (fail[i] || letterTotal[i] != nAnswers) continue;
+            res[i] = ~letterPerWordOccurrence[i];
+        }
+        return res;
     }
 };
