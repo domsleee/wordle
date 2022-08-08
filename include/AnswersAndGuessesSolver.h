@@ -323,9 +323,11 @@ struct AnswersAndGuessesSolver {
 
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
-        if (true && depth == 2) {
+        const int T = guessesCopy.size(), H = answers.size();
+        if (false && depth == 2 && T*H <= 300000) {
             // O(T^2.H)
             stats.tick(32);
+            DEBUG("H: " << H << ", T: " << T);
             //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useOldVersion);
             stats.tock(32);
@@ -337,7 +339,8 @@ struct AnswersAndGuessesSolver {
         } else {
             // O(TlgT)
             stats.tick(33);
-            RemoveGuessesUsingNonLetterMask(stats, nonLetterMaskNoSpecialMask).removeWithBetterOrSameGuessFaster(guessesCopy); // removes a few more
+            const auto yellowLetterMask = RemoveGuessesUsingNonLetterMask::getYellowNonLetterMasks(answers);
+            RemoveGuessesUsingNonLetterMask(stats, nonLetterMaskNoSpecialMask, yellowLetterMask).removeWithBetterOrSameGuessFaster(guessesCopy); // removes a few more
             stats.tock(33);
         }
         if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }

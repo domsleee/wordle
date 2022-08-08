@@ -165,7 +165,7 @@ struct RemoveGuessesUsingNonLetterMask {
         // auto it = cache.find(key);
         // if (it != cache.end()) return it->second;
 
-        auto trieIdUsingCompressed = getNodeIdUsingCompressed(guessIndex);
+        auto trieIdUsingCompressed = getNodeIdUsingNormal(guessIndex);
         //assert(trieIdUsingCompressed == getNodeIdUsingNormal(guessIndex, nonLetterMask));
         return trieIdUsingCompressed;
 
@@ -200,7 +200,10 @@ struct RemoveGuessesUsingNonLetterMask {
         int trieId = guessIndex;
         for (int i = 0; i < 5; ++i) {
             char c = GlobalState.reverseIndexLookup[guessIndex][i];
-            bool knownNonLetter = (nonLetterMask & (1 << (c-'a'))) != 0;
+            const int letterInd = letterToInd(c);
+            bool knownNonLetter = (nonLetterMask & (1 << letterInd)) != 0;
+            const bool fromYellowLetterMask = yellowLetterMask[letterInd] & (1 << i);
+            knownNonLetter |= fromYellowLetterMask;
             if (knownNonLetter) {
                 trieId = NonLetterLookup::trieNodes[trieId].childByPosition[i];
             }
@@ -224,26 +227,39 @@ struct RemoveGuessesUsingNonLetterMask {
     }
 
     static std::array<uint8_t, 26> getYellowNonLetterMasks(const AnswersVec &answers) {
-        int letterTotal[27] = {0};
         uint8_t fail[27] = {0};
         uint8_t letterPerWordOccurrence[27] = {0};
-        for (auto h: answers) {
+        uint8_t letterCtFirst[27] = {0};
+        const int nAnswers = answers.size();
+        for (int k = 0; k < nAnswers; ++k) {
+            const auto h = answers[k];
             uint8_t letterCt[27] = {0};
             for (int i = 0; i < static_cast<int>(GlobalState.reverseIndexLookup[h].size()); ++i) {
-                const char c = GlobalState.reverseIndexLookup[h][c];
+                const char c = GlobalState.reverseIndexLookup[h][i];
                 const int letterInd = letterToInd(c);
-                letterTotal[letterInd]++;
-                if (++letterCt[letterInd] > 1) {
-                    fail[letterInd] = 1;
-                }
                 letterPerWordOccurrence[letterInd] |= 1 << i;
+                letterCt[letterInd]++;
+            }
+
+            if (k == 0) {
+                for (char c: GlobalState.reverseIndexLookup[h]) {
+                    letterCtFirst[letterToInd(c)] = letterCt[letterToInd(c)];
+                }
+            } else {
+                for (char c: GlobalState.reverseIndexLookup[h]) {
+                    const int i = letterToInd(c);
+                    if (letterCtFirst[i] != letterCt[i]) fail[i] = true;
+                }
+                for (char c: GlobalState.reverseIndexLookup[answers[0]]) {
+                    const int i = letterToInd(c);
+                    if (letterCtFirst[i] != letterCt[i]) fail[i] = true;
+                }
             }
         }
 
         std::array<uint8_t, 26> res = {};
-        const int nAnswers = answers.size();
         for (int i = 0; i < 26; ++i) {
-            if (fail[i] || letterTotal[i] != nAnswers) continue;
+            if (fail[i] || letterCtFirst[i] == 0) continue;
             res[i] = ~letterPerWordOccurrence[i];
         }
         return res;
