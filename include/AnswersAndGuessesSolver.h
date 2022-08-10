@@ -324,17 +324,17 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (true && depth == 2 && (true || T*H < 300000)) {
+        if (depth == 2 && (true || T*H < 300000)) {
             // O(T^2.H)
             stats.tick(32);
             //DEBUG("H: " << H << ", T: " << T);
             //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
-            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useOldVersion);
+            removeWithBetterOrSameGuessPartitions(remDepth, guessesCopy, answers, PartitionStrategy::useOldVersion);
             stats.tock(32);
         }
         else if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
             stats.tick(32);
-            removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useNewVersion);
+            removeWithBetterOrSameGuessPartitions(remDepth, guessesCopy, answers, PartitionStrategy::useNewVersion);
             stats.tock(32);
         } else {
             // O(TlgT)
@@ -381,30 +381,32 @@ struct AnswersAndGuessesSolver {
         useEqualOnly,
         usePairSeq
     };
-    void removeWithBetterOrSameGuessPartitions(GuessesVec &guesses, const AnswersVec &answers, PartitionStrategy strategy) {
-        if (strategy == PartitionStrategy::usePairSeq) {
-            RemoveGuessesPartitionsPairSeq::removeWithBetterOrSameGuess(stats, guesses, answers);
-        }
-        else if (strategy == PartitionStrategy::useEqualOnly) {
-            RemoveGuessesPartitionsEqualOnly::removeWithBetterOrSameGuess(stats, guesses, answers);
-        }
-        else if (strategy == PartitionStrategy::useNewVersion) {
-            RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
-        } else if (strategy == PartitionStrategy::useOldVersion) {
-            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, guesses, answers);
-        }
-        else if (strategy == PartitionStrategy::compareWithSlower) {
-            auto orig = guesses;
-            auto slower = guesses;
-            RemoveGuessesPartitions::removeWithBetterOrSameGuess(stats, slower, answers);
-            RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
-            if (guesses != slower) {
-                DEBUG("DIFFERENT!@");
-                DEBUG("orig   : " << getIterableString(orig));
-                DEBUG("slower : " << getIterableString(slower));
-                DEBUG("trie   : " << getIterableString(guesses));
-                exit(1);
+    void removeWithBetterOrSameGuessPartitions(const int remDepth, GuessesVec &guesses, const AnswersVec &answers, PartitionStrategy strategy) {
+        switch(strategy) {
+            case PartitionStrategy::usePairSeq:
+                return RemoveGuessesPartitionsPairSeq::removeWithBetterOrSameGuess(stats, guesses, answers);
+            case PartitionStrategy::useEqualOnly:
+                return RemoveGuessesPartitionsEqualOnly::removeWithBetterOrSameGuess(stats, guesses, answers);
+            case PartitionStrategy::useNewVersion:
+                return RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
+            case PartitionStrategy::useOldVersion:
+                return RemoveGuessesPartitions(remDepth).removeWithBetterOrSameGuess(stats, guesses, answers);
+            case PartitionStrategy::compareWithSlower:
+            {
+                auto orig = guesses;
+                auto slower = guesses;
+                RemoveGuessesPartitions(remDepth).removeWithBetterOrSameGuess(stats, slower, answers);
+                RemoveGuessesPartitionsTrie::removeWithBetterOrSameGuess(stats, guesses, answers);
+                if (guesses != slower) {
+                    DEBUG("DIFFERENT!@");
+                    DEBUG("orig   : " << getIterableString(orig));
+                    DEBUG("slower : " << getIterableString(slower));
+                    DEBUG("trie   : " << getIterableString(guesses));
+                    exit(1);
+                }
+                return;
             }
+            default: throw "unknown";
         }
     }
 

@@ -21,8 +21,11 @@ struct PartitionInfo {
 // O(H.T^2)
 struct RemoveGuessesPartitions {
     using PartitionInvertedIndex = std::vector<int>;
+    const int remDepth;
 
-    static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
+    RemoveGuessesPartitions(int remDepth): remDepth(remDepth) {}
+
+    void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
         //DEBUG("H: " << answers.size() << ", T: " << guesses.size());
         stats.tick(70);
         auto partitionInfo = getPartitionsINDEX(guesses, answers);
@@ -30,7 +33,8 @@ struct RemoveGuessesPartitions {
         //auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
 
         stats.tick(72);
-        removePartitionsWithZeroOrOneParts(stats, guesses, partitionInfo);
+        bool hasZeroPartition = removePartitionsWithZeroOrOneParts(stats, guesses, partitionInfo);
+        if (hasZeroPartition) return;
         stats.tock(72);
 
         stats.tick(71);
@@ -54,7 +58,7 @@ struct RemoveGuessesPartitions {
         });
     }
 
-    static void determineEliminate(std::vector<int8_t> &eliminated, const PartitionInfo &partitionInfo, int i, int j) {
+    void determineEliminate(std::vector<int8_t> &eliminated, const PartitionInfo &partitionInfo, int i, int j) {
         assert(i < j);
 
         auto r1 = compare(partitionInfo, i, j);
@@ -92,8 +96,11 @@ struct RemoveGuessesPartitions {
         eliminated[guessToElim] = 1;
     }
 
-    static void removePartitionsWithZeroOrOneParts(PerfStats &stats, GuessesVec &guesses, PartitionInfo &partitionInfo) {
+    static bool removePartitionsWithZeroOrOneParts(PerfStats &stats, GuessesVec &guesses, PartitionInfo &partitionInfo) {
         const int nGuesses = guesses.size();
+        std::size_t maxNumPartitions = 0;
+        for (int i = 0; i < nGuesses; ++i) maxNumPartitions = std::max(maxNumPartitions, partitionInfo.partitions[i].size());
+        if (maxNumPartitions == 1) return true;
         int numDeleted = 0;
         for (int i = 0; i < nGuesses-numDeleted; ++i) {
             guesses[i] = guesses[i+numDeleted];
@@ -103,7 +110,7 @@ struct RemoveGuessesPartitions {
             bool shouldDelete = partitionInfo.partitions[i].size() == 1;
             if (partitionInfo.partitions[i].size() == 0) {
                 stats.tock(72);
-                return;
+                return true;
             }
             if (shouldDelete) {
                 i--;
@@ -113,9 +120,10 @@ struct RemoveGuessesPartitions {
         guesses.resize(nGuesses - numDeleted);
         partitionInfo.partitions.resize(nGuesses - numDeleted);
         partitionInfo.sumAfterDeleted.resize(nGuesses - numDeleted);
+        return false;
     }
 
-    static PartitionInfo getPartitionsINDEX(const GuessesVec &guesses, const AnswersVec &answers) {
+    PartitionInfo getPartitionsINDEX(const GuessesVec &guesses, const AnswersVec &answers) {
         const int nGuesses = guesses.size();
         PartitionInfo partitionInfo = {};
         partitionInfo.partitions.assign(nGuesses, std::vector<AnswersVec>());
@@ -159,14 +167,14 @@ struct RemoveGuessesPartitions {
 
     static const int REM_DEPTH = 4; // for depth=2, remDepth=4
     static const int anyNSolvedIn2Guesses = 3;
-    static bool safeToIgnorePartition(std::size_t partitionSize) {
-        const int lt = REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+    bool safeToIgnorePartition(int partitionSize) {
+        const int lt = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
         return (partitionSize <= lt); // assumes remDepth >= 2
     }
 
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then i is at least as good as j
-    static CompareResult compare(const PartitionInfo &partitionInfo, int i, int j, bool isDebug = false) {
+    CompareResult compare(const PartitionInfo &partitionInfo, int i, int j, bool isDebug = false) {
         const auto &partitions = partitionInfo.partitions;
         const bool couldP1BeSubsetOfP2 = compareEarlyExit(partitionInfo, i, j);
         const bool debugFalseEarlyExits = false;
