@@ -15,7 +15,7 @@ serai,1,0
 teras,1,0
 reals,1,0
 salet,1,0
-lanes,0,0
+lanes,1,0
 lears,1,0
 aloes,2,0
 seral,1,0

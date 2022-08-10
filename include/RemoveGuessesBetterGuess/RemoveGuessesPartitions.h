@@ -21,7 +21,6 @@ struct PartitionInfo {
 // O(H.T^2)
 struct RemoveGuessesPartitions {
     using PartitionInvertedIndex = std::vector<int>;
-    static inline thread_local std::vector<uint8_t> isGodPartition = {};
 
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
         //DEBUG("H: " << answers.size() << ", T: " << guesses.size());
@@ -30,13 +29,12 @@ struct RemoveGuessesPartitions {
         stats.tock(70);
         //auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
 
-        int count = 0;
-        std::erase_if(guesses, [&](const auto guessIndex) {
-            ++count;
-            return isOnlyOnePartition[count-1];
-        });
+        stats.tick(72);
+        removePartitionsWithZeroOrOneParts(stats, guesses, partitionInfo);
+        stats.tock(72);
 
         stats.tick(71);
+        const int nGuesses = guesses.size();
         std::vector<int8_t> eliminated(nGuesses, 0);
 
         for (int i = 0; i < nGuesses; ++i) {
@@ -94,6 +92,29 @@ struct RemoveGuessesPartitions {
         eliminated[guessToElim] = 1;
     }
 
+    static void removePartitionsWithZeroOrOneParts(PerfStats &stats, GuessesVec &guesses, PartitionInfo &partitionInfo) {
+        const int nGuesses = guesses.size();
+        int numDeleted = 0;
+        for (int i = 0; i < nGuesses-numDeleted; ++i) {
+            guesses[i] = guesses[i+numDeleted];
+            partitionInfo.partitions[i].swap(partitionInfo.partitions[i+numDeleted]);
+            partitionInfo.sumAfterDeleted[i] = partitionInfo.sumAfterDeleted[i+numDeleted];
+
+            bool shouldDelete = partitionInfo.partitions[i].size() == 1;
+            if (partitionInfo.partitions[i].size() == 0) {
+                stats.tock(72);
+                return;
+            }
+            if (shouldDelete) {
+                i--;
+                numDeleted++;
+            }
+        }
+        guesses.resize(nGuesses - numDeleted);
+        partitionInfo.partitions.resize(nGuesses - numDeleted);
+        partitionInfo.sumAfterDeleted.resize(nGuesses - numDeleted);
+    }
+
     static PartitionInfo getPartitionsINDEX(const GuessesVec &guesses, const AnswersVec &answers) {
         const int nGuesses = guesses.size();
         PartitionInfo partitionInfo = {};
@@ -104,7 +125,6 @@ struct RemoveGuessesPartitions {
         assert(std::is_sorted(answers.begin(), answers.end()));
         //const int H = answers.size(), T = guesses.size();
         //DEBUG("H: " << H << ", T: " << T);
-        isGodPartition.assign(nGuesses, 0);
         for (int i = 0; i < nGuesses; ++i) {
             std::array<uint8_t, NUM_PATTERNS> patternToInd;
             patternToInd.fill(255);
@@ -119,7 +139,6 @@ struct RemoveGuessesPartitions {
                     partitions[i][ind].push_back(answerIndex);
                 }
             }
-            isGodPartition[i] = (partitions[i].size() == 1);
             std::erase_if(partitions[i], [&](const auto &p) -> bool {
                 return safeToIgnorePartition(p.size());
             });
@@ -135,43 +154,31 @@ struct RemoveGuessesPartitions {
             // DEBUG(getIterableString(pSizes));
         }
 
-        int gods = 0, zeroes = 0;
-        for (int i = 0; i < nGuesses; ++i) gods += isGodPartition[i];
-        for (int i = 0; i < nGuesses; ++i) zeroes += partitions[i].size() == 0;
-        if (answers.size() > 200) {
-            DEBUG("H: " << nGuesses << ", T: " << answers.size());
-            DEBUG("GODS: " << getPerc(gods, nGuesses));
-            DEBUG("ZEROES: " << getPerc(zeroes, nGuesses));
-        }
-
         return partitionInfo;
     }
 
     static const int REM_DEPTH = 4; // for depth=2, remDepth=4
     static const int anyNSolvedIn2Guesses = 3;
     static bool safeToIgnorePartition(std::size_t partitionSize) {
-        return (partitionSize <= REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0)); // assumes remDepth >= 2
+        const int lt = REM_DEPTH + (REM_DEPTH >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        return (partitionSize <= lt); // assumes remDepth >= 2
     }
 
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then i is at least as good as j
     static CompareResult compare(const PartitionInfo &partitionInfo, int i, int j, bool isDebug = false) {
         const auto &partitions = partitionInfo.partitions;
-        if (partitions[i].size() == 0) return CompareResult::BetterThanOrEqualTo;
-        if (partitions[j].size() == 0) return CompareResult::Unsure;
         const bool couldP1BeSubsetOfP2 = compareEarlyExit(partitionInfo, i, j);
         const bool debugFalseEarlyExits = false;
         if (!debugFalseEarlyExits && !couldP1BeSubsetOfP2) return CompareResult::Unsure;
         
         for (const auto &p1: partitions[i]) {
             if (safeToIgnorePartition(p1.size())) continue;
-            bool hasSubset = isGodPartition[j];
-            if (!hasSubset) {
-                for (const auto &p2: partitions[j]) {
-                    auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
-                    if (p1IsSubsetOfP2) {
-                        hasSubset = true; break;
-                    }
+            bool hasSubset = false;
+            for (const auto &p2: partitions[j]) {
+                auto p1IsSubsetOfP2 = std::includes(p2.begin(), p2.end(), p1.begin(), p1.end());
+                if (p1IsSubsetOfP2) {
+                    hasSubset = true; break;
                 }
             }
 
