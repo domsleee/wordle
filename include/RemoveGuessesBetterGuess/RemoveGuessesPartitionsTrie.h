@@ -243,7 +243,7 @@ struct RemoveGuessesPartitionsTrie {
     }
 
     static PartitionMetaGroup getPartitionsAndMeta(const GuessesVec &guesses, const AnswersVec &answers) {
-        RemoveGuessesPartitions::PartitionVec partitions(GlobalState.allGuesses.size(), std::vector<AnswersVec>());
+        PartitionVec partitions(GlobalState.allGuesses.size(), std::vector<AnswersVec>());
         assert(std::is_sorted(answers.begin(), answers.end()));
         for (const auto t: guesses) {
             std::array<uint8_t, NUM_PATTERNS> patternToInd;

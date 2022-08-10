@@ -12,19 +12,29 @@ enum CompareResult {
     Unsure
 };
 
+using PartitionVec = std::vector<std::vector<AnswersVec>>;
+struct PartitionInfo {
+    PartitionVec partitions = {};
+    std::vector<int> sumAfterDeleted = {};
+};
+
 // O(H.T^2)
 struct RemoveGuessesPartitions {
-    using PartitionVec = std::vector<std::vector<AnswersVec>>;
     using PartitionInvertedIndex = std::vector<int>;
     static inline thread_local std::vector<uint8_t> isGodPartition = {};
 
     static void removeWithBetterOrSameGuess(PerfStats &stats, GuessesVec &guesses, const AnswersVec &answers) {
         //DEBUG("H: " << answers.size() << ", T: " << guesses.size());
-        const int nGuesses = guesses.size();
         stats.tick(70);
-        PartitionVec partitions = getPartitionsINDEX(guesses, answers);
+        auto partitionInfo = getPartitionsINDEX(guesses, answers);
         stats.tock(70);
         //auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
+
+        int count = 0;
+        std::erase_if(guesses, [&](const auto guessIndex) {
+            ++count;
+            return isOnlyOnePartition[count-1];
+        });
 
         stats.tick(71);
         std::vector<int8_t> eliminated(nGuesses, 0);
@@ -33,7 +43,7 @@ struct RemoveGuessesPartitions {
             if (eliminated[i]) continue;
             for (int j = i+1; j < nGuesses; ++j) {
                 if (eliminated[j]) continue;
-                determineEliminate(eliminated, partitions, i, j);
+                determineEliminate(eliminated, partitionInfo, i, j);
                 if (eliminated[i]) break;
             }
         }
@@ -46,16 +56,16 @@ struct RemoveGuessesPartitions {
         });
     }
 
-    static void determineEliminate(std::vector<int8_t> &eliminated, const PartitionVec &partitions, int i, int j) {
+    static void determineEliminate(std::vector<int8_t> &eliminated, const PartitionInfo &partitionInfo, int i, int j) {
         assert(i < j);
 
-        auto r1 = compare(partitions, i, j);
+        auto r1 = compare(partitionInfo, i, j);
         if (r1 == BetterThanOrEqualTo) {
             markAsEliminated(eliminated, j, i);
             return;
         }
 
-        auto r2 = compare(partitions, j, i);
+        auto r2 = compare(partitionInfo, j, i);
         if (r2 == BetterThanOrEqualTo) {
             markAsEliminated(eliminated, i, j);
         }
@@ -84,10 +94,16 @@ struct RemoveGuessesPartitions {
         eliminated[guessToElim] = 1;
     }
 
-    static PartitionVec getPartitionsINDEX(const GuessesVec &guesses, const AnswersVec &answers) {
+    static PartitionInfo getPartitionsINDEX(const GuessesVec &guesses, const AnswersVec &answers) {
         const int nGuesses = guesses.size();
-        PartitionVec partitions(nGuesses, std::vector<AnswersVec>());
+        PartitionInfo partitionInfo = {};
+        partitionInfo.partitions.assign(nGuesses, std::vector<AnswersVec>());
+        partitionInfo.sumAfterDeleted.assign(nGuesses, 0);
+
+        auto &partitions = partitionInfo.partitions;
         assert(std::is_sorted(answers.begin(), answers.end()));
+        //const int H = answers.size(), T = guesses.size();
+        //DEBUG("H: " << H << ", T: " << T);
         isGodPartition.assign(nGuesses, 0);
         for (int i = 0; i < nGuesses; ++i) {
             std::array<uint8_t, NUM_PATTERNS> patternToInd;
@@ -107,13 +123,28 @@ struct RemoveGuessesPartitions {
             std::erase_if(partitions[i], [&](const auto &p) -> bool {
                 return safeToIgnorePartition(p.size());
             });
+            std::stable_sort(partitions[i].begin(), partitions[i].end(), [](const auto &p1, const auto &p2) -> bool {return p1.size() < p2.size();});
+            int sumAfterDeleted = 0;
+            for (auto &p: partitions[i]) sumAfterDeleted += p.size();
+            partitionInfo.sumAfterDeleted[i] = sumAfterDeleted;
+            // std::vector<int> pSizes = {};
+            // for (const auto &p: partitions[i]) {
+            //     pSizes.push_back(p.size());
+            // }
+            // std::sort(pSizes.begin(), pSizes.end());
+            // DEBUG(getIterableString(pSizes));
         }
 
-        // int gods = 0;
-        // for (int i = 0; i < nGuesses; ++i) gods += isGodPartition[i];
-        // DEBUG(getPerc(gods, nGuesses));
+        int gods = 0, zeroes = 0;
+        for (int i = 0; i < nGuesses; ++i) gods += isGodPartition[i];
+        for (int i = 0; i < nGuesses; ++i) zeroes += partitions[i].size() == 0;
+        if (answers.size() > 200) {
+            DEBUG("H: " << nGuesses << ", T: " << answers.size());
+            DEBUG("GODS: " << getPerc(gods, nGuesses));
+            DEBUG("ZEROES: " << getPerc(zeroes, nGuesses));
+        }
 
-        return partitions;
+        return partitionInfo;
     }
 
     static const int REM_DEPTH = 4; // for depth=2, remDepth=4
@@ -124,7 +155,14 @@ struct RemoveGuessesPartitions {
 
     // is g1 a better guess than g2
     // if all partitions p1 of P(H, g1) has a partition p2 of P(H, g2) where p1 is a subset of p2, then i is at least as good as j
-    static CompareResult compare(const PartitionVec &partitions, int i, int j, bool isDebug = false) {
+    static CompareResult compare(const PartitionInfo &partitionInfo, int i, int j, bool isDebug = false) {
+        const auto &partitions = partitionInfo.partitions;
+        if (partitions[i].size() == 0) return CompareResult::BetterThanOrEqualTo;
+        if (partitions[j].size() == 0) return CompareResult::Unsure;
+        const bool couldP1BeSubsetOfP2 = compareEarlyExit(partitionInfo, i, j);
+        const bool debugFalseEarlyExits = false;
+        if (!debugFalseEarlyExits && !couldP1BeSubsetOfP2) return CompareResult::Unsure;
+        
         for (const auto &p1: partitions[i]) {
             if (safeToIgnorePartition(p1.size())) continue;
             bool hasSubset = isGodPartition[j];
@@ -147,7 +185,32 @@ struct RemoveGuessesPartitions {
                 return CompareResult::Unsure;
             }
         }
+        if (debugFalseEarlyExits && !couldP1BeSubsetOfP2) {
+            DEBUG("FALSE EARLY EXIT HERE...");
+            const auto &pi = partitionInfo.partitions[i], &pj = partitionInfo.partitions[j];
+            DEBUG("largestRule: " << pi.rbegin()->size() << " <= " << pj.rbegin()->size());  // the largest of pi must be a subset of something
+            
+            DEBUG(partitions[i].size() << " VS " << partitions[j].size());
+            exit(1);
+        }
         return CompareResult::BetterThanOrEqualTo;
+    }
+
+    static bool compareEarlyExit(const PartitionInfo &partitionInfo, int i, int j) {
+        const auto &pi = partitionInfo.partitions[i], &pj = partitionInfo.partitions[j];
+        const bool largestRule = pi.rbegin()->size() <= pj.rbegin()->size();  // the largest of pi must be a subset of something
+        
+        const auto sumi = partitionInfo.sumAfterDeleted[i], sumj = partitionInfo.sumAfterDeleted[j];
+        const bool sumRule = sumi <= sumj;
+        const bool lengthRule = sumi != sumj || pi.size() >= pj.size(); // each pj needs to have at least one partition using it
+        const bool smallestRule = sumi != sumj || pi[0].size() >= pj[0].size(); // the smallest of pj must be used
+
+        // if (!largestRule
+        //     // || !sumRule
+        //     // || !lengthRule
+        // ) return CompareResult::Unsure;
+        const bool couldP1BeSubsetOfP2 = largestRule && sumRule && lengthRule && smallestRule;
+        return couldP1BeSubsetOfP2;
     }
 
     static void printPartitions(const PartitionVec &partitions, int i) {

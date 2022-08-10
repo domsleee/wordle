@@ -324,10 +324,10 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (false && depth == 2 && T*H <= 300000) {
+        if (true && depth == 2 && (true || T*H < 300000)) {
             // O(T^2.H)
             stats.tick(32);
-            DEBUG("H: " << H << ", T: " << T);
+            //DEBUG("H: " << H << ", T: " << T);
             //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             removeWithBetterOrSameGuessPartitions(guessesCopy, answers, PartitionStrategy::useOldVersion);
             stats.tock(32);
