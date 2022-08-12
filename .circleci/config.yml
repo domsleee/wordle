@@ -17,8 +17,8 @@ jobs:
       - run:
           command: |
             make -j bin/test
-            mkdir -p databases/endGameCache
-            unzip .circleci/endGamePowersets_12972_12972.zip -d databases/endGameCache/endGamePowersets_12972_12972/
+            mkdir -p databases
+            unzip -q .circleci/endGamePowersets_12972_12972.zip -d databases/endGameCache/
             ./bin/test
 
 workflows:
