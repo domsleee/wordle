@@ -9,11 +9,14 @@ jobs:
       - run:
           command: |
             make -j bin/test bin/solve
+      - persist_to_workspace:
+            root: .
+            paths:
+                - .
   test:
     docker:
       - image: domslee/gcctbb:x86
     steps:
-      - checkout
       - run:
           command: |
             make -j bin/test
