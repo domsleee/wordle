@@ -213,8 +213,8 @@ struct RemoveGuessesUsingNonLetterMask {
 
     static inline int specialMask = 0;
     static void buildLetterLookup() {
-        if (letterCountLookup.size() > 0) return;
-        letterCountLookup.resize(GlobalState.reverseIndexLookup.size());
+        //if (letterCountLookup.size() > 0) return;
+        letterCountLookup.assign(GlobalState.reverseIndexLookup.size(), {});
         for (std::size_t i = 0; i < GlobalState.reverseIndexLookup.size(); ++i) {
             letterCountLookup[i] = 0;
             for (auto c: GlobalState.reverseIndexLookup[i]) {

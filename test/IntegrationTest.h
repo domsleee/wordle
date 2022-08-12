@@ -39,8 +39,19 @@ TEST_CASE("tenor,raced should be 17") {
     REQUIRE_MESSAGE(r.size() == 1, "ONE RESULT");
     const auto &pairs = r[0].pairs;
     REQUIRE_MESSAGE(pairs.size() == 3, "NUM PAIRS");
-    REQUIRE_MESSAGE(pairs[0].numWrong, 17);
-    REQUIRE_MESSAGE(pairs[1].numWrong, 17);
-    REQUIRE_MESSAGE(pairs[2].numWrong, 21);
+    REQUIRE_MESSAGE(pairs[0].numWrong == 17, 17);
+    REQUIRE_MESSAGE(pairs[1].numWrong == 17, 17);
+    REQUIRE_MESSAGE(pairs[2].numWrong == 21, 21);
+}
 
+TEST_CASE("BIGHIDDEN lanes,lears") {
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "--guesses-to-check", "test/LanesLears.txt"});
+    auto [argc, argv] = argHelper.getArgcArgv();
+    parseArgs(argc, argv);
+    auto r = Runner::run();
+    REQUIRE_MESSAGE(r.size() == 1, "ONE RESULT");
+    const auto &pairs = r[0].pairs;
+    REQUIRE_MESSAGE(pairs.size() == 2, "NUM PAIRS");
+    REQUIRE_MESSAGE(pairs[0].numWrong == 0, 0);
+    REQUIRE_MESSAGE(pairs[1].numWrong > 0, 1);
 }
