@@ -14,6 +14,7 @@ jobs:
             paths:
                 - .
   test:
+    needs: build
     docker:
       - image: domslee/gcctbb:x86
     steps:
