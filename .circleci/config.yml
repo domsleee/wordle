@@ -17,6 +17,8 @@ jobs:
     docker:
       - image: domslee/gcctbb:x86
     steps:
+      - attach_workspace:
+          at: ./
       - run:
           command: |
             make -j bin/test
