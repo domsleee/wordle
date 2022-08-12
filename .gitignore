@@ -1,2 +1,12 @@
 obj/
 bin/
+results/
+prof/
+prof/*
+databases/*
+.vscode
+.DS_Store
+screenlog.0
+cacheDebug
+endGameCache/
+scripts/node_modules
