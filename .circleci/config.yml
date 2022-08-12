@@ -18,7 +18,7 @@ jobs:
           command: |
             make -j bin/test
             mkdir -p databases
-            unzip -q .circleci/endGamePowersets_12972_12972.zip -d databases/endGameCache/
+            export IGNORE_BIGTESTS=1
             ./bin/test
 
 workflows:

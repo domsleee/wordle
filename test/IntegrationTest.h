@@ -45,6 +45,10 @@ TEST_CASE("tenor,raced should be 17") {
 }
 
 TEST_CASE("BIGHIDDEN lanes,lears") {
+    if (std::getenv("IGNORE_BIGTESTS")) {
+        DEBUG("ignoring big test...");
+        return;
+    }
     auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "--guesses-to-check", "test/LanesLears.txt"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
