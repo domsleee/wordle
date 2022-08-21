@@ -183,11 +183,11 @@ struct SolveFor2Ideas {
         auto solver = AnswersAndGuessesSolver<true>(2);
         std::set<std::set<IndexType>> nogood;
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
-        long long total = nChoosek(answers.size(), 4);
+        int64_t total = nChoosek(answers.size(), 4);
         auto bar = SimpleProgress(FROM_SS("canAny4BeSolvedIn2: " << total), GlobalState.allAnswers.size());
 
-        long long ct = 0;
-        std::ofstream fout(FROM_SS("results/nogood-" << GlobalState.allAnswers.size() << "-" << GlobalState.allGuesses.size() << ".txt"));
+        int64_t ct = 0, skipped = 0;
+        std::ofstream fout(FROM_SS("results/any4in2-" << GlobalState.allAnswers.size() << "-" << GlobalState.allGuesses.size() << ".txt"));
         // answers = {162};
         std::vector<int> transformResults(answers.size(), 0);
         std::mutex lock;
@@ -198,7 +198,7 @@ struct SolveFor2Ideas {
             answers.end(),
             transformResults.begin(),
             [&](const IndexType a1) -> int {
-                any4Faster(solver, bar, a1, fout, lock, ct, nogood);
+                any4Faster(solver, bar, a1, fout, lock, ct, skipped, nogood);
                 return 0;
             }
         );
@@ -206,14 +206,14 @@ struct SolveFor2Ideas {
         DEBUG("magnificient (4)"); exit(1);
     }
 
-    static void _any4(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
+    static void _any4(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, int64_t &ct, std::set<std::set<IndexType>> &nogood) {
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
         AnswersVec myAnswers = {0,0,0,0};
         const int nAnswers = answers.size();
         myAnswers[0] = a1;
-        long long localCt = 0;
+        int64_t localCt = 0;
 
         for (IndexType j = a1+1; j < nAnswers; ++j) {
             myAnswers[1] = j;
@@ -256,14 +256,14 @@ struct SolveFor2Ideas {
         return result;
     }
 
-    static void any4Faster(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
+    static void any4Faster(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, int64_t &ct, int64_t &skipped, std::set<std::set<IndexType>> &nogood) {
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
         AnswersVec myAnswers = {0,0,0,0};
         const int nAnswers = answers.size();
         myAnswers[0] = a1;
-        long long localCt = 0;
+        int64_t localCt = 0, localSkipped = 0;
         std::array<uint8_t, MAX_NUM_GUESSES> skip = {};
 
         for (IndexType j = a1+1; j < nAnswers; ++j) {
@@ -287,7 +287,6 @@ struct SolveFor2Ideas {
                             fout.flush();
                         }
                     } else if (l == k+1) {
-                        int skipped = 0, tot = 0;
                         std::array<uint8_t, 243> psToAvoid = {};
                         psToAvoid[PatternGetterCached::getPatternIntCached(myAnswers[0], v.wordIndex)] = 1;
                         psToAvoid[PatternGetterCached::getPatternIntCached(myAnswers[1], v.wordIndex)] = 1;
@@ -295,10 +294,8 @@ struct SolveFor2Ideas {
 
                         for (IndexType nx = l+1; nx < nAnswers; ++nx) {
                             const auto patternInt = PatternGetterCached::getPatternIntCached(nx, v.wordIndex);
-                            if (!psToAvoid[patternInt]) { skip[nx] = 1; skipped++; }
-                            tot++;
+                            if (!psToAvoid[patternInt]) { skip[nx] = 1; localSkipped++; }
                         }
-                        //DEBUG("skipped: " << getPerc(skipped, tot))
                     }
                 }
             }
@@ -306,7 +303,8 @@ struct SolveFor2Ideas {
         {
             std::lock_guard g(lock);
             ct += localCt;
-            bar.incrementAndUpdateStatus(" evaluated " + std::to_string(ct) + ", no good: " + std::to_string(nogood.size()));
+            skipped += localSkipped;
+            bar.incrementAndUpdateStatus(" evaluated " + std::to_string(ct) + ", skipped: " + std::to_string(skipped) + ", #groups: " + std::to_string(nogood.size()));
         }
     }
 
