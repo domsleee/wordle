@@ -16,6 +16,10 @@ struct SimpleProgress {
       bar(getBar(isPrecompute)) {
         updateStatus(", loading...");
       }
+    
+    ~SimpleProgress() {
+        dispose();
+    }
 
     void incrementAndUpdateStatus(const std::string &suffix = "", int amount = 1) {
         maxA += amount;
@@ -34,7 +38,7 @@ struct SimpleProgress {
     }
     
     void dispose() {
-        bar.set_progress(100);
+        if (!bar.is_completed()) bar.set_progress(100);
     }
 
 private:

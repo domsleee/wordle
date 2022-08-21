@@ -66,3 +66,9 @@ struct _GlobalState {
 };
 
 static inline _GlobalState GlobalState;
+
+static inline std::string vecToString(const std::vector<IndexType> &indexes) {
+    std::string r = GlobalState.reverseIndexLookup[indexes[0]];
+    for (std::size_t i = 1; i < indexes.size(); ++i) r += "," + GlobalState.reverseIndexLookup[indexes[i]];
+    return r;
+}

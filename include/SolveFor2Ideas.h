@@ -5,82 +5,94 @@
 #include "GlobalState.h"
 #include "EndGameAnalysis/EndGameAnalysis.h"
 #include <bitset>
+#include "SolveForNIdeas/SolveFor2Helpers.h"
 
-struct SolveAny4In2Guesses {
-    GuessesVec guesses;
-    AnswersVec answers;
-    AnswersAndGuessesSolver<true> solver;
-    const int nAnswers;
-    std::array<uint8_t, 243> patternWithAnswers3 = {};
-    AnswersVec answers3 = {};
-    BestWordResult anySolution = {};
-    int numK = 0;
-    std::array<uint8_t, NUM_WORDS> seenK = {};
 
-    SolveAny4In2Guesses():
-       guesses(getVector<GuessesVec>(GlobalState.allGuesses.size())),
-       answers(getVector<AnswersVec>(GlobalState.allAnswers.size())),
-       solver(AnswersAndGuessesSolver<true>(2)),
-       nAnswers(answers.size()) {}
+// struct SolveAny4In2Guesses {
+//     GuessesVec guesses;
+//     AnswersVec answers;
+//     const int nAnswers;
+//     AnswersVec answers3 = {};
+//     BestWordResult anySolution = {};
+//     int numK = 0;
+//     std::array<uint8_t, NUM_WORDS> seenK = {};
+//     std::ofstream fout = std::ofstream("nogood3.res");
+//     int nSolutions = 0;
+//     std::queue<IndexType> nextCandidates = {};
 
-    bool any4ThatCantBeSolvedIn2() {
-        answers3.assign(3, 0);
-        SimpleProgress prog("any4ThatCantBeSolvedIn2", nAnswers);
-        for (int i = 0; i < nAnswers; ++i) {
-            prog.incrementAndUpdateStatus(FROM_SS(" " << GlobalState.reverseIndexLookup[i]));
-            answers3[0] = answers[i];
-            for (int j = i+1; j < nAnswers; ++j) {
-                // prs(4); DEBUG("PERC2: " << getPerc(j, nAnswers));
-                answers3[1] = answers[j];
-                numK = 0;
-                seenK.fill(0);
+//     SolveAny4In2Guesses():
+//        guesses(getVector<GuessesVec>(GlobalState.allGuesses.size())),
+//        answers(getVector<AnswersVec>(GlobalState.allAnswers.size())),
+//        nAnswers(answers.size()) {}
 
-                for (int k = j+1; k < nAnswers; ++k) {
-                    if (seenK[k]) continue;
-                    checkK(k);
+//     bool any4ThatCantBeSolvedIn2() {
+//         answers3.assign(3, 0);
+//         SimpleProgress prog("any4ThatCantBeSolvedIn2", nAnswers);
+//         for (int i = 162; i < 163; ++i) {
+//             prog.incrementAndUpdateStatus(FROM_SS(" " << GlobalState.reverseIndexLookup[i]));
+//             answers3[0] = answers[i];
+//             for (int j = i+1; j < nAnswers; ++j) {
+//                 prs(4); DEBUG("PERC2: " << getPerc(j, nAnswers));
+//                 answers3[1] = answers[j];
+//                 numK = 0;
+//                 seenK.fill(0);
 
-                    patternWithAnswers3[PatternGetterCached::getPatternIntCached(answers[k], anySolution.wordIndex)] = 0;
-                    for (int k2 = k+1; k < nAnswers; ++k) {
-                        const auto patternInt = PatternGetterCached::getPatternIntCached(answers[k2], anySolution.wordIndex);
-                        if (patternWithAnswers3[patternInt] == 0) {
-                            // anySolution is valid for k2...
-                            checkK(k2, true);
-                        }
-                    }
-                    
-                }
-            }
-        }
+//                 for (int k = j+1; k < nAnswers; ++k) {
+//                     if (seenK[k]) continue;
+//                     seenK[k] = 1;
+//                     checkK(k);
 
-        return false;
-    }
+//                     // patternWithAnswers3[PatternGetterCached::getPatternIntCached(answers[k], anySolution.wordIndex)] = 0;
+//                     while (!nextCandidates.empty()) {
+//                         auto k2 = nextCandidates.front(); nextCandidates.pop();
+//                         checkK(k2, true);
+//                     }
+//                 }
+//             }
+//         }
 
-    bool checkK(int k, bool useSolutionFromPrev = false) {
-        if (seenK[k]) return false;
-        seenK[k] = 1;
-        answers3[2] = answers[k];
-        // find any guess that splits all those three
-        if (!useSolutionFromPrev) anySolution = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(answers3, guesses, 1);
+//         return false;
+//     }
 
-        for (const auto answerIndex: answers3) {
-            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
-            patternWithAnswers3[patternInt] = 1;
-        }
-        for (const auto answerIndex: answers) {
-            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
-            if (patternWithAnswers3[patternInt] == 0) continue;
-            if (answerIndex == answers3[0] || answerIndex == answers3[1] || answerIndex == answers3[2]) continue;
-            answers3.push_back(answerIndex);
-            auto anySolution4 = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(answers3, guesses, 1);
-            if (anySolution4.numWrong != 0) {
-                DEBUG("FOUND SOLUTION: " << getIterableString(answers3));
-            }
-            answers3.pop_back();
-        }
+//     // batty(162),fatty(705),tasty,tatty,
+//     bool checkK(int k, bool useSolutionFromPrev = false) {
+//         answers3[2] = answers[k];
+//         std::array<uint8_t, 243> patternWithAnswers3 = {};
+//         // find any guess that splits all those three
+//         if (!useSolutionFromPrev) anySolution = SolveFor2Helpers::findAnySolutionFor2Guesses(answers3, guesses);
 
-        return false;
-    }
-};
+//         for (const auto answerIndex: answers3) {
+//             const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
+//             patternWithAnswers3[patternInt] = 1;
+//         }
+
+//         const auto patternIntk = PatternGetterCached::getPatternIntCached(answers[k], anySolution.wordIndex);
+//         for (int l = k+1; l < nAnswers; ++l) {
+//             const auto answerIndex = answers[l];
+//             const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
+//             if (patternWithAnswers3[patternInt] == 0) {
+//                 if (patternIntk == patternInt && !seenK[l]) { seenK[l] = 1; nextCandidates.push(l); };
+//                 continue;
+//             }
+//             if (!seenK[l]) { seenK[l] = 1; nextCandidates.push(l); }
+//             assert(!(answerIndex == answers3[0] || answerIndex == answers3[1] || answerIndex == answers3[2]));
+//             answers3.push_back(answerIndex);
+//             auto anySolution4 = SolveFor2Helpers::findAnySolutionFor2Guesses(answers3, guesses, 1);
+//             if (anySolution4.numWrong != 0) {
+//                 foundSolution(answers3);
+//             }
+//             answers3.pop_back();
+//         }
+
+//         return false;
+//     }
+
+//     void foundSolution(AnswersVec &answers4) {
+//         DEBUG("FOUND SOLUTION #" << (++nSolutions) << ": " << getIterableString(answers3));
+//         fout << vecToString(answers4) << '\n';
+//         fout.flush();
+//     }
+// };
 
 struct SolveFor2Ideas {
     static inline std::vector<uint8_t> numGroupsForGuessIndex;
@@ -169,12 +181,14 @@ struct SolveFor2Ideas {
     // no good paper,racer,waver,wafer
     static void checkCanAny4BeSolvedIn2() {
         auto solver = AnswersAndGuessesSolver<true>(2);
-        auto bar = SimpleProgress("canAny4BeSolvedIn2", GlobalState.allAnswers.size());
+        std::set<std::set<IndexType>> nogood;
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        long long total = nChoosek(answers.size(), 4);
+        auto bar = SimpleProgress(FROM_SS("canAny4BeSolvedIn2: " << total), GlobalState.allAnswers.size());
 
         long long ct = 0;
-        std::set<std::set<IndexType>> nogood;
-        std::ofstream fout("nogood2.res");
+        std::ofstream fout(FROM_SS("results/nogood-" << GlobalState.allAnswers.size() << "-" << GlobalState.allGuesses.size() << ".txt"));
+        // answers = {162};
         std::vector<int> transformResults(answers.size(), 0);
         std::mutex lock;
 
@@ -184,7 +198,7 @@ struct SolveFor2Ideas {
             answers.end(),
             transformResults.begin(),
             [&](const IndexType a1) -> int {
-                any4(solver, bar, a1, fout, lock, ct, nogood);
+                any4Faster(solver, bar, a1, fout, lock, ct, nogood);
                 return 0;
             }
         );
@@ -192,7 +206,7 @@ struct SolveFor2Ideas {
         DEBUG("magnificient (4)"); exit(1);
     }
 
-    static void any4(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
+    static void _any4(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
         auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
@@ -214,53 +228,81 @@ struct SolveFor2Ideas {
                         std::set<IndexType> nogoodSet = {myAnswers.begin(), myAnswers.end()};
                         if (nogood.count(nogoodSet) == 0) {
                             nogood.insert(nogoodSet);
-                            fout << "no good " << setToString(nogoodSet) << '\n';
+                            fout << setToString(nogoodSet) << '\n';
                             fout.flush();
                         }
                     }
                 }
-            }//
+            }
         }
+        {
+            std::lock_guard g(lock);
+            ct += localCt;
+            bar.incrementAndUpdateStatus(" evaluated " + std::to_string(ct) + ", no good: " + std::to_string(nogood.size()));
+        }
+    }
 
-        // std::array<AnswersVec, 243> equiv{};
-        // std::array<PatternType, 243> ind{};
-        // int n = 0;
+    static long long nChoosek( long long n, long long k )
+    {
+        if (k > n) return 0;
+        if (k * 2 > n) k = n-k;
+        if (k == 0) return 1;
 
-        // for (const auto answerIndex: answers) {
-        //     const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, a1);
-        //     equiv[patternInt].push_back(answerIndex);
-        // }
+        long long result = n;
+        for (long long i = 2; i <= k; ++i) {
+            result *= (n-i+1);
+            result /= i;
+        }
+        return result;
+    }
 
-        // for (std::size_t i = 0; i < NUM_PATTERNS-1; ++i) { // the group of GGGGG has a1
-        //     if (equiv[i].size() > 0) ind[n++] = i;
-        // }
+    static void any4Faster(const AnswersAndGuessesSolver<true> &solver, SimpleProgress &bar, IndexType a1, std::ofstream &fout, std::mutex &lock, long long &ct, std::set<std::set<IndexType>> &nogood) {
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
 
-        // for (int j = 0; j < n; ++j) {
-        //     const auto &equivJ = equiv[ind[j]];
-        //     for (std::size_t j1 = 0; j1 < equivJ.size(); ++j1) {
-        //         myAnswers[1] = equivJ[j1];
-        //         for (std::size_t j2 = j1+1; j2 < equivJ.size(); ++j2) {
-        //             myAnswers[2] = equivJ[j2];
-        //             FOR_ANY_IN_GROUP(k) {
-        //                 //DEBUG("check.." << GlobalState.reverseIndexLookup[ answer_k ] << " " << vecToString(myAnswers));
-        //                 if (FIRST_N_CONTAINS(3, answer_k)) continue;
-        //                 myAnswers[3] = answer_k;
-        //                 auto v = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(myAnswers, guesses, 1);
-        //                 localCt++;
-        //                 if (v.numWrong != 0) {
-        //                     std::lock_guard g(lock);
-        //                     std::set<IndexType> nogoodSet = {myAnswers.begin(), myAnswers.end()};
-        //                     if (nogood.count(nogoodSet) == 0) {
-        //                         nogood.insert(nogoodSet);
-        //                         fout << "no good " << vecToString(myAnswers) << '\n';
-        //                         fout.flush();
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        AnswersVec myAnswers = {0,0,0,0};
+        const int nAnswers = answers.size();
+        myAnswers[0] = a1;
+        long long localCt = 0;
+        std::array<uint8_t, MAX_NUM_GUESSES> skip = {};
 
+        for (IndexType j = a1+1; j < nAnswers; ++j) {
+            //DEBUG(getPerc(j, nAnswers));
+            myAnswers[1] = j;
+            //DEBUG(FROM_SS("filter1: " << getPerc(filteredGuesses1.size(), guesses.size())));
+            for (IndexType k = j+1; k < nAnswers; ++k) {
+                myAnswers[2] = k;
+                std::fill(skip.begin() + k, skip.end(), 0);
+                for (IndexType l = k+1; l < nAnswers; ++l) {
+                    if (skip[l]) continue;
+                    myAnswers[3] = l;
+                    const auto v = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(myAnswers, guesses, 1);
+                    localCt++;
+                    if (v.numWrong != 0) {
+                        std::lock_guard g(lock);
+                        std::set<IndexType> nogoodSet = {myAnswers.begin(), myAnswers.end()};
+                        if (nogood.count(nogoodSet) == 0) {
+                            nogood.insert(nogoodSet);
+                            fout << setToString(nogoodSet) << '\n';
+                            fout.flush();
+                        }
+                    } else if (l == k+1) {
+                        int skipped = 0, tot = 0;
+                        std::array<uint8_t, 243> psToAvoid = {};
+                        psToAvoid[PatternGetterCached::getPatternIntCached(myAnswers[0], v.wordIndex)] = 1;
+                        psToAvoid[PatternGetterCached::getPatternIntCached(myAnswers[1], v.wordIndex)] = 1;
+                        psToAvoid[PatternGetterCached::getPatternIntCached(myAnswers[2], v.wordIndex)] = 1;
+
+                        for (IndexType nx = l+1; nx < nAnswers; ++nx) {
+                            const auto patternInt = PatternGetterCached::getPatternIntCached(nx, v.wordIndex);
+                            if (!psToAvoid[patternInt]) { skip[nx] = 1; skipped++; }
+                            tot++;
+                        }
+                        //DEBUG("skipped: " << getPerc(skipped, tot))
+                    }
+                }
+            }
+        }
         {
             std::lock_guard g(lock);
             ct += localCt;
@@ -273,16 +315,10 @@ struct SolveFor2Ideas {
         return vecToString(conv);
     }
 
-    static std::string vecToString(const std::vector<IndexType> &indexes) {
-        std::string r = GlobalState.reverseIndexLookup[indexes[0]];
-        for (std::size_t i = 1; i < indexes.size(); ++i) r += "," + GlobalState.reverseIndexLookup[indexes[i]];
-        return r;
-    }
-
     // approximate method - try every first word
     static bool canItBeSolvedIn5() {
-        //checkCanAny4BeSolvedIn2(); return true;
-        return SolveAny4In2Guesses().any4ThatCantBeSolvedIn2();
+        checkCanAny4BeSolvedIn2(); return true;
+        //return SolveAny4In2Guesses().any4ThatCantBeSolvedIn2();
     }
 
     // does `guessIndex` have a max partition size <= le
