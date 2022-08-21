@@ -6,6 +6,82 @@
 #include "EndGameAnalysis/EndGameAnalysis.h"
 #include <bitset>
 
+struct SolveAny4In2Guesses {
+    GuessesVec guesses;
+    AnswersVec answers;
+    AnswersAndGuessesSolver<true> solver;
+    const int nAnswers;
+    std::array<uint8_t, 243> patternWithAnswers3 = {};
+    AnswersVec answers3 = {};
+    BestWordResult anySolution = {};
+    int numK = 0;
+    std::array<uint8_t, NUM_WORDS> seenK = {};
+
+    SolveAny4In2Guesses():
+       guesses(getVector<GuessesVec>(GlobalState.allGuesses.size())),
+       answers(getVector<AnswersVec>(GlobalState.allAnswers.size())),
+       solver(AnswersAndGuessesSolver<true>(2)),
+       nAnswers(answers.size()) {}
+
+    bool any4ThatCantBeSolvedIn2() {
+        answers3.assign(3, 0);
+        SimpleProgress prog("any4ThatCantBeSolvedIn2", nAnswers);
+        for (int i = 0; i < nAnswers; ++i) {
+            prog.incrementAndUpdateStatus(FROM_SS(" " << GlobalState.reverseIndexLookup[i]));
+            answers3[0] = answers[i];
+            for (int j = i+1; j < nAnswers; ++j) {
+                // prs(4); DEBUG("PERC2: " << getPerc(j, nAnswers));
+                answers3[1] = answers[j];
+                numK = 0;
+                seenK.fill(0);
+
+                for (int k = j+1; k < nAnswers; ++k) {
+                    if (seenK[k]) continue;
+                    checkK(k);
+
+                    patternWithAnswers3[PatternGetterCached::getPatternIntCached(answers[k], anySolution.wordIndex)] = 0;
+                    for (int k2 = k+1; k < nAnswers; ++k) {
+                        const auto patternInt = PatternGetterCached::getPatternIntCached(answers[k2], anySolution.wordIndex);
+                        if (patternWithAnswers3[patternInt] == 0) {
+                            // anySolution is valid for k2...
+                            checkK(k2, true);
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        return false;
+    }
+
+    bool checkK(int k, bool useSolutionFromPrev = false) {
+        if (seenK[k]) return false;
+        seenK[k] = 1;
+        answers3[2] = answers[k];
+        // find any guess that splits all those three
+        if (!useSolutionFromPrev) anySolution = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(answers3, guesses, 1);
+
+        for (const auto answerIndex: answers3) {
+            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
+            patternWithAnswers3[patternInt] = 1;
+        }
+        for (const auto answerIndex: answers) {
+            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, anySolution.wordIndex);
+            if (patternWithAnswers3[patternInt] == 0) continue;
+            if (answerIndex == answers3[0] || answerIndex == answers3[1] || answerIndex == answers3[2]) continue;
+            answers3.push_back(answerIndex);
+            auto anySolution4 = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(answers3, guesses, 1);
+            if (anySolution4.numWrong != 0) {
+                DEBUG("FOUND SOLUTION: " << getIterableString(answers3));
+            }
+            answers3.pop_back();
+        }
+
+        return false;
+    }
+};
+
 struct SolveFor2Ideas {
     static inline std::vector<uint8_t> numGroupsForGuessIndex;
 
@@ -67,9 +143,16 @@ struct SolveFor2Ideas {
                     myAnswers[1] = equivJ[j1];
                     for (std::size_t j2 = j1+1; j2 < equivJ.size(); ++j2) {
                         myAnswers[2] = equivJ[j2];
-                        auto v = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(myAnswers, guesses, 1);
                         ++ct;
-                        if (v.numWrong != 0) { bar.dispose(); DEBUG("no good " << vecToString(myAnswers)); exit(1); }
+                        //auto v = solver.calcSortVectorAndGetMinNumWrongFor2RemDepth2(myAnswers, guesses, 1);
+                        //if (v.numWrong != 0) { bar.dispose(); DEBUG("no good " << vecToString(myAnswers)); exit(1); }
+                        {
+                            bool ok = false;
+                            for (auto guessIndex: guesses) {
+                                if (allPartitionsLe(guessIndex, myAnswers, 1)) { ok = true; break; }
+                            }
+                            if (!ok) { bar.dispose(); DEBUG("no good: " << vecToString(myAnswers)); exit(1);}
+                        }
                     }
                 }
             }
@@ -194,5 +277,23 @@ struct SolveFor2Ideas {
         std::string r = GlobalState.reverseIndexLookup[indexes[0]];
         for (std::size_t i = 1; i < indexes.size(); ++i) r += "," + GlobalState.reverseIndexLookup[indexes[i]];
         return r;
+    }
+
+    // approximate method - try every first word
+    static bool canItBeSolvedIn5() {
+        //checkCanAny4BeSolvedIn2(); return true;
+        return SolveAny4In2Guesses().any4ThatCantBeSolvedIn2();
+    }
+
+    // does `guessIndex` have a max partition size <= le
+    static bool allPartitionsLe(const IndexType guessIndex, const AnswersVec &answers, const int le) {
+        std::array<uint8_t, NUM_PATTERNS> partitionCt = {};
+        for (const auto answerIndex: answers) {
+            const auto patternInt = PatternGetterCached::getPatternIntCached(answerIndex, guessIndex);
+            if (++partitionCt[patternInt] > le) {
+                return false;
+            }
+        }
+        return true;
     }
 };

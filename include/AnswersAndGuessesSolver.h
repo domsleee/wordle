@@ -324,7 +324,7 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (depth == 2 && (true || T*H < 300000)) {
+        if (depth == 2 && (true || T*H < 200000)) {
             // O(T^2.H)
             stats.tick(32);
             //DEBUG("H: " << H << ", T: " << T);

@@ -31,7 +31,7 @@ std::vector<RunnerMultiResult> Runner::run() {
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
-        //SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
+        SolveFor2Ideas::canItBeSolvedIn5(); exit(1);
         EndGameDatabase(solver).init("list1");
 
         //return 0;

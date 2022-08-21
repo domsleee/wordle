@@ -33,7 +33,7 @@ struct RemoveGuessesPartitions {
         //auto partitionInvertedIndex = buildPartitionInvertedIndex(partitions);
 
         stats.tick(72);
-        bool hasZeroPartition = removePartitionsWithZeroOrOneParts(stats, guesses, partitionInfo);
+        bool hasZeroPartition = removePartitionsWithZeroOrOneParts(stats, guesses, partitionInfo, answers.size());
         if (hasZeroPartition) return;
         stats.tock(72);
 
@@ -42,12 +42,14 @@ struct RemoveGuessesPartitions {
         std::vector<int8_t> eliminated(nGuesses, 0);
 
         for (int i = 0; i < nGuesses; ++i) {
+            bool requireReset = false;
             if (eliminated[i]) continue;
             for (int j = i+1; j < nGuesses; ++j) {
                 if (eliminated[j]) continue;
-                determineEliminate(eliminated, partitionInfo, i, j);
+                requireReset |= determineEliminate(guesses, eliminated, partitionInfo, i, j);
                 if (eliminated[i]) break;
             }
+            if (requireReset) i--;
         }
         stats.tock(71);
 
@@ -58,19 +60,25 @@ struct RemoveGuessesPartitions {
         });
     }
 
-    void determineEliminate(std::vector<int8_t> &eliminated, const PartitionInfo &partitionInfo, int i, int j) {
+    bool determineEliminate(GuessesVec &guesses, std::vector<int8_t> &eliminated, PartitionInfo &partitionInfo, int i, int j) {
         assert(i < j);
 
         auto r1 = compare(partitionInfo, i, j);
         if (r1 == BetterThanOrEqualTo) {
             markAsEliminated(eliminated, j, i);
-            return;
+            return false;
         }
 
         auto r2 = compare(partitionInfo, j, i);
         if (r2 == BetterThanOrEqualTo) {
-            markAsEliminated(eliminated, i, j);
+            //markAsEliminated(eliminated, i, j);
+            std::swap(partitionInfo.partitions[i], partitionInfo.partitions[j]);
+            std::swap(partitionInfo.sumAfterDeleted[i], partitionInfo.sumAfterDeleted[j]);
+            std::swap(guesses[i], guesses[j]);
+            markAsEliminated(eliminated, j, i);
+            return true;
         }
+        return false;
     }
 
     static PartitionInvertedIndex buildPartitionInvertedIndex(const PartitionVec &partitions) {
@@ -96,22 +104,25 @@ struct RemoveGuessesPartitions {
         eliminated[guessToElim] = 1;
     }
 
-    static bool removePartitionsWithZeroOrOneParts(PerfStats &stats, GuessesVec &guesses, PartitionInfo &partitionInfo) {
+    static bool isCompletelyUselessPartition(const std::vector<AnswersVec> &p, const int nAnswers) {
+        return p.size() == 1 && static_cast<int>(p[0].size()) == nAnswers;
+    }
+
+    static bool removePartitionsWithZeroOrOneParts(PerfStats &stats, GuessesVec &guesses, PartitionInfo &partitionInfo, const int nAnswers) {
         const int nGuesses = guesses.size();
         std::size_t maxNumPartitions = 0;
-        for (int i = 0; i < nGuesses; ++i) maxNumPartitions = std::max(maxNumPartitions, partitionInfo.partitions[i].size());
-        if (maxNumPartitions == 1) return true;
+        for (int i = 0; i < nGuesses; ++i) {
+            if (partitionInfo.partitions[i].size() == 0) return true;
+            if (isCompletelyUselessPartition(partitionInfo.partitions[i], nAnswers)) continue;
+            maxNumPartitions = std::max(maxNumPartitions, partitionInfo.partitions[i].size());
+        }
+        if (maxNumPartitions == 0) return true;
         int numDeleted = 0;
         for (int i = 0; i < nGuesses-numDeleted; ++i) {
             guesses[i] = guesses[i+numDeleted];
             partitionInfo.partitions[i].swap(partitionInfo.partitions[i+numDeleted]);
             partitionInfo.sumAfterDeleted[i] = partitionInfo.sumAfterDeleted[i+numDeleted];
-
-            bool shouldDelete = partitionInfo.partitions[i].size() == 1;
-            if (partitionInfo.partitions[i].size() == 0) {
-                stats.tock(72);
-                return true;
-            }
+            bool shouldDelete = isCompletelyUselessPartition(partitionInfo.partitions[i], nAnswers);
             if (shouldDelete) {
                 i--;
                 numDeleted++;
@@ -165,10 +176,17 @@ struct RemoveGuessesPartitions {
         return partitionInfo;
     }
 
+    // solved in 2: 3
+    // solved in 3: 5 ==> {1,1,3}
+    // solved in 4: 7 ==> {1,1,5}
+
     static const int REM_DEPTH = 4; // for depth=2, remDepth=4
     static const int anyNSolvedIn2Guesses = 3;
+    static const int anyNSolvedIn3Guesses = 7;
+    static const int anyNSolvedIn4Guesses = 7;
     bool safeToIgnorePartition(int partitionSize) {
-        const int lt = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        //const int lt = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        const int lt = remDepth + (remDepth >= 4 ? (anyNSolvedIn3Guesses - 3) : 0);
         return (partitionSize <= lt); // assumes remDepth >= 2
     }
 
@@ -206,6 +224,8 @@ struct RemoveGuessesPartitions {
             DEBUG("largestRule: " << pi.rbegin()->size() << " <= " << pj.rbegin()->size());  // the largest of pi must be a subset of something
             
             DEBUG(partitions[i].size() << " VS " << partitions[j].size());
+            printPartitions(partitions, i);
+            printPartitions(partitions, j);
             exit(1);
         }
         return CompareResult::BetterThanOrEqualTo;
@@ -218,7 +238,7 @@ struct RemoveGuessesPartitions {
         const auto sumi = partitionInfo.sumAfterDeleted[i], sumj = partitionInfo.sumAfterDeleted[j];
         const bool sumRule = sumi <= sumj;
         const bool lengthRule = sumi != sumj || pi.size() >= pj.size(); // each pj needs to have at least one partition using it
-        const bool smallestRule = sumi != sumj || pi[0].size() >= pj[0].size(); // the smallest of pj must be used
+        const bool smallestRule = sumi != sumj || pi[0].size() <= pj[0].size(); // the smallest of pj must be used
 
         // if (!largestRule
         //     // || !sumRule
@@ -234,7 +254,7 @@ struct RemoveGuessesPartitions {
             DEBUG("----");
             std::string r = "";
             for (auto &v: p) r += std::string(",") + std::to_string(v);
-            DEBUG(r);
+            DEBUG("[" << p.size () << "]: " << r);
         }
     }
 };
