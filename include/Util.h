@@ -213,6 +213,7 @@ inline std::string fromBytes(long long numBytes) {
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <vector>
 
 
 // https://stackoverflow.com/questions/10058606/splitting-a-string-by-a-character

@@ -8,6 +8,7 @@
 #include "SolveForNIdeas/SolveFor2Helpers.h"
 #include "SolveForNIdeas/Any4In2.h"
 #include "SolveForNIdeas/Any3In2.h"
+#include "SolveForNIdeas/Any6In3.h"
 
 
 struct SolveFor2Ideas {
@@ -26,7 +27,7 @@ struct SolveFor2Ideas {
 
         auto bar = SimpleProgress(FROM_SS("canAny4BeSolvedIn2: " << total), GlobalState.allAnswers.size());
         int64_t ct = 0, skipped = 0, numGroups = 0;
-        std::ofstream fout(FROM_SS("results/any4in2-" << GlobalState.allAnswers.size() << "-" << GlobalState.allGuesses.size() << ".txt"));
+        std::ofstream fout(getAny4In2File());
         // answers = {0};
         std::vector<int> transformResults(answers.size(), 0);
         std::mutex lock;
@@ -44,6 +45,28 @@ struct SolveFor2Ideas {
         );
 
         DEBUG("magnificient (4)"); exit(1);
+    }
+
+    static std::string getAny4In2File() {
+        return FROM_SS("results/any4in2-" << GlobalState.allAnswers.size() << "-" << GlobalState.allGuesses.size() << ".txt");
+    }
+
+    static void checkCanAny6BeSolvedIn3() {
+        auto any4In2File = getAny4In2File();
+        if (!std::filesystem::exists(any4In2File)) {
+            DEBUG("NO SUCH FILE: " << any4In2File); exit(1);
+        }
+        std::ifstream fin(any4In2File);
+        std::string line;
+        std::vector<AnswersVec> list4NotIn2 = {};
+        while (std::getline(fin,line)) {
+            std::vector<std::string> spl = split(line, ',');
+            AnswersVec my4NotIn2 = {};
+            for (auto myStr: spl) my4NotIn2.push_back(GlobalState.getIndexForWord(myStr));
+            if (my4NotIn2.size() != 4) ERROR("EXPECTED SIZE: " << 4 << " VS " << my4NotIn2.size() << ", " << line);
+            list4NotIn2.emplace_back(my4NotIn2);
+        }
+        Any6In3::any6In3(list4NotIn2); exit(1);
     }
 
 private:
