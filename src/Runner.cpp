@@ -28,10 +28,10 @@ std::vector<RunnerMultiResult> Runner::run() {
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
+        SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
-        SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
         EndGameDatabase(solver).init("list1");
 
         //return 0;

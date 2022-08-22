@@ -32,6 +32,11 @@ struct SolveFor2Ideas {
         std::vector<int> transformResults(answers.size(), 0);
         std::mutex lock;
 
+        if (GlobalArgs.forceSequential) {
+            Any4In2::any4In2Fastest(solver, bar, 0, fout, lock, ct, skipped, numGroups);
+            return;
+        }
+
         std::transform(
             std::execution::par_unseq,
             answers.begin(),

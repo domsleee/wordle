@@ -17,9 +17,10 @@ struct Any4In2 {
         for (IndexType j = a1+1; j < nAnswers; ++j) {
             // DEBUG(getPerc(j, nAnswers));
             myAnswers[1] = j;
+            const auto m1 = merge(singles[a1], singles[j]);
             for (IndexType k = j+1; k < nAnswers; ++k) {
                 myAnswers[2] = k;
-                if (isEliminatedBySinglesRule(a1, j, k)) {
+                if (/*isEliminatedBySinglesRule(a1, j, k)*/isEliminatedBySinglesRule(m1, k)) {
                     localSkipped += nAnswers-(k+1);
                     continue;
                 }
@@ -43,7 +44,7 @@ struct Any4In2 {
                         numGroups++;
                     }
                 }
-                //DEBUG("myN: " << myN);
+                //DEBUG("myN: " << myN);,
             }
         }
         {
@@ -108,7 +109,7 @@ struct Any4In2 {
 
     static IndexType findAnySolutionIn2(const AnswersVec &answers, const GuessesVec &guesses, std::array<PatternType, 4> &patterns) {
         assert(answers.size() == 4);
-        for (auto guessIndex: guesses) {
+        for (const auto guessIndex: guesses) {
             patterns[0] = PatternGetterCached::getPatternIntCached(answers[0], guessIndex);
             patterns[1] = PatternGetterCached::getPatternIntCached(answers[1], guessIndex);
             if (patterns[1] == patterns[0]) continue;
@@ -119,6 +120,33 @@ struct Any4In2 {
             return guessIndex;
         }
         return MAX_INDEX_TYPE;
+    }
+
+    static GuessesVec merge(const GuessesVec &a1, const GuessesVec &a2) {
+        GuessesVec res = {};
+        std::set_intersection(a1.begin(), a1.end(), a2.begin(), a2.end(), std::back_inserter(res));
+        return res;
+    }
+
+    static bool isEliminatedBySinglesRule(const GuessesVec &sA1, IndexType answer3) {
+        const auto &sA3 = singles[answer3];
+        const int nA1 = sA1.size(), nA3 = sA3.size();
+        int i = 0, k = 0;
+        for (; i < nA1; ++i) {
+            while (k < nA3 && sA1[i] < sA3[k]) ++k;
+            if (sA3[k] != sA1[i]) continue;
+            return true;
+        }
+        return false;
+
+        // auto locSingles = singles[i];
+        // inplaceSetIntersection(locSingles, singles[j]);
+        // inplaceSetIntersection(locSingles, singles[k]);
+
+        // for ()
+
+        // if (locSingles.size() > 0) { /*DEBUG("ELIM: " << ++ct);*/ return true; }
+        // return false;
     }
 
     static bool isEliminatedBySinglesRule(IndexType answer1, IndexType answer2, IndexType answer3) {
