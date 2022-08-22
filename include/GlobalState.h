@@ -28,7 +28,7 @@ struct _GlobalState {
         allGuesses = allAnswers;
         for (const auto &s: guessesNotInAnswers) allGuesses.push_back(s);
 
-        checkWordSetSize<WordSetAnswers>("NUM_WORDS", allAnswers.size());
+        checkWordSetSize<WordSetAnswers>("MAX_NUM_ANSWERS", allAnswers.size());
         checkWordSetSize<WordSetGuesses>("MAX_NUM_GUESSES", allGuesses.size());
 
         std::unordered_set<std::string> allGuessesSet{allGuesses.begin(), allGuesses.end()};
@@ -67,8 +67,15 @@ struct _GlobalState {
 
 static inline _GlobalState GlobalState;
 
+
+
 static inline std::string vecToString(const std::vector<IndexType> &indexes) {
     std::string r = GlobalState.reverseIndexLookup[indexes[0]];
     for (std::size_t i = 1; i < indexes.size(); ++i) r += "," + GlobalState.reverseIndexLookup[indexes[i]];
     return r;
+}
+
+static inline std::string setToString(const std::set<IndexType> &indexes) {
+    std::vector<IndexType> conv(indexes.begin(), indexes.end());
+    return vecToString(conv);
 }

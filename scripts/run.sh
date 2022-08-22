@@ -12,7 +12,8 @@ make -j;
 #./bin/solve -Seartolsinc -N25 ext/wordle-combined.txt ext/wordle-combined.txt
 
 #./bin/solve -Seartolsincuyhdmgb -N25
-./bin/solve --guesses ext/wordle-combined.txt --answers ext/wordle-combined.txt -Seart
+#LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libprofiler.so env CPUPROFILE=./prof/out.prof \
+./bin/solve --guesses ext/wordle-guesses.txt --answers ext/wordle-answers.txt -Seart
 
 # with parts: 20394009 (6663943)
 # not  parts: 71750343 (18383510)

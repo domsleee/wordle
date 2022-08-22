@@ -4,7 +4,7 @@
 #include "RemoveGuessesBetterGuess/NonLetterLookup.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 #include "Runner.h"
-#include "SolveFor2Ideas.h"
+#include "SolveForNIdeas/SolveFor2Ideas.h"
 #include "Util.h"
 #include "Verifier.h"
 
@@ -31,7 +31,7 @@ std::vector<RunnerMultiResult> Runner::run() {
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
-        SolveFor2Ideas::canItBeSolvedIn5(); exit(1);
+        SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
         EndGameDatabase(solver).init("list1");
 
         //return 0;

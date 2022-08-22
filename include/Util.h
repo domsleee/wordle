@@ -31,7 +31,7 @@ using RemDepthType = uint8_t;
 using FastModeType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
-static const int NUM_WORDS = 12992;
+static const int MAX_NUM_ANSWERS = 12992;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
@@ -268,4 +268,18 @@ static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
     std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
     a.swap(out);
     // a.assign(out.begin(), out.end());
+}
+
+
+static long long nChoosek( long long n, long long k ) {
+    if (k > n) return 0;
+    if (k * 2 > n) k = n-k;
+    if (k == 0) return 1;
+
+    long long result = n;
+    for (long long i = 2; i <= k; ++i) {
+        result *= (n-i+1);
+        result /= i;
+    }
+    return result;
 }
