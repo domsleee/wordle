@@ -19,6 +19,7 @@ struct _GlobalArgs {
     static inline bool usePartitions;
 
     static inline int printLength;
+    static inline bool runOtherProof = false;
 };
 
 static inline _GlobalArgs GlobalArgs;

@@ -28,7 +28,9 @@ std::vector<RunnerMultiResult> Runner::run() {
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
-        SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
+        if (GlobalArgs.runOtherProof) {
+            SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
+        }
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();

@@ -197,7 +197,7 @@ struct Any4In2 {
 
         guessesSorted = guesses;
         std::sort(guessesSorted.begin(), guessesSorted.end(), [&](const auto t1, const auto t2) { return sortVals[t1] > sortVals[t2]; });
-        printf("%ld vs %ld\n", sortVals[guessesSorted[0]], sortVals[guessesSorted[1]]);
+        printf("%lld vs %lld\n", sortVals[guessesSorted[0]], sortVals[guessesSorted[1]]);
 
         computeSingles();
     }
