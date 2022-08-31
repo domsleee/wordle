@@ -6,6 +6,7 @@
 #include "PatternGetterCached.h"
 #include "Defs.h"
 #include "GlobalState.h"
+#include "SolverHelper.h"
 
 enum CompareResult {
     BetterThanOrEqualTo,
@@ -179,14 +180,8 @@ struct RemoveGuessesPartitions {
     // solved in 2: 3
     // solved in 3: 5 ==> {1,1,3}
     // solved in 4: 7 ==> {1,1,5}
-
-    static const int REM_DEPTH = 4; // for depth=2, remDepth=4
-    static const int anyNSolvedIn2Guesses = 3;
-    static const int anyNSolvedIn3Guesses = 7;
-    static const int anyNSolvedIn4Guesses = 7;
     bool safeToIgnorePartition(int partitionSize) {
-        //const int lt = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
-        const int lt = remDepth + (remDepth >= 4 ? (anyNSolvedIn3Guesses - 3) : 0);
+        const int lt = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
         return (partitionSize <= lt); // assumes remDepth >= 2
     }
 

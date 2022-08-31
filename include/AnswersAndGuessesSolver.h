@@ -10,6 +10,7 @@
 #include "LookupCacheEntry.h"
 #include "PatternGetter.h"
 #include "PerfStats.h"
+#include "SolverHelper.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsEqualOnly.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
@@ -150,7 +151,7 @@ struct AnswersAndGuessesSolver {
         auto &count = equiv;
         int nh = answers.size();
 
-        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        uint8_t thr = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
         assert(thr >= 3);
 
         for (const auto guessIndex: guesses) {
@@ -236,7 +237,6 @@ struct AnswersAndGuessesSolver {
     }
 
     //const bool canAny3BeSolvedIn2 = true;
-    static const int anyNSolvedIn2Guesses = 3; // not 4: batty,patty,tatty,fatty
     BestWordResult minOverWordsLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, FastModeType fastMode, int beta) {
         assertm(remDepth != 0, "no tries remaining");
         stats.entryStats[GlobalArgs.maxTries-remDepth][0]++;
@@ -245,7 +245,7 @@ struct AnswersAndGuessesSolver {
         if (answers.size() == 0) return {0, 0};
         if (answers.size() == 1) return {0, answers[0]};
         const int nAnswers = answers.size();
-        if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) >= nAnswers) {
+        if (SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1) >= nAnswers-1) {
             //auto m = *std::min_element(answers.begin(), answers.end());
             assert(answers[0] == *std::min_element(answers.begin(), answers.end()));
             return {0, answers[0]};
@@ -273,7 +273,7 @@ struct AnswersAndGuessesSolver {
         //auto perfectAnswerCandidates = answers;
         //auto nonLetterMaskNoSpecialMask2 = RemoveGuessesWithBetterGuessCache::getNonLetterMaskNoSpecialMask(answers);
 
-        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        uint8_t thr = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
         for (const auto answerIndexForGuess: answers) {
             count.fill(0);
             bool maxCBelowThr = true;
@@ -324,7 +324,7 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (false && depth == 2 && (true || T*H < 200000)) {
+        if (depth == 2 && (true || T*H < 200000)) {
             // O(T^2.H)
             stats.tick(32);
             //DEBUG("H: " << H << ", T: " << T);
