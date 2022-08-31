@@ -11,7 +11,7 @@
 struct RemoveGuessesWithBetterGuessCache
 {
     static inline std::unordered_map<int, GuessesVec> cache = {};
-    static inline std::unordered_map<int, WordSetGuesses> cacheWsGuesses = {};
+    // static inline std::unordered_map<int, WordSetGuesses> cacheWsGuesses = {};
 
     static void init()
     {
@@ -50,8 +50,8 @@ struct RemoveGuessesWithBetterGuessCache
 
             totalSize += guessesFast.size();
             cache[nonLetterMask] = guessesFast;
-            cacheWsGuesses[nonLetterMask] = WordSetHelpers::buildGuessesWordSet(guessesFast);
-            if (cacheWsGuesses.size()%100 == 0) bar.incrementAndUpdateStatus("", 100);
+            // cacheWsGuesses[nonLetterMask] = WordSetHelpers::buildGuessesWordSet(guessesFast);
+            if (cache.size()%100 == 0) bar.incrementAndUpdateStatus("", 100);
         }
         bar.dispose();
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
@@ -73,22 +73,22 @@ struct RemoveGuessesWithBetterGuessCache
         return cache[getNonLetterMask(answers)];
     }
 
-    static const WordSetGuesses &getCachedGuessesWordSet(const AnswersVec &answers)
-    {
-        return cacheWsGuesses[getNonLetterMask(answers)];
-    }
+    // static const WordSetGuesses &getCachedGuessesWordSet(const AnswersVec &answers)
+    // {
+    //     return cacheWsGuesses[getNonLetterMask(answers)];
+    // }
 
-    static GuessesVec buildGuessesVecWithoutRemovingAnyAnswer(const GuessesVec &guesses, const AnswersVec &answers, int nonLetterMask)
-    {
-        GuessesVec vec = guesses;
-        auto wsAnswers = WordSetHelpers::buildAnswersWordSet(answers);
-        auto &wsGoodGuesses = cacheWsGuesses[nonLetterMask];
-        std::erase_if(vec, [&](const auto guessIndex) -> bool {
-            auto isAnAnswer = guessIndex < GlobalState.allAnswers.size() && wsAnswers[guessIndex];
-            return !wsGoodGuesses[guessIndex] && !isAnAnswer;
-        });
-        return vec;
-    }
+    // static GuessesVec buildGuessesVecWithoutRemovingAnyAnswer(const GuessesVec &guesses, const AnswersVec &answers, int nonLetterMask)
+    // {
+    //     GuessesVec vec = guesses;
+    //     auto wsAnswers = WordSetHelpers::buildAnswersWordSet(answers);
+    //     auto &wsGoodGuesses = cacheWsGuesses[nonLetterMask];
+    //     std::erase_if(vec, [&](const auto guessIndex) -> bool {
+    //         auto isAnAnswer = guessIndex < GlobalState.allAnswers.size() && wsAnswers[guessIndex];
+    //         return !wsGoodGuesses[guessIndex] && !isAnAnswer;
+    //     });
+    //     return vec;
+    // }
 
     static int getNonLetterMask(const AnswersVec &answers)
     {
@@ -118,7 +118,7 @@ struct RemoveGuessesWithBetterGuessCache
             fin.read(reinterpret_cast<char*>(&numEntries), sizeof(numEntries));
             cache[index].resize(numEntries);
             fin.read(reinterpret_cast<char*>(cache[index].data()), sizeof(IndexType) * numEntries);
-            cacheWsGuesses[index] = WordSetHelpers::buildGuessesWordSet(cache[index]);
+            //cacheWsGuesses[index] = WordSetHelpers::buildGuessesWordSet(cache[index]);
             totalSize += numEntries;
         }
         fin.close();
@@ -142,16 +142,15 @@ struct RemoveGuessesWithBetterGuessCache
         END_TIMER(betterGuessCacheWriteToFile);
     }
 
-    static void checkCompression() {
-        std::unordered_set<WordSetGuesses> sets = {};
-        long long totalCt = 0, setCt = 0;
-        for (auto &entry: cacheWsGuesses) {
-            sets.insert(entry.second);
-            totalCt += entry.second.count();
-        }
-        for (auto &entry: sets) setCt += entry.count();
-        DEBUG("Compressable? " << getPerc(setCt, totalCt));
-        exit(1);
-
-    }
+    // static void checkCompression() {
+    //     std::unordered_set<WordSetGuesses> sets = {};
+    //     long long totalCt = 0, setCt = 0;
+    //     for (auto &entry: cacheWsGuesses) {
+    //         sets.insert(entry.second);
+    //         totalCt += entry.second.count();
+    //     }
+    //     for (auto &entry: sets) setCt += entry.count();
+    //     DEBUG("Compressable? " << getPerc(setCt, totalCt));
+    //     exit(1);
+    // }
 };
