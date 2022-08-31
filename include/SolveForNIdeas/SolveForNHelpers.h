@@ -3,7 +3,7 @@
 #include "Defs.h"
 #include <array>
 
-struct SolveFor2Helpers {
+struct SolveForNHelpers {
     static BestWordResult findAnySolutionFor2Guesses(
         const AnswersVec &answers,
         const GuessesVec &guesses)

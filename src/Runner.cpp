@@ -4,7 +4,7 @@
 #include "RemoveGuessesBetterGuess/NonLetterLookup.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesWithBetterGuessCache.h"
 #include "Runner.h"
-#include "SolveForNIdeas/SolveFor2Ideas.h"
+#include "SolveForNIdeas/SolveForNIdeas.h"
 #include "Util.h"
 #include "Verifier.h"
 
@@ -28,12 +28,12 @@ std::vector<RunnerMultiResult> Runner::run() {
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
-        SolveFor2Ideas::runOtherProgramIfRequired(GlobalArgs.otherProgram, false);
+        SolveForNIdeas::runOtherProgramIfRequired(GlobalArgs.otherProgram, false);
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         EndGameDatabase(solver).init("list1");
-        SolveFor2Ideas::runOtherProgramIfRequired(GlobalArgs.otherProgram, true);
+        SolveForNIdeas::runOtherProgramIfRequired(GlobalArgs.otherProgram, true);
 
         END_TIMER(precompute);
 

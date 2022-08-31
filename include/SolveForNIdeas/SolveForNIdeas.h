@@ -5,13 +5,13 @@
 #include "GlobalState.h"
 #include "EndGameAnalysis/EndGameAnalysis.h"
 #include <bitset>
-#include "SolveForNIdeas/SolveFor2Helpers.h"
+#include "SolveForNIdeas/SolveForNHelpers.h"
 #include "SolveForNIdeas/Any4In2.h"
 #include "SolveForNIdeas/Any3In2.h"
 #include "SolveForNIdeas/Any6In3.h"
 
 
-struct SolveFor2Ideas {
+struct SolveForNIdeas {
     static bool requiresCache(OtherProgram otherProgram) {
         return otherProgram == OtherProgram::any6in3;
     }

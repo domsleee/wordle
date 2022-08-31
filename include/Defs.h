@@ -43,4 +43,4 @@ enum OtherProgram {
 template <class E>
 using EnumMap = std::map<E, std::string>;
 
-static const EnumMap<OtherProgram> otherProgramMap = { {blank, ""}, {any3in2, "any3in2"}, {any4in2, "any4in2"} };
+static const EnumMap<OtherProgram> otherProgramMap = { {blank, ""}, {any3in2, "any3in2"}, {any4in2, "any4in2"}, {any6in3, "any6in3"} };
