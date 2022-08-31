@@ -26,7 +26,7 @@ void parseArgs(int argc, char *argv[]) {
         ("guesses-to-skip", "Filename of words to skip", cxxopts::value<std::string>()->default_value(""))
         ("guesses-to-check", "Filename of guesses to check", cxxopts::value<std::string>()->default_value(""))
         ("S,special-letters", "Special letters", cxxopts::value<std::string>()->default_value("eartolsincuyhpdmgbk"))
-        ("o,output-result", "Output result", cxxopts::value<std::string>()->default_value("models/out.res"))
+        ("o,output-result", "Output result", cxxopts::value<std::string>()->default_value("models/out.txt"))
         ("other-program", FROM_SS("Other program, options: " << getEnumMapString(otherProgramMap)), cxxopts::value<std::string>()->default_value(""))
 
         // ints

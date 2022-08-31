@@ -1,0 +1,7 @@
+maxWrong: 0
+word,numWrong,numTries
+lares,1,0
+tares,1,0
+rales,1,0
+reais,1,0
+rates,1,0
