@@ -28,15 +28,13 @@ std::vector<RunnerMultiResult> Runner::run() {
 
         START_TIMER(precompute);
         PatternGetterCached::buildCache();
-        if (GlobalArgs.runOtherProof) {
-            SolveFor2Ideas::checkCanAny4BeSolvedIn2(); exit(1);
-        }
+        SolveFor2Ideas::runOtherProgramIfRequired(GlobalArgs.otherProgram, false);
         NonLetterLookup::build();
         RemoveGuessesUsingNonLetterMask::buildLetterLookup();
         RemoveGuessesWithBetterGuessCache::init();
         EndGameDatabase(solver).init("list1");
+        SolveFor2Ideas::runOtherProgramIfRequired(GlobalArgs.otherProgram, true);
 
-        //return 0;
         END_TIMER(precompute);
 
         if (GlobalArgs.verify != "") {

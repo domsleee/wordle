@@ -324,7 +324,7 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (depth == 2 && (true || T*H < 200000)) {
+        if (false && depth == 2 && (true || T*H < 200000)) {
             // O(T^2.H)
             stats.tick(32);
             //DEBUG("H: " << H << ", T: " << T);
@@ -654,8 +654,8 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth,
         int lb, int ub, IndexType guessForLb, IndexType guessForUb, bool skipRecordSubset = false) {
 
+        if (remDepth < GlobalArgs.minCache) return;
         assert(std::is_sorted(answers.begin(), answers.end()));
-
         auto &cache = guessCache2[remDepth];
         std::pair<AnswersVec, GuessesVec> p = isEasyModeVar
             ? std::pair<AnswersVec, GuessesVec>(answers, GuessesVec())

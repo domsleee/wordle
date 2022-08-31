@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Defs.h"
 
 struct _GlobalArgs {
     static inline std::string guesses, answers;
 
     // values
-    static inline int numToRestrict, topLevelGuesses, topLevelSkip, maxTries, maxWrong, guessLimitPerNode, minLbCache, workers;
+    static inline int numToRestrict, topLevelGuesses, topLevelSkip, maxTries, maxWrong, guessLimitPerNode, minLbCache, minCache, workers;
     static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters, outputRes;
     static inline double memLimitPerThread = 2;
 
@@ -19,7 +20,7 @@ struct _GlobalArgs {
     static inline bool usePartitions;
 
     static inline int printLength;
-    static inline bool runOtherProof = false;
+    static inline OtherProgram otherProgram = OtherProgram::blank;
 };
 
 static inline _GlobalArgs GlobalArgs;

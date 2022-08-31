@@ -192,9 +192,12 @@ inline void printIterable(const T &iterable) {
 }
 
 template <typename T>
-std::string getIterableString(const T &iterable) {
+std::string getIterableString(const T &v, const std::string &delim = " ") {
     std::string res = "";
-    for (auto el: iterable) res = FROM_SS(res << el << " ");
+    for (auto it = v.cbegin(); it != v.cend(); ++it) {
+        res += *it;
+        if (it != v.cend() - 1) res += delim;
+    }
     return res;
 }
 
@@ -272,7 +275,7 @@ static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
 }
 
 
-static long long nChoosek( long long n, long long k ) {
+static inline long long nChoosek( long long n, long long k ) {
     if (k > n) return 0;
     if (k * 2 > n) k = n-k;
     if (k == 0) return 1;
