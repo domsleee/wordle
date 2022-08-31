@@ -77,7 +77,7 @@ struct SolveForNIdeas {
             DEBUG("NO SUCH FILE: " << any4In2File); exit(1);
         }
         if (GlobalArgs.minCache < 6) {
-            DEBUG("WARNING: recommend setting --minCache, you will smash your cache");
+            DEBUG("WARNING: recommend setting --min-cache, you will smash your cache");
         }
         std::ifstream fin(any4In2File);
         std::string line;
