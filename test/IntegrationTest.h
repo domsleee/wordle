@@ -45,7 +45,7 @@ TEST_CASE("G4 tenor,raced should be 17") {
 }
 
 TEST_CASE("G5 roate,soare,orate") {
-    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g5", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/RoateSoareOrate.txt", "--m-partitions-rem-depth", "0", "--M-partitions-rem-depth", "500"});
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g5", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/RoateSoareOrate.txt", "--m-partitions-rem-depth", "3", "--M-partitions-rem-depth", "4"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();
