@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g -ffast-math
 else
-	CONDITIONAL_CXX = -DNDEBUG -g  #-fsanitize=address#-fprofile-use=./prof/out_single2.pgo -lgcov
+	CONDITIONAL_CXX = -DNDEBUG -g #-fprofile-use=./prof/out_single.pgo #-lgcov
 ifneq ($(UNAME), Darwin)
 	CONDITIONAL_CXX += #-fsanitize=address -fno-omit-frame-pointer
 endif
@@ -11,9 +11,9 @@ endif
 
 
 CXX = g++-11
-CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX)  -O3
+CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX)  -O3 -MP -MD
 CXXFLAGS = $(CXXFLAGSCOMMON)
-CXXFLAGSTEST = $(CXXFLAGSCOMMON) -g -O3
+CXXFLAGSTEST = $(CXXFLAGSCOMMON)
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo
 ifeq ($(UNAME), Darwin)
 LIBS := #-lprofiler -L/opt/homebrew/Cellar/gperftools/2.9.1_1/lib -L/opt/homebrew/Cellar/tbb/2021.5.0/lib
@@ -49,11 +49,11 @@ $(BIN_DIR)/test: $(OBJ_FILES_NO_MAIN)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -MMD -MF $(patsubst %.o,%.d,$@) -o $@ $< $(LIBS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $< $(LIBS)
 
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGSTEST) -c -MMD -MF $(patsubst %.o,%.d,$@) -o $@ $< $(LIBS)
+	$(CXX) $(CXXFLAGSTEST) -c -o $@ $< $(LIBS)
 
 clean:
 	- rm -r $(OBJ_DIR)/* $(BIN_DIR)/*

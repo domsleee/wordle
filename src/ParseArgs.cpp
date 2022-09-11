@@ -37,6 +37,8 @@ void parseArgs(int argc, char *argv[]) {
         ("min-lb-cache", "RemDepth for storing lb cache", cxxopts::value<int>()->default_value("2"))
         ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
         ("z,print-length", "Print length", cxxopts::value<int>()->default_value("-1"))
+        ("m-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
+        ("M-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
 
         // floats
         ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
@@ -64,6 +66,8 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.minLbCache = result["min-lb-cache"].as<int>();
     GlobalArgs.workers = result["workers"].as<int>();
     GlobalArgs.printLength = result["print-length"].as<int>();
+    GlobalArgs.mPartitionsRemDepth = result["m-partitions-rem-depth"].as<int>();
+    GlobalArgs.MPartitionsRemDepth = result["M-partitions-rem-depth"].as<int>();
     GlobalArgs.firstWord = result["first-guess"].as<std::string>();
     GlobalArgs.verify = result["verify"].as<std::string>();
     GlobalArgs.outputRes = result["output-result"].as<std::string>();

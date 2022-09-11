@@ -6,6 +6,7 @@
 #include "PatternGetterCached.h"
 #include "Defs.h"
 #include "GlobalState.h"
+#include "SolverHelper.h"
 
 enum CompareResult {
     BetterThanOrEqualTo,
@@ -89,7 +90,7 @@ struct RemoveGuessesPartitions {
     }
 
     static void markAsEliminated(std::vector<int8_t> &eliminated, IndexType guessToElim, IndexType guessThatIsBetter, bool equalTo = false) {
-        // if (guessToElim == 751) {
+        // if (true || guessToElim == 751) {
         //     std::string op = equalTo ? std::string(">=") : std::string(">");
         //     DEBUG("eliminated " << guessToElim << " because " << guessThatIsBetter << ' ' << op << ' ' << guessToElim);
         // }
@@ -165,11 +166,9 @@ struct RemoveGuessesPartitions {
         return partitionInfo;
     }
 
-    static const int REM_DEPTH = 4; // for depth=2, remDepth=4
-    static const int anyNSolvedIn2Guesses = 3;
     bool safeToIgnorePartition(int partitionSize) {
-        const int lt = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
-        return (partitionSize <= lt); // assumes remDepth >= 2
+        const int maxSolvedForRemDepth = remDepth-1; // SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
+        return (partitionSize <= maxSolvedForRemDepth); // assumes remDepth >= 2
     }
 
     // is g1 a better guess than g2

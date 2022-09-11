@@ -324,17 +324,12 @@ struct AnswersAndGuessesSolver {
         GuessesVec guessesCopy = myGuesses;
         // auto bef = guessesCopy.size();
         const int T = guessesCopy.size(), H = answers.size();
-        if (depth == 2 && (true || T*H < 300000)) {
+        if (GlobalArgs.mPartitionsRemDepth <= remDepth && remDepth <= GlobalArgs.MPartitionsRemDepth && (true || T*H < 300000)) {
             // O(T^2.H)
             stats.tick(32);
             //DEBUG("H: " << H << ", T: " << T);
             //RemoveGuessesUsingNonLetterMask::removeWithBetterOrSameGuessFaster(stats, guessesCopy, nonLetterMaskNoSpecialMask); // removes a few more
             removeWithBetterOrSameGuessPartitions(remDepth, guessesCopy, answers, PartitionStrategy::useOldVersion);
-            stats.tock(32);
-        }
-        else if (GlobalArgs.usePartitions && (3 <= remDepth && remDepth <= 4)) {
-            stats.tick(32);
-            removeWithBetterOrSameGuessPartitions(remDepth, guessesCopy, answers, PartitionStrategy::useNewVersion);
             stats.tock(32);
         } else {
             // O(TlgT)
