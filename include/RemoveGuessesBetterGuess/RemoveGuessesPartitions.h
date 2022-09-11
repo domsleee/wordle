@@ -98,7 +98,7 @@ struct RemoveGuessesPartitions {
     }
 
     static void markAsEliminated(std::vector<int8_t> &eliminated, IndexType guessToElim, IndexType guessThatIsBetter, bool equalTo = false) {
-        // if (guessToElim == 751) {
+        // if (true || guessToElim == 751) {
         //     std::string op = equalTo ? std::string(">=") : std::string(">");
         //     DEBUG("eliminated " << guessToElim << " because " << guessThatIsBetter << ' ' << op << ' ' << guessToElim);
         // }

@@ -10,6 +10,7 @@ struct _GlobalArgs {
     static inline int numToRestrict, topLevelGuesses, topLevelSkip, maxTries, maxWrong, guessLimitPerNode, minLbCache, minCache, workers;
     static inline std::string firstWord, verify, guessesToSkip, guessesToCheck, specialLetters, outputRes;
     static inline double memLimitPerThread = 2;
+    static inline int mPartitionsRemDepth, MPartitionsRemDepth;
 
     // https://nerdschalk.com/what-are-most-common-letters-for-wordle/
     // eartolsincuyhpdmgbkfwvxzqj
