@@ -181,7 +181,8 @@ struct RemoveGuessesPartitions {
     // solved in 3: 5 ==> {1,1,3}
     // solved in 4: 7 ==> {1,1,5}
     bool safeToIgnorePartition(int partitionSize) {
-        const int lt = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
+        assert(remDepth >= 3);
+        const int lt = (remDepth - 3) + SolverHelper::getMaxGuaranteedSolvedInRemDepth(2);
         return (partitionSize <= lt); // assumes remDepth >= 2
     }
 
