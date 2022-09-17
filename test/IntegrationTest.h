@@ -3,36 +3,11 @@
 #include "ParseArgs.h"
 #include "Runner.h"
 #include "TestDefs.h"
-
-
-struct ArgHelper {
-    ArgHelper(std::vector<std::string> args)
-      : args(args),
-        argv(getArgv()) {}
-
-    std::pair<int, char**> getArgcArgv() { return {args.size(), argv}; };
-    
-    ~ArgHelper() {
-        for (std::size_t i = 0; i < args.size(); ++i) free(argv[i]);
-        free(argv);
-    }
-private:
-    const std::vector<std::string> args;
-    char** argv;
-
-    char **getArgv() {
-        char **myArgv = (char **)malloc(sizeof(char*) * args.size());
-        for (std::size_t i = 0; i < args.size(); ++i) {
-            myArgv[i] = strdup(args[i].c_str());
-        }
-        return myArgv;
-    }
-};
-
+#include "ArgHelper.h"
 
 TEST_CASE("G4 tenor,raced should be 17") {
     //  ./bin/solve -Seartol -p -I20 -g4 ext/wordle-guesses.txt ext/wordle-answers.txt
-    auto argHelper = ArgHelper({"solve", "-Seartolsinc",  "-I20", "-g4", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/TenorRaced.txt"});
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc",  "-I20", "-g4", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/files/TenorRaced.txt"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();
@@ -45,7 +20,7 @@ TEST_CASE("G4 tenor,raced should be 17") {
 }
 
 TEST_CASE("G5 roate,soare,orate") {
-    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g5", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/RoateSoareOrate.txt", "--m-partitions-rem-depth", "3", "--M-partitions-rem-depth", "4"});
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g5", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/files/RoateSoareOrate.txt", "--m-partitions-rem-depth", "3", "--M-partitions-rem-depth", "4"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();
@@ -62,7 +37,7 @@ TEST_CASE("G6 BIGHIDDEN lanes,lears") {
         DEBUG("ignoring big test...");
         return;
     }
-    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "--guesses-to-check", "test/LanesLears.txt"});
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "--guesses-to-check", "test/files/LanesLears.txt"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();

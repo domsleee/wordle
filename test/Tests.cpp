@@ -11,6 +11,7 @@
 #include "TestDefs.h"
 #include "BiTrieSubsetCacheTest.h"
 #include "IntegrationTest.h"
+#include "Any2Tests.h"
 #include <iostream>
 
 TEST_CASE("attempt state") {
