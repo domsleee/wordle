@@ -19,6 +19,7 @@ struct EndGameDatabase {
     void init(
         const std::string &listName // list1
     ) {
+        if (GlobalArgs.disableEndGameAnalysis) return;
         EndGameAnalysis::endGames = readEndGamesList(listName);
         populateEndGameCacheEntries();
         EndGameAnalysis::populateWordNum2EndGamePair();

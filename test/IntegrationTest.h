@@ -4,6 +4,8 @@
 #include "Runner.h"
 #include "TestDefs.h"
 #include "ArgHelper.h"
+#include <string>
+#include <vector>
 
 TEST_CASE("G4 tenor,raced should be 17") {
     //  ./bin/solve -Seartol -p -I20 -g4 ext/wordle-guesses.txt ext/wordle-answers.txt
@@ -46,4 +48,21 @@ TEST_CASE("G6 BIGHIDDEN lanes,lears") {
     REQUIRE_MESSAGE(pairs.size() == 2, "NUM PAIRS");
     REQUIRE_MESSAGE(pairs[0].numWrong == 0, 0);
     REQUIRE_MESSAGE(pairs[1].numWrong > 0, 1);
+}
+
+TEST_CASE("edge case") {
+    GlobalArgs.disableEndGameAnalysis = true;
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "-z0", "-T"});
+    auto [argc, argv] = argHelper.getArgcArgv();
+    parseArgs(argc, argv);
+
+    auto solver = AnswersAndGuessesSolver<true>(GlobalArgs.maxTries);
+    initFromGlobalArgs();
+    Runner::precompute(solver);
+    std::vector<std::string> vec({"lanes", "lenes", "lines", "lunes", "lynes"});
+    AnswersVec answers = {};
+    for (auto s: vec) answers.push_back(GlobalState.getIndexForWord(s));
+    auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+    auto numWrong = solver.minOverWordsLeastWrong(answers, guesses, 2, 0, 1);
+    REQUIRE_MESSAGE(numWrong.numWrong == 0, "ONE RESULT");
 }

@@ -44,6 +44,7 @@ struct AnswersAndGuessesSolver {
             for (int i = 0; i <= maxTries; ++i) {
                 biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
             }
+            disableEndGameAnalysis = GlobalArgs.disableEndGameAnalysis;
         }
 
     const RemDepthType maxTries;

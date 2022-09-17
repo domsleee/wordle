@@ -5,6 +5,7 @@ const int NUM_FAST_MODES = 4;
 const int MAX_DEPTH = 10;
 const int TOTAL_TIMINGS = 100;
 
+#define PERF_DEBUG(x)
 #define TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth) (60 + depth)
 
 struct PerfStats {
@@ -126,7 +127,7 @@ struct PerfStats {
 
     int getDepth(RemDepthType remDepth) { return GlobalArgs.maxTries - remDepth; }
 
-    void tick(int i){if(GlobalArgs.timings && !ignoreTime(i))lcpu[i]=cpu();}
+    void tick(int i){if(GlobalArgs.timings && !ignoreTime(i)){lcpu[i]=cpu();PERF_DEBUG("TICK:" << i)}}
     void tock(int i){if(GlobalArgs.timings && !ignoreTime(i)){ncpu[i]+=1;tcpu[i]+=cpu()-lcpu[i];}}
     bool ignoreTime(int i) {
         return (46 <= i && i <= 49);

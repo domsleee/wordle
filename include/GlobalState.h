@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_set>
 #include "WordSetUtil.h"
+#include "GlobalArgs.h"
 
 struct _GlobalState {
     std::vector<std::string> allGuesses = {}, allAnswers = {};
@@ -65,9 +66,25 @@ struct _GlobalState {
     }
 };
 
-static inline _GlobalState GlobalState;
+struct GlobalStateContainer {
+    static inline _GlobalState instance;
+};
 
+#define GlobalState GlobalStateContainer::instance
 
+static inline void initFromGlobalArgs() {
+    auto answers = readFromFile(GlobalArgs.answers);
+    auto guesses = readFromFile(GlobalArgs.guesses);
+
+    if (GlobalArgs.reduceGuesses) {
+        answers = getFirstNWords(answers, GlobalArgs.numToRestrict);
+        guesses = answers;
+    }
+
+    DEBUG("INITIALISING GLOBAL STATE: T:" << guesses.size() << ", H: " << answers.size());
+
+    GlobalState = _GlobalState(guesses, answers);
+}
 
 static inline std::string vecToString(const std::vector<IndexType> &indexes) {
     std::string r = GlobalState.reverseIndexLookup[indexes[0]];

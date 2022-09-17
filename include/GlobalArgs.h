@@ -17,11 +17,15 @@ struct _GlobalArgs {
 
     // flags
     static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings;
-    static inline bool disableSubsetCache = false, pauseForAttach = false;
+    static inline bool disableSubsetCache = false, disableEndGameAnalysis = false, pauseForAttach = false;
     static inline bool usePartitions;
 
     static inline int printLength;
     static inline OtherProgram otherProgram = OtherProgram::blank;
 };
 
-static inline _GlobalArgs GlobalArgs;
+struct GlobalArgsContainer {
+    static inline _GlobalArgs instance;
+};
+
+#define GlobalArgs GlobalArgsContainer::instance
