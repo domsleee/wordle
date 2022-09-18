@@ -308,7 +308,8 @@ struct AnswersAndGuessesSolver {
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
         stats.tick(50 + depth);
-        auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() ? guessesDisregardingAnswers : guesses;
+        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition
+        auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() || remDepth == 2 ? guessesDisregardingAnswers : guesses;
         std::array<IndexType, NUM_PATTERNS> equiv;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
         stats.tock(50 + depth);
