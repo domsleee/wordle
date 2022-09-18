@@ -15,6 +15,8 @@ struct RemoveGuessesWithBetterGuessCache
 
     static void init()
     {
+        cache = {};
+
         auto filename = FROM_SS("databases/betterGuess"
             << "_" << GlobalArgs.specialLetters
             << "_" << getFilenameIdentifier()
@@ -53,6 +55,7 @@ struct RemoveGuessesWithBetterGuessCache
             if (cache.size()%100 == 0) bar.incrementAndUpdateStatus("", 100);
         }
         bar.dispose();
+        DEBUG("Generated RemoveGuessesWithBetterGuessCache: " << filename);
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
         if (GlobalArgs.timings) {
             stats.printEntry("removeSubs", 44);
@@ -121,6 +124,7 @@ struct RemoveGuessesWithBetterGuessCache
             totalSize += numEntries;
         }
         fin.close();
+        DEBUG("Loaded RemoveGuessesWithBetterGuessCache: " << filename);
         DEBUG("cache size: " << cache.size() << " totalSize: " << totalSize);
 
         END_TIMER(betterGuessCacheReadFromFile);

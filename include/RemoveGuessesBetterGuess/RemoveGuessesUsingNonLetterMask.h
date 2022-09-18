@@ -9,6 +9,7 @@ using namespace NonLetterLookupHelpers;
 
 struct RemoveGuessesUsingNonLetterMask {
     inline static std::vector<int> letterCountLookup = {};
+    inline static int specialMask = 0;
 
     PerfStats &stats;
     const int nonLetterMask;
@@ -211,9 +212,9 @@ struct RemoveGuessesUsingNonLetterMask {
         return trieId;
     }
 
-    static inline int specialMask = 0;
     static void buildLetterLookup() {
         //if (letterCountLookup.size() > 0) return;
+        specialMask = 0;
         letterCountLookup.assign(GlobalState.reverseIndexLookup.size(), {});
         for (std::size_t i = 0; i < GlobalState.reverseIndexLookup.size(); ++i) {
             letterCountLookup[i] = 0;

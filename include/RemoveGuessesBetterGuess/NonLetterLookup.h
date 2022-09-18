@@ -49,6 +49,7 @@ struct NonLetterLookup {
 
     static void build() {
         START_TIMER(NonLetterLookup);
+        resetState();
         for (std::size_t i = 0; i < GlobalState.allGuesses.size(); ++i) {
             getOrCreateIndex(GlobalState.allGuesses[i]);
         }
@@ -71,6 +72,17 @@ struct NonLetterLookup {
         }
 
         buildCompressed();
+    }
+
+    static void resetState() {
+        stringPatternToId = {};
+        idToStringPattern = {};
+        nodes = {};
+        trieNodes = {};
+        compressedNodes = {};
+        compressedTrieNodes = {};
+        compressedBuilt = {};
+        guessIndexToCharIndexes = {};
     }
 
     static int buildNode(std::string s) {

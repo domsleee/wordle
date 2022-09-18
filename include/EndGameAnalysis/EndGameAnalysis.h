@@ -20,6 +20,10 @@ struct EndGameAnalysis {
     static const int minEndGameCount = 4;
 
     static void initEndGames() {
+        endGames = {};
+        wordNum2EndGamePair = {};
+        cache = {};
+
         int nh=GlobalState.allAnswers.size();
         IndexType i;
         std::map<std::string, unsigned int> wcount;// Map from wildcarded string, e.g. ".arks", to number of occurrences
@@ -32,7 +36,6 @@ struct EndGameAnalysis {
             }
         }
 
-        endGames = {};
         for (i = 0; i < nh; i++){
             std::string s = GlobalState.allAnswers[i];
             for (auto t: getWildcards(s)) {

@@ -64,5 +64,5 @@ TEST_CASE("edge case") {
     for (auto s: vec) answers.push_back(GlobalState.getIndexForWord(s));
     auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
     auto numWrong = solver.minOverWordsLeastWrong(answers, guesses, 2, 0, 1);
-    REQUIRE_MESSAGE(numWrong.numWrong == 0, "ONE RESULT");
+    REQUIRE_MESSAGE(numWrong.numWrong == 0, "should find a solution");
 }
