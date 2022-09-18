@@ -96,3 +96,17 @@ static inline std::string setToString(const std::set<IndexType> &indexes) {
     std::vector<IndexType> conv(indexes.begin(), indexes.end());
     return vecToString(conv);
 }
+
+static inline std::string getAbsolutePathString(const std::string &path) {
+    auto p = std::filesystem::absolute(path).string();
+    replaceAll(p, "/", "_");
+    return p;
+}
+
+static inline std::string getFilenameIdentifier() {
+    return FROM_SS(
+        GlobalState.allAnswers.size() // required to have `allAnswers` because it affects the indexes in allGuesses
+        << "_" << GlobalState.allGuesses.size()
+        << "__" << getAbsolutePathString(GlobalArgs.answers)
+        << "__" << getAbsolutePathString(GlobalArgs.guesses));
+}

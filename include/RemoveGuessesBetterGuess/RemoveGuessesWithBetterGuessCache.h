@@ -16,9 +16,8 @@ struct RemoveGuessesWithBetterGuessCache
     static void init()
     {
         auto filename = FROM_SS("databases/betterGuess"
-            << "_" << GlobalState.allAnswers.size() // required to have `allAnswers` because it affects the indexes in allGuesses
-            << "_" << GlobalState.allGuesses.size()
             << "_" << GlobalArgs.specialLetters
+            << "_" << getFilenameIdentifier()
             << ".dat");
         if (std::filesystem::exists(filename)) {
             readFromFile(filename);
