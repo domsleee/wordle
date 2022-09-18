@@ -35,7 +35,7 @@ void JsonConverter::toFile(const SolutionModel &solutionModel, const std::string
     std::ofstream o(file);
     o << std::setw(2) << j << std::endl;
     auto jCompressed = toJson(solutionModel, true);
-    std::ofstream oCompressed(file + ".compressed");
+    std::ofstream oCompressed(file + ".cmp.json");
     oCompressed << std::setw(2) << jCompressed << std::endl;
 }
 

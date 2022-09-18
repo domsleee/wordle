@@ -10,6 +10,7 @@
 #include "LookupCacheEntry.h"
 #include "PatternGetter.h"
 #include "PerfStats.h"
+#include "SolverHelper.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitions.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsEqualOnly.h"
 #include "RemoveGuessesBetterGuess/RemoveGuessesPartitionsTrie.h"
@@ -43,6 +44,7 @@ struct AnswersAndGuessesSolver {
             for (int i = 0; i <= maxTries; ++i) {
                 biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
             }
+            disableEndGameAnalysis = GlobalArgs.disableEndGameAnalysis;
         }
 
     const RemDepthType maxTries;
@@ -150,7 +152,7 @@ struct AnswersAndGuessesSolver {
         auto &count = equiv;
         int nh = answers.size();
 
-        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        uint8_t thr = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
         assert(thr >= 3);
 
         for (const auto guessIndex: guesses) {
@@ -236,7 +238,6 @@ struct AnswersAndGuessesSolver {
     }
 
     //const bool canAny3BeSolvedIn2 = true;
-    static const int anyNSolvedIn2Guesses = 3; // not 4: batty,patty,tatty,fatty
     BestWordResult minOverWordsLeastWrong(const AnswersVec &answers, const GuessesVec &guesses, const RemDepthType remDepth, FastModeType fastMode, int beta) {
         assertm(remDepth != 0, "no tries remaining");
         stats.entryStats[GlobalArgs.maxTries-remDepth][0]++;
@@ -245,7 +246,7 @@ struct AnswersAndGuessesSolver {
         if (answers.size() == 0) return {0, 0};
         if (answers.size() == 1) return {0, answers[0]};
         const int nAnswers = answers.size();
-        if (remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0) >= nAnswers) {
+        if (SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1) >= nAnswers-1) {
             //auto m = *std::min_element(answers.begin(), answers.end());
             assert(answers[0] == *std::min_element(answers.begin(), answers.end()));
             return {0, answers[0]};
@@ -273,7 +274,7 @@ struct AnswersAndGuessesSolver {
         //auto perfectAnswerCandidates = answers;
         //auto nonLetterMaskNoSpecialMask2 = RemoveGuessesWithBetterGuessCache::getNonLetterMaskNoSpecialMask(answers);
 
-        uint8_t thr = remDepth + (remDepth >= 3 ? (anyNSolvedIn2Guesses - 2) : 0);
+        uint8_t thr = SolverHelper::getMaxGuaranteedSolvedInRemDepth(remDepth-1);
         for (const auto answerIndexForGuess: answers) {
             count.fill(0);
             bool maxCBelowThr = true;
@@ -307,7 +308,8 @@ struct AnswersAndGuessesSolver {
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
         stats.tick(50 + depth);
-        auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() ? guessesDisregardingAnswers : guesses;
+        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition
+        auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() || remDepth == 2 ? guessesDisregardingAnswers : guesses;
         std::array<IndexType, NUM_PATTERNS> equiv;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
         stats.tock(50 + depth);
@@ -649,8 +651,8 @@ struct AnswersAndGuessesSolver {
         const RemDepthType remDepth,
         int lb, int ub, IndexType guessForLb, IndexType guessForUb, bool skipRecordSubset = false) {
 
+        if (remDepth < GlobalArgs.minCache) return;
         assert(std::is_sorted(answers.begin(), answers.end()));
-
         auto &cache = guessCache2[remDepth];
         std::pair<AnswersVec, GuessesVec> p = isEasyModeVar
             ? std::pair<AnswersVec, GuessesVec>(answers, GuessesVec())

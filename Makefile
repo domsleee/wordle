@@ -1,9 +1,9 @@
 #ifndef
 UNAME := $(shell uname)
 ifdef ENV_DEBUG
-	CONDITIONAL_CXX = -g -ffast-math
+	CONDITIONAL_CXX = -g
 else
-	CONDITIONAL_CXX = -DNDEBUG -g #-fprofile-use=./prof/out_single.pgo #-lgcov
+	CONDITIONAL_CXX = -g -O3 #-DNDEBUG #-fprofile-use=./prof/out_single.pgo #-lgcov
 ifneq ($(UNAME), Darwin)
 	CONDITIONAL_CXX += #-fsanitize=address -fno-omit-frame-pointer
 endif
@@ -11,7 +11,7 @@ endif
 
 
 CXX = g++-11
-CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX)  -O3 -MP -MD
+CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX) -MP -MD#-O0
 CXXFLAGS = $(CXXFLAGSCOMMON)
 CXXFLAGSTEST = $(CXXFLAGSCOMMON)
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo

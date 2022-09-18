@@ -19,6 +19,7 @@ struct EndGameDatabase {
     void init(
         const std::string &listName // list1
     ) {
+        if (GlobalArgs.disableEndGameAnalysis) return;
         EndGameAnalysis::endGames = readEndGamesList(listName);
         populateEndGameCacheEntries();
         EndGameAnalysis::populateWordNum2EndGamePair();
@@ -139,10 +140,10 @@ struct EndGameDatabase {
     }
 
     std::string getEndGameListsFolder() {
-        return FROM_SS(folderName << "/endGameLists_" << GlobalState.allAnswers.size() << "_" << GlobalState.allGuesses.size());
+        return FROM_SS(folderName << "/endGameLists_" << getFilenameIdentifier());
     }
 
     std::string getEndGamesFolder() {
-        return FROM_SS(folderName << "/endGamePowersets_" << GlobalState.allAnswers.size() << "_" << GlobalState.allGuesses.size());
+        return FROM_SS(folderName << "/endGamePowersets_" << getFilenameIdentifier());
     }
 };

@@ -1,5 +1,7 @@
 #include "ParseArgs.h"
 #include "GlobalArgs.h"
+#include "Defs.h"
+#include "ParseArgsHelper.h"
 #include "../third_party/cxxopts.hpp"
 
 void parseArgs(int argc, char *argv[]) {
@@ -24,7 +26,8 @@ void parseArgs(int argc, char *argv[]) {
         ("guesses-to-skip", "Filename of words to skip", cxxopts::value<std::string>()->default_value(""))
         ("guesses-to-check", "Filename of guesses to check", cxxopts::value<std::string>()->default_value(""))
         ("S,special-letters", "Special letters", cxxopts::value<std::string>()->default_value("eartolsincuyhpdmgbk"))
-        ("o,output-result", "Output result", cxxopts::value<std::string>()->default_value("models/out.res"))
+        ("o,output-result", "Output result", cxxopts::value<std::string>()->default_value("models/out.txt"))
+        ("other-program", FROM_SS("Other program, options: " << getEnumMapString(otherProgramMap)), cxxopts::value<std::string>()->default_value(""))
 
         // ints
         ("n,guess-limit-per-node", "Guess limit per node", cxxopts::value<int>()->default_value("1000000"))
@@ -35,6 +38,7 @@ void parseArgs(int argc, char *argv[]) {
         ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
         ("min-lb-cache", "RemDepth for storing lb cache", cxxopts::value<int>()->default_value("2"))
+        ("min-cache", "RemDepth for storing cache", cxxopts::value<int>()->default_value("0"))
         ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
         ("z,print-length", "Print length", cxxopts::value<int>()->default_value("-1"))
         ("m-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
@@ -64,6 +68,7 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.maxWrong = result["max-numWrong"].as<int>();
     GlobalArgs.memLimitPerThread = result["mem-limit"].as<double>();
     GlobalArgs.minLbCache = result["min-lb-cache"].as<int>();
+    GlobalArgs.minCache = result["min-cache"].as<int>();
     GlobalArgs.workers = result["workers"].as<int>();
     GlobalArgs.printLength = result["print-length"].as<int>();
     GlobalArgs.mPartitionsRemDepth = result["m-partitions-rem-depth"].as<int>();
@@ -74,6 +79,7 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.guessesToSkip = result["guesses-to-skip"].as<std::string>();
     GlobalArgs.guessesToCheck = result["guesses-to-check"].as<std::string>();
     GlobalArgs.specialLetters = result["special-letters"].as<std::string>();
+    GlobalArgs.otherProgram = AssertOneOf(result, "other-program", otherProgramMap);
 
     // flags
     GlobalArgs.parallel = result.count("parallel");

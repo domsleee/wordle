@@ -31,7 +31,7 @@ using RemDepthType = uint8_t;
 using FastModeType = uint8_t;
 
 static const int MAX_NUM_GUESSES = 12992;
-static const int NUM_WORDS = 12992;
+static const int MAX_NUM_ANSWERS = 12992;
 static const char NULL_LETTER = '-';
 static const int MAX_LETTER_LIMIT_MAX = 10;
 
@@ -192,9 +192,12 @@ inline void printIterable(const T &iterable) {
 }
 
 template <typename T>
-std::string getIterableString(const T &iterable) {
+std::string getIterableString(const T &v, const std::string &delim = " ") {
     std::string res = "";
-    for (auto el: iterable) res = FROM_SS(res << el << " ");
+    for (auto it = v.cbegin(); it != v.cend(); ++it) {
+        res += *it;
+        if (it != v.cend() - 1) res += delim;
+    }
     return res;
 }
 
@@ -213,6 +216,7 @@ inline std::string fromBytes(long long numBytes) {
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <vector>
 
 
 // https://stackoverflow.com/questions/10058606/splitting-a-string-by-a-character
@@ -268,4 +272,45 @@ static void inplaceSetUnion(std::vector<T> &a, const std::vector<T> &b) {
     std::set_union(a.begin(), a.end(), b.begin(), b.end(), std::back_inserter(out));
     a.swap(out);
     // a.assign(out.begin(), out.end());
+}
+
+
+static inline long long nChoosek( long long n, long long k ) {
+    if (k > n) return 0;
+    if (k * 2 > n) k = n-k;
+    if (k == 0) return 1;
+
+    long long result = n;
+    for (long long i = 2; i <= k; ++i) {
+        result *= (n-i+1);
+        result /= i;
+    }
+    return result;
+}
+
+// https://stackoverflow.com/questions/5878775/how-to-find-and-replace-string
+static inline void replaceAll(
+    std::string& s,
+    std::string const& toReplace,
+    std::string const& replaceWith
+) {
+    std::string buf;
+    std::size_t pos = 0;
+    std::size_t prevPos;
+
+    // Reserves rough estimate of final size of string.
+    buf.reserve(s.size());
+
+    while (true) {
+        prevPos = pos;
+        pos = s.find(toReplace, pos);
+        if (pos == std::string::npos)
+            break;
+        buf.append(s, prevPos, pos - prevPos);
+        buf += replaceWith;
+        pos += toReplace.size();
+    }
+
+    buf.append(s, prevPos, s.size() - prevPos);
+    s.swap(buf);
 }

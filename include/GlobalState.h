@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_set>
 #include "WordSetUtil.h"
+#include "GlobalArgs.h"
 
 struct _GlobalState {
     std::vector<std::string> allGuesses = {}, allAnswers = {};
@@ -28,7 +29,7 @@ struct _GlobalState {
         allGuesses = allAnswers;
         for (const auto &s: guessesNotInAnswers) allGuesses.push_back(s);
 
-        checkWordSetSize<WordSetAnswers>("NUM_WORDS", allAnswers.size());
+        checkWordSetSize<WordSetAnswers>("MAX_NUM_ANSWERS", allAnswers.size());
         checkWordSetSize<WordSetGuesses>("MAX_NUM_GUESSES", allGuesses.size());
 
         std::unordered_set<std::string> allGuessesSet{allGuesses.begin(), allGuesses.end()};
@@ -65,4 +66,47 @@ struct _GlobalState {
     }
 };
 
-static inline _GlobalState GlobalState;
+struct GlobalStateContainer {
+    static inline _GlobalState instance;
+};
+
+#define GlobalState GlobalStateContainer::instance
+
+static inline void initFromGlobalArgs() {
+    auto answers = readFromFile(GlobalArgs.answers);
+    auto guesses = readFromFile(GlobalArgs.guesses);
+
+    if (GlobalArgs.reduceGuesses) {
+        answers = getFirstNWords(answers, GlobalArgs.numToRestrict);
+        guesses = answers;
+    }
+
+    DEBUG("INITIALISING GLOBAL STATE: T:" << guesses.size() << ", H: " << answers.size());
+
+    GlobalState = _GlobalState(guesses, answers);
+}
+
+static inline std::string vecToString(const std::vector<IndexType> &indexes) {
+    std::string r = GlobalState.reverseIndexLookup[indexes[0]];
+    for (std::size_t i = 1; i < indexes.size(); ++i) r += "," + GlobalState.reverseIndexLookup[indexes[i]];
+    return r;
+}
+
+static inline std::string setToString(const std::set<IndexType> &indexes) {
+    std::vector<IndexType> conv(indexes.begin(), indexes.end());
+    return vecToString(conv);
+}
+
+static inline std::string getAbsolutePathString(const std::string &path) {
+    auto p = std::filesystem::absolute(path).string();
+    replaceAll(p, "/", "_");
+    return p;
+}
+
+static inline std::string getFilenameIdentifier() {
+    return FROM_SS(
+        GlobalState.allAnswers.size() // required to have `allAnswers` because it affects the indexes in allGuesses
+        << "_" << GlobalState.allGuesses.size()
+        << "__" << getAbsolutePathString(GlobalArgs.answers)
+        << "__" << getAbsolutePathString(GlobalArgs.guesses));
+}
