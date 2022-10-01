@@ -38,7 +38,6 @@ struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(RemDepthType maxTries)
         : maxTries(maxTries),
           subsetCache(SubsetCache(maxTries))
-
         {
             guessCache2.resize(maxTries+1);
             cacheSize.assign(maxTries+1, 0);
