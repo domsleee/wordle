@@ -38,12 +38,11 @@ struct AnswersAndGuessesSolver {
     AnswersAndGuessesSolver(RemDepthType maxTries)
         : maxTries(maxTries),
           subsetCache(SubsetCache(maxTries))
+
         {
             guessCache2.resize(maxTries+1);
             cacheSize.assign(maxTries+1, 0);
-            for (int i = 0; i <= maxTries; ++i) {
-                biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
-            }
+            setSubsetCache();
             disableEndGameAnalysis = GlobalArgs.disableEndGameAnalysis;
         }
 
@@ -308,7 +307,7 @@ struct AnswersAndGuessesSolver {
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
         stats.tick(50 + depth);
-        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition
+        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition: It must find the guess to solve partitions of size 3
         auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() || remDepth == 2 ? guessesDisregardingAnswers : guesses;
         std::array<IndexType, NUM_PATTERNS> equiv;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
@@ -784,6 +783,7 @@ struct AnswersAndGuessesSolver {
                     cacheSize[i] = 0;
                     guessCache2[i].clear();
                 }
+                setSubsetCache();
             }
             nextCheck = stats.nodes + 1e6;
 
@@ -832,5 +832,13 @@ struct AnswersAndGuessesSolver {
             }
         }
         return greenLetterMask;
+    }
+
+    void setSubsetCache() {
+        biTrieSubsetCaches.clear();
+        for (int i = 0; i <= maxTries; ++i) {
+            biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
+        }
+        subsetCache = SubsetCache(maxTries);
     }
 };

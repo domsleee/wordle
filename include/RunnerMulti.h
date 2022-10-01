@@ -92,7 +92,7 @@ struct RunnerMulti {
                 &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
             ]
                 (const std::vector<IndexType> &firstWordBatch) -> RunnerMultiResult
-            {                
+            {
                 const auto &allAnswers = GlobalState.allAnswers;
                 const auto &allGuesses = GlobalState.allGuesses;
                 RunnerMultiResult result;
@@ -108,7 +108,6 @@ struct RunnerMulti {
                     auto answers = getVector<AnswersVec>(allAnswers.size());
                     auto guesses = getVector<GuessesVec>(allGuesses.size());
                     numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
-                    DEBUG("numWrong?? " << numWrong);
 
                     {
                         std::lock_guard g(lock);
@@ -123,17 +122,22 @@ struct RunnerMulti {
                         }
                         completed++;
                         fout << firstWord << "," << numWrong << "," << numTries << '\n';
+                        fout.flush();
                     }
-                    fout.flush();
 
                     auto s = FROM_SS(
                         ", " << firstWord << ", " << getFrac(completed, guessIndexesToCheck.size())
                         << ", minWrong: " << (minWrong == INF_INT ? "inf" : std::to_string(minWrong))
                         << ", minAvg: " << (minAvg == INF_DOUBLE ? "inf" : std::to_string(minAvg)));
-                    if (i == firstWordBatch.size() - 1) {
-                        bar.incrementAndUpdateStatus(s);
-                    } else {
-                        bar.updateStatus(s);
+
+                    {
+                        std::lock_guard g(lock);
+                        DEBUG("numWrong?? " << numWrong);
+                        if (i == firstWordBatch.size() - 1) {
+                            bar.incrementAndUpdateStatus(s);
+                        } else {
+                            bar.updateStatus(s);
+                        }
                     }
                     auto p = RunnerMultiResultPair();
                     p.numWrong = numWrong;

@@ -41,8 +41,8 @@ void parseArgs(int argc, char *argv[]) {
         ("min-cache", "RemDepth for storing cache", cxxopts::value<int>()->default_value("0"))
         ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
         ("z,print-length", "Print length", cxxopts::value<int>()->default_value("-1"))
-        ("m-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
-        ("M-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
+        ("m-partitions-rem-depth", "Minimum remDepth for RemoveGuessesPartitions", cxxopts::value<int>()->default_value("4"))
+        ("M-partitions-rem-depth", "Maximum remDepth for RemoveGuessesPartitions", cxxopts::value<int>()->default_value("4"))
 
         // floats
         ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
