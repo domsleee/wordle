@@ -55,14 +55,16 @@ struct RunnerMulti {
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
         auto numWorkers = GlobalArgs.parallel ? GlobalArgs.workers : 1;
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, std::ceil((double)guessIndexesToCheck.size()/numWorkers));
-        DEBUG("#batches: " << batchesOfFirstWords.size());
+        DEBUG("#workers: " << numWorkers);
+        auto workers = getVector(numWorkers);
 
-        std::mutex lock;
+        std::mutex lock, queueLock;
 
         DEBUG("sizeof perfstats: " << sizeof(PerfStats));
 
-        auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
+        auto bar = SimpleProgress("BY_FIRST_GUESS", (int64_t)guessIndexesToCheck.size());
+        std::queue<IndexType> q;
+        for (auto v: guessIndexesToCheck) q.push(v);
         std::ofstream fout(GlobalArgs.outputRes);
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "word,numWrong,numTries\n";
@@ -75,32 +77,40 @@ struct RunnerMulti {
         // DEBUG("#removed: " << getPerc(numRemoved, GlobalState.allGuesses.size()));
         // exit(1);
 
-        std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size(), RunnerMultiResult());
+        std::vector<RunnerMultiResult> transformResults(workers.size(), RunnerMultiResult());
         std::transform(
             executionPolicy,
-            batchesOfFirstWords.begin(),
-            batchesOfFirstWords.end(),
+            workers.begin(),
+            workers.end(),
             transformResults.begin(),
             [
                 &bar,
                 &completed,
                 &lock,
+                &q,
+                &queueLock,
                 &minWrong,
                 &minAvg,
                 &fout,
                 &nothingSolver=std::as_const(nothingSolver),
                 &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
             ]
-                (const std::vector<IndexType> &firstWordBatch) -> RunnerMultiResult
+                (const int &firstWordBatch) -> RunnerMultiResult
             {
                 const auto &allAnswers = GlobalState.allAnswers;
                 const auto &allGuesses = GlobalState.allGuesses;
                 RunnerMultiResult result;
                 auto solver = nothingSolver;
-                bar.updateStatus(FROM_SS(" batch size: " << firstWordBatch.size() << " loading..."));
 
-                for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
-                    auto firstWordIndex = firstWordBatch[i];
+                while (true) {
+                    IndexType firstWordIndex = 0;
+                    {
+                        std::lock_guard g(queueLock);
+                        if (q.size() == 0) break;
+                        firstWordIndex = q.front();
+                        q.pop();
+                    }
+
                     const auto &firstWord = allGuesses[firstWordIndex];
                     solver.startingWord = firstWord;
 
@@ -133,11 +143,7 @@ struct RunnerMulti {
                     {
                         std::lock_guard g(lock);
                         DEBUG("numWrong?? " << numWrong);
-                        if (i == firstWordBatch.size() - 1) {
-                            bar.incrementAndUpdateStatus(s);
-                        } else {
-                            bar.updateStatus(s);
-                        }
+                        bar.incrementAndUpdateStatus(s);
                     }
                     auto p = RunnerMultiResultPair();
                     p.numWrong = numWrong;
