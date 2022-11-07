@@ -31,7 +31,6 @@ struct RunnerUtil {
         DEBUG("valid?      : " << valid << " (" << numIncorrect << " <= " << GlobalArgs.maxWrong << ")");
         DEBUG("totalSum:   : " << totalSum);
         DEBUG("easy mode   : " << getBoolVal(solver.isEasyModeVar));
-        DEBUG("isLowAverage: " << getBoolVal(GlobalArgs.isGetLowestAverage));
         DEBUG("correct     : " << getPerc(correct, wordsToSolve.size()));
         DEBUG("guess words : " << guesses.size());
         DEBUG("firstWord   : " << GlobalArgs.firstWord);

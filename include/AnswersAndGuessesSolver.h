@@ -363,7 +363,7 @@ struct AnswersAndGuessesSolver {
             RemoveGuessesUsingNonLetterMask(stats, nonLetterMaskNoSpecialMask, yellowLetterMask).removeWithBetterOrSameGuessFaster(guessesCopy); // removes a few more
             stats.tock(33);
         }
-        if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }
+        if (depth-1 <= GlobalArgs.printDepth) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
         std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
@@ -375,9 +375,9 @@ struct AnswersAndGuessesSolver {
         bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
-            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printDepth){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
-            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("N%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printDepth){prs(depth*INDENT);printf("N%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             if (r < res.numWrong) {
                 res = {r, possibleGuess};
                 if (r < beta) { beta = r; exact = true; }
@@ -526,7 +526,7 @@ struct AnswersAndGuessesSolver {
         auto depth = GlobalArgs.maxTries - remDepth;
         stats.tick(23+depth);
         for (int i = 0; i < n; ++i) {
-            if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("S%dc %9.2f %d/%d\n", depth-1, PerfStats::cpu(), i, n); }
+            if (depth-1 <= GlobalArgs.printDepth) { prs((depth-1)*INDENT); printf("S%dc %9.2f %d/%d\n", depth-1, PerfStats::cpu(), i, n); }
 
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];
