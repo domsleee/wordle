@@ -29,7 +29,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x) 
+#define GUESSESSOLVER_DEBUG(x)
 
 using namespace NonLetterLookupHelpers;
 
@@ -41,9 +41,7 @@ struct AnswersAndGuessesSolver {
         {
             guessCache2.resize(maxTries+1);
             cacheSize.assign(maxTries+1, 0);
-            for (int i = 0; i <= maxTries; ++i) {
-                biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
-            }
+            setSubsetCache();
             disableEndGameAnalysis = GlobalArgs.disableEndGameAnalysis;
         }
 
@@ -82,7 +80,7 @@ struct AnswersAndGuessesSolver {
         return solveWord(answerIndex, solutionModel, firstWordIndex, answers, guesses);
     }
 
-    AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswersVec &answers, GuessesVec &guesses) {
+    AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswersVec &answers, GuessesVec &guesses, int betaOverride = -1) {
         AnswersAndGuessesResult res = {};
         res.solutionModel = solutionModel;
 
@@ -91,6 +89,8 @@ struct AnswersAndGuessesSolver {
         auto currentModel = res.solutionModel;
         
         IndexType guessIndex = firstWordIndex;
+        GUESSESSOLVER_DEBUG("INITIALLY numAnswers: " << answers.size() << ", solution model? " << res.solutionModel.get() << ", guess index? " << (int)guessIndex << ", answerIndex: " << (int)answerIndex);
+
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
             currentModel->guess = GlobalState.reverseIndexLookup[guessIndex];
             if (currentModel->guess == "") {
@@ -104,13 +104,13 @@ struct AnswersAndGuessesSolver {
             if (res.tries == maxTries) break;
 
             makeGuess(answers, guesses, state, guessIndex);
-            /*auto it = std::find(answers.begin(), answers.end(), answerIndex);
+            auto it = std::find(answers.begin(), answers.end(), answerIndex);
             if (it == answers.end()) {
                 DEBUG("the actual answer " << answerIndex << " was removed from answers after guess " << guessIndex << "!"); exit(1);
-            }*/
+            }
             //DEBUG("result:")
 
-            auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, getDefaultBeta());
+            auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, betaOverride != -1 ? betaOverride : getDefaultBeta());
             if (res.tries == 1) res.firstGuessResult = pr;
             const auto patternInt = getter.getPatternIntCached(guessIndex);
 
@@ -123,6 +123,29 @@ struct AnswersAndGuessesSolver {
         }
         res.tries = TRIES_FAILED;
         return res;
+    }
+
+    AnswersAndGuessesResult solveForFirstGuess(IndexType firstWordIndex, bool generateModel = false) {
+        AnswersAndGuessesResult result = {};
+        auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        if (!generateModel) {
+            auto r = sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
+            result.numWrong = r;
+            return result;
+        }
+
+        const auto allAnswers = answers;
+        for (const IndexType answerIndex: allAnswers) {
+            answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+            guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+            auto myR = solveWord(answerIndex, result.solutionModel, firstWordIndex, answers, guesses, getDefaultBeta() - result.numWrong);
+            if (myR.tries == TRIES_FAILED) {
+                result.numWrong++;
+                result.tries += myR.tries;
+            }
+        }
+        return result;
     }
 
 
@@ -263,7 +286,7 @@ struct AnswersAndGuessesSolver {
 
         const auto cacheVal = getCache(answers, guesses, remDepth);
         if (cacheVal.ub != -1 && (cacheVal.lb == cacheVal.ub || cacheVal.lb >= beta)) {
-            return BestWordResult(cacheVal.lb, cacheVal.guessForLb);
+            return BestWordResult(cacheVal.lb, cacheVal.guessForUb);
         }
         stats.entryStats[GlobalArgs.maxTries-remDepth][2]++;
 
@@ -308,7 +331,7 @@ struct AnswersAndGuessesSolver {
         stats.tock(TIMING_DEPTH_REMOVE_GUESSES_BETTER_GUESS(depth));
 
         stats.tick(50 + depth);
-        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition
+        // remDepth == 2 is required due to RemoveGuessesPartitions.safeToIgnorePartition: It must find the guess to solve partitions of size 3
         auto &myGuesses = guessesDisregardingAnswers.size() < guesses.size() || remDepth == 2 ? guessesDisregardingAnswers : guesses;
         std::array<IndexType, NUM_PATTERNS> equiv;
         BestWordResult minNumWrongFor2 = calcSortVectorAndGetMinNumWrongFor2(answers, myGuesses, equiv, sortVec, remDepth, beta);
@@ -340,7 +363,7 @@ struct AnswersAndGuessesSolver {
             RemoveGuessesUsingNonLetterMask(stats, nonLetterMaskNoSpecialMask, yellowLetterMask).removeWithBetterOrSameGuessFaster(guessesCopy); // removes a few more
             stats.tock(33);
         }
-        if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }
+        if (depth-1 <= GlobalArgs.printDepth) { prs((depth-1)*INDENT); printf("T%dc %9.2f %ld\n", depth-1, PerfStats::cpu(), guessesCopy.size()); }
         // auto numRemoved = bef - guessesCopy.size();
         // DEBUG("#removed: " << numRemoved);
         std::sort(guessesCopy.begin(), guessesCopy.end(), [&](IndexType a, IndexType b) { return sortVec[a] < sortVec[b]; });
@@ -352,9 +375,9 @@ struct AnswersAndGuessesSolver {
         bool exact = false;
         for (std::size_t myInd = 0; myInd < numGuessIndexesToCheck; myInd++) {
             const auto possibleGuess = guessesCopy[myInd];
-            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printDepth){prs(depth*INDENT);printf("M%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             auto r = sumOverPartitionsLeastWrong(answers, guessesCopy, remDepth-1, possibleGuess, beta);
-            if(depth <= GlobalArgs.printLength){prs(depth*INDENT);printf("N%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
+            if(depth <= GlobalArgs.printDepth){prs(depth*INDENT);printf("N%d %ld/%ld\n", depth, myInd, numGuessIndexesToCheck);}
             if (r < res.numWrong) {
                 res = {r, possibleGuess};
                 if (r < beta) { beta = r; exact = true; }
@@ -503,7 +526,7 @@ struct AnswersAndGuessesSolver {
         auto depth = GlobalArgs.maxTries - remDepth;
         stats.tick(23+depth);
         for (int i = 0; i < n; ++i) {
-            if (depth-1 <= GlobalArgs.printLength) { prs((depth-1)*INDENT); printf("S%dc %9.2f %d/%d\n", depth-1, PerfStats::cpu(), i, n); }
+            if (depth-1 <= GlobalArgs.printDepth) { prs((depth-1)*INDENT); printf("S%dc %9.2f %d/%d\n", depth-1, PerfStats::cpu(), i, n); }
 
             auto s = indexToPattern[i];
             totalWrongForGuess -= lb[s];
@@ -784,6 +807,7 @@ struct AnswersAndGuessesSolver {
                     cacheSize[i] = 0;
                     guessCache2[i].clear();
                 }
+                setSubsetCache();
             }
             nextCheck = stats.nodes + 1e6;
 
@@ -832,5 +856,13 @@ struct AnswersAndGuessesSolver {
             }
         }
         return greenLetterMask;
+    }
+
+    void setSubsetCache() {
+        biTrieSubsetCaches.clear();
+        for (int i = 0; i <= maxTries; ++i) {
+            biTrieSubsetCaches.push_back(BiTrieSubsetCache(i));
+        }
+        subsetCache = SubsetCache(maxTries);
     }
 };

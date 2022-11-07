@@ -123,7 +123,7 @@ struct SubsetCache {
     }
 
     void recordHit(RemDepthType remDepth, int subsetId) {
-        static bool recordingEnabled = true;
+        static bool recordingEnabled = GlobalArgs.timings;
         if (!recordingEnabled) return;
 
         numHits[remDepth][subsetId]++; // trust me, its default initialised to zero

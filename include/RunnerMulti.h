@@ -18,6 +18,7 @@
 struct RunnerMultiResultPair {
     int numWrong;
     IndexType wordIndex;
+    std::shared_ptr<SolutionModel> solutionModel = std::make_shared<SolutionModel>();
 };
 
 struct RunnerMultiResult {
@@ -55,17 +56,20 @@ struct RunnerMulti {
         auto guessIndexesToCheck = getGuessIndexesToCheck(nothingSolver);
 
         auto numWorkers = GlobalArgs.parallel ? GlobalArgs.workers : 1;
-        auto batchesOfFirstWords = getBatches(guessIndexesToCheck, std::ceil((double)guessIndexesToCheck.size()/numWorkers));
-        DEBUG("#batches: " << batchesOfFirstWords.size());
+        DEBUG("#workers: " << numWorkers);
+        auto workers = getVector(numWorkers);
 
-        std::mutex lock;
+        std::mutex lock, queueLock;
 
         DEBUG("sizeof perfstats: " << sizeof(PerfStats));
 
-        auto bar = SimpleProgress("BY_FIRST_GUESS", batchesOfFirstWords.size());
+        auto bar = SimpleProgress("BY_FIRST_GUESS", (int64_t)guessIndexesToCheck.size());
+        std::queue<IndexType> q;
+        for (auto v: guessIndexesToCheck) q.push(v);
         std::ofstream fout(GlobalArgs.outputRes);
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "word,numWrong,numTries\n";
+        auto modelDir = "models/" + getTimeString();
 
         // auto myAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
         // auto myGuesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
@@ -75,69 +79,75 @@ struct RunnerMulti {
         // DEBUG("#removed: " << getPerc(numRemoved, GlobalState.allGuesses.size()));
         // exit(1);
 
-        std::vector<RunnerMultiResult> transformResults(batchesOfFirstWords.size(), RunnerMultiResult());
+        std::vector<RunnerMultiResult> transformResults(workers.size(), RunnerMultiResult());
         std::transform(
             executionPolicy,
-            batchesOfFirstWords.begin(),
-            batchesOfFirstWords.end(),
+            workers.begin(),
+            workers.end(),
             transformResults.begin(),
             [
                 &bar,
                 &completed,
                 &lock,
+                &q,
+                &queueLock,
                 &minWrong,
                 &minAvg,
                 &fout,
                 &nothingSolver=std::as_const(nothingSolver),
-                &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
+                &guessIndexesToCheck=std::as_const(guessIndexesToCheck),
+                &modelDir=std::as_const(modelDir)
             ]
-                (const std::vector<IndexType> &firstWordBatch) -> RunnerMultiResult
-            {                
-                const auto &allAnswers = GlobalState.allAnswers;
-                const auto &allGuesses = GlobalState.allGuesses;
+                (const int &firstWordBatch) -> RunnerMultiResult
+            {
                 RunnerMultiResult result;
                 auto solver = nothingSolver;
-                bar.updateStatus(FROM_SS(" batch size: " << firstWordBatch.size() << " loading..."));
 
-                for (std::size_t i = 0; i < firstWordBatch.size(); ++i) {
-                    auto firstWordIndex = firstWordBatch[i];
-                    const auto &firstWord = allGuesses[firstWordIndex];
-                    solver.startingWord = firstWord;
+                while (true) {
+                    IndexType firstWordIndex = 0;
+                    {
+                        std::lock_guard g(queueLock);
+                        if (q.size() == 0) break;
+                        firstWordIndex = q.front();
+                        q.pop();
+                    }
 
-                    int numWrong = 0, numTries = 0;
-                    auto answers = getVector<AnswersVec>(allAnswers.size());
-                    auto guesses = getVector<GuessesVec>(allGuesses.size());
-                    numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
-                    DEBUG("numWrong?? " << numWrong);
+                    const auto &firstWord = GlobalState.allGuesses[firstWordIndex];
+                    auto r = solver.solveForFirstGuess(firstWordIndex, GlobalArgs.generateModels);
+                    const int numWrong = r.numWrong;
 
                     {
                         std::lock_guard g(lock);
                         if (numWrong < minWrong) {
                             minWrong = numWrong;
                         }
-                        double avg = numWrong == INF_INT
-                            ? INF_DOUBLE
-                            : safeDivide(numTries, GlobalState.allAnswers.size() - numWrong);
+                        double avg = numWrong == INF_INT ? INF_DOUBLE : 0;
                         if (avg < minAvg) {
                             minAvg = avg;
                         }
                         completed++;
-                        fout << firstWord << "," << numWrong << "," << numTries << '\n';
+                        fout << firstWord << "," << numWrong << "," << r.tries << '\n';
+                        fout.flush();
                     }
-                    fout.flush();
 
-                    auto s = FROM_SS(
+                    const auto s = FROM_SS(
                         ", " << firstWord << ", " << getFrac(completed, guessIndexesToCheck.size())
                         << ", minWrong: " << (minWrong == INF_INT ? "inf" : std::to_string(minWrong))
                         << ", minAvg: " << (minAvg == INF_DOUBLE ? "inf" : std::to_string(minAvg)));
-                    if (i == firstWordBatch.size() - 1) {
+
+                    {
+                        std::lock_guard g(lock);
+                        DEBUG("numWrong?? " << numWrong);
                         bar.incrementAndUpdateStatus(s);
-                    } else {
-                        bar.updateStatus(s);
                     }
                     auto p = RunnerMultiResultPair();
                     p.numWrong = numWrong;
                     p.wordIndex = firstWordIndex;
+                    p.solutionModel = r.solutionModel;
+                    if (GlobalArgs.generateModels) {
+                        Verifier::verifyModel(*p.solutionModel, solver, p.numWrong);
+                        JsonConverter::toFile(*p.solutionModel, modelDir + "/" + firstWord + ".json");
+                    }
                     result.pairs.push_back(p);
                 }
                 

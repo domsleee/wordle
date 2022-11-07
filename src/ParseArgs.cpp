@@ -5,7 +5,7 @@
 #include "../third_party/cxxopts.hpp"
 
 void parseArgs(int argc, char *argv[]) {
-    cxxopts::Options options("WordleSolver", "A solver for the wordle game.");
+    cxxopts::Options options("solve", "A solver for the wordle game.");
 
     options.add_options()
         ("guesses", "Guesses", cxxopts::value<std::string>()->default_value("ext/wordle-combined.txt"))
@@ -19,6 +19,7 @@ void parseArgs(int argc, char *argv[]) {
         ("r,reduce-guesses", "Use the answer dictionary as the guess dictionary")
         ("s,force-sequential", "No parallel when generating cache (for profiling)")
         ("P,use-partitions", "Use partitions")
+        ("m,generate-models", "Generate models")
 
         // strings
         ("w,first-guess", "First guess", cxxopts::value<std::string>()->default_value(""))
@@ -35,14 +36,13 @@ void parseArgs(int argc, char *argv[]) {
         ("k,top-level-skip", "Initial offset (see N)", cxxopts::value<int>()->default_value("0"))
         ("g,max-tries", "Max tries", cxxopts::value<int>()->default_value("6"))
         ("I,max-numWrong", "Max numWrong for least wrong strategy", cxxopts::value<int>()->default_value("0"))
-        ("G,max-total-guesses", "Max total guesses for lowest average strategy", cxxopts::value<int>()->default_value("500000"))
         ("num-to-restrict", "Reduce the number of first guesses", cxxopts::value<int>()->default_value("50000"))
         ("min-lb-cache", "RemDepth for storing lb cache", cxxopts::value<int>()->default_value("2"))
         ("min-cache", "RemDepth for storing cache", cxxopts::value<int>()->default_value("0"))
         ("W,workers", "Num workers (see also mem-limit)", cxxopts::value<int>()->default_value("24"))
-        ("z,print-length", "Print length", cxxopts::value<int>()->default_value("-1"))
-        ("m-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
-        ("M-partitions-rem-depth", "Print length", cxxopts::value<int>()->default_value("4"))
+        ("z,print-depth", "Print depth for debugging", cxxopts::value<int>()->default_value("-1"))
+        ("m-partitions-rem-depth", "Minimum remDepth for RemoveGuessesPartitions", cxxopts::value<int>()->default_value("4"))
+        ("M-partitions-rem-depth", "Maximum remDepth for RemoveGuessesPartitions", cxxopts::value<int>()->default_value("4"))
 
         // floats
         ("L,mem-limit", "Mem limit per thread", cxxopts::value<double>()->default_value("2"))
@@ -70,7 +70,7 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.minLbCache = result["min-lb-cache"].as<int>();
     GlobalArgs.minCache = result["min-cache"].as<int>();
     GlobalArgs.workers = result["workers"].as<int>();
-    GlobalArgs.printLength = result["print-length"].as<int>();
+    GlobalArgs.printDepth = result["print-depth"].as<int>();
     GlobalArgs.mPartitionsRemDepth = result["m-partitions-rem-depth"].as<int>();
     GlobalArgs.MPartitionsRemDepth = result["M-partitions-rem-depth"].as<int>();
     GlobalArgs.firstWord = result["first-guess"].as<std::string>();
@@ -86,7 +86,6 @@ void parseArgs(int argc, char *argv[]) {
     GlobalArgs.reduceGuesses = result.count("reduce-guesses");
     GlobalArgs.forceSequential = result.count("force-sequential");
     GlobalArgs.hardMode = result.count("hard-mode");
-    GlobalArgs.isGetLowestAverage = result.count("lowest-average");
-    GlobalArgs.usePartitions = result.count("use-partitions");
     GlobalArgs.timings = result.count("timings");
-} // bottom window = use-partitions
+    GlobalArgs.generateModels = result.count("generate-models");
+}

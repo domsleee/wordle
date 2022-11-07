@@ -56,8 +56,7 @@ struct RemoveGuessesPartitions {
 
         int count = 0;
         std::erase_if(guesses, [&](const auto guessIndex) {
-            ++count;
-            return eliminated[count-1];
+            return eliminated[count++];
         });
     }
 

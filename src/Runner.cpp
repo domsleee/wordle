@@ -27,7 +27,7 @@ std::vector<RunnerMultiResult> Runner::run() {
         }
 
         if (GlobalArgs.firstWord != "") {
-            solver.startingWord = GlobalArgs.firstWord;
+            // solver.startingWord = GlobalArgs.firstWord;
         }
 
         return GlobalArgs.parallel

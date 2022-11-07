@@ -3,7 +3,7 @@ UNAME := $(shell uname)
 ifdef ENV_DEBUG
 	CONDITIONAL_CXX = -g
 else
-	CONDITIONAL_CXX = -g -O3 #-DNDEBUG #-fprofile-use=./prof/out_single.pgo #-lgcov
+	CONDITIONAL_CXX = -g -O3 -DNDEBUG #-fprofile-use=./prof/out_single.pgo #-lgcov
 ifneq ($(UNAME), Darwin)
 	CONDITIONAL_CXX += #-fsanitize=address -fno-omit-frame-pointer
 endif
