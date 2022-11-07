@@ -29,7 +29,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#define GUESSESSOLVER_DEBUG(x) 
+#define GUESSESSOLVER_DEBUG(x)
 
 using namespace NonLetterLookupHelpers;
 
@@ -80,7 +80,7 @@ struct AnswersAndGuessesSolver {
         return solveWord(answerIndex, solutionModel, firstWordIndex, answers, guesses);
     }
 
-    AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswersVec &answers, GuessesVec &guesses) {
+    AnswersAndGuessesResult solveWord(IndexType answerIndex, std::shared_ptr<SolutionModel> solutionModel, IndexType firstWordIndex, AnswersVec &answers, GuessesVec &guesses, int betaOverride = -1) {
         AnswersAndGuessesResult res = {};
         res.solutionModel = solutionModel;
 
@@ -89,6 +89,8 @@ struct AnswersAndGuessesSolver {
         auto currentModel = res.solutionModel;
         
         IndexType guessIndex = firstWordIndex;
+        GUESSESSOLVER_DEBUG("INITIALLY numAnswers: " << answers.size() << ", solution model? " << res.solutionModel.get() << ", guess index? " << (int)guessIndex << ", answerIndex: " << (int)answerIndex);
+
         for (res.tries = 1; res.tries <= maxTries; ++res.tries) {
             currentModel->guess = GlobalState.reverseIndexLookup[guessIndex];
             if (currentModel->guess == "") {
@@ -102,13 +104,13 @@ struct AnswersAndGuessesSolver {
             if (res.tries == maxTries) break;
 
             makeGuess(answers, guesses, state, guessIndex);
-            /*auto it = std::find(answers.begin(), answers.end(), answerIndex);
+            auto it = std::find(answers.begin(), answers.end(), answerIndex);
             if (it == answers.end()) {
                 DEBUG("the actual answer " << answerIndex << " was removed from answers after guess " << guessIndex << "!"); exit(1);
-            }*/
+            }
             //DEBUG("result:")
 
-            auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, getDefaultBeta());
+            auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, betaOverride != -1 ? betaOverride : getDefaultBeta());
             if (res.tries == 1) res.firstGuessResult = pr;
             const auto patternInt = getter.getPatternIntCached(guessIndex);
 
@@ -121,6 +123,29 @@ struct AnswersAndGuessesSolver {
         }
         res.tries = TRIES_FAILED;
         return res;
+    }
+
+    AnswersAndGuessesResult solveForFirstGuess(IndexType firstWordIndex, bool generateModel = false) {
+        AnswersAndGuessesResult result = {};
+        auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        if (!generateModel) {
+            auto r = sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
+            result.numWrong = r;
+            return result;
+        }
+
+        const auto allAnswers = answers;
+        for (const IndexType answerIndex: allAnswers) {
+            answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+            guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+            auto myR = solveWord(answerIndex, result.solutionModel, firstWordIndex, answers, guesses, getDefaultBeta() - result.numWrong);
+            if (myR.tries == TRIES_FAILED) {
+                result.numWrong++;
+                result.tries += myR.tries;
+            }
+        }
+        return result;
     }
 
 
@@ -261,7 +286,7 @@ struct AnswersAndGuessesSolver {
 
         const auto cacheVal = getCache(answers, guesses, remDepth);
         if (cacheVal.ub != -1 && (cacheVal.lb == cacheVal.ub || cacheVal.lb >= beta)) {
-            return BestWordResult(cacheVal.lb, cacheVal.guessForLb);
+            return BestWordResult(cacheVal.lb, cacheVal.guessForUb);
         }
         stats.entryStats[GlobalArgs.maxTries-remDepth][2]++;
 

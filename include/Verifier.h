@@ -8,7 +8,7 @@ struct Verifier {
     template <bool isEasyMode>
     static std::vector<int64_t> verifyModel(const SolutionModel &model,
         const AnswersAndGuessesSolver<isEasyMode> &nothingSolver,
-        const int numIncorrect = 0) {
+        const int numWrong = 0) {
         auto answerIndexes = getVector(GlobalState.allAnswers.size(), 0);
         std::vector<int64_t> results(answerIndexes.size());
         auto solver = nothingSolver;
@@ -55,11 +55,11 @@ struct Verifier {
 
         long above4 = 0;
         for (auto r: results) above4 += r > 4;
-        DEBUG("above4: " << above4);
-        DEBUG("wrong words (" << wrongVec.size() << "):");
+        //DEBUG("above4: " << above4);
+        //DEBUG("wrong words (" << wrongVec.size() << "):");
         for (auto &s: wrongVec) DEBUG(s);
-        if (static_cast<int>(wrongVec.size()) != numIncorrect) {
-            DEBUG("error numIncorrect: expected " << numIncorrect << ", actual: " << wrongVec.size());
+        if (static_cast<int>(wrongVec.size()) != numWrong) {
+            DEBUG("error numWrong: expected " << numWrong << ", actual: " << wrongVec.size());
             exit(1);
         }
 

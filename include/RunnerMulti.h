@@ -18,6 +18,7 @@
 struct RunnerMultiResultPair {
     int numWrong;
     IndexType wordIndex;
+    std::shared_ptr<SolutionModel> solutionModel = std::make_shared<SolutionModel>();
 };
 
 struct RunnerMultiResult {
@@ -68,6 +69,7 @@ struct RunnerMulti {
         std::ofstream fout(GlobalArgs.outputRes);
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "word,numWrong,numTries\n";
+        auto modelDir = "models/" + getTimeString();
 
         // auto myAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
         // auto myGuesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
@@ -93,12 +95,11 @@ struct RunnerMulti {
                 &minAvg,
                 &fout,
                 &nothingSolver=std::as_const(nothingSolver),
-                &guessIndexesToCheck=std::as_const(guessIndexesToCheck)
+                &guessIndexesToCheck=std::as_const(guessIndexesToCheck),
+                &modelDir=std::as_const(modelDir)
             ]
                 (const int &firstWordBatch) -> RunnerMultiResult
             {
-                const auto &allAnswers = GlobalState.allAnswers;
-                const auto &allGuesses = GlobalState.allGuesses;
                 RunnerMultiResult result;
                 auto solver = nothingSolver;
 
@@ -111,31 +112,25 @@ struct RunnerMulti {
                         q.pop();
                     }
 
-                    const auto &firstWord = allGuesses[firstWordIndex];
-                    solver.startingWord = firstWord;
-
-                    int numWrong = 0, numTries = 0;
-                    auto answers = getVector<AnswersVec>(allAnswers.size());
-                    auto guesses = getVector<GuessesVec>(allGuesses.size());
-                    numWrong = solver.sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
+                    const auto &firstWord = GlobalState.allGuesses[firstWordIndex];
+                    auto r = solver.solveForFirstGuess(firstWordIndex, GlobalArgs.generateModels);
+                    const int numWrong = r.numWrong;
 
                     {
                         std::lock_guard g(lock);
                         if (numWrong < minWrong) {
                             minWrong = numWrong;
                         }
-                        double avg = numWrong == INF_INT
-                            ? INF_DOUBLE
-                            : safeDivide(numTries, GlobalState.allAnswers.size() - numWrong);
+                        double avg = numWrong == INF_INT ? INF_DOUBLE : 0;
                         if (avg < minAvg) {
                             minAvg = avg;
                         }
                         completed++;
-                        fout << firstWord << "," << numWrong << "," << numTries << '\n';
+                        fout << firstWord << "," << numWrong << "," << r.tries << '\n';
                         fout.flush();
                     }
 
-                    auto s = FROM_SS(
+                    const auto s = FROM_SS(
                         ", " << firstWord << ", " << getFrac(completed, guessIndexesToCheck.size())
                         << ", minWrong: " << (minWrong == INF_INT ? "inf" : std::to_string(minWrong))
                         << ", minAvg: " << (minAvg == INF_DOUBLE ? "inf" : std::to_string(minAvg)));
@@ -148,6 +143,11 @@ struct RunnerMulti {
                     auto p = RunnerMultiResultPair();
                     p.numWrong = numWrong;
                     p.wordIndex = firstWordIndex;
+                    p.solutionModel = r.solutionModel;
+                    if (GlobalArgs.generateModels) {
+                        Verifier::verifyModel(*p.solutionModel, solver, p.numWrong);
+                        JsonConverter::toFile(*p.solutionModel, modelDir + "/" + firstWord + ".json");
+                    }
                     result.pairs.push_back(p);
                 }
                 

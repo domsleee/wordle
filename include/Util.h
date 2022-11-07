@@ -314,3 +314,12 @@ static inline void replaceAll(
     buf.append(s, prevPos, s.size() - prevPos);
     s.swap(buf);
 }
+
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+inline std::string getTimeString() {
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    return FROM_SS(std::put_time(&tm, "%d-%m-%Y-%H-%M-%S"));
+}

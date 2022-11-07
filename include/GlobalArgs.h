@@ -18,7 +18,7 @@ struct _GlobalArgs {
     // flags
     static inline bool parallel, reduceGuesses, forceSequential, hardMode, isGetLowestAverage, timings;
     static inline bool disableSubsetCache = false, disableEndGameAnalysis = false, pauseForAttach = false;
-    static inline bool usePartitions;
+    static inline bool usePartitions, generateModels = false;
 
     static inline int printLength;
     static inline OtherProgram otherProgram = OtherProgram::blank;

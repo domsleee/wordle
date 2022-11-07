@@ -1,0 +1,5 @@
+maxWrong: 30
+word,numWrong
+tenor,17,4335
+raced,17,4335
+lants,28,7140

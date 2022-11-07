@@ -31,11 +31,12 @@ SolutionModel parseModel(const nlohmann::json &j) {
 }
 
 void JsonConverter::toFile(const SolutionModel &solutionModel, const std::string &file) {
-    auto j = toJson(solutionModel);
-    std::ofstream o(file);
-    o << std::setw(2) << j << std::endl;
+    //auto j = toJson(solutionModel);
+    //std::ofstream o(file);
+    //o << std::setw(2) << j << std::endl;
+    DEBUG("writing model to file " << file);
     auto jCompressed = toJson(solutionModel, true);
-    std::ofstream oCompressed(file + ".cmp.json");
+    std::ofstream oCompressed = safeFout(file);
     oCompressed << std::setw(2) << jCompressed << std::endl;
 }
 

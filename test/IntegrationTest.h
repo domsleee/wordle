@@ -9,8 +9,9 @@
 
 TEST_CASE("G4 tenor,raced should be 17") {
     //  ./bin/solve -Seartol -p -I20 -g4 ext/wordle-guesses.txt ext/wordle-answers.txt
-    auto argHelper = ArgHelper({"solve", "-Seartolsinc",  "-I20", "-g4", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/files/TenorRaced.txt"});
+    auto argHelper = ArgHelper({"solve", "-Seartolsinc",  "-I30", "-g4", "--guesses", "ext/wordle-guesses.txt", "--answers", "ext/wordle-answers.txt", "--guesses-to-check", "test/files/TenorRaced.txt"});
     auto [argc, argv] = argHelper.getArgcArgv();
+    GlobalArgs.generateModels = GENERATE(false, true);
     parseArgs(argc, argv);
     auto r = Runner::run();
     REQUIRE_MESSAGE(r.size() == 1, "ONE RESULT");
@@ -18,7 +19,7 @@ TEST_CASE("G4 tenor,raced should be 17") {
     REQUIRE_MESSAGE(pairs.size() == 3, "NUM PAIRS");
     REQUIRE_MESSAGE(pairs[0].numWrong == 17, 17);
     REQUIRE_MESSAGE(pairs[1].numWrong == 17, 17);
-    REQUIRE_MESSAGE(pairs[2].numWrong == 21, 21);
+    REQUIRE_MESSAGE(pairs[2].numWrong == 28, 28);
 }
 
 TEST_CASE("G5 roate,soare,orate") {
@@ -26,6 +27,7 @@ TEST_CASE("G5 roate,soare,orate") {
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();
+    GlobalArgs.generateModels = GENERATE(false, true);
     REQUIRE_MESSAGE(r.size() == 1, "ONE RESULT");
     const auto &pairs = r[0].pairs;
     REQUIRE_MESSAGE(pairs.size() == 3, "NUM PAIRS");
@@ -43,6 +45,7 @@ TEST_CASE("G6 BIGHIDDEN lanes,lears") {
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
     auto r = Runner::run();
+    GlobalArgs.generateModels = GENERATE(false, true);
     REQUIRE_MESSAGE(r.size() == 1, "ONE RESULT");
     const auto &pairs = r[0].pairs;
     REQUIRE_MESSAGE(pairs.size() == 2, "NUM PAIRS");
@@ -55,6 +58,7 @@ TEST_CASE("edge case") {
     auto argHelper = ArgHelper({"solve", "-Seartolsinc", "-I0", "-g6", "--guesses", "ext/wordle-combined.txt", "--answers", "ext/wordle-combined.txt", "-z0", "-T"});
     auto [argc, argv] = argHelper.getArgcArgv();
     parseArgs(argc, argv);
+    GlobalArgs.generateModels = GENERATE(false, true);
 
     auto solver = AnswersAndGuessesSolver<true>(GlobalArgs.maxTries);
     initFromGlobalArgs();
