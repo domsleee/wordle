@@ -9,9 +9,9 @@ ifneq ($(UNAME), Darwin)
 endif
 endif
 
-
+COMMITDESC:= "\"$(shell git log -1 --pretty=format:'%h %ad' --date=iso --abbrev=12)\""
 CXX = g++-11
-CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX) -MP -MD#-O0
+CXXFLAGSCOMMON = -std=c++20 -Wall -Iinclude -Ithird_party -ffast-math $(ENV_CXXFLAGS) $(CONDITIONAL_CXX) -MP -MD -DCOMMITDESC=$(COMMITDESC)#-O0
 CXXFLAGS = $(CXXFLAGSCOMMON)
 CXXFLAGSTEST = $(CXXFLAGSCOMMON)
 LIBS := -ltbb #-lprofiler $(ENV_LIBFLAGS) #-lgcov -fprofile-use=./prof/out_single2.pgo

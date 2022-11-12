@@ -59,7 +59,7 @@ struct _GlobalState {
         );
         if (firstWordIndex == reverseIndexLookup.size()) {
             DEBUG("word size: " << word.size());
-            DEBUG("guess not in word list: " << word);
+            DEBUG("guess not in word list: '" << word << "'");
             exit(1);
         }
         return (IndexType)firstWordIndex;

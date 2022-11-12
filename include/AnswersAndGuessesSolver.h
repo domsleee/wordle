@@ -110,8 +110,6 @@ struct AnswersAndGuessesSolver {
             }
             //DEBUG("result:")
 
-            auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, betaOverride != -1 ? betaOverride : getDefaultBeta());
-            if (res.tries == 1) res.firstGuessResult = pr;
             const auto patternInt = getter.getPatternIntCached(guessIndex);
 
             GUESSESSOLVER_DEBUG("NEXT GUESS: " << GlobalState.reverseIndexLookup[pr.wordIndex] <<  ",patternInt: " << patternInt << ", numWrong: " << pr.numWrong << " numAnswers: " << answers.size());
@@ -119,7 +117,12 @@ struct AnswersAndGuessesSolver {
             const auto patternStr = PatternIntHelpers::patternIntToString(patternInt);
             currentModel = currentModel->getOrCreateNext(patternStr);
 
-            guessIndex = pr.wordIndex;
+            if (currentModel->guess == "") {
+                auto pr = minOverWordsLeastWrong(answers, guesses, maxTries-res.tries, 0, betaOverride != -1 ? betaOverride : getDefaultBeta());
+                guessIndex = pr.wordIndex;
+            } else {
+                guessIndex = GlobalState.getIndexForWord(currentModel->guess);
+            }
         }
         res.tries = TRIES_FAILED;
         return res;
@@ -127,18 +130,17 @@ struct AnswersAndGuessesSolver {
 
     AnswersAndGuessesResult solveForFirstGuess(IndexType firstWordIndex, bool generateModel = false) {
         AnswersAndGuessesResult result = {};
-        auto answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
-        auto guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+        const auto allAnswers = getVector<AnswersVec>(GlobalState.allAnswers.size());
+        const auto allGuesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
         if (!generateModel) {
-            auto r = sumOverPartitionsLeastWrong(answers, guesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
+            auto r = sumOverPartitionsLeastWrong(allAnswers, allGuesses, GlobalArgs.maxTries - 1, firstWordIndex, GlobalArgs.maxWrong + 1);
             result.numWrong = r;
             return result;
         }
 
-        const auto allAnswers = answers;
         for (const IndexType answerIndex: allAnswers) {
-            answers = getVector<AnswersVec>(GlobalState.allAnswers.size());
-            guesses = getVector<GuessesVec>(GlobalState.allGuesses.size());
+            auto answers = allAnswers;
+            auto guesses = allGuesses;
             auto myR = solveWord(answerIndex, result.solutionModel, firstWordIndex, answers, guesses, getDefaultBeta() - result.numWrong);
             if (myR.tries == TRIES_FAILED) {
                 result.numWrong++;
