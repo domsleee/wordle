@@ -42,7 +42,7 @@ struct Verifier {
                     localModel = *localModel.next[patternStr];
                     path += ".next[\"" + patternStr + "\"]";
                 } else if (i != solver.maxTries) {
-                    crashDueToMissingPattern(localModel, patternStr, answer, path);
+                    crashDueToMissingPattern(localModel, patternStr, answer, path, model.guess);
                     break;
                 }
             }
@@ -59,7 +59,9 @@ struct Verifier {
         //DEBUG("wrong words (" << wrongVec.size() << "):");
         for (auto &s: wrongVec) DEBUG(s);
         if (static_cast<int>(wrongVec.size()) != numWrong) {
+            DEBUG("ERROR IN MODEL");
             DEBUG("error numWrong: expected " << numWrong << ", actual: " << wrongVec.size());
+            DEBUG("EXITING");
             exit(1);
         }
 
@@ -70,7 +72,8 @@ struct Verifier {
         const SolutionModel &localModel,
         const std::string &patternStr,
         const std::string &answer,
-        const std::string &path)
+        const std::string &path,
+        const std::string &firstGuess)
     {
         DEBUG("error: does not have next pattern '" << patternStr << "'");
         DEBUG("curren guess: " << localModel.guess);
@@ -80,7 +83,8 @@ struct Verifier {
         DEBUG("answer: " << answer);
         DEBUG(path);
         DEBUG("amount: " << localModel.next.size());
-        //exit(1);
+        DEBUG("first guess: " << firstGuess);
+        exit(1);
     }
 
     static void checkMatches(const SolutionModel &model, const AnswersVec &answers, const GuessesVec &guesses) {

@@ -18,7 +18,6 @@
 struct RunnerMultiResultPair {
     int numWrong;
     IndexType wordIndex;
-    std::shared_ptr<SolutionModel> solutionModel = std::make_shared<SolutionModel>();
 };
 
 struct RunnerMultiResult {
@@ -67,6 +66,7 @@ struct RunnerMulti {
         std::queue<IndexType> q;
         for (auto v: guessIndexesToCheck) q.push(v);
         std::ofstream fout(GlobalArgs.outputRes);
+        fout << COMMITDESC << '\n';
         fout << "maxWrong: " << GlobalArgs.maxWrong << "\n";
         fout << "word,numWrong,numTries\n";
         auto modelDir = "models/" + getTimeString();
@@ -113,7 +113,7 @@ struct RunnerMulti {
                     }
 
                     const auto &firstWord = GlobalState.allGuesses[firstWordIndex];
-                    auto r = solver.solveForFirstGuess(firstWordIndex, GlobalArgs.generateModels);
+                    const auto r = solver.solveForFirstGuess(firstWordIndex, GlobalArgs.generateModels);
                     const int numWrong = r.numWrong;
 
                     {
@@ -143,10 +143,9 @@ struct RunnerMulti {
                     auto p = RunnerMultiResultPair();
                     p.numWrong = numWrong;
                     p.wordIndex = firstWordIndex;
-                    p.solutionModel = r.solutionModel;
                     if (GlobalArgs.generateModels) {
-                        Verifier::verifyModel(*p.solutionModel, solver, p.numWrong);
-                        JsonConverter::toFile(*p.solutionModel, modelDir + "/" + firstWord + ".json");
+                        JsonConverter::toFile(*r.solutionModel, modelDir + "/" + firstWord + ".json");
+                        Verifier::verifyModel(*r.solutionModel, solver, p.numWrong);
                     }
                     result.pairs.push_back(p);
                 }
